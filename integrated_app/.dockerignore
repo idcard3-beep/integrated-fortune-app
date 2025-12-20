@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 가상환경
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 로그 및 데이터베이스
+*.log
+*.db
+*.sqlite3
+
+# 환경변수 (민감정보)
+.env
+.env.local
+
+# Git
+.git/
+.gitignore
+
+# 개발 도구
+node_modules/
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 문서 (선택사항 - 포함하려면 제거)
+*.md
+!README.md
+
+# 로컬 패키지 (Windows)
+Lib/
+Scripts/
+
+

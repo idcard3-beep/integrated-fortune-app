@@ -1,0 +1,46 @@
+<!doctype html><html lang=ko><meta charset=UTF-8><title>게시글 수정</title><link href=/secret/static/style.css rel=stylesheet><link href=/secret/static/security.css rel=stylesheet><style>.loading {
+        text-align: center;
+        padding: 60px;
+        color: #666;
+        font-size: 18px;
+      }
+
+      .error {
+        text-align: center;
+        padding: 40px;
+        color: #d32f2f;
+        background-color: #ffebee;
+        border-radius: 8px;
+        margin: 20px 0;
+        display: none;
+        border-left: 4px solid #d32f2f;
+      }
+
+      .edit-form {
+        display: none;
+      }
+
+      .loading::after {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-left: 10px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }</style><body><div style="background-color: #e3f2fd;
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #2196f3;
+        margin-bottom: 20px;"><span style="color: #1976d2; font-weight: bold">🗄️ 수정 확인</span></div><div class=loading id=loading>📡 게시글을 불러오는 중...</div><div class=error id=error><h3>💥 오류가 발생했습니다</h3><p id=error-message></div><div class=edit-form id=edit-form><h2>게시글 수정</h2><form id=ticketForm><input id=ticket-id name=id type=hidden><label>이름(선택)</label><input placeholder="이름을 입력하세요" id=author-name name=author_name><label>메모란(선택)</label><input placeholder="메모를 입력하세요" id=author-contact name=author_contact><label>제목</label><input id=title name=title required><label>내용</label><textarea id=content name=content required rows=6></textarea><div class=form-actions><button>수정 완료</button><button onclick=cancelEdit() type=button>취소</button></div></form></div><script src=/secret/static/edit.js></script><script src=/secret/static/member_session.js></script><script src=/secret/static/admin_session.js></script><script src=/secret/static/security.js></script>

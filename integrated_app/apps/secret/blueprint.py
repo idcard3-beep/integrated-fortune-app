@@ -409,16 +409,35 @@ def uploaded_file(filename):
             break
     
     if not uploads_path:
-        from flask import abort
-        print(f"❌ uploads 폴더를 찾을 수 없음. 모든 경로 시도 실패:")
-        for i, path in enumerate(possible_paths, 1):
+        # uploads 폴더가 없으면 자동 생성 시도
+        # 상위 디렉토리가 존재하는 경로를 찾아서 uploads 폴더 생성
+        for path in possible_paths:
             abs_path = os.path.abspath(path)
-            exists = os.path.exists(abs_path)
-            print(f"   [{i}] {abs_path} (exists: {exists})")
-            # 디렉토리 존재 여부 확인
-            if os.path.exists(os.path.dirname(abs_path)):
-                print(f"      → 상위 디렉토리 존재: {os.path.dirname(abs_path)}")
-        abort(404)
+            parent_dir = os.path.dirname(abs_path)
+            if os.path.exists(parent_dir):
+                try:
+                    os.makedirs(abs_path, exist_ok=True)
+                    # images/mainimg 하위 폴더도 생성
+                    images_path = os.path.join(abs_path, 'images', 'mainimg')
+                    os.makedirs(images_path, exist_ok=True)
+                    uploads_path = abs_path
+                    print(f"✅ uploads 폴더 자동 생성 완료: {uploads_path}")
+                    break
+                except Exception as e:
+                    print(f"⚠️  uploads 폴더 생성 실패 ({abs_path}): {e}")
+        
+        if not uploads_path:
+            from flask import abort
+            print(f"❌ uploads 폴더를 찾을 수 없고 생성도 실패. 모든 경로 시도 실패:")
+            for i, path in enumerate(possible_paths, 1):
+                abs_path = os.path.abspath(path)
+                exists = os.path.exists(abs_path)
+                print(f"   [{i}] {abs_path} (exists: {exists})")
+                # 디렉토리 존재 여부 확인
+                parent_dir = os.path.dirname(abs_path)
+                if os.path.exists(parent_dir):
+                    print(f"      → 상위 디렉토리 존재: {parent_dir}")
+            abort(404)
     
     # 파일 존재 여부 확인
     file_path = os.path.join(uploads_path, filename)

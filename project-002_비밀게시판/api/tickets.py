@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, session
 from adapters.repository_factory import get_repository
 from core.security import issue_view_token, verify_view_token
 import bcrypt, uuid
@@ -199,10 +199,14 @@ def update_ticket(ticket_id):
     if not r:
         return jsonify({'ok': False, 'error': '게시글을 찾을 수 없습니다'}), 404
     
-    # 관리자 답변이 있는지 확인
-    messages = repo.list_messages(ticket_id)
-    if messages:
-        return jsonify({'ok': False, 'error': '관리자 답변이 있어서 수정할 수 없습니다'}), 403
+    # 관리자 답변이 있는지 확인 (관리자 역할의 메시지만 확인)
+    # 단, 관리자 세션이 있는 경우에는 수정 허용
+    is_admin = session.get('admin_logged_in', False)
+    if not is_admin:
+        messages = repo.list_messages(ticket_id)
+        admin_messages = [msg for msg in messages if msg.get('role') == 'ADMIN']
+        if admin_messages:
+            return jsonify({'ok': False, 'error': '관리자 답변이 있어서 수정할 수 없습니다'}), 403
     
     try:
         # Repository를 통한 수정 (딕셔너리 형태로 전달)

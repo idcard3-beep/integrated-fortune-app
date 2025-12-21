@@ -51,16 +51,33 @@ def get_all_members():
 def check_member_id(smem_id):
     """회원 ID 중복 확인"""
     try:
-        print(f"🔍 ID 중복 확인 요청: {smem_id}")
+        # URL 디코딩 및 문자열로 변환 (숫자든 문자든 모두 문자열로 처리)
+        import urllib.parse
+        decoded_id = urllib.parse.unquote(smem_id)
+        input_id_str = str(decoded_id).strip()
+        
+        print(f"🔍 ID 중복 확인 요청: '{input_id_str}' (원본: '{smem_id}')")
         members = repo.get_smembers()
         
-        # 입력한 ID와 정확히 일치하는 회원이 있는지 확인
-        exists = any(member.get('sMem_id') == smem_id for member in members)
+        # 입력한 ID와 정확히 일치하는 회원이 있는지 확인 (모두 문자열로 변환하여 비교)
+        exists = False
+        for member in members:
+            # DB에서 가져온 ID도 문자열로 변환하여 비교
+            db_id = member.get('sMem_id') or member.get('smem_id', '')
+            db_id_str = str(db_id).strip()
+            
+            # 대소문자 구분하여 정확히 일치하는지 확인
+            if db_id_str == input_id_str:
+                exists = True
+                print(f"   ✅ 중복 발견: DB ID='{db_id_str}' == 입력 ID='{input_id_str}'")
+                break
         
-        print(f"✅ 중복 여부: {exists}")
+        print(f"✅ 최종 중복 여부: {exists}")
         return jsonify({'exists': exists})
     except Exception as e:
         print(f"❌ ID 중복 확인 실패: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'exists': False, 'error': str(e)}), 500
 
 @bp.get('/<int:sm_id>')
@@ -258,28 +275,58 @@ def reset_password():
         data = request.get_json()
         login_id = data.get('sMem_id', '').strip()
         email = data.get('sMem_email', '').strip()
+        mobile = data.get('sMem_mobile', '').strip()
+        birthdt = data.get('sMem_birthdt', '').strip()
         
-        print(f"🔄 비밀번호 재설정 요청: ID={login_id}, Email={email}")
+        print(f"🔄 비밀번호 재설정 요청: ID={login_id}, Email={email}, Mobile={mobile}, Birthdt={birthdt}")
         
-        if not login_id or not email:
-            return jsonify({'ok': False, 'error': '아이디와 이메일을 모두 입력해주세요.'}), 400
+        if not login_id or not email or not mobile or not birthdt:
+            return jsonify({'ok': False, 'error': '아이디, 이메일, 휴대폰번호, 생일을 모두 입력해주세요.'}), 400
         
         # 회원 조회
         members = repo.get_smembers()
         
-        # 대소문자 구분 없이 ID와 이메일 확인
+        # 날짜 형식 정규화 함수
+        def normalize_date(date_str):
+            if not date_str:
+                return ''
+            try:
+                from datetime import datetime
+                # YYYY-MM-DD 형식으로 변환
+                if isinstance(date_str, str):
+                    # 다양한 날짜 형식 지원
+                    date_obj = datetime.strptime(date_str.split('T')[0], '%Y-%m-%d')
+                    return date_obj.strftime('%Y-%m-%d')
+                return str(date_str)
+            except:
+                return str(date_str).split('T')[0] if 'T' in str(date_str) else str(date_str)
+        
+        # 아이디, 이메일, 휴대폰번호, 생일이 모두 일치하는 회원 찾기
         member = None
         for m in members:
             db_id = str(m.get('sMem_id') or m.get('smem_id', '')).strip()
             db_email = str(m.get('sMem_email') or m.get('smem_email', '')).strip()
+            db_mobile = str(m.get('sMem_mobile') or m.get('smem_mobile', '')).strip()
+            db_birthdt = str(m.get('sMem_birthdt') or m.get('smem_birthdt', '')).strip()
             
-            if (db_id.lower() == login_id.lower() and 
-                db_email.lower() == email.lower()):
+            db_birthdt_normalized = normalize_date(db_birthdt)
+            search_birthdt_normalized = normalize_date(birthdt)
+            
+            id_match = db_id.lower() == login_id.lower()
+            email_match = db_email.lower() == email.lower()
+            mobile_match = db_mobile == mobile
+            birthdt_match = db_birthdt_normalized == search_birthdt_normalized
+            
+            print(f"  비교: ID={id_match}, Email={email_match}, Mobile={mobile_match}, Birthdt={birthdt_match}")
+            print(f"    DB: ID={db_id}, Email={db_email}, Mobile={db_mobile}, Birthdt={db_birthdt_normalized}")
+            print(f"    입력: ID={login_id}, Email={email}, Mobile={mobile}, Birthdt={search_birthdt_normalized}")
+            
+            if id_match and email_match and mobile_match and birthdt_match:
                 member = m
                 break
         
         if not member:
-            print(f"❌ 회원 못 찾음: ID={login_id}, Email={email}")
+            print(f"❌ 회원 못 찾음: ID={login_id}, Email={email}, Mobile={mobile}, Birthdt={birthdt}")
             return jsonify({'ok': False, 'error': '입력한 정보와 일치하는 회원을 찾을 수 없습니다.'}), 404
         
         # 임시 비밀번호 생성 (8자리)

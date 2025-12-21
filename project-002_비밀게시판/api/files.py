@@ -91,19 +91,49 @@ def upload_signature():
         # 쓰기 가능한 uploads 폴더 찾기
         upload_root = get_writable_upload_root()
         
-        # 서명 파일 저장 폴더
+        # 서명 파일 저장 폴더 - 기존 폴더 찾기 (생성하지 않음)
         sign_folder = os.path.join(upload_root, 'sign_file')
-        try:
-            # 폴더가 이미 존재해도 문제없이 처리
-            os.makedirs(sign_folder, exist_ok=True)
-            print(f"✅ sign_file 폴더 확인/생성 완료: {sign_folder}")
-        except Exception as e:
-            print(f"❌ sign_file 폴더 생성 실패: {e}")
-            # 폴더가 이미 존재하는 경우는 에러로 처리하지 않음
-            if not os.path.exists(sign_folder):
-                return jsonify({'ok': False, 'error': f'폴더 생성 실패: {str(e)}'}), 500
+        
+        # 기존 폴더가 있는지 확인
+        if os.path.exists(sign_folder):
+            print(f"✅ 기존 sign_file 폴더 발견: {sign_folder}")
+        else:
+            # 여러 경로에서 sign_file 폴더 찾기 시도
+            possible_sign_paths = [
+                os.path.join(upload_root, 'sign_file'),
+                os.path.join(os.path.dirname(upload_root), 'sign_file'),
+                os.path.join(upload_root, '..', 'sign_file'),
+                os.path.abspath(os.path.join(os.path.dirname(__file__), '../uploads/sign_file')),
+                os.path.abspath(os.path.join(os.path.dirname(__file__), '../../uploads/sign_file')),
+            ]
+            
+            found_sign_folder = None
+            for path in possible_sign_paths:
+                abs_path = os.path.abspath(path)
+                if os.path.exists(abs_path) and os.path.isdir(abs_path):
+                    # 쓰기 권한 확인
+                    try:
+                        test_file = os.path.join(abs_path, '.write_test')
+                        with open(test_file, 'w') as tf:
+                            tf.write('test')
+                        os.remove(test_file)
+                        found_sign_folder = abs_path
+                        print(f"✅ 기존 sign_file 폴더 발견: {found_sign_folder}")
+                        break
+                    except (IOError, OSError):
+                        continue
+            
+            if found_sign_folder:
+                sign_folder = found_sign_folder
             else:
-                print(f"⚠️ 폴더가 이미 존재함: {sign_folder} - 계속 진행")
+                # 폴더를 찾을 수 없으면 에러 반환 (생성하지 않음)
+                print(f"❌ sign_file 폴더를 찾을 수 없음. 다음 경로들을 확인했습니다:")
+                for path in possible_sign_paths:
+                    print(f"   - {os.path.abspath(path)}")
+                return jsonify({
+                    'ok': False, 
+                    'error': f'sign_file 폴더를 찾을 수 없습니다. 폴더가 존재하는지 확인해주세요.'
+                }), 500
         
         # 파일명 확인 (sMem_id_sMem_name.png 형식)
         filename = f.filename

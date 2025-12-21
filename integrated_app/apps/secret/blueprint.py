@@ -371,29 +371,56 @@ from werkzeug.utils import safe_join
 def uploaded_file(filename):
     """uploads 폴더의 파일을 서빙합니다"""
     # 여러 경로 시도 (Docker 컨테이너 내부 경로 고려)
+    current_dir = os.getcwd()
+    blueprint_parent = os.path.dirname(blueprint_dir)
+    
     possible_paths = [
-        # 1. 상대 경로 (개발 환경)
-        os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/uploads')),
-        # 2. Docker 컨테이너 절대 경로
+        # 1. Docker 컨테이너 절대 경로 (가장 가능성 높음)
         '/app/project-002_비밀게시판/uploads',
-        # 3. 현재 작업 디렉토리 기준
-        os.path.join(os.getcwd(), 'project-002_비밀게시판', 'uploads'),
+        # 2. 현재 작업 디렉토리 기준 (integrated_app 루트에서 실행 시)
+        os.path.join(current_dir, 'project-002_비밀게시판', 'uploads'),
+        # 3. 상대 경로 (개발 환경 - blueprint_dir 기준)
+        os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/uploads')),
         # 4. blueprint_dir 기준 다른 경로
         os.path.abspath(os.path.join(blueprint_dir, '../../project-002_비밀게시판/uploads')),
+        # 5. integrated_app 루트 기준
+        os.path.abspath(os.path.join(blueprint_dir, '../../../../project-002_비밀게시판/uploads')),
+        # 6. 현재 디렉토리의 상위에서 찾기
+        os.path.join(os.path.dirname(current_dir), 'project-002_비밀게시판', 'uploads'),
     ]
     
+    # 디버깅: 현재 상태 출력
+    print(f"🔍 uploads 파일 요청: {filename}")
+    print(f"   - 현재 작업 디렉토리: {current_dir}")
+    print(f"   - blueprint_dir: {blueprint_dir}")
+    
     uploads_path = None
-    for path in possible_paths:
-        if os.path.exists(path):
-            uploads_path = path
+    for i, path in enumerate(possible_paths, 1):
+        abs_path = os.path.abspath(path)
+        exists = os.path.exists(abs_path)
+        print(f"   [{i}] {abs_path} (exists: {exists})")
+        if exists:
+            uploads_path = abs_path
             print(f"✅ uploads 폴더 발견: {uploads_path}")
             break
     
     if not uploads_path:
         from flask import abort
-        print(f"❌ uploads 폴더를 찾을 수 없음. 시도한 경로:")
-        for path in possible_paths:
-            print(f"   - {path} (exists: {os.path.exists(path)})")
+        print(f"❌ uploads 폴더를 찾을 수 없음. 모든 경로 시도 실패:")
+        for i, path in enumerate(possible_paths, 1):
+            abs_path = os.path.abspath(path)
+            exists = os.path.exists(abs_path)
+            print(f"   [{i}] {abs_path} (exists: {exists})")
+            # 디렉토리 존재 여부 확인
+            if os.path.exists(os.path.dirname(abs_path)):
+                print(f"      → 상위 디렉토리 존재: {os.path.dirname(abs_path)}")
+        abort(404)
+    
+    # 파일 존재 여부 확인
+    file_path = os.path.join(uploads_path, filename)
+    if not os.path.exists(file_path):
+        print(f"⚠️  파일을 찾을 수 없음: {file_path}")
+        from flask import abort
         abort(404)
     
     return send_from_directory(uploads_path, filename)
@@ -452,6 +479,34 @@ def init_app(app):
     
     # Main blueprint 등록
     app.register_blueprint(secret_bp)
+    
+    # uploads 폴더 자동 생성 (여러 가능한 경로에 시도)
+    current_dir = os.getcwd()
+    possible_uploads_paths = [
+        '/app/project-002_비밀게시판/uploads',
+        os.path.join(current_dir, 'project-002_비밀게시판', 'uploads'),
+        os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/uploads')),
+        os.path.abspath(os.path.join(blueprint_dir, '../../project-002_비밀게시판/uploads')),
+        os.path.abspath(os.path.join(blueprint_dir, '../../../../project-002_비밀게시판/uploads')),
+    ]
+    
+    for uploads_path in possible_uploads_paths:
+        abs_path = os.path.abspath(uploads_path)
+        # 상위 디렉토리가 존재하면 uploads 폴더 생성 시도
+        parent_dir = os.path.dirname(abs_path)
+        if os.path.exists(parent_dir):
+            if not os.path.exists(abs_path):
+                try:
+                    os.makedirs(abs_path, exist_ok=True)
+                    # images/mainimg 하위 폴더도 생성
+                    images_path = os.path.join(abs_path, 'images', 'mainimg')
+                    os.makedirs(images_path, exist_ok=True)
+                    print(f"✅ uploads 폴더 생성 완료: {abs_path}")
+                except Exception as e:
+                    print(f"⚠️  uploads 폴더 생성 실패 ({abs_path}): {e}")
+            else:
+                print(f"✅ uploads 폴더 이미 존재: {abs_path}")
+                break
     
     # 디버깅: 등록된 라우트 확인
     print(f"\n🔍 secret blueprint 라우트 등록 확인:")

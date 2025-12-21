@@ -15,8 +15,8 @@ import json
 from lunarcalendar import Converter, Solar, Lunar
 import ephem
 
-# 환경변수에 따라 경로 선택
-USE_BUILD = os.getenv('USE_BUILD_FILES', 'false').lower() == 'true'
+# 환경변수에 따라 경로 선택 (기본값: true - 프로덕션 배포 시 빌드 파일 사용)
+USE_BUILD = os.getenv('USE_BUILD_FILES', 'true').lower() == 'true'
 
 if USE_BUILD:
     # 프로덕션: 빌드된 파일 사용

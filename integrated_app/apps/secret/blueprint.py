@@ -4,8 +4,8 @@
 from flask import Blueprint, render_template, session
 import os
 
-# 환경변수에 따라 경로 선택
-USE_BUILD = os.getenv('USE_BUILD_FILES', 'false').lower() == 'true'
+# 환경변수에 따라 경로 선택 (기본값: true - 프로덕션 배포 시 빌드 파일 사용)
+USE_BUILD = os.getenv('USE_BUILD_FILES', 'true').lower() == 'true'
 
 # Blueprint 파일의 디렉토리를 기준으로 절대 경로 계산
 blueprint_dir = os.path.dirname(os.path.abspath(__file__))
@@ -19,13 +19,40 @@ else:
     template_folder = os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/web/templates'))
     static_folder = os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/web/static'))
 
-# 디버깅: 경로 출력
+# 디버깅: 경로 출력 및 검증
 print(f"🔍 비밀게시판 Blueprint 설정:")
+print(f"  - USE_BUILD: {USE_BUILD}")
+print(f"  - blueprint_dir: {blueprint_dir}")
 print(f"  - template_folder: {template_folder}")
 print(f"  - static_folder: {static_folder}")
+print(f"  - template_folder exists: {os.path.exists(template_folder)}")
 print(f"  - static_folder exists: {os.path.exists(static_folder)}")
+
+# 경로 검증
+if not os.path.exists(template_folder):
+    print(f"⚠️  경고: template_folder가 존재하지 않습니다: {template_folder}")
+    # 대체 경로 시도
+    alt_path = os.path.join(os.path.dirname(blueprint_dir), '../../build/web/project-002_비밀게시판/templates')
+    alt_path = os.path.abspath(alt_path)
+    if os.path.exists(alt_path):
+        print(f"  → 대체 경로 사용: {alt_path}")
+        template_folder = alt_path
+    else:
+        print(f"  ❌ 대체 경로도 존재하지 않음: {alt_path}")
+        # 현재 작업 디렉토리 확인
+        print(f"  - 현재 작업 디렉토리: {os.getcwd()}")
+        # build 폴더 확인
+        build_base = os.path.join(os.getcwd(), 'build', 'web', 'project-002_비밀게시판')
+        if os.path.exists(build_base):
+            print(f"  - build 폴더 발견: {build_base}")
+            template_folder = os.path.join(build_base, 'templates')
+            static_folder = os.path.join(build_base, 'static')
+            print(f"  → 수정된 경로: template_folder={template_folder}, static_folder={static_folder}")
+
 if os.path.exists(static_folder):
     print(f"  - static files count: {len(os.listdir(static_folder))}")
+else:
+    print(f"⚠️  경고: static_folder가 존재하지 않습니다: {static_folder}")
 
 # Blueprint 생성
 secret_bp = Blueprint(
@@ -58,7 +85,34 @@ from api.corpus import bp as corpus_bp
 # Routes
 @secret_bp.route("/")
 def home():
-    return render_template("list.html")
+    """비밀게시판 홈페이지 (목록 페이지)"""
+    template_name = "list.html"
+    template_path = os.path.join(template_folder, template_name)
+    
+    print(f"🔍 /secret/ 라우트 호출됨")
+    print(f"  - template_folder: {template_folder}")
+    print(f"  - template_name: {template_name}")
+    print(f"  - template_path: {template_path}")
+    print(f"  - template exists: {os.path.exists(template_path)}")
+    
+    if not os.path.exists(template_path):
+        print(f"❌ 템플릿 파일을 찾을 수 없음: {template_path}")
+        if os.path.exists(template_folder):
+            files = os.listdir(template_folder)
+            print(f"  - template_folder 내용 ({len(files)}개 파일):")
+            for f in files[:10]:  # 처음 10개만 출력
+                print(f"    - {f}")
+        else:
+            print(f"  - template_folder 자체가 존재하지 않음")
+        from flask import abort
+        abort(404, description=f"Template not found: {template_name}")
+    
+    try:
+        return render_template(template_name)
+    except Exception as e:
+        print(f"❌ 템플릿 렌더링 오류: {e}")
+        from flask import abort
+        abort(500, description=f"Template rendering error: {str(e)}")
 
 @secret_bp.route("/main_index")
 def main_index():

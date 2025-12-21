@@ -370,11 +370,32 @@ from werkzeug.utils import safe_join
 @secret_bp.route("/uploads/<path:filename>")
 def uploaded_file(filename):
     """uploads 폴더의 파일을 서빙합니다"""
-    uploads_path = os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/uploads'))
-    if not os.path.exists(uploads_path):
+    # 여러 경로 시도 (Docker 컨테이너 내부 경로 고려)
+    possible_paths = [
+        # 1. 상대 경로 (개발 환경)
+        os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/uploads')),
+        # 2. Docker 컨테이너 절대 경로
+        '/app/project-002_비밀게시판/uploads',
+        # 3. 현재 작업 디렉토리 기준
+        os.path.join(os.getcwd(), 'project-002_비밀게시판', 'uploads'),
+        # 4. blueprint_dir 기준 다른 경로
+        os.path.abspath(os.path.join(blueprint_dir, '../../project-002_비밀게시판/uploads')),
+    ]
+    
+    uploads_path = None
+    for path in possible_paths:
+        if os.path.exists(path):
+            uploads_path = path
+            print(f"✅ uploads 폴더 발견: {uploads_path}")
+            break
+    
+    if not uploads_path:
         from flask import abort
-        print(f"❌ uploads 폴더를 찾을 수 없음: {uploads_path}")
+        print(f"❌ uploads 폴더를 찾을 수 없음. 시도한 경로:")
+        for path in possible_paths:
+            print(f"   - {path} (exists: {os.path.exists(path)})")
         abort(404)
+    
     return send_from_directory(uploads_path, filename)
 
 # JSON 파일 서빙 (코퍼스 데이터)

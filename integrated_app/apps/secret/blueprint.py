@@ -376,16 +376,16 @@ def uploaded_file(filename):
     current_parent = os.path.dirname(current_dir)  # integrated_app/의 상위 디렉토리
     
     possible_paths = [
-        # 1. 서버 구조: integrated_app/의 상위에서 project-002_비밀게시판/uploads 찾기 (가장 가능성 높음)
+        # 1. integrated_app/ 내부에 uploads 폴더 생성 (권한 문제 회피)
+        os.path.join(current_dir, 'uploads'),
+        # 2. 서버 구조: integrated_app/의 상위에서 project-002_비밀게시판/uploads 찾기
         os.path.join(current_parent, 'project-002_비밀게시판', 'uploads') if current_parent else None,
-        # 2. 현재 디렉토리 기준 (로컬 개발 환경)
+        # 3. 현재 디렉토리 기준 (로컬 개발 환경)
         os.path.join(current_dir, 'project-002_비밀게시판', 'uploads'),
-        # 3. blueprint_dir 기준 상대 경로 (integrated_app/apps/secret/에서 ../../../)
+        # 4. blueprint_dir 기준 상대 경로 (integrated_app/apps/secret/에서 ../../../)
         os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/uploads')),
-        # 4. blueprint_dir 기준 다른 상대 경로
+        # 5. blueprint_dir 기준 다른 상대 경로
         os.path.abspath(os.path.join(blueprint_dir, '../../../../project-002_비밀게시판/uploads')),
-        # 5. 현재 디렉토리의 조부모에서 찾기
-        os.path.join(os.path.dirname(current_parent), 'project-002_비밀게시판', 'uploads') if current_parent else None,
         # 6. Docker 컨테이너 절대 경로 (마지막 시도)
         '/app/project-002_비밀게시판/uploads',
     ]
@@ -410,21 +410,33 @@ def uploaded_file(filename):
     
     if not uploads_path:
         # uploads 폴더가 없으면 자동 생성 시도
-        # 상위 디렉토리가 존재하는 경로를 찾아서 uploads 폴더 생성
+        # 권한이 있는 경로를 우선 시도 (integrated_app/ 내부)
         for path in possible_paths:
             abs_path = os.path.abspath(path)
             parent_dir = os.path.dirname(abs_path)
             if os.path.exists(parent_dir):
                 try:
-                    os.makedirs(abs_path, exist_ok=True)
-                    # images/mainimg 하위 폴더도 생성
-                    images_path = os.path.join(abs_path, 'images', 'mainimg')
-                    os.makedirs(images_path, exist_ok=True)
-                    uploads_path = abs_path
-                    print(f"✅ uploads 폴더 자동 생성 완료: {uploads_path}")
-                    break
+                    # 쓰기 권한 확인 (상위 디렉토리에 쓰기 가능한지)
+                    test_file = os.path.join(parent_dir, '.write_test')
+                    try:
+                        with open(test_file, 'w') as f:
+                            f.write('test')
+                        os.remove(test_file)
+                        # 쓰기 가능하면 uploads 폴더 생성
+                        os.makedirs(abs_path, exist_ok=True)
+                        # images/mainimg 하위 폴더도 생성
+                        images_path = os.path.join(abs_path, 'images', 'mainimg')
+                        os.makedirs(images_path, exist_ok=True)
+                        uploads_path = abs_path
+                        print(f"✅ uploads 폴더 자동 생성 완료: {uploads_path}")
+                        break
+                    except (IOError, OSError):
+                        # 쓰기 권한 없음, 다음 경로 시도
+                        print(f"⚠️  쓰기 권한 없음 ({parent_dir}), 다음 경로 시도")
+                        continue
                 except Exception as e:
                     print(f"⚠️  uploads 폴더 생성 실패 ({abs_path}): {e}")
+                    continue
         
         if not uploads_path:
             from flask import abort
@@ -509,14 +521,16 @@ def init_app(app):
     current_parent = os.path.dirname(current_dir)  # integrated_app/의 상위 디렉토리
     
     possible_uploads_paths = [
-        # 1. 서버 구조: integrated_app/의 상위에서 project-002_비밀게시판/uploads 찾기 (가장 가능성 높음)
+        # 1. integrated_app/ 내부에 uploads 폴더 생성 (권한 문제 회피, 가장 안전)
+        os.path.join(current_dir, 'uploads'),
+        # 2. 서버 구조: integrated_app/의 상위에서 project-002_비밀게시판/uploads 찾기
         os.path.join(current_parent, 'project-002_비밀게시판', 'uploads') if current_parent else None,
-        # 2. 현재 디렉토리 기준 (로컬 개발 환경)
+        # 3. 현재 디렉토리 기준 (로컬 개발 환경)
         os.path.join(current_dir, 'project-002_비밀게시판', 'uploads'),
-        # 3. blueprint_dir 기준 상대 경로
+        # 4. blueprint_dir 기준 상대 경로
         os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/uploads')),
         os.path.abspath(os.path.join(blueprint_dir, '../../../../project-002_비밀게시판/uploads')),
-        # 4. Docker 경로 (마지막 시도)
+        # 5. Docker 경로 (마지막 시도)
         '/app/project-002_비밀게시판/uploads',
     ]
     

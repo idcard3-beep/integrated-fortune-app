@@ -53,20 +53,19 @@
         cursor: pointer;
         margin-left: 5px;
       }
-      /* 햄버거 메뉴 버튼 (오른쪽 상단) */
+      /* 햄버거 메뉴 버튼 (오른쪽 상단) - 자연스러운 흰색 아이콘 */
       #toggleMenuTop {
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        background: rgba(255, 255, 255, 0.2) !important;
-        border: 2px solid rgba(255, 255, 255, 0.5) !important;
-        border-radius: 6px !important;
+        background: none !important;
+        border: none !important;
         color: #fff !important;
-        font-size: 1.5em !important;
+        font-size: 1.8em !important;
         cursor: pointer !important;
         padding: 8px 12px !important;
         margin: 0 !important;
-        transition: all 0.2s ease !important;
+        transition: opacity 0.2s ease, transform 0.2s ease !important;
         position: relative !important;
         z-index: 10 !important;
         width: auto !important;
@@ -74,22 +73,20 @@
         min-width: 40px !important;
         min-height: 40px !important;
         line-height: 1 !important;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+        box-shadow: none !important;
       }
       #toggleMenuTop:hover {
+        opacity: 0.8 !important;
         transform: scale(1.1);
-        background: rgba(255, 255, 255, 0.3) !important;
-        border-color: rgba(255, 255, 255, 0.8) !important;
         color: #fff !important;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
       }
       #toggleMenuTop i {
         display: inline-block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        font-size: 1.5em !important;
+        font-size: 1.8em !important;
         color: #fff !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
       }
       /* auth-links 내부 버튼이 보이도록 */
       nav.auth-links button#toggleMenuTop {

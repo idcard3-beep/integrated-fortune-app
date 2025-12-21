@@ -767,7 +767,7 @@ class PostgreSQLRepo:
             with self._get_connection() as conn:
                 with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
                     cursor.execute("""
-                        SELECT * FROM smembers 
+                        SELECT * FROM "sMembers" 
                         ORDER BY created_at DESC
                     """)
                     members = cursor.fetchall()
@@ -785,7 +785,7 @@ class PostgreSQLRepo:
             with self._get_connection() as conn:
                 with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
                     cursor.execute("""
-                        SELECT * FROM smembers WHERE sm_id = %s
+                        SELECT * FROM "sMembers" WHERE "sm_id" = %s
                     """, (sm_id,))
                     member = cursor.fetchone()
                     if member:
@@ -803,6 +803,12 @@ class PostgreSQLRepo:
     def create_smember(self, member_data):
         """새 회원 생성"""
         try:
+            print(f"🔍 create_smember 호출됨")
+            print(f"   - 입력 데이터 키: {list(member_data.keys())}")
+            print(f"   - sMem_id: {member_data.get('sMem_id')}")
+            print(f"   - sMem_name: {member_data.get('sMem_name')}")
+            print(f"   - sMem_pwdHash 존재: {bool(member_data.get('sMem_pwdHash'))}")
+            
             with self._get_connection() as conn:
                 with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
                     # 필수 필드
@@ -870,23 +876,34 @@ class PostgreSQLRepo:
                             values.append(member_data[key])
                             placeholders.append('%s')
                     
+                    print(f"   - DB 필드 수: {len(fields)}")
+                    print(f"   - DB 필드 목록: {fields[:10]}...")  # 처음 10개만
+                    
+                    # PostgreSQL에서 대소문자 구분 테이블 이름 처리
+                    # 테이블 이름을 따옴표로 감싸서 대소문자 구분
+                    # 필드 이름도 따옴표로 감싸서 대소문자 구분
                     sql = f"""
-                        INSERT INTO smembers ({', '.join(fields)})
+                        INSERT INTO "sMembers" ({', '.join(f'"{f}"' for f in fields)})
                         VALUES ({', '.join(placeholders)})
                         RETURNING *
                     """
                     
+                    print(f"   - 생성된 SQL 쿼리: {sql[:200]}...")  # 처음 200자만
+                    print(f"   - SQL 실행 시작...")
                     cursor.execute(sql, values)
                     new_member = cursor.fetchone()
                     conn.commit()
                     
-                    print(f"✅ 회원 생성 완료: {new_member['sm_id']}")
-                    return self._serialize_member(dict(new_member))
+                    print(f"✅ 회원 생성 완료: sm_id={new_member['sm_id']}, smem_id={new_member.get('smem_id')}")
+                    serialized = self._serialize_member(dict(new_member))
+                    print(f"   - 직렬화된 데이터 키: {list(serialized.keys())[:10]}...")
+                    return serialized
                     
         except Exception as e:
             print(f"❌ 회원 생성 실패: {e}")
             import traceback
-            print(f"❌ 스택 트레이스: {traceback.format_exc()}")
+            print(f"❌ 스택 트레이스:")
+            traceback.print_exc()
             raise
 
     def update_smember(self, sm_id, member_data):
@@ -953,19 +970,20 @@ class PostgreSQLRepo:
                     
                     for key, db_field in field_mapping.items():
                         if key in member_data:
-                            update_fields.append(f"{db_field} = %s")  # 소문자 테이블이므로 따옴표 불필요
+                            # 필드 이름도 따옴표로 감싸서 대소문자 구분
+                            update_fields.append(f'"{db_field}" = %s')
                             values.append(member_data[key])
                     
                     # updated_at 추가
-                    update_fields.append("updated_at = CURRENT_TIMESTAMP")
+                    update_fields.append('"updated_at" = CURRENT_TIMESTAMP')
                     
                     # WHERE 조건용 sm_id 추가
                     values.append(sm_id)
                     
                     sql = f"""
-                        UPDATE smembers 
+                        UPDATE "sMembers" 
                         SET {', '.join(update_fields)}
-                        WHERE sm_id = %s
+                        WHERE "sm_id" = %s
                         RETURNING *
                     """
                     
@@ -992,7 +1010,7 @@ class PostgreSQLRepo:
             with self._get_connection() as conn:
                 with conn.cursor() as cursor:
                     cursor.execute("""
-                        DELETE FROM smembers WHERE sm_id = %s
+                        DELETE FROM "sMembers" WHERE "sm_id" = %s
                     """, (sm_id,))
                     rows_affected = cursor.rowcount
                     conn.commit()

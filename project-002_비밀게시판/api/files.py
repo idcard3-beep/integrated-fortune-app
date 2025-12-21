@@ -94,22 +94,50 @@ def upload_signature():
         # 서명 파일 저장 폴더
         sign_folder = os.path.join(upload_root, 'sign_file')
         try:
+            # 폴더가 이미 존재해도 문제없이 처리
             os.makedirs(sign_folder, exist_ok=True)
+            print(f"✅ sign_file 폴더 확인/생성 완료: {sign_folder}")
         except Exception as e:
             print(f"❌ sign_file 폴더 생성 실패: {e}")
-            return jsonify({'ok': False, 'error': f'폴더 생성 실패: {str(e)}'}), 500
+            # 폴더가 이미 존재하는 경우는 에러로 처리하지 않음
+            if not os.path.exists(sign_folder):
+                return jsonify({'ok': False, 'error': f'폴더 생성 실패: {str(e)}'}), 500
+            else:
+                print(f"⚠️ 폴더가 이미 존재함: {sign_folder} - 계속 진행")
         
         # 파일명 확인 (sMem_id_sMem_name.png 형식)
         filename = f.filename
         if not filename:
             return jsonify({'ok': False, 'error': '파일명이 없습니다.'}), 400
         
-        # 파일 저장
+        # 파일 저장 경로
         file_path = os.path.join(sign_folder, filename)
+        
+        # 기존 파일이 있으면 덮어쓰기
+        if os.path.exists(file_path):
+            print(f"⚠️ 기존 파일 발견: {file_path} - 덮어쓰기 진행")
+            try:
+                # 기존 파일 삭제
+                os.remove(file_path)
+                print(f"✅ 기존 파일 삭제 완료: {file_path}")
+            except Exception as e:
+                print(f"⚠️ 기존 파일 삭제 실패: {e}")
+                # 삭제 실패해도 새 파일 저장 시도 (덮어쓰기)
+                try:
+                    # 파일이 잠겨있거나 권한 문제일 수 있으므로, 강제로 덮어쓰기 시도
+                    with open(file_path, 'wb') as existing_file:
+                        existing_file.truncate(0)  # 파일 내용 비우기
+                except Exception as e2:
+                    print(f"⚠️ 파일 비우기 실패: {e2}")
+        
+        # 파일 저장
         try:
             f.save(file_path)
+            print(f"✅ 서명 파일 저장 완료: {file_path}")
         except Exception as e:
             print(f"❌ 파일 저장 실패: {e}")
+            import traceback
+            traceback.print_exc()
             return jsonify({'ok': False, 'error': f'파일 저장 실패: {str(e)}'}), 500
         
         # 상대 경로 반환

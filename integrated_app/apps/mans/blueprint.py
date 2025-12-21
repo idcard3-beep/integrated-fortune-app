@@ -256,37 +256,37 @@ def calendar():
         
         # 합삭/망일시 계산
         def get_new_full_moon(year, month):
-        # 해당 월의 시작일과 종료일
-        start_date = datetime.datetime(year, month, 1)
-        if month == 12:
-            end_date = datetime.datetime(year + 1, 1, 1)
-        else:
-            end_date = datetime.datetime(year, month + 1, 1)
-        
-        new_moon = None
-        full_moon = None
-        
-        try:
-            # 합삭(신월, New Moon) 계산
-            new_moon_ephem = ephem.next_new_moon(start_date)
-            new_moon_dt = ephem.Date(new_moon_ephem).datetime()
-            # UTC를 KST로 변환 (+9시간)
-            new_moon_kst = new_moon_dt + datetime.timedelta(hours=9)
-            # 해당 월에 속하는지 확인
-            if start_date <= new_moon_kst < end_date:
-                new_moon = new_moon_kst
+            # 해당 월의 시작일과 종료일
+            start_date = datetime.datetime(year, month, 1)
+            if month == 12:
+                end_date = datetime.datetime(year + 1, 1, 1)
+            else:
+                end_date = datetime.datetime(year, month + 1, 1)
             
-            # 망(보름달, Full Moon) 계산
-            full_moon_ephem = ephem.next_full_moon(start_date)
-            full_moon_dt = ephem.Date(full_moon_ephem).datetime()
-            # UTC를 KST로 변환 (+9시간)
-            full_moon_kst = full_moon_dt + datetime.timedelta(hours=9)
-            # 해당 월에 속하는지 확인
-            if start_date <= full_moon_kst < end_date:
-                full_moon = full_moon_kst
-        except Exception as e:
-            print(f"  ⚠️ Moon phase calculation error: {e}")
-        
+            new_moon = None
+            full_moon = None
+            
+            try:
+                # 합삭(신월, New Moon) 계산
+                new_moon_ephem = ephem.next_new_moon(start_date)
+                new_moon_dt = ephem.Date(new_moon_ephem).datetime()
+                # UTC를 KST로 변환 (+9시간)
+                new_moon_kst = new_moon_dt + datetime.timedelta(hours=9)
+                # 해당 월에 속하는지 확인
+                if start_date <= new_moon_kst < end_date:
+                    new_moon = new_moon_kst
+                
+                # 망(보름달, Full Moon) 계산
+                full_moon_ephem = ephem.next_full_moon(start_date)
+                full_moon_dt = ephem.Date(full_moon_ephem).datetime()
+                # UTC를 KST로 변환 (+9시간)
+                full_moon_kst = full_moon_dt + datetime.timedelta(hours=9)
+                # 해당 월에 속하는지 확인
+                if start_date <= full_moon_kst < end_date:
+                    full_moon = full_moon_kst
+            except Exception as e:
+                print(f"  ⚠️ Moon phase calculation error: {e}")
+            
             return new_moon, full_moon
         
         new_moon_kst, full_moon_kst = get_new_full_moon(year, month)
@@ -300,129 +300,129 @@ def calendar():
         
         calendar_weeks = []
         for week_idx, week in enumerate(cal_data):
-        week_data = []
-        for day in week:
-            if day == 0:
-                cell_info = {'day': None, 'lunar': None, 'is_today': False}
-            else:
-                date_obj = datetime.date(year, month, day)
-                is_today_flag = (date_obj == today)
-                
-                print(f"  Processing day {day}")
-                
-                # 음력 변환
-                try:
-                    solar_date_obj = Solar(year, month, day)
-                    lunar_date_obj = Converter.Solar2Lunar(solar_date_obj)
-                    lunar_month = lunar_date_obj.month
-                    lunar_day = lunar_date_obj.day
-                    is_leap = getattr(lunar_date_obj, 'isleap', False)
+            week_data = []
+            for day in week:
+                if day == 0:
+                    cell_info = {'day': None, 'lunar': None, 'is_today': False}
+                else:
+                    date_obj = datetime.date(year, month, day)
+                    is_today_flag = (date_obj == today)
                     
-                    # 대월/소월 판별
+                    print(f"  Processing day {day}")
+                    
+                    # 음력 변환
                     try:
-                        test_lunar_30 = Lunar(lunar_date_obj.year, lunar_month, 30, isleap=is_leap)
-                        test_solar_30 = Converter.Lunar2Solar(test_lunar_30)
-                        max_day = 30
-                    except:
-                        max_day = 29
+                        solar_date_obj = Solar(year, month, day)
+                        lunar_date_obj = Converter.Solar2Lunar(solar_date_obj)
+                        lunar_month = lunar_date_obj.month
+                        lunar_day = lunar_date_obj.day
+                        is_leap = getattr(lunar_date_obj, 'isleap', False)
+                        
+                        # 대월/소월 판별
+                        try:
+                            test_lunar_30 = Lunar(lunar_date_obj.year, lunar_month, 30, isleap=is_leap)
+                            test_solar_30 = Converter.Lunar2Solar(test_lunar_30)
+                            max_day = 30
+                        except:
+                            max_day = 29
+                        
+                        base_type = '윤달' if is_leap else '평달'
+                        month_type = '대월' if max_day == 30 else '소월'
+                        lunar_type = f"{base_type} {month_type}"
+                        lunar_str = f"{lunar_month}월 {lunar_day}일 {lunar_type}"
+                    except Exception as e:
+                        print(f"  ⚠️ Lunar conversion error for day {day}: {e}")
+                        lunar_str = ""
+                        lunar_type = ""
                     
-                    base_type = '윤달' if is_leap else '평달'
-                    month_type = '대월' if max_day == 30 else '소월'
-                    lunar_type = f"{base_type} {month_type}"
-                    lunar_str = f"{lunar_month}월 {lunar_day}일 {lunar_type}"
-                except Exception as e:
-                    print(f"  ⚠️ Lunar conversion error for day {day}: {e}")
-                    lunar_str = ""
-                    lunar_type = ""
-                
-                # 간지 계산
-                try:
-                    year_gz = get_year_gānzhī_simple(year, month, day)
-                    month_gz = get_month_gānzhī_simple(year, month, day)
-                    day_gz = get_day_gānzhī_simple(year, month, day)
-                    
-                    if is_today_flag:
-                        hour_gz = get_hour_gānzhī_simple(year, month, day, current_hour, current_minute)
-                    else:
-                        hour_gz = get_hour_gānzhī_simple(year, month, day, 0, 0)
-                except Exception as e:
-                    print(f"  ⚠️ Ganzhi calculation error for day {day}: {e}")
-                    year_gz = "N/A"
-                    month_gz = "N/A"
-                    day_gz = "N/A"
-                    hour_gz = "N/A"
-                
-                # 절기 확인
-                try:
-                    term_for_day = None
-                    entries_for_check = prev_year_entries + current_year_entries if month <= 2 else current_year_entries
-                    for entry in entries_for_check:
-                        dt = datetime.datetime.strptime(entry['datetime_KST'], '%Y-%m-%d %H:%M:%S')
-                        if dt.date() <= date_obj:
-                            term_for_day = entry
+                    # 간지 계산
+                    try:
+                        year_gz = get_year_gānzhī_simple(year, month, day)
+                        month_gz = get_month_gānzhī_simple(year, month, day)
+                        day_gz = get_day_gānzhī_simple(year, month, day)
+                        
+                        if is_today_flag:
+                            hour_gz = get_hour_gānzhī_simple(year, month, day, current_hour, current_minute)
                         else:
-                            break
+                            hour_gz = get_hour_gānzhī_simple(year, month, day, 0, 0)
+                    except Exception as e:
+                        print(f"  ⚠️ Ganzhi calculation error for day {day}: {e}")
+                        year_gz = "N/A"
+                        month_gz = "N/A"
+                        day_gz = "N/A"
+                        hour_gz = "N/A"
                     
-                    if term_for_day:
-                        current_term_name = term_for_day['term']
-                        current_term_kst = term_for_day['datetime_KST']
-                        current_term_jst = kst_to_jst(term_for_day['datetime_KST'])
-                    else:
+                    # 절기 확인
+                    try:
+                        term_for_day = None
+                        entries_for_check = prev_year_entries + current_year_entries if month <= 2 else current_year_entries
+                        for entry in entries_for_check:
+                            dt = datetime.datetime.strptime(entry['datetime_KST'], '%Y-%m-%d %H:%M:%S')
+                            if dt.date() <= date_obj:
+                                term_for_day = entry
+                            else:
+                                break
+                        
+                        if term_for_day:
+                            current_term_name = term_for_day['term']
+                            current_term_kst = term_for_day['datetime_KST']
+                            current_term_jst = kst_to_jst(term_for_day['datetime_KST'])
+                        else:
+                            current_term_name = None
+                            current_term_kst = None
+                            current_term_jst = None
+                    except Exception as e:
+                        print(f"  ⚠️ Term check error for day {day}: {e}")
                         current_term_name = None
                         current_term_kst = None
                         current_term_jst = None
-                except Exception as e:
-                    print(f"  ⚠️ Term check error for day {day}: {e}")
-                    current_term_name = None
-                    current_term_kst = None
-                    current_term_jst = None
+                    
+                    # 다음 3개 절기
+                    next_3_terms = []
+                    try:
+                        for entry in all_entries:
+                            dt = datetime.datetime.strptime(entry['datetime_KST'], '%Y-%m-%d %H:%M:%S')
+                            if dt.date() >= date_obj:
+                                next_3_terms.append({'term': entry['term'], 'datetime_KST': entry['datetime_KST']})
+                                if len(next_3_terms) == 3:
+                                    break
+                    except Exception as e:
+                        print(f"  ⚠️ Next terms error for day {day}: {e}")
+                    
+                    cell_info = {
+                        'day': day,
+                        'lunar': lunar_str,
+                        'lunar_type': lunar_type,
+                        'year_gz': year_gz,
+                        'month_gz': month_gz,
+                        'day_gz': day_gz,
+                        'hour_gz': hour_gz,
+                        'gānzhī': day_gz,
+                        'term': None,
+                        'is_today': is_today_flag,
+                        'current_term_name': current_term_name,
+                        'current_term_kst': current_term_kst,
+                        'current_term_jst': current_term_jst,
+                        'next_3_terms': next_3_terms,
+                        'new_moon_kst': new_moon_kst.strftime('%Y-%m-%d %H:%M') if new_moon_kst else '',
+                        'new_moon_jst': new_moon_jst.strftime('%Y-%m-%d %H:%M') if new_moon_jst else '',
+                        'full_moon_kst': full_moon_kst.strftime('%Y-%m-%d %H:%M') if full_moon_kst else '',
+                        'full_moon_jst': full_moon_jst.strftime('%Y-%m-%d %H:%M') if full_moon_jst else '',
+                        'jeolip_kst': jeolip['datetime_KST'] if jeolip else '',
+                        'jeolip_jst': kst_to_jst(jeolip['datetime_KST']) if jeolip and jeolip.get('datetime_KST') else '',
+                        'jeolip_term': jeolip['term'] if jeolip else '',
+                        'junggi_kst': junggi['datetime_KST'] if junggi else '',
+                        'junggi_jst': kst_to_jst(junggi['datetime_KST']) if junggi and junggi.get('datetime_KST') else '',
+                        'junggi_term': junggi['term'] if junggi else '',
+                        'next_jeolip_kst': next_jeolip['datetime_KST'] if next_jeolip else '',
+                        'next_jeolip_jst': kst_to_jst(next_jeolip['datetime_KST']) if next_jeolip and next_jeolip.get('datetime_KST') else '',
+                        'next_jeolip_term': next_jeolip['term'] if next_jeolip else ''
+                    }
+                    
+                    if week_idx == 0 and day == 1:
+                        print(f"  ✅ First day cell_info: {cell_info}")
                 
-                # 다음 3개 절기
-                next_3_terms = []
-                try:
-                    for entry in all_entries:
-                        dt = datetime.datetime.strptime(entry['datetime_KST'], '%Y-%m-%d %H:%M:%S')
-                        if dt.date() >= date_obj:
-                            next_3_terms.append({'term': entry['term'], 'datetime_KST': entry['datetime_KST']})
-                            if len(next_3_terms) == 3:
-                                break
-                except Exception as e:
-                    print(f"  ⚠️ Next terms error for day {day}: {e}")
-                
-                cell_info = {
-                    'day': day,
-                    'lunar': lunar_str,
-                    'lunar_type': lunar_type,
-                    'year_gz': year_gz,
-                    'month_gz': month_gz,
-                    'day_gz': day_gz,
-                    'hour_gz': hour_gz,
-                    'gānzhī': day_gz,
-                    'term': None,
-                    'is_today': is_today_flag,
-                    'current_term_name': current_term_name,
-                    'current_term_kst': current_term_kst,
-                    'current_term_jst': current_term_jst,
-                    'next_3_terms': next_3_terms,
-                    'new_moon_kst': new_moon_kst.strftime('%Y-%m-%d %H:%M') if new_moon_kst else '',
-                    'new_moon_jst': new_moon_jst.strftime('%Y-%m-%d %H:%M') if new_moon_jst else '',
-                    'full_moon_kst': full_moon_kst.strftime('%Y-%m-%d %H:%M') if full_moon_kst else '',
-                    'full_moon_jst': full_moon_jst.strftime('%Y-%m-%d %H:%M') if full_moon_jst else '',
-                    'jeolip_kst': jeolip['datetime_KST'] if jeolip else '',
-                    'jeolip_jst': kst_to_jst(jeolip['datetime_KST']) if jeolip and jeolip.get('datetime_KST') else '',
-                    'jeolip_term': jeolip['term'] if jeolip else '',
-                    'junggi_kst': junggi['datetime_KST'] if junggi else '',
-                    'junggi_jst': kst_to_jst(junggi['datetime_KST']) if junggi and junggi.get('datetime_KST') else '',
-                    'junggi_term': junggi['term'] if junggi else '',
-                    'next_jeolip_kst': next_jeolip['datetime_KST'] if next_jeolip else '',
-                    'next_jeolip_jst': kst_to_jst(next_jeolip['datetime_KST']) if next_jeolip and next_jeolip.get('datetime_KST') else '',
-                    'next_jeolip_term': next_jeolip['term'] if next_jeolip else ''
-                }
-                
-                if week_idx == 0 and day == 1:
-                    print(f"  ✅ First day cell_info: {cell_info}")
-            
-                week_data.append(cell_info)
+                    week_data.append(cell_info)
             calendar_weeks.append(week_data)
         
         print(f"✅ Generated {len(calendar_weeks)} weeks with data")

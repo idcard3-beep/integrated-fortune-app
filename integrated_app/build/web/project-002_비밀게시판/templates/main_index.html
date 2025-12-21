@@ -57,20 +57,38 @@
       #toggleMenuTop {
         display: block !important;
         visibility: visible !important;
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 1.5em;
-        cursor: pointer;
-        padding: 8px 12px;
+        opacity: 1 !important;
+        background: none !important;
+        border: none !important;
+        color: #fff !important;
+        font-size: 1.5em !important;
+        cursor: pointer !important;
+        padding: 8px 12px !important;
+        margin: 0 !important;
         transition: transform 0.2s ease, color 0.2s ease;
+        position: relative !important;
+        z-index: 10 !important;
+        width: auto !important;
+        height: auto !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+        line-height: 1 !important;
       }
       #toggleMenuTop:hover {
         transform: scale(1.1);
-        color: #dff0ec;
+        color: #dff0ec !important;
       }
       #toggleMenuTop i {
-        display: inline-block;
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: 1.5em !important;
+      }
+      /* auth-links 내부 버튼이 보이도록 */
+      nav.auth-links button#toggleMenuTop {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
       }
 
       /* 로그인 링크 영역 */

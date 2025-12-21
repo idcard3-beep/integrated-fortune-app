@@ -26,11 +26,14 @@ COPY project-004_만세력/mainpillar.py ./project-004_만세력/
 COPY project-004_만세력/api ./project-004_만세력/api
 COPY project-005_육효/mainpillar.py ./project-005_육효/
 COPY project-005_육효/api ./project-005_육효/api
+COPY project-005_육효/y6_app.py ./project-005_육효/y6_app.py
 COPY project-011_토정비결/mainpillar.py ./project-011_토정비결/
 COPY project-011_토정비결/api ./project-011_토정비결/api
 COPY project-012_사주팔자/mainpillar.py ./project-012_사주팔자/
 COPY project-012_사주팔자/api ./project-012_사주팔자/api
-COPY project-009_타로카드/tarot_app.py ./project-009_타로카드/
+# 타로카드 프로젝트 디렉토리 생성 후 파일 복사
+RUN mkdir -p ./project-009_타로카드
+COPY project-009_타로카드/tarot_app.py ./project-009_타로카드/tarot_app.py
 
 # 작업 디렉토리를 integrated_app로 변경
 WORKDIR /app/integrated_app

@@ -16,8 +16,10 @@ if not os.getenv("DATABASE_URL"):
 
 # 개발/프로덕션 모드 설정
 # USE_BUILD_FILES=true 이면 빌드된 파일 사용 (프로덕션)
-# USE_BUILD_FILES=false 또는 미설정이면 원본 파일 사용 (개발)
-USE_BUILD_FILES = os.getenv("USE_BUILD_FILES", "false").lower() == "true"
+# USE_BUILD_FILES=false 이면 원본 파일 사용 (개발)
+# 기본값: true (프로덕션 배포 시 빌드 파일 사용)
+# 로컬 개발 시에는 환경변수 USE_BUILD_FILES=false 설정하거나 .env 파일에 추가
+USE_BUILD_FILES = os.getenv("USE_BUILD_FILES", "true").lower() == "true"
 print(f"🔧 실행 모드: {'프로덕션 (빌드 파일 사용)' if USE_BUILD_FILES else '개발 (원본 파일 사용)'}")
 
 # Flask 앱 생성

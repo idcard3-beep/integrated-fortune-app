@@ -9,6 +9,77 @@ repo = get_repository()
 
 ADMIN_SESSION_KEY = 'admin_logged_in'
 
+def get_writable_upload_root():
+    """쓰기 가능한 uploads 폴더 경로를 찾아 반환합니다"""
+    current_dir = os.getcwd()  # integrated_app/ 디렉토리
+    current_parent = os.path.dirname(current_dir)  # integrated_app/의 상위 디렉토리
+    
+    # Blueprint 파일의 디렉토리를 기준으로 절대 경로 계산
+    try:
+        # files.py의 위치: project-002_비밀게시판/api/files.py
+        blueprint_dir = os.path.dirname(os.path.abspath(__file__))
+        project_dir = os.path.dirname(blueprint_dir)  # project-002_비밀게시판/
+    except:
+        blueprint_dir = None
+        project_dir = None
+    
+    possible_paths = [
+        # 1. integrated_app/ 내부에 uploads 폴더 생성 (권한 문제 회피, 가장 안전)
+        os.path.join(current_dir, 'uploads'),
+        # 2. 서버 구조: integrated_app/의 상위에서 project-002_비밀게시판/uploads 찾기
+        os.path.join(current_parent, 'project-002_비밀게시판', 'uploads') if current_parent else None,
+        # 3. 현재 디렉토리 기준 (로컬 개발 환경)
+        os.path.join(current_dir, 'project-002_비밀게시판', 'uploads'),
+        # 4. project_dir 기준 (files.py 위치 기준)
+        os.path.join(project_dir, 'uploads') if project_dir else None,
+        # 5. blueprint_dir 기준 상대 경로
+        os.path.abspath(os.path.join(blueprint_dir, '../uploads')) if blueprint_dir else None,
+        # 6. 기존 UPLOAD_ROOT (마지막 시도)
+        UPLOAD_ROOT,
+        # 7. Docker 컨테이너 절대 경로 (마지막 시도)
+        '/app/project-002_비밀게시판/uploads',
+    ]
+    
+    # None 값 제거
+    possible_paths = [p for p in possible_paths if p is not None]
+    
+    # 먼저 존재하는 경로 확인
+    for path in possible_paths:
+        abs_path = os.path.abspath(path)
+        if os.path.exists(abs_path):
+            # 쓰기 권한 확인
+            try:
+                test_file = os.path.join(abs_path, '.write_test')
+                with open(test_file, 'w') as f:
+                    f.write('test')
+                os.remove(test_file)
+                print(f"✅ 쓰기 가능한 uploads 폴더 발견: {abs_path}")
+                return abs_path
+            except (IOError, OSError):
+                continue
+    
+    # 존재하지 않으면 쓰기 가능한 경로에 생성 시도
+    for path in possible_paths:
+        abs_path = os.path.abspath(path)
+        parent_dir = os.path.dirname(abs_path)
+        if os.path.exists(parent_dir):
+            try:
+                # 쓰기 권한 확인
+                test_file = os.path.join(parent_dir, '.write_test')
+                with open(test_file, 'w') as f:
+                    f.write('test')
+                os.remove(test_file)
+                # 쓰기 가능하면 uploads 폴더 생성
+                os.makedirs(abs_path, exist_ok=True)
+                print(f"✅ uploads 폴더 생성 완료: {abs_path}")
+                return abs_path
+            except (IOError, OSError):
+                continue
+    
+    # 모든 시도 실패 시 기존 UPLOAD_ROOT 반환 (에러는 나중에 발생)
+    print(f"⚠️  쓰기 가능한 uploads 폴더를 찾을 수 없음. 기본값 사용: {UPLOAD_ROOT}")
+    return UPLOAD_ROOT
+
 @bp.post('/upload-signature')
 def upload_signature():
     """서명 이미지 업로드 (회원가입용)"""
@@ -17,9 +88,16 @@ def upload_signature():
         if not f:
             return jsonify({'ok': False, 'error': '파일이 없습니다.'}), 400
         
+        # 쓰기 가능한 uploads 폴더 찾기
+        upload_root = get_writable_upload_root()
+        
         # 서명 파일 저장 폴더
-        sign_folder = os.path.join(UPLOAD_ROOT, 'sign_file')
-        os.makedirs(sign_folder, exist_ok=True)
+        sign_folder = os.path.join(upload_root, 'sign_file')
+        try:
+            os.makedirs(sign_folder, exist_ok=True)
+        except Exception as e:
+            print(f"❌ sign_file 폴더 생성 실패: {e}")
+            return jsonify({'ok': False, 'error': f'폴더 생성 실패: {str(e)}'}), 500
         
         # 파일명 확인 (sMem_id_sMem_name.png 형식)
         filename = f.filename
@@ -28,7 +106,11 @@ def upload_signature():
         
         # 파일 저장
         file_path = os.path.join(sign_folder, filename)
-        f.save(file_path)
+        try:
+            f.save(file_path)
+        except Exception as e:
+            print(f"❌ 파일 저장 실패: {e}")
+            return jsonify({'ok': False, 'error': f'파일 저장 실패: {str(e)}'}), 500
         
         # 상대 경로 반환
         relative_path = os.path.join('uploads', 'sign_file', filename).replace('\\', '/')
@@ -41,6 +123,8 @@ def upload_signature():
         
     except Exception as e:
         print(f"❌ 서명 이미지 업로드 오류: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'ok': False, 'error': str(e)}), 500
 
 @bp.post('/<ticket_id>/upload')
@@ -62,11 +146,24 @@ def upload(ticket_id):
     if ext not in ALLOWED_EXT: return jsonify({'ok':False,'error':'허용되지 않는 확장자'}), 400
     f.seek(0, os.SEEK_END); size = f.tell(); f.seek(0)
     if size > MAX_FILE_MB*1024*1024: return jsonify({'ok':False,'error':'파일이 너무 큼'}), 400
-    folder = os.path.join(UPLOAD_ROOT, ticket_id)
-    os.makedirs(folder, exist_ok=True)
+    
+    # 쓰기 가능한 uploads 폴더 찾기
+    upload_root = get_writable_upload_root()
+    folder = os.path.join(upload_root, ticket_id)
+    try:
+        os.makedirs(folder, exist_ok=True)
+    except Exception as e:
+        print(f"❌ 폴더 생성 실패: {e}")
+        return jsonify({'ok':False,'error':f'폴더 생성 실패: {str(e)}'}), 500
+    
     file_id = str(uuid.uuid4()) + ext
     path = os.path.join(folder, file_id)
-    f.save(path)
+    try:
+        f.save(path)
+    except Exception as e:
+        print(f"❌ 파일 저장 실패: {e}")
+        return jsonify({'ok':False,'error':f'파일 저장 실패: {str(e)}'}), 500
+    
     try:
         repo.create_attachment(ticket_id, path, f.filename, f.mimetype, size)
     except Exception:
@@ -80,6 +177,9 @@ def download(ticket_id, file_id):
     is_admin = session.get(ADMIN_SESSION_KEY, False)
     if not (is_user or is_admin):
         return ('', 403)
-    path = os.path.join(UPLOAD_ROOT, ticket_id, file_id)
+    
+    # 쓰기 가능한 uploads 폴더 찾기 (다운로드는 읽기만 하므로 존재하는 경로 찾기)
+    upload_root = get_writable_upload_root()
+    path = os.path.join(upload_root, ticket_id, file_id)
     if not os.path.exists(path): return jsonify({'error':'not found'}), 404
     return send_file(path, as_attachment=True)

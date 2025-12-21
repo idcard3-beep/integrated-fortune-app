@@ -370,24 +370,28 @@ from werkzeug.utils import safe_join
 @secret_bp.route("/uploads/<path:filename>")
 def uploaded_file(filename):
     """uploads 폴더의 파일을 서빙합니다"""
-    # 여러 경로 시도 (Docker 컨테이너 내부 경로 고려)
-    current_dir = os.getcwd()
-    blueprint_parent = os.path.dirname(blueprint_dir)
+    # 서버 구조: integrated_app/와 project-002_비밀게시판/가 같은 레벨에 있음
+    # integrated_app/에서 실행되므로 ../project-002_비밀게시판/uploads를 찾아야 함
+    current_dir = os.getcwd()  # integrated_app/ 디렉토리
+    current_parent = os.path.dirname(current_dir)  # integrated_app/의 상위 디렉토리
     
     possible_paths = [
-        # 1. Docker 컨테이너 절대 경로 (가장 가능성 높음)
-        '/app/project-002_비밀게시판/uploads',
-        # 2. 현재 작업 디렉토리 기준 (integrated_app 루트에서 실행 시)
+        # 1. 서버 구조: integrated_app/의 상위에서 project-002_비밀게시판/uploads 찾기 (가장 가능성 높음)
+        os.path.join(current_parent, 'project-002_비밀게시판', 'uploads') if current_parent else None,
+        # 2. 현재 디렉토리 기준 (로컬 개발 환경)
         os.path.join(current_dir, 'project-002_비밀게시판', 'uploads'),
-        # 3. 상대 경로 (개발 환경 - blueprint_dir 기준)
+        # 3. blueprint_dir 기준 상대 경로 (integrated_app/apps/secret/에서 ../../../)
         os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/uploads')),
-        # 4. blueprint_dir 기준 다른 경로
-        os.path.abspath(os.path.join(blueprint_dir, '../../project-002_비밀게시판/uploads')),
-        # 5. integrated_app 루트 기준
+        # 4. blueprint_dir 기준 다른 상대 경로
         os.path.abspath(os.path.join(blueprint_dir, '../../../../project-002_비밀게시판/uploads')),
-        # 6. 현재 디렉토리의 상위에서 찾기
-        os.path.join(os.path.dirname(current_dir), 'project-002_비밀게시판', 'uploads'),
+        # 5. 현재 디렉토리의 조부모에서 찾기
+        os.path.join(os.path.dirname(current_parent), 'project-002_비밀게시판', 'uploads') if current_parent else None,
+        # 6. Docker 컨테이너 절대 경로 (마지막 시도)
+        '/app/project-002_비밀게시판/uploads',
     ]
+    
+    # None 값 제거
+    possible_paths = [p for p in possible_paths if p is not None]
     
     # 디버깅: 현재 상태 출력
     print(f"🔍 uploads 파일 요청: {filename}")
@@ -481,14 +485,24 @@ def init_app(app):
     app.register_blueprint(secret_bp)
     
     # uploads 폴더 자동 생성 (여러 가능한 경로에 시도)
-    current_dir = os.getcwd()
+    # 서버 구조: integrated_app/와 project-002_비밀게시판/가 같은 레벨에 있음
+    current_dir = os.getcwd()  # integrated_app/ 디렉토리
+    current_parent = os.path.dirname(current_dir)  # integrated_app/의 상위 디렉토리
+    
     possible_uploads_paths = [
-        '/app/project-002_비밀게시판/uploads',
+        # 1. 서버 구조: integrated_app/의 상위에서 project-002_비밀게시판/uploads 찾기 (가장 가능성 높음)
+        os.path.join(current_parent, 'project-002_비밀게시판', 'uploads') if current_parent else None,
+        # 2. 현재 디렉토리 기준 (로컬 개발 환경)
         os.path.join(current_dir, 'project-002_비밀게시판', 'uploads'),
+        # 3. blueprint_dir 기준 상대 경로
         os.path.abspath(os.path.join(blueprint_dir, '../../../project-002_비밀게시판/uploads')),
-        os.path.abspath(os.path.join(blueprint_dir, '../../project-002_비밀게시판/uploads')),
         os.path.abspath(os.path.join(blueprint_dir, '../../../../project-002_비밀게시판/uploads')),
+        # 4. Docker 경로 (마지막 시도)
+        '/app/project-002_비밀게시판/uploads',
     ]
+    
+    # None 값 제거
+    possible_uploads_paths = [p for p in possible_uploads_paths if p is not None]
     
     for uploads_path in possible_uploads_paths:
         abs_path = os.path.abspath(uploads_path)

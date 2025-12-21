@@ -99,12 +99,25 @@ def upload_signature():
             print(f"✅ 기존 sign_file 폴더 발견: {sign_folder}")
         else:
             # 여러 경로에서 sign_file 폴더 찾기 시도
+            current_dir = os.getcwd()  # integrated_app/ 디렉토리
             possible_sign_paths = [
+                # 1. integrated_app/upload/sign_file (서버 실제 경로)
+                os.path.join(current_dir, 'upload', 'sign_file'),
+                # 2. integrated_app/uploads/sign_file
+                os.path.join(current_dir, 'uploads', 'sign_file'),
+                # 3. upload_root 기준 sign_file
                 os.path.join(upload_root, 'sign_file'),
+                # 4. upload_root의 상위 디렉토리에서 sign_file
                 os.path.join(os.path.dirname(upload_root), 'sign_file'),
+                # 5. upload_root의 상위에서 upload/sign_file
+                os.path.join(os.path.dirname(upload_root), 'upload', 'sign_file'),
+                # 6. 상대 경로 시도
                 os.path.join(upload_root, '..', 'sign_file'),
+                os.path.join(upload_root, '..', 'upload', 'sign_file'),
+                # 7. files.py 기준 상대 경로
                 os.path.abspath(os.path.join(os.path.dirname(__file__), '../uploads/sign_file')),
                 os.path.abspath(os.path.join(os.path.dirname(__file__), '../../uploads/sign_file')),
+                os.path.abspath(os.path.join(os.path.dirname(__file__), '../../upload/sign_file')),
             ]
             
             found_sign_folder = None

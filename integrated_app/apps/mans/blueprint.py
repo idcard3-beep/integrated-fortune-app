@@ -10,19 +10,45 @@ project_path = os.path.join(os.path.dirname(__file__), '../../../project-004_만
 project_path = os.path.abspath(project_path)
 absolute_project = '/app/project-004_만세력'
 
-if os.path.exists(project_path):
-    sys.path.insert(0, project_path)
-elif os.path.exists(absolute_project):
-    sys.path.insert(0, absolute_project)
-else:
-    sys.path.insert(0, project_path)  # 마지막 시도
+possible_paths = [
+    project_path,
+    absolute_project,
+    os.path.join(os.path.dirname(__file__), '../../project-004_만세력'),
+    os.path.join(os.getcwd(), 'project-004_만세력'),
+]
 
-from mainpillar import calc_saju, calc_day_pillar
+mainpillar_imported = False
+for path in possible_paths:
+    abs_path = os.path.abspath(path)
+    if os.path.exists(abs_path):
+        if abs_path not in sys.path:
+            sys.path.insert(0, abs_path)
+        try:
+            from mainpillar import calc_saju, calc_day_pillar
+            mainpillar_imported = True
+            print(f"✅ mainpillar 모듈 로드 성공: {abs_path}")
+            break
+        except ImportError as e:
+            print(f"⚠️ mainpillar import 실패 ({abs_path}): {e}")
+            continue
+
+if not mainpillar_imported:
+    print(f"❌ mainpillar 모듈을 찾을 수 없습니다. 시도한 경로: {possible_paths}")
+    # 모듈이 없어도 일부 기능은 작동할 수 있도록 계속 진행
 import datetime
 import calendar as cal_module
 import json
 from lunarcalendar import Converter, Solar, Lunar
-import ephem
+
+# ephem 모듈 import (선택적)
+try:
+    import ephem
+    EPHEM_AVAILABLE = True
+    print("✅ ephem 모듈 로드 성공")
+except ImportError as e:
+    EPHEM_AVAILABLE = False
+    print(f"⚠️ ephem 모듈을 찾을 수 없습니다: {e}")
+    print("⚠️ 합삭/망일시 계산 기능이 비활성화됩니다.")
 
 # 환경변수에 따라 경로 선택 (기본값: true - 프로덕션 배포 시 빌드 파일 사용)
 USE_BUILD = os.getenv('USE_BUILD_FILES', 'true').lower() == 'true'
@@ -159,6 +185,9 @@ def calendar():
     """달력 페이지 - 완전한 데이터 제공"""
     try:
         print("🔍 Calendar route called")
+        print(f"📂 현재 작업 디렉토리: {os.getcwd()}")
+        print(f"📂 Blueprint 파일 위치: {os.path.dirname(__file__)}")
+        print(f"📂 sys.path: {sys.path[:5]}")  # 처음 5개만 출력
         
         # Load solar terms data - 여러 경로 시도
         possible_json_paths = [
@@ -184,6 +213,10 @@ def calendar():
         if not json_path:
             error_msg = f"❌ solar_terms.json 파일을 찾을 수 없습니다. 시도한 경로: {possible_json_paths}"
             print(error_msg)
+            print(f"📂 현재 작업 디렉토리: {os.getcwd()}")
+            print(f"📂 Blueprint 파일 위치: {os.path.dirname(__file__)}")
+            import traceback
+            traceback.print_exc()
             from flask import abort
             abort(500)
         
@@ -266,10 +299,17 @@ def calendar():
             new_moon = None
             full_moon = None
             
+            if not EPHEM_AVAILABLE:
+                print(f"  ⚠️ ephem 모듈이 없어 합삭/망일시 계산을 건너뜁니다.")
+                return new_moon, full_moon
+            
             try:
                 # 합삭(신월, New Moon) 계산
                 new_moon_ephem = ephem.next_new_moon(start_date)
                 new_moon_dt = ephem.Date(new_moon_ephem).datetime()
+                # timezone-aware datetime을 naive datetime으로 변환
+                if new_moon_dt.tzinfo is not None:
+                    new_moon_dt = new_moon_dt.replace(tzinfo=None)
                 # UTC를 KST로 변환 (+9시간)
                 new_moon_kst = new_moon_dt + datetime.timedelta(hours=9)
                 # 해당 월에 속하는지 확인
@@ -279,6 +319,9 @@ def calendar():
                 # 망(보름달, Full Moon) 계산
                 full_moon_ephem = ephem.next_full_moon(start_date)
                 full_moon_dt = ephem.Date(full_moon_ephem).datetime()
+                # timezone-aware datetime을 naive datetime으로 변환
+                if full_moon_dt.tzinfo is not None:
+                    full_moon_dt = full_moon_dt.replace(tzinfo=None)
                 # UTC를 KST로 변환 (+9시간)
                 full_moon_kst = full_moon_dt + datetime.timedelta(hours=9)
                 # 해당 월에 속하는지 확인
@@ -286,6 +329,8 @@ def calendar():
                     full_moon = full_moon_kst
             except Exception as e:
                 print(f"  ⚠️ Moon phase calculation error: {e}")
+                import traceback
+                traceback.print_exc()
             
             return new_moon, full_moon
         
@@ -448,6 +493,9 @@ def calendar():
         abort(500)
     except Exception as e:
         print(f"❌ Calendar route 오류: {e}")
+        print(f"📂 오류 발생 시점 - 작업 디렉토리: {os.getcwd()}")
+        print(f"📂 오류 발생 시점 - Blueprint 파일 위치: {os.path.dirname(__file__)}")
+        print(f"📂 오류 타입: {type(e).__name__}")
         import traceback
         traceback.print_exc()
         from flask import abort

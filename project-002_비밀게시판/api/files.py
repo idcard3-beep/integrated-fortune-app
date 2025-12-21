@@ -92,113 +92,95 @@ def upload_signature():
         upload_root = get_writable_upload_root()
         
         # 서명 파일 저장 폴더 - 찾거나 생성
+        # upload_root는 이미 쓰기 가능한 경로이므로, 이를 기준으로 sign_file 폴더를 찾거나 생성
         current_dir = os.getcwd()  # integrated_app/ 디렉토리
-        
-        # 서버 실제 경로를 최우선으로 확인
-        server_sign_path = '/app/integrated_app/upload/sign_file'
         
         print(f"🔍 sign_file 폴더 검색/생성 시작")
         print(f"   현재 작업 디렉토리: {current_dir}")
-        print(f"   upload_root: {upload_root}")
-        print(f"   🎯 우선 확인 경로: {server_sign_path}")
+        print(f"   upload_root (쓰기 가능): {upload_root}")
         
         sign_folder = None
         
-        # 1. 서버 실제 경로 확인 (최우선)
-        if os.path.exists(server_sign_path) and os.path.isdir(server_sign_path):
-            # 쓰기 권한 확인
-            try:
-                test_file = os.path.join(server_sign_path, '.write_test')
-                with open(test_file, 'w') as tf:
-                    tf.write('test')
-                os.remove(test_file)
-                sign_folder = server_sign_path
-                print(f"✅ 서버 경로에서 sign_file 폴더 발견 (쓰기 가능): {sign_folder}")
-            except (IOError, OSError) as e:
-                print(f"   ⚠️ 서버 경로는 존재하지만 쓰기 권한 없음: {e}")
+        # 가능한 경로 목록 (upload_root 기준을 최우선으로)
+        possible_sign_paths = [
+            # 1. upload_root 기준 (이미 쓰기 가능한 경로이므로 최우선)
+            os.path.join(upload_root, 'sign_file'),
+            # 2. 서버 실제 경로
+            '/app/integrated_app/upload/sign_file',
+            # 3. upload_root의 상위에서 upload/sign_file
+            os.path.join(os.path.dirname(upload_root), 'upload', 'sign_file'),
+            # 4. integrated_app 내부
+            os.path.join(current_dir, 'upload', 'sign_file'),
+            os.path.join(current_dir, 'uploads', 'sign_file'),
+            # 5. 서버 대체 경로
+            '/app/integrated_app/uploads/sign_file',
+        ]
         
-        # 2. 서버 경로가 없으면 생성 시도
-        if not sign_folder:
+        print(f"   🔄 경로 검색/생성 시작 (총 {len(possible_sign_paths)}개)")
+        
+        for idx, path in enumerate(possible_sign_paths, 1):
+            abs_path = os.path.abspath(path)
+            print(f"   [{idx}] 확인 중: {abs_path}")
+            
+            # 기존 폴더 확인
+            if os.path.exists(abs_path) and os.path.isdir(abs_path):
+                try:
+                    test_file = os.path.join(abs_path, '.write_test')
+                    with open(test_file, 'w') as tf:
+                        tf.write('test')
+                    os.remove(test_file)
+                    sign_folder = abs_path
+                    print(f"✅ [{idx}] 기존 sign_file 폴더 발견 (쓰기 가능): {sign_folder}")
+                    break
+                except (IOError, OSError) as e:
+                    print(f"      ⚠️ 폴더는 존재하지만 쓰기 권한 없음: {e}")
+                    continue
+            
+            # 폴더가 없으면 생성 시도
             try:
-                # 상위 디렉토리 확인
-                parent_dir = os.path.dirname(server_sign_path)
+                parent_dir = os.path.dirname(abs_path)
                 if os.path.exists(parent_dir):
-                    # 상위 디렉토리에 쓰기 권한 확인
+                    # 상위 디렉토리 쓰기 권한 확인
                     test_file = os.path.join(parent_dir, '.write_test')
                     try:
                         with open(test_file, 'w') as tf:
                             tf.write('test')
                         os.remove(test_file)
                         # sign_file 폴더 생성
-                        os.makedirs(server_sign_path, exist_ok=True)
-                        sign_folder = server_sign_path
-                        print(f"✅ 서버 경로에 sign_file 폴더 생성 완료: {sign_folder}")
-                    except (IOError, OSError) as e:
-                        print(f"   ⚠️ 상위 디렉토리 쓰기 권한 없음: {e}")
-                else:
-                    print(f"   ⚠️ 상위 디렉토리 없음: {parent_dir}")
-            except Exception as e:
-                print(f"   ⚠️ 서버 경로 생성 실패: {e}")
-        
-        # 3. 서버 경로 실패 시 대체 경로 시도
-        if not sign_folder:
-            possible_sign_paths = [
-                '/app/integrated_app/uploads/sign_file',
-                os.path.join(current_dir, 'upload', 'sign_file'),
-                os.path.join(current_dir, 'uploads', 'sign_file'),
-                os.path.join(upload_root, 'sign_file'),
-                os.path.join(os.path.dirname(upload_root), 'upload', 'sign_file'),
-                os.path.join(os.path.dirname(upload_root), 'uploads', 'sign_file'),
-            ]
-            
-            print(f"   🔄 대체 경로 검색/생성 시작 (총 {len(possible_sign_paths)}개)")
-            for idx, path in enumerate(possible_sign_paths, 1):
-                abs_path = os.path.abspath(path)
-                print(f"   [{idx}] 확인 중: {abs_path}")
-                
-                # 기존 폴더 확인
-                if os.path.exists(abs_path) and os.path.isdir(abs_path):
-                    try:
-                        test_file = os.path.join(abs_path, '.write_test')
-                        with open(test_file, 'w') as tf:
-                            tf.write('test')
-                        os.remove(test_file)
+                        os.makedirs(abs_path, exist_ok=True)
+                        # 생성 후 다시 쓰기 권한 확인
+                        test_file2 = os.path.join(abs_path, '.write_test')
+                        with open(test_file2, 'w') as tf2:
+                            tf2.write('test')
+                        os.remove(test_file2)
                         sign_folder = abs_path
-                        print(f"✅ [{idx}] 대체 경로에서 sign_file 폴더 발견: {sign_folder}")
+                        print(f"✅ [{idx}] sign_file 폴더 생성 완료 (쓰기 가능): {sign_folder}")
                         break
                     except (IOError, OSError) as e:
-                        print(f"      ⚠️ 폴더는 존재하지만 쓰기 권한 없음: {e}")
+                        print(f"      ⚠️ 상위 디렉토리 쓰기 권한 없음: {e}")
                         continue
-                
-                # 폴더가 없으면 생성 시도
-                try:
-                    parent_dir = os.path.dirname(abs_path)
-                    if os.path.exists(parent_dir):
-                        test_file = os.path.join(parent_dir, '.write_test')
-                        try:
-                            with open(test_file, 'w') as tf:
-                                tf.write('test')
-                            os.remove(test_file)
-                            os.makedirs(abs_path, exist_ok=True)
-                            sign_folder = abs_path
-                            print(f"✅ [{idx}] 대체 경로에 sign_file 폴더 생성 완료: {sign_folder}")
-                            break
-                        except (IOError, OSError) as e:
-                            print(f"      ⚠️ 상위 디렉토리 쓰기 권한 없음: {e}")
-                            continue
-                except Exception as e:
-                    print(f"      ⚠️ 폴더 생성 실패: {e}")
-                    continue
+                else:
+                    print(f"      ⚠️ 상위 디렉토리 없음: {parent_dir}")
+            except Exception as e:
+                print(f"      ⚠️ 폴더 생성 실패: {e}")
+                continue
         
-        # 4. 최종 확인
+        # 최종 확인
         if sign_folder:
             print(f"✅ 최종 사용할 sign_file 폴더: {sign_folder}")
         else:
             # 모든 시도 실패
             print(f"❌ sign_file 폴더를 찾거나 생성할 수 없음")
+            print(f"   upload_root: {upload_root}")
+            print(f"   시도한 경로:")
+            for idx, path in enumerate(possible_sign_paths, 1):
+                abs_path = os.path.abspath(path)
+                exists = os.path.exists(abs_path)
+                is_dir = os.path.isdir(abs_path) if exists else False
+                print(f"   [{idx}] {abs_path} (존재: {exists}, 디렉토리: {is_dir})")
             return jsonify({
                 'ok': False, 
-                'error': f'sign_file 폴더를 찾거나 생성할 수 없습니다. (시도한 경로: /app/integrated_app/upload/sign_file)'
+                'error': f'sign_file 폴더를 찾거나 생성할 수 없습니다. (upload_root: {upload_root})'
             }), 500
         
         # 파일명 확인 (sMem_id_sMem_name.png 형식)

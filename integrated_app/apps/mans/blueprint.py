@@ -200,23 +200,23 @@ def calendar():
         
         # Handle POST form submission
         if request.method == 'POST':
-        year = int(request.form.get('year', today.year))
-        month = int(request.form.get('month', today.month))
-        nav = request.form.get('nav', None)
-        
-        if nav == 'prev':
-            month -= 1
-            if month < 1:
-                month = 12
-                year -= 1
-        elif nav == 'next':
-            month += 1
-            if month > 12:
-                month = 1
-                year += 1
-        elif nav == 'today':
-            year = today.year
-            month = today.month
+            year = int(request.form.get('year', today.year))
+            month = int(request.form.get('month', today.month))
+            nav = request.form.get('nav', None)
+            
+            if nav == 'prev':
+                month -= 1
+                if month < 1:
+                    month = 12
+                    year -= 1
+            elif nav == 'next':
+                month += 1
+                if month > 12:
+                    month = 1
+                    year += 1
+            elif nav == 'today':
+                year = today.year
+                month = today.month
         else:
             # Handle GET parameters
             year = int(request.args.get('year', now.year))

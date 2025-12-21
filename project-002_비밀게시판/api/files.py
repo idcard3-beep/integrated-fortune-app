@@ -92,61 +92,72 @@ def upload_signature():
         upload_root = get_writable_upload_root()
         
         # 서명 파일 저장 폴더 - 기존 폴더 찾기 (생성하지 않음)
-        sign_folder = os.path.join(upload_root, 'sign_file')
+        # 여러 경로에서 sign_file 폴더 찾기 시도 (서버 실제 경로 우선)
+        current_dir = os.getcwd()  # integrated_app/ 디렉토리
         
-        # 기존 폴더가 있는지 확인
-        if os.path.exists(sign_folder):
-            print(f"✅ 기존 sign_file 폴더 발견: {sign_folder}")
+        # 가능한 모든 경로 목록 (서버 실제 경로를 최우선으로)
+        possible_sign_paths = [
+            # 1. /app/integrated_app/uploads/sign_file (서버 실제 경로 - 최우선)
+            '/app/integrated_app/uploads/sign_file',
+            # 2. integrated_app/uploads/sign_file (현재 작업 디렉토리 기준)
+            os.path.join(current_dir, 'uploads', 'sign_file'),
+            # 3. integrated_app/upload/sign_file
+            os.path.join(current_dir, 'upload', 'sign_file'),
+            # 4. upload_root 기준 sign_file
+            os.path.join(upload_root, 'sign_file'),
+            # 5. /app/integrated_app/upload/sign_file
+            '/app/integrated_app/upload/sign_file',
+            # 6. upload_root의 상위 디렉토리에서 sign_file
+            os.path.join(os.path.dirname(upload_root), 'sign_file'),
+            # 7. upload_root의 상위에서 upload/sign_file
+            os.path.join(os.path.dirname(upload_root), 'upload', 'sign_file'),
+            # 8. 상대 경로 시도
+            os.path.join(upload_root, '..', 'sign_file'),
+            os.path.join(upload_root, '..', 'upload', 'sign_file'),
+            os.path.join(upload_root, '..', 'uploads', 'sign_file'),
+            # 9. files.py 기준 상대 경로
+            os.path.abspath(os.path.join(os.path.dirname(__file__), '../uploads/sign_file')),
+            os.path.abspath(os.path.join(os.path.dirname(__file__), '../../uploads/sign_file')),
+            os.path.abspath(os.path.join(os.path.dirname(__file__), '../../upload/sign_file')),
+            # 10. 절대 경로 시도
+            os.path.abspath('/app/integrated_app/uploads/sign_file'),
+            os.path.abspath('/app/integrated_app/upload/sign_file'),
+        ]
+        
+        found_sign_folder = None
+        print(f"🔍 sign_file 폴더 검색 시작 (총 {len(possible_sign_paths)}개 경로 확인)")
+        
+        for path in possible_sign_paths:
+            abs_path = os.path.abspath(path)
+            print(f"   확인 중: {abs_path}")
+            if os.path.exists(abs_path) and os.path.isdir(abs_path):
+                # 쓰기 권한 확인
+                try:
+                    test_file = os.path.join(abs_path, '.write_test')
+                    with open(test_file, 'w') as tf:
+                        tf.write('test')
+                    os.remove(test_file)
+                    found_sign_folder = abs_path
+                    print(f"✅ 기존 sign_file 폴더 발견 (쓰기 가능): {found_sign_folder}")
+                    break
+                except (IOError, OSError) as e:
+                    print(f"   ⚠️ 폴더는 존재하지만 쓰기 권한 없음: {e}")
+                    continue
+        
+        if found_sign_folder:
+            sign_folder = found_sign_folder
         else:
-            # 여러 경로에서 sign_file 폴더 찾기 시도
-            current_dir = os.getcwd()  # integrated_app/ 디렉토리
-            possible_sign_paths = [
-                # 1. integrated_app/upload/sign_file (서버 실제 경로)
-                os.path.join(current_dir, 'upload', 'sign_file'),
-                # 2. integrated_app/uploads/sign_file
-                os.path.join(current_dir, 'uploads', 'sign_file'),
-                # 3. upload_root 기준 sign_file
-                os.path.join(upload_root, 'sign_file'),
-                # 4. upload_root의 상위 디렉토리에서 sign_file
-                os.path.join(os.path.dirname(upload_root), 'sign_file'),
-                # 5. upload_root의 상위에서 upload/sign_file
-                os.path.join(os.path.dirname(upload_root), 'upload', 'sign_file'),
-                # 6. 상대 경로 시도
-                os.path.join(upload_root, '..', 'sign_file'),
-                os.path.join(upload_root, '..', 'upload', 'sign_file'),
-                # 7. files.py 기준 상대 경로
-                os.path.abspath(os.path.join(os.path.dirname(__file__), '../uploads/sign_file')),
-                os.path.abspath(os.path.join(os.path.dirname(__file__), '../../uploads/sign_file')),
-                os.path.abspath(os.path.join(os.path.dirname(__file__), '../../upload/sign_file')),
-            ]
-            
-            found_sign_folder = None
+            # 폴더를 찾을 수 없으면 에러 반환 (생성하지 않음)
+            print(f"❌ sign_file 폴더를 찾을 수 없음. 다음 경로들을 확인했습니다:")
             for path in possible_sign_paths:
                 abs_path = os.path.abspath(path)
-                if os.path.exists(abs_path) and os.path.isdir(abs_path):
-                    # 쓰기 권한 확인
-                    try:
-                        test_file = os.path.join(abs_path, '.write_test')
-                        with open(test_file, 'w') as tf:
-                            tf.write('test')
-                        os.remove(test_file)
-                        found_sign_folder = abs_path
-                        print(f"✅ 기존 sign_file 폴더 발견: {found_sign_folder}")
-                        break
-                    except (IOError, OSError):
-                        continue
-            
-            if found_sign_folder:
-                sign_folder = found_sign_folder
-            else:
-                # 폴더를 찾을 수 없으면 에러 반환 (생성하지 않음)
-                print(f"❌ sign_file 폴더를 찾을 수 없음. 다음 경로들을 확인했습니다:")
-                for path in possible_sign_paths:
-                    print(f"   - {os.path.abspath(path)}")
-                return jsonify({
-                    'ok': False, 
-                    'error': f'sign_file 폴더를 찾을 수 없습니다. 폴더가 존재하는지 확인해주세요.'
-                }), 500
+                exists = os.path.exists(abs_path)
+                is_dir = os.path.isdir(abs_path) if exists else False
+                print(f"   - {abs_path} (존재: {exists}, 디렉토리: {is_dir})")
+            return jsonify({
+                'ok': False, 
+                'error': f'sign_file 폴더를 찾을 수 없습니다. 폴더가 존재하는지 확인해주세요. (예상 경로: /app/integrated_app/uploads/sign_file)'
+            }), 500
         
         # 파일명 확인 (sMem_id_sMem_name.png 형식)
         filename = f.filename

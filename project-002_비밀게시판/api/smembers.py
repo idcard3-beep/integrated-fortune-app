@@ -99,24 +99,37 @@ def create_member():
     try:
         data = request.get_json() or {}
         
+        print(f"🔍 회원 생성 요청 수신")
+        print(f"   - 요청 데이터 키: {list(data.keys())}")
+        print(f"   - sMem_id: {data.get('sMem_id')}")
+        print(f"   - sMem_name: {data.get('sMem_name')}")
+        print(f"   - sMem_pwdHash 존재: {bool(data.get('sMem_pwdHash'))}")
+        
         # 필수 필드 검증
         if not data.get('sMem_id'):
+            print(f"❌ 회원 ID 없음")
             return jsonify({'ok': False, 'error': '회원 ID는 필수입니다.'}), 400
         
         if not data.get('sMem_pwdHash'):
+            print(f"❌ 비밀번호 없음")
             return jsonify({'ok': False, 'error': '비밀번호는 필수입니다.'}), 400
         
         # 데이터 정리
         data = clean_member_data(data)
+        print(f"   - 정리 후 데이터 키: {list(data.keys())}")
         
         # 비밀번호 해시 처리 (이미 해시된 경우가 아니라면)
         if data.get('sMem_pwdHash') and not data['sMem_pwdHash'].startswith('$2'):
             # bcrypt 해시 생성
             pwd_hash = bcrypt.hashpw(data['sMem_pwdHash'].encode(), bcrypt.gensalt())
             data['sMem_pwdHash'] = pwd_hash.decode()
+            print(f"   - 비밀번호 해시 생성 완료")
         
         # 회원 생성
+        print(f"   - DB 저장 시작...")
         new_member = repo.create_smember(data)
+        print(f"✅ 회원 생성 성공: sMem_id={new_member.get('sMem_id') if new_member else 'None'}")
+        print(f"   - 반환 데이터 키: {list(new_member.keys()) if new_member else 'None'}")
         return jsonify({'ok': True, 'data': new_member}), 201
         
     except Exception as e:

@@ -157,25 +157,49 @@ def kst_to_jst(kst_str):
 @mans_bp.route('/calendar', methods=['GET', 'POST'])
 def calendar():
     """달력 페이지 - 완전한 데이터 제공"""
-    print("🔍 Calendar route called")
-    
-    # Load solar terms data
-    json_path = os.path.join(os.path.dirname(__file__), '../../../project-004_만세력/api/solar_terms.json')
-    print(f"📂 JSON path: {json_path}")
-    
-    with open(json_path, encoding='utf-8') as f:
-        SOLAR_TERMS_DATA = json.load(f)
-    
-    print(f"✅ Loaded {len(SOLAR_TERMS_DATA)} years of solar terms data")
-    
-    # Get year and month
-    now = datetime.datetime.now()
-    today = now.date()
-    year = today.year
-    month = today.month
-    
-    # Handle POST form submission
-    if request.method == 'POST':
+    try:
+        print("🔍 Calendar route called")
+        
+        # Load solar terms data - 여러 경로 시도
+        possible_json_paths = [
+            # 1. 상대 경로 (개발 환경)
+            os.path.join(os.path.dirname(__file__), '../../../project-004_만세력/api/solar_terms.json'),
+            # 2. Docker 컨테이너 절대 경로
+            '/app/project-004_만세력/api/solar_terms.json',
+            # 3. 현재 작업 디렉토리 기준
+            os.path.join(os.getcwd(), 'project-004_만세력', 'api', 'solar_terms.json'),
+            # 4. blueprint_dir 기준 다른 경로
+            os.path.abspath(os.path.join(os.path.dirname(__file__), '../../project-004_만세력/api/solar_terms.json')),
+        ]
+        
+        json_path = None
+        for path in possible_json_paths:
+            abs_path = os.path.abspath(path)
+            print(f"📂 JSON path 시도: {abs_path} (exists: {os.path.exists(abs_path)})")
+            if os.path.exists(abs_path):
+                json_path = abs_path
+                print(f"✅ JSON 파일 발견: {json_path}")
+                break
+        
+        if not json_path:
+            error_msg = f"❌ solar_terms.json 파일을 찾을 수 없습니다. 시도한 경로: {possible_json_paths}"
+            print(error_msg)
+            from flask import abort
+            abort(500)
+        
+        with open(json_path, encoding='utf-8') as f:
+            SOLAR_TERMS_DATA = json.load(f)
+        
+        print(f"✅ Loaded {len(SOLAR_TERMS_DATA)} years of solar terms data")
+        
+        # Get year and month
+        now = datetime.datetime.now()
+        today = now.date()
+        year = today.year
+        month = today.month
+        
+        # Handle POST form submission
+        if request.method == 'POST':
         year = int(request.form.get('year', today.year))
         month = int(request.form.get('month', today.month))
         nav = request.form.get('nav', None)
@@ -193,45 +217,45 @@ def calendar():
         elif nav == 'today':
             year = today.year
             month = today.month
-    else:
-        # Handle GET parameters
-        year = int(request.args.get('year', now.year))
-        month = int(request.args.get('month', now.month))
-    
-    # 월간지 계산
-    month_gānzhī = get_month_gānzhī_simple(year, month, 15)
-    
-    # Generate calendar (일요일부터 시작)
-    cal_module.setfirstweekday(cal_module.SUNDAY)
-    cal_data = cal_module.monthcalendar(year, month)
-    
-    # 해당 연도와 전/후년도 절기 데이터
-    current_year_entries = SOLAR_TERMS_DATA.get(str(year), [])
-    prev_year_entries = SOLAR_TERMS_DATA.get(str(year - 1), []) if year > 1900 else []
-    next_year_entries = SOLAR_TERMS_DATA.get(str(year + 1), []) if year < 2100 else []
-    all_entries = prev_year_entries + current_year_entries + next_year_entries
-    
-    # 이번달 절기
-    this_month_terms = [e for e in all_entries 
-                        if datetime.datetime.strptime(e['datetime_KST'], '%Y-%m-%d %H:%M:%S').month == month
-                        and datetime.datetime.strptime(e['datetime_KST'], '%Y-%m-%d %H:%M:%S').year == year]
-    
-    # 다음달 절기
-    next_month = (month % 12) + 1
-    next_year_for_next_month = year + 1 if month == 12 else year
-    next_month_terms = [e for e in all_entries 
-                        if datetime.datetime.strptime(e['datetime_KST'], '%Y-%m-%d %H:%M:%S').year == next_year_for_next_month
-                        and datetime.datetime.strptime(e['datetime_KST'], '%Y-%m-%d %H:%M:%S').month == next_month]
-    
-    jeolip = next((e for e in this_month_terms if e.get('term_index_in_cycle', 0) % 2 == 1), None)
-    junggi = next((e for e in this_month_terms if e.get('term_index_in_cycle', 0) % 2 == 0), None)
-    next_jeolip = next((e for e in next_month_terms if e.get('term_index_in_cycle', 0) % 2 == 1), None)
-    
-    current_hour = now.hour
-    current_minute = now.minute
-    
-    # 합삭/망일시 계산
-    def get_new_full_moon(year, month):
+        else:
+            # Handle GET parameters
+            year = int(request.args.get('year', now.year))
+            month = int(request.args.get('month', now.month))
+        
+        # 월간지 계산
+        month_gānzhī = get_month_gānzhī_simple(year, month, 15)
+        
+        # Generate calendar (일요일부터 시작)
+        cal_module.setfirstweekday(cal_module.SUNDAY)
+        cal_data = cal_module.monthcalendar(year, month)
+        
+        # 해당 연도와 전/후년도 절기 데이터
+        current_year_entries = SOLAR_TERMS_DATA.get(str(year), [])
+        prev_year_entries = SOLAR_TERMS_DATA.get(str(year - 1), []) if year > 1900 else []
+        next_year_entries = SOLAR_TERMS_DATA.get(str(year + 1), []) if year < 2100 else []
+        all_entries = prev_year_entries + current_year_entries + next_year_entries
+        
+        # 이번달 절기
+        this_month_terms = [e for e in all_entries 
+                            if datetime.datetime.strptime(e['datetime_KST'], '%Y-%m-%d %H:%M:%S').month == month
+                            and datetime.datetime.strptime(e['datetime_KST'], '%Y-%m-%d %H:%M:%S').year == year]
+        
+        # 다음달 절기
+        next_month = (month % 12) + 1
+        next_year_for_next_month = year + 1 if month == 12 else year
+        next_month_terms = [e for e in all_entries 
+                            if datetime.datetime.strptime(e['datetime_KST'], '%Y-%m-%d %H:%M:%S').year == next_year_for_next_month
+                            and datetime.datetime.strptime(e['datetime_KST'], '%Y-%m-%d %H:%M:%S').month == next_month]
+        
+        jeolip = next((e for e in this_month_terms if e.get('term_index_in_cycle', 0) % 2 == 1), None)
+        junggi = next((e for e in this_month_terms if e.get('term_index_in_cycle', 0) % 2 == 0), None)
+        next_jeolip = next((e for e in next_month_terms if e.get('term_index_in_cycle', 0) % 2 == 1), None)
+        
+        current_hour = now.hour
+        current_minute = now.minute
+        
+        # 합삭/망일시 계산
+        def get_new_full_moon(year, month):
         # 해당 월의 시작일과 종료일
         start_date = datetime.datetime(year, month, 1)
         if month == 12:
@@ -263,19 +287,19 @@ def calendar():
         except Exception as e:
             print(f"  ⚠️ Moon phase calculation error: {e}")
         
-        return new_moon, full_moon
-    
-    new_moon_kst, full_moon_kst = get_new_full_moon(year, month)
-    new_moon_jst = new_moon_kst - datetime.timedelta(minutes=30) if new_moon_kst else None
-    full_moon_jst = full_moon_kst - datetime.timedelta(minutes=30) if full_moon_kst else None
-    
-    print(f"🌙 New Moon KST: {new_moon_kst}, Full Moon KST: {full_moon_kst}")
-    
-    print(f"📅 Generating calendar for {year}-{month}")
-    print(f"📊 Calendar has {len(cal_data)} weeks")
-    
-    calendar_weeks = []
-    for week_idx, week in enumerate(cal_data):
+            return new_moon, full_moon
+        
+        new_moon_kst, full_moon_kst = get_new_full_moon(year, month)
+        new_moon_jst = new_moon_kst - datetime.timedelta(minutes=30) if new_moon_kst else None
+        full_moon_jst = full_moon_kst - datetime.timedelta(minutes=30) if full_moon_kst else None
+        
+        print(f"🌙 New Moon KST: {new_moon_kst}, Full Moon KST: {full_moon_kst}")
+        
+        print(f"📅 Generating calendar for {year}-{month}")
+        print(f"📊 Calendar has {len(cal_data)} weeks")
+        
+        calendar_weeks = []
+        for week_idx, week in enumerate(cal_data):
         week_data = []
         for day in week:
             if day == 0:
@@ -398,18 +422,36 @@ def calendar():
                 if week_idx == 0 and day == 1:
                     print(f"  ✅ First day cell_info: {cell_info}")
             
-            week_data.append(cell_info)
-        calendar_weeks.append(week_data)
-    
-    print(f"✅ Generated {len(calendar_weeks)} weeks with data")
-    print(f"🎯 First week sample: {calendar_weeks[0][0] if calendar_weeks and calendar_weeks[0] else 'No data'}")
-    
-    return render_template('calendar.html', 
-                         year=year, 
-                         month=month, 
-                         month_gānzhī=month_gānzhī,
-                         calendar_weeks=calendar_weeks,
-                         today=now)
+                week_data.append(cell_info)
+            calendar_weeks.append(week_data)
+        
+        print(f"✅ Generated {len(calendar_weeks)} weeks with data")
+        print(f"🎯 First week sample: {calendar_weeks[0][0] if calendar_weeks and calendar_weeks[0] else 'No data'}")
+        
+        return render_template('calendar.html', 
+                             year=year, 
+                             month=month, 
+                             month_gānzhī=month_gānzhī,
+                             calendar_weeks=calendar_weeks,
+                             today=now)
+    except FileNotFoundError as e:
+        print(f"❌ 파일을 찾을 수 없음: {e}")
+        import traceback
+        traceback.print_exc()
+        from flask import abort
+        abort(500)
+    except json.JSONDecodeError as e:
+        print(f"❌ JSON 파싱 오류: {e}")
+        import traceback
+        traceback.print_exc()
+        from flask import abort
+        abort(500)
+    except Exception as e:
+        print(f"❌ Calendar route 오류: {e}")
+        import traceback
+        traceback.print_exc()
+        from flask import abort
+        abort(500)
 
 @mans_bp.route('/mainpillar')
 def mainpillar():

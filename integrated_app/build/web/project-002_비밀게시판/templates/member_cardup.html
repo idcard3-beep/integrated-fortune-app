@@ -1310,9 +1310,18 @@
           // 4. PostgreSQL DB에 회원 정보 저장 또는 수정
           try {
             const apiBase = getApiBase();
+            console.log('📡 API 호출 시작');
+            console.log('   - apiBase:', apiBase);
+            console.log('   - memberId:', memberId);
+            console.log('   - payload 키:', Object.keys(payload));
+            console.log('   - payload.sMem_id:', payload.sMem_id);
+            console.log('   - payload.sMem_name:', payload.sMem_name);
+            console.log('   - payload.sMem_pwdHash 존재:', !!payload.sMem_pwdHash);
+            
             let response;
             if (memberId) {
               // 수정 모드
+              console.log(`   - 수정 모드: PUT ${apiBase}/smembers/${memberId}`);
               response = await fetch(`${apiBase}/smembers/${memberId}`, {
                 method: 'PUT',
                 headers: {
@@ -1322,6 +1331,7 @@
               });
             } else {
               // 생성 모드
+              console.log(`   - 생성 모드: POST ${apiBase}/smembers`);
               response = await fetch(`${apiBase}/smembers`, {
                 method: 'POST',
                 headers: {
@@ -1330,10 +1340,17 @@
                 body: JSON.stringify(payload),
               });
             }
+            
+            console.log('📡 fetch 완료, 응답 대기 중...');
 
+            console.log('📡 API 응답 상태:', response.status);
+            console.log('📡 API 응답 헤더:', response.headers);
+            
             const result = await response.json();
+            console.log('📋 API 응답 데이터:', result);
 
             if (result.ok) {
+              console.log('✅ 회원 저장 성공');
               alert(
                 memberId
                   ? '✅ 회원정보가 수정되었습니다!'

@@ -1346,11 +1346,27 @@
             console.log('📡 API 응답 상태:', response.status);
             console.log('📡 API 응답 헤더:', response.headers);
             
+            // 응답이 성공인지 확인
+            if (!response.ok) {
+              console.error('❌ API 응답 실패:', response.status, response.statusText);
+              let errorText = '';
+              try {
+                const errorData = await response.json();
+                console.error('❌ API 오류 데이터:', errorData);
+                errorText = errorData.error || `HTTP ${response.status}: ${response.statusText}`;
+              } catch (e) {
+                errorText = `HTTP ${response.status}: ${response.statusText}`;
+              }
+              alert(`❌ ${memberId ? '회원정보 수정' : '회원가입'} 실패: ${errorText}`);
+              return;
+            }
+            
             const result = await response.json();
             console.log('📋 API 응답 데이터:', result);
 
             if (result.ok) {
               console.log('✅ 회원 저장 성공');
+              console.log('   - 저장된 회원 데이터:', result.data);
               alert(
                 memberId
                   ? '✅ 회원정보가 수정되었습니다!'
@@ -1387,6 +1403,7 @@
 
               show(1);
             } else {
+              console.error('❌ API 응답에서 ok=false:', result);
               alert(
                 `❌ ${memberId ? '회원정보 수정' : '회원가입'} 실패: ${
                   result.error || '알 수 없는 오류'
@@ -1394,8 +1411,10 @@
               );
             }
           } catch (error) {
-            console.error('오류:', error);
-            alert('❌ 서버 연결 오류가 발생했습니다.');
+            console.error('❌ 서버 연결 오류:', error);
+            console.error('   - 오류 상세:', error.message);
+            console.error('   - 스택:', error.stack);
+            alert(`❌ 서버 연결 오류가 발생했습니다: ${error.message}`);
           }
         });
 

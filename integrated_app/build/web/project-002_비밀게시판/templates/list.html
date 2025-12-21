@@ -1,4 +1,80 @@
-<!doctype html><html lang=ko><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>비밀상담요청 게시판</title><link href="{{ url_for('secret.static', filename='style.css') }}" rel=stylesheet><link href="{{ url_for('secret.static', filename='security.css') }}" rel=stylesheet><style>/* 반응형 DB 그리드 스타일 */
+<!doctype html><html lang=ko><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>비밀상담요청 게시판</title><link href="{{ url_for('secret.static', filename='style.css') }}" rel=stylesheet><link href="{{ url_for('secret.static', filename='security.css') }}" rel=stylesheet><style>/* 관리자 로그인 모달 CSS */
+      .modal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        display: none !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        z-index: 99999 !important;
+        margin: 0 !important;
+        padding: 20px !important;
+      }
+      .modal.show {
+        display: flex !important;
+      }
+      .modal .panel {
+        background: white !important;
+        border: 1px solid #ddd !important;
+        border-radius: 14px;
+        padding: 16px;
+        max-width: 500px;
+        width: 92%;
+        position: relative !important;
+        z-index: 100000 !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+        color: #333 !important;
+        max-height: 90vh;
+        overflow-y: auto;
+        margin-top: 0 !important;
+      }
+      .modal .panel h3 {
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        color: #333;
+        line-height: 1.2;
+        height: auto;
+      }
+      #adminLoginModal .panel h3 {
+        margin: 0;
+        padding: 0;
+        height: auto;
+        line-height: 1.2;
+      }
+      .modal .panel .sep {
+        height: 1px;
+        background: #ddd;
+        margin: 10px 0;
+      }
+      #adminLoginModal .panel iframe {
+        width: 100%;
+        height: 500px;
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      #adminLoginModal .panel {
+        overflow: hidden;
+      }
+      .modal .panel button {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: #f5f5f5;
+        color: #333;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .modal .panel button:hover {
+        background: #e0e0e0;
+      }
+      /* 반응형 DB 그리드 스타일 */
       .responsive-grid-container {
         width: 100%;
         margin: 10px auto;
@@ -474,7 +550,7 @@
         margin-bottom: 16px;
         opacity: 0.6;
         color: #a8d5e2;
-      }</style><body><div class=responsive-grid-container><div class=grid-header><h2>비밀상담요청 게시판</h2><button onclick="location.href='/secret'" class=grid-status>🏠 비밀 게시판</button><button onclick="location.href='/secret/main_index'" class=center-site-btn>🏠 심리리상담센터 홈</button></div><div class=grid-actions><button onclick="location.href='/secret/new'" class=grid-btn>✏️ 상담요청 작성</button><a class="grid-btn admin" href=/secret/admin> 👨‍💼 관리자 </a></div><div class=data-grid><table class=grid-table><thead><tr><th style="width: 60px">No<th>제목<th style="width: 100px">상태<th style="width: 80px">답변<th style="width: 200px">등록일<tbody id=ticketBody><tr><td class=loading-spinner colspan=5><div class=spinner></div></table></div><div class=mobile-card-view id=mobileCardView><div class=loading-spinner><div class=spinner></div></div></div></div><div style="display: none;
+      }</style><body><div class=responsive-grid-container><div class=grid-header><h2>비밀상담요청 게시판</h2><button onclick="location.href='/secret'" class=grid-status>🏠 비밀 게시판</button><button onclick="location.href='/secret/main_index'" class=center-site-btn>🏠 심리상담센터 홈</button></div><div class=grid-actions><button onclick="location.href='/secret/new'" class=grid-btn>✏️ 상담요청 작성</button><a class="grid-btn admin" href=/secret/admin> 👨‍💼 관리자 </a></div><div class=data-grid><table class=grid-table><thead><tr><th style="width: 60px">No<th>제목<th style="width: 100px">상태<th style="width: 80px">답변<th style="width: 200px">등록일<tbody id=ticketBody><tr><td class=loading-spinner colspan=5><div class=spinner></div></table></div><div class=mobile-card-view id=mobileCardView><div class=loading-spinner><div class=spinner></div></div></div></div><div style="display: none;
         position: fixed;
         top: 0;
         left: 0;
@@ -482,9 +558,9 @@
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 1000;" id=passwordModal><div style="position: absolute;
-          top: 50%;
+          top: 20%;
           left: 50%;
-          transform: translate(-50%, -50%);
+          transform: translate(-50%, 0);
           background: white;
           padding: 30px;
           border-radius: 8px;
@@ -510,4 +586,96 @@
               padding: 10px 20px;
               border: none;
               border-radius: 4px;
-              cursor: pointer;" onclick=closePasswordModal()>취소</button></div></div></div><script src="{{ url_for('secret.static', filename='list.js') }}"></script><script src="{{ url_for('secret.static', filename='member_session.js') }}"></script><script src="{{ url_for('secret.static', filename='admin_session.js') }}"></script><script src="{{ url_for('secret.static', filename='security.js') }}"></script>
+              cursor: pointer;" onclick=closePasswordModal()>취소</button></div></div></div><div aria-hidden=true class=modal id=adminLoginModal><div class=panel><h3 style="margin: 0; padding: 0; line-height: 1.2; height: auto;">관리자 로그인</h3><div class=sep></div><iframe style="width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;" id=adminLoginFrame src=/secret/admin_login></iframe><div style="display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 10px;"><button id=btnAdminLoginCancel>닫기</button></div></div></div><script src="{{ url_for('secret.static', filename='list.js') }}"></script><script src="{{ url_for('secret.static', filename='member_session.js') }}"></script><script src="{{ url_for('secret.static', filename='admin_session.js') }}"></script><script src="{{ url_for('secret.static', filename='security.js') }}"></script><script>// 관리자 로그인 모달 관련 함수들
+      function openAdminLogin() {
+        try {
+          const modal = document.getElementById('adminLoginModal');
+          if (modal) {
+            modal.classList.add('show');
+            modal.setAttribute('aria-hidden', 'false');
+            const frame = document.getElementById('adminLoginFrame');
+            if (frame) {
+              frame.src = '/secret/admin_login';
+            }
+          }
+        } catch (error) {
+          console.error('관리자 로그인 모달 오류:', error);
+          alert('오류가 발생했습니다: ' + error.message);
+        }
+      }
+
+      function closeAdminLoginModal() {
+        const modal = document.getElementById('adminLoginModal');
+        if (modal) {
+          // 포커스가 있는 요소가 모달 내부에 있으면 포커스 제거
+          const activeElement = document.activeElement;
+          if (activeElement && modal.contains(activeElement)) {
+            activeElement.blur();
+          }
+          // 모달 닫기
+          modal.classList.remove('show');
+          modal.setAttribute('aria-hidden', 'true');
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // 관리자 로그인 모달 닫기 버튼
+        const btnAdminLoginCancel = document.getElementById('btnAdminLoginCancel');
+        if (btnAdminLoginCancel) {
+          btnAdminLoginCancel.addEventListener('click', closeAdminLoginModal);
+        }
+
+        // 모달 배경 클릭 시 닫기
+        const adminLoginModal = document.getElementById('adminLoginModal');
+        if (adminLoginModal) {
+          adminLoginModal.addEventListener('click', function(e) {
+            if (e.target === adminLoginModal) {
+              closeAdminLoginModal();
+            }
+          });
+        }
+
+        // 관리자 로그인 성공 메시지 수신 시 모달 닫기 및 admin_list로 이동
+        let loginSuccessHandled = false;
+        window.addEventListener('message', function(event) {
+          if (event.data && event.data.type === 'ADMIN_LOGIN_SUCCESS' && !loginSuccessHandled) {
+            loginSuccessHandled = true; // 중복 처리 방지
+            console.log('🎉 관리자 로그인 성공 - admin_list로 이동');
+            closeAdminLoginModal();
+            
+            // 관리자 세션 설정
+            if (event.data.admin && typeof window.setAdminSession === 'function') {
+              window.setAdminSession(event.data.admin);
+              console.log('✅ 관리자 세션 설정 완료');
+            }
+            
+            // admin_list.html로 이동
+            setTimeout(() => {
+              location.href = '/secret/admin_list';
+            }, 300);
+          }
+          
+          // 관리자 로그인 취소 메시지 수신 시 모달 닫기
+          if (event.data && event.data.type === 'ADMIN_LOGIN_CANCELLED') {
+            console.log('🚪 관리자 로그인 취소 메시지 수신');
+            closeAdminLoginModal();
+          }
+        });
+
+        // 관리자 버튼 클릭 시 모달 열기
+        const adminBtn = document.querySelector('a.grid-btn.admin');
+        if (adminBtn) {
+          adminBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openAdminLogin();
+          });
+        }
+      });</script>

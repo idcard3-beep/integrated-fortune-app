@@ -1,27 +1,39 @@
-<!doctype html><html lang=ko><meta charset=UTF-8><title>관리자 로그인</title><link href="{{ url_for('secret.static', filename='style.css') }}" rel=stylesheet><link href="{{ url_for('secret.static', filename='security.css') }}" rel=stylesheet><style>.login-container {
+<!doctype html><html lang=ko><meta charset=UTF-8><title>관리자 로그인</title><link href="{{ url_for('secret.static', filename='style.css') }}" rel=stylesheet><link href="{{ url_for('secret.static', filename='security.css') }}" rel=stylesheet><style>html, body {
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        min-height: 500px;
+      }
+      .login-container {
         max-width: 400px;
-        margin: 100px auto;
-        padding: 40px;
+        margin: 10px auto;
+        padding: 15px 20px;
         background: white;
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        min-height: 450px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
       }
 
       .login-title {
         text-align: center;
         color: #333;
-        margin-bottom: 30px;
-        font-size: 24px;
+        margin-bottom: 10px;
+        font-size: 18px;
       }
 
       .default-info {
         background: #f8f9fa;
-        padding: 15px;
+        padding: 8px 12px;
         border-radius: 5px;
-        margin-bottom: 20px;
-        font-size: 14px;
+        margin-bottom: 12px;
+        font-size: 12px;
         color: #666;
         border-left: 4px solid #007bff;
+        line-height: 1.4;
       }
 
       .default-info strong {
@@ -31,24 +43,80 @@
       .error-message {
         background: #ffebee;
         color: #d32f2f;
-        padding: 10px 15px;
+        padding: 6px 10px;
         border-radius: 5px;
-        margin-bottom: 15px;
+        margin-bottom: 8px;
         border-left: 4px solid #d32f2f;
         display: none;
-        font-size: 14px;
+        font-size: 12px;
         white-space: pre-line;
+        line-height: 1.3;
       }
 
       .success-message {
         background: #e8f5e8;
         color: #2e7d32;
-        padding: 10px 15px;
+        padding: 6px 10px;
         border-radius: 5px;
-        margin-bottom: 15px;
+        margin-bottom: 8px;
         border-left: 4px solid #2e7d32;
         display: none;
+        font-size: 12px;
+        line-height: 1.3;
+      }
+      
+      #loginForm label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #333;
+      }
+      
+      #loginForm input[type="text"],
+      #loginForm input[type="password"] {
+        width: 100%;
+        padding: 8px 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
         font-size: 14px;
+        box-sizing: border-box;
+      }
+      
+      .form-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+        flex-shrink: 0;
+      }
+      
+      .form-actions button {
+        flex: 1;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 500;
+      }
+      
+      .form-actions button[type="submit"] {
+        background: #007bff;
+        color: white;
+      }
+      
+      .form-actions button[type="submit"]:hover {
+        background: #0056b3;
+      }
+      
+      .form-actions button[type="button"] {
+        background: #6c757d;
+        color: white;
+      }
+      
+      .form-actions button[type="button"]:hover {
+        background: #5a6268;
       }
 
       .password-container {
@@ -162,9 +230,27 @@
           console.warn('⚠️ clearAdminSession 함수를 찾을 수 없습니다');
         }
 
-        // 2. 팝업 창인 경우 부모 창에 취소 메시지 전송 후 닫기
-        if (window.opener) {
-          console.log('🔔 부모 창에 로그인 취소 메시지 전송');
+        // 2. iframe인 경우 부모 창에 취소 메시지 전송
+        if (window.parent && window.parent !== window) {
+          console.log('🔔 부모 창에 로그인 취소 메시지 전송 (iframe)');
+          try {
+            window.parent.postMessage(
+              {
+                type: 'ADMIN_LOGIN_CANCELLED',
+              },
+              '*'
+            );
+            console.log('✅ iframe 부모 창 메시지 전송 완료');
+          } catch (e) {
+            console.warn('⚠️ iframe 부모 창 메시지 전송 실패:', e);
+          }
+          // iframe은 스스로 닫히지 않으므로 부모가 닫도록 유도
+          return;
+        }
+
+        // 3. 팝업 창인 경우 부모 창에 취소 메시지 전송 후 닫기
+        if (window.opener && window.opener !== window) {
+          console.log('🔔 부모 창에 로그인 취소 메시지 전송 (팝업)');
           try {
             window.opener.postMessage(
               {
@@ -172,15 +258,17 @@
               },
               '*'
             );
+            console.log('✅ 팝업 부모 창 메시지 전송 완료');
           } catch (e) {
-            console.warn('⚠️ 부모 창 메시지 전송 실패:', e);
+            console.warn('⚠️ 팝업 부모 창 메시지 전송 실패:', e);
           }
 
           // 팝업 창 닫기
           window.close();
-        } else {
-          // 일반 페이지에서 접근한 경우 홈으로 이동
-          console.log('🏠 홈 페이지로 이동');
-          location.href = '/secret/';
+          return;
         }
+
+        // 4. 일반 페이지에서 접근한 경우 홈으로 이동
+        console.log('🏠 홈 페이지로 이동');
+        location.href = '/secret/';
       }</script><script src="{{ url_for('secret.static', filename='member_session.js') }}"></script><script src="{{ url_for('secret.static', filename='admin_session.js') }}"></script><script src="{{ url_for('secret.static', filename='admin_login.js') }}"></script><script src="{{ url_for('secret.static', filename='security.js') }}"></script>

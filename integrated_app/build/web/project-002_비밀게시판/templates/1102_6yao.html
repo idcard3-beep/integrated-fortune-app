@@ -258,7 +258,7 @@
         top: 0;
       }
       /* 모달 CSS - 모든 외부 간섭 차단 */
-      #corpusModal.modal {
+      .modal {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
@@ -274,10 +274,10 @@
         margin: 0 !important;
         padding: 0 !important;
       }
-      #corpusModal.modal.show {
+      .modal.show {
         display: flex !important;
       }
-      #corpusModal .panel {
+      .modal .panel {
         background: white !important;
         border: 1px solid #ddd !important;
         border-radius: 14px;
@@ -288,6 +288,30 @@
         z-index: 100000 !important;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
         color: #333 !important;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      #adminLoginModal {
+        align-items: flex-start !important;
+        padding-top: 20px !important;
+      }
+      #adminLoginModal .panel {
+        max-width: 500px;
+        margin-top: 0 !important;
+        margin-bottom: auto !important;
+        overflow: hidden;
+      }
+      #adminLoginModal .panel h3 {
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.2 !important;
+        height: auto !important;
+      }
+      #adminLoginModal .panel iframe {
+        height: 500px !important;
+      }
+      #adminLoginModal .panel iframe {
+        overflow: hidden;
       }
       .modal textarea {
         width: 100%;
@@ -878,7 +902,14 @@
       }' id=corpusInput></textarea><div style="display: flex;
             gap: 8px;
             justify-content: flex-end;
-            margin-top: 10px;"><button id=btnCorpusCancel>닫기</button><button id=btnCorpusSave>저장</button></div></div></div><script>/* ====== 메타/테마/배열 ====== */
+            margin-top: 10px;"><button id=btnCorpusCancel>닫기</button><button id=btnCorpusSave>저장</button></div></div></div><div aria-hidden=true class=modal id=adminLoginModal><div class=panel><h3 style="margin: 0; padding: 0; line-height: 1.2; height: auto;">관리자 로그인</h3><div class=sep></div><iframe style="width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;" id=adminLoginFrame src=/secret/admin_login></iframe><div style="display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 10px;"><button id=btnAdminLoginCancel>닫기</button></div></div></div><script>/* ====== 메타/테마/배열 ====== */
       const rows = [
         [1, '乾(건)', '☰', '창조, 강건, 시작'],
         [2, '坤(곤)', '☷', '순응, 포용, 땅'],
@@ -2126,25 +2157,95 @@
         setIntegrityTag(cur || {});
       });
 
-      // 관리자 로그인 버튼 직접 호출 함수 (단순화 버전)
+      // 관리자 로그인 버튼 직접 호출 함수 (팝업 모달 방식)
       function openAdminLogin() {
         try {
-          const adminWindow = window.open(
-            '/secret/admin_login',
-            'adminLogin',
-            'width=500,height=650,scrollbars=yes,resizable=yes,centerscreen=yes'
-          );
-
-          // 로그인 창이 열렸는지 확인
-          if (!adminWindow) {
-            alert(
-              '팝업이 차단되었습니다.\\n브라우저 설정에서 팝업을 허용해주세요.'
-            );
+          const modal = document.getElementById('adminLoginModal');
+          if (modal) {
+            modal.classList.add('show');
+            modal.setAttribute('aria-hidden', 'false');
+            // iframe에 포커스
+            const frame = document.getElementById('adminLoginFrame');
+            if (frame) {
+              frame.src = '/secret/admin_login';
+            }
           }
         } catch (error) {
+          console.error('관리자 로그인 모달 오류:', error);
           alert('오류가 발생했습니다: ' + error.message);
         }
       }
+
+      // 관리자 로그인 모달 닫기
+      function closeAdminLoginModal() {
+        const modal = document.getElementById('adminLoginModal');
+        if (modal) {
+          // 포커스가 있는 요소가 모달 내부에 있으면 포커스 제거
+          const activeElement = document.activeElement;
+          if (activeElement && modal.contains(activeElement)) {
+            activeElement.blur();
+          }
+          // 모달 닫기
+          modal.classList.remove('show');
+          modal.setAttribute('aria-hidden', 'true');
+        }
+      }
+
+      // 관리자 로그인 모달 닫기 버튼 이벤트
+      document.addEventListener('DOMContentLoaded', function() {
+        const btnAdminLoginCancel = document.getElementById('btnAdminLoginCancel');
+        if (btnAdminLoginCancel) {
+          btnAdminLoginCancel.addEventListener('click', closeAdminLoginModal);
+        }
+
+        // 모달 배경 클릭 시 닫기
+        const adminLoginModal = document.getElementById('adminLoginModal');
+        if (adminLoginModal) {
+          adminLoginModal.addEventListener('click', function(e) {
+            if (e.target === adminLoginModal) {
+              closeAdminLoginModal();
+            }
+          });
+        }
+
+        // 관리자 로그인 성공 메시지 수신 시 모달 닫기 및 페이지 유지
+        window.addEventListener('message', function(event) {
+          if (event.data && event.data.type === 'ADMIN_LOGIN_SUCCESS') {
+            console.log('🎉 관리자 로그인 성공 - 모달 닫기');
+            console.log('📋 수신된 관리자 데이터:', event.data.admin);
+            
+            // 관리자 세션 설정
+            if (event.data.admin && typeof window.setAdminSession === 'function') {
+              window.setAdminSession(event.data.admin);
+              console.log('✅ 관리자 세션 설정 완료');
+            }
+            
+            // 모달 닫기
+            closeAdminLoginModal();
+            
+            // 권한 업데이트 (1102_6yao.html의 기존 함수 사용)
+            if (typeof updateButtonPermissions === 'function') {
+              updateButtonPermissions();
+            }
+            
+            // 페이지는 그대로 유지 (새로고침하지 않음)
+            console.log('✅ 관리자 로그인 완료 - 현재 페이지 유지');
+          }
+          
+          // 관리자 로그인 취소 메시지 수신 시 모달 닫기
+          if (event.data && event.data.type === 'ADMIN_LOGIN_CANCELLED') {
+            console.log('🚪 관리자 로그인 취소 메시지 수신');
+            closeAdminLoginModal();
+          }
+        });
+
+        // 관리자 로그인 버튼 이벤트 연결
+        const btnAdminLogin = document.getElementById('btnAdminLogin');
+        if (btnAdminLogin) {
+          btnAdminLogin.addEventListener('click', openAdminLogin);
+          console.log('✅ 관리자 로그인 버튼 이벤트 연결 완료');
+        }
+      });
 
       // DOM 로드 후 초기화
       // document.addEventListener('DOMContentLoaded', initAdminLoginButton);
@@ -2459,13 +2560,19 @@
           const inp = document.createElement('input');
           inp.type = 'file';
           inp.accept = 'application/json';
-          inp.onchange = async (event) => {
+          inp.style.display = 'none';
+          document.body.appendChild(inp);
+
+          // 파일 선택 이벤트 핸들러
+          const handleFileSelect = async (event) => {
             console.log('🔔 파일 선택 이벤트 발생!');
             try {
-              const f = inp.files[0];
+              const f = event.target.files[0];
               if (!f) {
                 console.log('❌ 파일이 선택되지 않음');
                 alert('❌ 파일이 선택되지 않았습니다.');
+                // input 제거
+                document.body.removeChild(inp);
                 return;
               }
               console.log('📂 파일 정보:', f.name, f.size, '바이트');
@@ -2569,11 +2676,29 @@
             } catch (e) {
               console.error('❌ JSON 파일 복원 오류:', e);
               alert('❌ JSON 파일 복원 오류: ' + e.message);
+            } finally {
+              // input 제거
+              if (inp && inp.parentNode) {
+                document.body.removeChild(inp);
+              }
             }
           };
+
+          // 이벤트 리스너 등록 (한 번만)
+          inp.removeEventListener('change', handleFileSelect); // 기존 리스너 제거 (중복 방지)
+          inp.addEventListener('change', handleFileSelect);
+          
           console.log('🖱️ 파일 선택 대화상자 열기 시도...');
-          inp.click();
-          console.log('✅ inp.click() 실행 완료');
+          try {
+            inp.click();
+            console.log('✅ inp.click() 실행 완료');
+          } catch (clickError) {
+            console.error('❌ 파일 선택 대화상자 열기 실패:', clickError);
+            alert('❌ 파일 선택 대화상자를 열 수 없습니다. 브라우저 설정을 확인하세요.');
+            if (inp.parentNode) {
+              document.body.removeChild(inp);
+            }
+          }
         }
       });
 
@@ -7646,4 +7771,24 @@
         }, 2000);
       });
 
-      console.log('🎯 항목 5-13 간단 확인 시스템 로드 완료');</script><script src=/secret/static/member_session.js></script><script src=/secret/static/admin_session.js></script><script src=/secret/static/security.js></script>
+      console.log('🎯 항목 5-13 간단 확인 시스템 로드 완료');</script><script>(async function() {
+        try {
+          console.log('🔄 초기 로딩: corpus_data 테이블 읽기 시작...');
+          const response = await fetch('/secret/api/v1/corpus/get-all');
+          
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+          
+          const result = await response.json();
+          console.log('✅ corpus_data 로드 완료:', result);
+          
+          // 전역 변수에 저장 (6yao.js에서 사용할 수 있도록)
+          if (typeof window !== 'undefined') {
+            window.corpusData = result;
+            console.log('📦 corpus_data를 window.corpusData에 저장했습니다.');
+          }
+        } catch (error) {
+          console.error('❌ corpus_data 로드 실패:', error);
+        }
+      })();</script><script src=/secret/static/member_session.js></script><script src=/secret/static/admin_session.js></script><script src=/secret/static/security.js></script>

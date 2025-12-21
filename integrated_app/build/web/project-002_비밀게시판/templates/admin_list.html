@@ -454,4 +454,193 @@
       .admin-empty-state h3 {
         color: #2c5f6b;
         margin-bottom: 8px;
-      }</style><body><div class=admin-grid-container><div class=admin-grid-header><h2>🛡️ 관리자 - 상담요청 목록</h2><button style="cursor: pointer; border: none; padding: 8px 16px" class=admin-status-badge onclick=goToAdminMenu()>🗄️ 관리자 시스템 관리</button></div><div class=admin-toolbar><div class=filter-section><span class=filter-label>📊 상태 필터:</span><select class=admin-select id=statusFilter><option value>전체 상태<option value=OPEN>🔴 대기중<option value=ANSWERED>🟢 답변완료<option value=CLOSED>🟡 마감</select></div><div style="display: flex; gap: 8px; align-items: center"><button style="background: #16a34a" class=admin-logout-btn id=btnAdminStatus onclick=checkAdminStatus()>🔐 세션확인</button><button class=admin-logout-btn onclick=logout()>🚪 로그아웃</button></div></div><div class=admin-data-grid><table class=admin-grid-table><thead><tr><th style="width: 60px">No<th>제목<th style="width: 100px">상태<th style="width: 80px">답변여부<th style="width: 100px">이름<th style="width: 120px">메모란<th style="width: 100px">자료구분<th style="width: 140px">등록일<tbody id=rows><tr><td class=admin-loading-spinner colspan=8><div class=admin-spinner></div></table></div><div class=admin-mobile-card-view id=adminMobileCardView><div class=admin-loading-spinner><div class=admin-spinner></div></div></div></div><script src=/secret/static/member_session.js></script><script src=/secret/static/admin_session.js></script><script src=/secret/static/admin_list.js></script><script src=/secret/static/security.js></script>
+      }
+
+      /* 관리자 로그인 모달 CSS */
+      .modal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        display: none !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        z-index: 99999 !important;
+        margin: 0 !important;
+        padding: 20px !important;
+      }
+      .modal.show {
+        display: flex !important;
+      }
+      .modal .panel {
+        background: white !important;
+        border: 1px solid #ddd !important;
+        border-radius: 14px;
+        padding: 16px;
+        max-width: 500px;
+        width: 92%;
+        position: relative !important;
+        z-index: 100000 !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+        color: #333 !important;
+        max-height: 90vh;
+        overflow-y: auto;
+        margin-top: 0 !important;
+      }
+      .modal .panel h3 {
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        color: #333;
+        line-height: 1.2;
+        height: auto;
+      }
+      #adminLoginModal .panel h3 {
+        margin: 0;
+        padding: 0;
+        height: auto;
+        line-height: 1.2;
+      }
+      .modal .panel .sep {
+        height: 1px;
+        background: #ddd;
+        margin: 10px 0;
+      }
+      #adminLoginModal .panel iframe {
+        width: 100%;
+        height: 500px;
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      #adminLoginModal .panel {
+        overflow: hidden;
+      }
+      .modal .panel button {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: #f5f5f5;
+        color: #333;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .modal .panel button:hover {
+        background: #e0e0e0;
+      }</style><body><div class=admin-grid-container><div class=admin-grid-header><h2>🛡️ 관리자 - 상담요청 목록</h2><button style="cursor: pointer; border: none; padding: 8px 16px" class=admin-status-badge onclick=goToAdminMenu()>🗄️ 관리자 시스템 관리</button></div><div class=admin-toolbar><div class=filter-section><span class=filter-label>📊 상태 필터:</span><select class=admin-select id=statusFilter><option value>전체 상태<option value=OPEN>🔴 대기중<option value=ANSWERED>🟢 답변완료<option value=CLOSED>🟡 마감</select></div><div style="display: flex; gap: 8px; align-items: center"><button style="background: #16a34a" class=admin-logout-btn id=btnAdminStatus onclick=checkAdminStatus()>🔐 세션확인</button><button class=admin-logout-btn onclick=logout()>🚪 로그아웃</button></div></div><div class=admin-data-grid><table class=admin-grid-table><thead><tr><th style="width: 60px">No<th>제목<th style="width: 100px">상태<th style="width: 80px">답변여부<th style="width: 100px">이름<th style="width: 120px">메모란<th style="width: 100px">자료구분<th style="width: 140px">등록일<tbody id=rows><tr><td class=admin-loading-spinner colspan=8><div class=admin-spinner></div></table></div><div class=admin-mobile-card-view id=adminMobileCardView><div class=admin-loading-spinner><div class=admin-spinner></div></div></div></div><div aria-hidden=true class=modal id=adminLoginModal><div class=panel><h3 style="margin: 0; padding: 0; line-height: 1.2; height: auto;">관리자 로그인</h3><div class=sep></div><iframe style="width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;" id=adminLoginFrame src=/secret/admin_login></iframe><div style="display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 10px;"><button id=btnAdminLoginCancel>닫기</button></div></div></div><script src=/secret/static/member_session.js></script><script src=/secret/static/admin_session.js></script><script src=/secret/static/admin_list.js></script><script src=/secret/static/security.js></script><script>// 관리자 로그인 모달 관련 함수들
+      function openAdminLoginModal() {
+        try {
+          const modal = document.getElementById('adminLoginModal');
+          if (modal) {
+            modal.classList.add('show');
+            modal.setAttribute('aria-hidden', 'false');
+            const frame = document.getElementById('adminLoginFrame');
+            if (frame) {
+              frame.src = '/secret/admin_login';
+            }
+          }
+        } catch (error) {
+          console.error('관리자 로그인 모달 오류:', error);
+          alert('오류가 발생했습니다: ' + error.message);
+        }
+      }
+
+      function closeAdminLoginModal() {
+        const modal = document.getElementById('adminLoginModal');
+        if (modal) {
+          // 포커스가 있는 요소가 모달 내부에 있으면 포커스 제거
+          const activeElement = document.activeElement;
+          if (activeElement && modal.contains(activeElement)) {
+            activeElement.blur();
+          }
+          // 모달 닫기
+          modal.classList.remove('show');
+          modal.setAttribute('aria-hidden', 'true');
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // 관리자 로그인 모달 닫기 버튼
+        const btnAdminLoginCancel = document.getElementById('btnAdminLoginCancel');
+        if (btnAdminLoginCancel) {
+          btnAdminLoginCancel.addEventListener('click', closeAdminLoginModal);
+        }
+
+        // 모달 배경 클릭 시 닫기
+        const adminLoginModal = document.getElementById('adminLoginModal');
+        if (adminLoginModal) {
+          adminLoginModal.addEventListener('click', function(e) {
+            if (e.target === adminLoginModal) {
+              closeAdminLoginModal();
+            }
+          });
+        }
+
+        // 관리자 로그인 성공 메시지 수신 시 모달 닫기 및 페이지 새로고침
+        let loginSuccessHandled = false;
+        window.addEventListener('message', function(event) {
+          if (event.data && event.data.type === 'ADMIN_LOGIN_SUCCESS' && !loginSuccessHandled) {
+            loginSuccessHandled = true; // 중복 처리 방지
+            console.log('🎉 관리자 로그인 성공 - admin_list 새로고침');
+            
+            // 관리자 세션 설정
+            if (event.data.admin && typeof window.setAdminSession === 'function') {
+              window.setAdminSession(event.data.admin);
+              console.log('✅ 관리자 세션 설정 완료');
+            }
+            
+            // 로그인 성공 플래그 설정 (새로고침 후 세션 확인 대기용)
+            sessionStorage.setItem('admin_login_success', 'true');
+            
+            // 세션이 localStorage에 저장될 때까지 대기
+            let retryCount = 0;
+            const maxRetries = 10;
+            const checkSession = setInterval(() => {
+              retryCount++;
+              if (typeof window.getAdminSession === 'function') {
+                const session = window.getAdminSession();
+                if (session && session.isLoggedIn && session.admin_id) {
+                  console.log('✅ 세션 확인 완료:', session.admin_id);
+                  clearInterval(checkSession);
+                  closeAdminLoginModal();
+                  // 페이지 새로고침
+                  setTimeout(() => {
+                    location.reload();
+                  }, 100);
+                } else if (retryCount >= maxRetries) {
+                  console.warn('⚠️ 세션 확인 시간 초과 - 강제 새로고침');
+                  clearInterval(checkSession);
+                  closeAdminLoginModal();
+                  setTimeout(() => {
+                    location.reload();
+                  }, 100);
+                }
+              } else if (retryCount >= maxRetries) {
+                console.warn('⚠️ getAdminSession 함수 없음 - 강제 새로고침');
+                clearInterval(checkSession);
+                closeAdminLoginModal();
+                setTimeout(() => {
+                  location.reload();
+                }, 100);
+              }
+            }, 100); // 100ms마다 확인
+          }
+          
+          // 관리자 로그인 취소 메시지 수신 시 모달 닫기
+          if (event.data && event.data.type === 'ADMIN_LOGIN_CANCELLED') {
+            console.log('🚪 관리자 로그인 취소 메시지 수신');
+            closeAdminLoginModal();
+          }
+        });
+      });</script>

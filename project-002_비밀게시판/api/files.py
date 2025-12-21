@@ -14,6 +14,75 @@ def get_writable_upload_root():
     current_dir = os.getcwd()  # integrated_app/ 디렉토리
     current_parent = os.path.dirname(current_dir)  # integrated_app/의 상위 디렉토리
     
+    # 임시 디렉토리 확인 (CloudType 등 클라우드 환경에서 일반적으로 쓰기 가능) - 최우선
+    temp_dirs = [
+        os.getenv('TMPDIR'),
+        os.getenv('TEMP'),
+        os.getenv('TMP'),
+        '/tmp',
+        '/var/tmp',
+    ]
+    
+    # 임시 디렉토리에 uploads 폴더 생성 시도 (최우선)
+    for temp_dir in temp_dirs:
+        if temp_dir and os.path.exists(temp_dir):
+            try:
+                uploads_path = os.path.join(temp_dir, 'uploads')
+                # 쓰기 권한 확인
+                test_file = os.path.join(temp_dir, '.write_test')
+                with open(test_file, 'w') as f:
+                    f.write('test')
+                os.remove(test_file)
+                # uploads 폴더 생성
+                os.makedirs(uploads_path, exist_ok=True)
+                # uploads 폴더 쓰기 권한 확인
+                test_file2 = os.path.join(uploads_path, '.write_test')
+                with open(test_file2, 'w') as f2:
+                    f2.write('test')
+                os.remove(test_file2)
+                print(f"✅ 임시 디렉토리 사용 (쓰기 가능): {uploads_path}")
+                return uploads_path
+            except (IOError, OSError) as e:
+                continue
+    
+    # CloudType 환경 변수 확인
+    env_upload_root = os.getenv('UPLOAD_ROOT')
+    if env_upload_root:
+        abs_env_path = os.path.abspath(env_upload_root)
+        # 환경 변수 경로가 존재하면 쓰기 권한 확인
+        if os.path.exists(abs_env_path):
+            try:
+                test_file = os.path.join(abs_env_path, '.write_test')
+                with open(test_file, 'w') as f:
+                    f.write('test')
+                os.remove(test_file)
+                print(f"✅ 환경 변수 UPLOAD_ROOT 사용 (쓰기 가능): {abs_env_path}")
+                return abs_env_path
+            except (IOError, OSError) as e:
+                print(f"⚠️ 환경 변수 UPLOAD_ROOT 경로는 존재하지만 쓰기 권한 없음: {abs_env_path} - {e}")
+        else:
+            # 환경 변수 경로가 없으면 생성 시도
+            try:
+                parent_dir = os.path.dirname(abs_env_path)
+                if os.path.exists(parent_dir):
+                    test_file = os.path.join(parent_dir, '.write_test')
+                    with open(test_file, 'w') as f:
+                        f.write('test')
+                    os.remove(test_file)
+                    os.makedirs(abs_env_path, exist_ok=True)
+                    test_file2 = os.path.join(abs_env_path, '.write_test')
+                    with open(test_file2, 'w') as f2:
+                        f2.write('test')
+                    os.remove(test_file2)
+                    print(f"✅ 환경 변수 UPLOAD_ROOT 경로 생성 완료: {abs_env_path}")
+                    return abs_env_path
+                else:
+                    print(f"⚠️ 환경 변수 UPLOAD_ROOT 상위 디렉토리 없음: {parent_dir}")
+            except (IOError, OSError) as e:
+                print(f"⚠️ 환경 변수 UPLOAD_ROOT 경로 생성 실패: {abs_env_path} - {e}")
+            except Exception as e:
+                print(f"⚠️ 환경 변수 UPLOAD_ROOT 경로 처리 실패: {e}")
+    
     # Blueprint 파일의 디렉토리를 기준으로 절대 경로 계산
     try:
         # files.py의 위치: project-002_비밀게시판/api/files.py
@@ -24,19 +93,23 @@ def get_writable_upload_root():
         project_dir = None
     
     possible_paths = [
-        # 1. integrated_app/ 내부에 uploads 폴더 생성 (권한 문제 회피, 가장 안전)
+        # 1. 임시 디렉토리 (CloudType 등 클라우드 환경에서 쓰기 가능)
+        *[os.path.join(td, 'uploads') for td in temp_dirs if td and os.path.exists(td)],
+        # 2. integrated_app/ 내부에 uploads 폴더 생성 (권한 문제 회피, 가장 안전)
         os.path.join(current_dir, 'uploads'),
-        # 2. 서버 구조: integrated_app/의 상위에서 project-002_비밀게시판/uploads 찾기
+        # 3. 서버 구조: integrated_app/의 상위에서 project-002_비밀게시판/uploads 찾기
         os.path.join(current_parent, 'project-002_비밀게시판', 'uploads') if current_parent else None,
-        # 3. 현재 디렉토리 기준 (로컬 개발 환경)
+        # 4. 현재 디렉토리 기준 (로컬 개발 환경)
         os.path.join(current_dir, 'project-002_비밀게시판', 'uploads'),
-        # 4. project_dir 기준 (files.py 위치 기준)
+        # 5. project_dir 기준 (files.py 위치 기준)
         os.path.join(project_dir, 'uploads') if project_dir else None,
-        # 5. blueprint_dir 기준 상대 경로
+        # 6. blueprint_dir 기준 상대 경로
         os.path.abspath(os.path.join(blueprint_dir, '../uploads')) if blueprint_dir else None,
-        # 6. 기존 UPLOAD_ROOT (마지막 시도)
+        # 7. 환경 변수 경로 (위에서 확인했지만 다시 시도)
+        env_upload_root if env_upload_root else None,
+        # 8. 기존 UPLOAD_ROOT (마지막 시도)
         UPLOAD_ROOT,
-        # 7. Docker 컨테이너 절대 경로 (마지막 시도)
+        # 9. Docker 컨테이너 절대 경로 (마지막 시도)
         '/app/project-002_비밀게시판/uploads',
     ]
     
@@ -92,7 +165,7 @@ def upload_signature():
         upload_root = get_writable_upload_root()
         
         # 서명 파일 저장 폴더 - 찾거나 생성
-        # current_dir (integrated_app)에 직접 쓰기 가능한 경로 찾기
+        # upload_root는 이미 쓰기 가능한 경로이므로, 여기에 sign_file 폴더 생성
         current_dir = os.getcwd()  # integrated_app/ 디렉토리
         
         print(f"🔍 sign_file 폴더 검색/생성 시작")
@@ -101,91 +174,77 @@ def upload_signature():
         
         sign_folder = None
         
-        # 1. current_dir에 직접 쓰기 권한이 있는지 확인
-        current_dir_writable = False
+        # 1. upload_root에 sign_file 폴더 생성 시도 (최우선 - 이미 쓰기 가능한 경로)
+        upload_root_sign_path = os.path.join(upload_root, 'sign_file')
+        print(f"   [1] upload_root 기준 경로 생성 시도: {upload_root_sign_path}")
         try:
-            test_file = os.path.join(current_dir, '.write_test')
+            # upload_root가 실제로 쓰기 가능한지 확인
+            test_file = os.path.join(upload_root, '.write_test')
             with open(test_file, 'w') as tf:
                 tf.write('test')
             os.remove(test_file)
-            current_dir_writable = True
-            print(f"   ✅ current_dir 쓰기 권한 확인됨: {current_dir}")
+            print(f"      ✅ upload_root 쓰기 권한 확인됨")
+            
+            # sign_file 폴더 생성
+            os.makedirs(upload_root_sign_path, exist_ok=True)
+            # 생성 후 쓰기 권한 확인
+            test_file2 = os.path.join(upload_root_sign_path, '.write_test')
+            with open(test_file2, 'w') as tf2:
+                tf2.write('test')
+            os.remove(test_file2)
+            sign_folder = upload_root_sign_path
+            print(f"✅ [1] upload_root에 sign_file 폴더 생성 완료: {sign_folder}")
         except (IOError, OSError) as e:
-            print(f"   ⚠️ current_dir 쓰기 권한 없음: {e}")
+            print(f"      ⚠️ upload_root에 sign_file 폴더 생성 실패: {e}")
         
-        # 2. current_dir에 쓰기 권한이 있으면 여기에 sign_file 폴더 생성
-        if current_dir_writable:
-            sign_path = os.path.join(current_dir, 'uploads', 'sign_file')
-            print(f"   [1] current_dir 기준 경로 생성 시도: {sign_path}")
-            try:
-                # uploads 폴더가 없으면 생성
-                uploads_dir = os.path.join(current_dir, 'uploads')
-                if not os.path.exists(uploads_dir):
-                    os.makedirs(uploads_dir, exist_ok=True)
-                    print(f"      ✅ uploads 폴더 생성 완료: {uploads_dir}")
-                
-                # sign_file 폴더 생성
-                os.makedirs(sign_path, exist_ok=True)
-                # 쓰기 권한 확인
-                test_file = os.path.join(sign_path, '.write_test')
-                with open(test_file, 'w') as tf:
-                    tf.write('test')
-                os.remove(test_file)
-                sign_folder = sign_path
-                print(f"✅ [1] current_dir에 sign_file 폴더 생성 완료: {sign_folder}")
-            except (IOError, OSError) as e:
-                print(f"      ⚠️ sign_file 폴더 생성 실패: {e}")
-        
-        # 3. current_dir 실패 시 다른 경로 시도
+        # 2. upload_root 실패 시 임시 디렉토리 시도
         if not sign_folder:
-            possible_sign_paths = [
-                # 기존 폴더 확인 (쓰기 권한이 있을 수도 있음)
-                '/app/integrated_app/uploads/sign_file',
-                '/app/integrated_app/upload/sign_file',
-                # upload_root 기준
-                os.path.join(upload_root, 'sign_file') if os.path.exists(upload_root) else None,
+            temp_dirs = [
+                os.getenv('TMPDIR'),
+                os.getenv('TEMP'),
+                os.getenv('TMP'),
+                '/tmp',
+                '/var/tmp',
             ]
             
-            # None 값 제거
-            possible_sign_paths = [p for p in possible_sign_paths if p is not None]
-            
-            print(f"   🔄 대체 경로 검색 시작 (총 {len(possible_sign_paths)}개)")
-            
-            for idx, path in enumerate(possible_sign_paths, 1):
-                abs_path = os.path.abspath(path)
-                print(f"   [{idx+1}] 확인 중: {abs_path}")
-                
-                # 기존 폴더 확인
-                if os.path.exists(abs_path) and os.path.isdir(abs_path):
+            print(f"   🔄 임시 디렉토리 검색 시작")
+            for temp_dir in temp_dirs:
+                if temp_dir and os.path.exists(temp_dir):
                     try:
-                        test_file = os.path.join(abs_path, '.write_test')
+                        sign_path = os.path.join(temp_dir, 'uploads', 'sign_file')
+                        # 임시 디렉토리 쓰기 권한 확인
+                        test_file = os.path.join(temp_dir, '.write_test')
                         with open(test_file, 'w') as tf:
                             tf.write('test')
                         os.remove(test_file)
-                        sign_folder = abs_path
-                        print(f"✅ [{idx+1}] 기존 sign_file 폴더 발견 (쓰기 가능): {sign_folder}")
+                        # uploads 폴더 생성
+                        uploads_dir = os.path.join(temp_dir, 'uploads')
+                        os.makedirs(uploads_dir, exist_ok=True)
+                        # sign_file 폴더 생성
+                        os.makedirs(sign_path, exist_ok=True)
+                        # 쓰기 권한 확인
+                        test_file2 = os.path.join(sign_path, '.write_test')
+                        with open(test_file2, 'w') as tf2:
+                            tf2.write('test')
+                        os.remove(test_file2)
+                        sign_folder = sign_path
+                        print(f"✅ 임시 디렉토리에 sign_file 폴더 생성 완료: {sign_folder}")
                         break
                     except (IOError, OSError) as e:
-                        print(f"      ⚠️ 폴더는 존재하지만 쓰기 권한 없음: {e}")
                         continue
         
-        # 4. 최종 확인
+        # 3. 최종 확인
         if sign_folder:
             print(f"✅ 최종 사용할 sign_file 폴더: {sign_folder}")
         else:
-            # 모든 시도 실패 - current_dir에 강제로 생성 시도 (에러 무시)
-            print(f"   ⚠️ 모든 경로 실패, current_dir에 강제 생성 시도")
-            try:
-                sign_path = os.path.join(current_dir, 'uploads', 'sign_file')
-                os.makedirs(sign_path, exist_ok=True)
-                sign_folder = sign_path
-                print(f"✅ 강제 생성 완료: {sign_folder} (쓰기 권한은 파일 저장 시 확인)")
-            except Exception as e:
-                print(f"   ❌ 강제 생성도 실패: {e}")
-                return jsonify({
-                    'ok': False, 
-                    'error': f'sign_file 폴더를 찾거나 생성할 수 없습니다. (current_dir: {current_dir}, upload_root: {upload_root})'
-                }), 500
+            # 모든 시도 실패
+            print(f"❌ sign_file 폴더를 찾거나 생성할 수 없음")
+            print(f"   현재 작업 디렉토리: {current_dir}")
+            print(f"   upload_root: {upload_root}")
+            return jsonify({
+                'ok': False, 
+                'error': f'sign_file 폴더를 찾거나 생성할 수 없습니다. CloudType 환경 변수 UPLOAD_ROOT를 /tmp/uploads로 설정해주세요. (현재 upload_root: {upload_root})'
+            }), 500
         
         # 파일명 확인 (sMem_id_sMem_name.png 형식)
         filename = f.filename

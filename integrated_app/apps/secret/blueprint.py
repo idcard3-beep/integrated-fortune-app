@@ -73,7 +73,36 @@ print(f"   - 실제 정적 파일 URL: /secret/static/")
 
 # 기존 API blueprints 임포트
 import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../../project-002_비밀게시판'))
+# 프로젝트 경로 추가 (Docker 컨테이너 내부 경로 고려)
+project_path = os.path.join(os.path.dirname(__file__), '../../../project-002_비밀게시판')
+project_path = os.path.abspath(project_path)
+# 현재 작업 디렉토리 기준 경로도 시도
+current_dir_project = os.path.join(os.getcwd(), '../project-002_비밀게시판')
+current_dir_project = os.path.abspath(current_dir_project)
+# 절대 경로 기준 (Docker 컨테이너: /app/project-002_비밀게시판)
+absolute_project = '/app/project-002_비밀게시판'
+
+print(f"🔍 API 모듈 경로 탐색:")
+print(f"  - project_path (상대경로): {project_path}")
+print(f"  - current_dir_project: {current_dir_project}")
+print(f"  - absolute_project: {absolute_project}")
+print(f"  - 현재 작업 디렉토리: {os.getcwd()}")
+
+# 경로 존재 여부 확인 후 추가
+if os.path.exists(project_path):
+    sys.path.insert(0, project_path)
+    print(f"  ✅ 상대경로 추가: {project_path}")
+elif os.path.exists(current_dir_project):
+    sys.path.insert(0, current_dir_project)
+    print(f"  ✅ 현재 디렉토리 기준 경로 추가: {current_dir_project}")
+elif os.path.exists(absolute_project):
+    sys.path.insert(0, absolute_project)
+    print(f"  ✅ 절대경로 추가: {absolute_project}")
+else:
+    print(f"  ⚠️  경고: 프로젝트 경로를 찾을 수 없습니다")
+    # 마지막 시도: 상대경로 추가
+    sys.path.insert(0, project_path)
+    print(f"  → 상대경로 강제 추가: {project_path}")
 
 from api.tickets import bp as tickets_bp
 from api.messages import bp as messages_bp

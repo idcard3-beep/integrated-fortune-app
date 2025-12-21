@@ -8,9 +8,17 @@ import sys
 import random
 import json
 
-# 프로젝트 경로 추가
+# 프로젝트 경로 추가 (Docker 컨테이너 내부 경로 고려)
 tarot_project_path = os.path.join(os.path.dirname(__file__), '../../../project-009_타로카드')
-sys.path.insert(0, tarot_project_path)
+tarot_project_path = os.path.abspath(tarot_project_path)
+absolute_project = '/app/project-009_타로카드'
+
+if os.path.exists(tarot_project_path):
+    sys.path.insert(0, tarot_project_path)
+elif os.path.exists(absolute_project):
+    sys.path.insert(0, absolute_project)
+else:
+    sys.path.insert(0, tarot_project_path)  # 마지막 시도
 
 # 환경변수에 따라 경로 선택 (기본값: true - 프로덕션 배포 시 빌드 파일 사용)
 USE_BUILD = os.getenv('USE_BUILD_FILES', 'true').lower() == 'true'

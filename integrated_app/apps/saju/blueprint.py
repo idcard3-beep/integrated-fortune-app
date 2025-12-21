@@ -7,9 +7,16 @@ import sys
 import json
 from datetime import datetime
 
-# 프로젝트 경로 추가 (절대 경로로 변환)
+# 프로젝트 경로 추가 (Docker 컨테이너 내부 경로 고려)
 saju_project_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../project-012_사주팔자'))
-sys.path.insert(0, saju_project_path)
+absolute_project = '/app/project-012_사주팔자'
+
+if os.path.exists(saju_project_path):
+    sys.path.insert(0, saju_project_path)
+elif os.path.exists(absolute_project):
+    sys.path.insert(0, absolute_project)
+else:
+    sys.path.insert(0, saju_project_path)  # 마지막 시도
 
 # mainpillar.py 함수들 임포트
 from mainpillar import (

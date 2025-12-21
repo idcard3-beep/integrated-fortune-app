@@ -5,8 +5,17 @@ from flask import Blueprint, render_template, request, jsonify
 import os
 import sys
 
-# 프로젝트 경로 추가
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../../project-004_만세력'))
+# 프로젝트 경로 추가 (Docker 컨테이너 내부 경로 고려)
+project_path = os.path.join(os.path.dirname(__file__), '../../../project-004_만세력')
+project_path = os.path.abspath(project_path)
+absolute_project = '/app/project-004_만세력'
+
+if os.path.exists(project_path):
+    sys.path.insert(0, project_path)
+elif os.path.exists(absolute_project):
+    sys.path.insert(0, absolute_project)
+else:
+    sys.path.insert(0, project_path)  # 마지막 시도
 
 from mainpillar import calc_saju, calc_day_pillar
 import datetime

@@ -434,6 +434,17 @@ def calendar():
                     except Exception as e:
                         print(f"  ⚠️ Next terms error for day {day}: {e}")
                     
+                    # 절기 날짜 확인 (해당 날짜가 절기인지 확인)
+                    term_name = None
+                    try:
+                        for entry in all_entries:
+                            dt = datetime.datetime.strptime(entry['datetime_KST'], '%Y-%m-%d %H:%M:%S')
+                            if dt.date() == date_obj:
+                                term_name = entry['term']
+                                break
+                    except Exception as e:
+                        print(f"  ⚠️ Term date check error for day {day}: {e}")
+                    
                     cell_info = {
                         'day': day,
                         'lunar': lunar_str,
@@ -443,7 +454,7 @@ def calendar():
                         'day_gz': day_gz,
                         'hour_gz': hour_gz,
                         'gānzhī': day_gz,
-                        'term': None,
+                        'term': term_name,
                         'is_today': is_today_flag,
                         'current_term_name': current_term_name,
                         'current_term_kst': current_term_kst,

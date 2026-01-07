@@ -68,11 +68,11 @@ except Exception as e:
 # 6. 사주
 try:
     from saju_app import app as saju_app
-    app_list.append(('saju', saju_app, '사주팔자'))
-    print("✅ 사주팔자 앱 로드 완료")
+    app_list.append(('saju', saju_app, '사주보기'))
+    print("✅ 사주보기 앱 로드 완료")
 except Exception as e:
     saju_app = None
-    print(f"⚠️  사주팔자 앱 로드 실패: {e}")
+    print(f"⚠️  사주보기 앱 로드 실패: {e}")
 
 print("="*60 + "\n")
 
@@ -120,6 +120,90 @@ def common_static(filename):
     common_static_path = os.path.join(os.path.dirname(__file__), 'web', 'common', 'static')
     return send_from_directory(common_static_path, filename)
 
+########################################################
+# SEO 설정
+########################################################
+@main_app.route('/robots.txt')
+def robots_txt():
+    """robots.txt 파일 서빙"""
+    import os
+    robots_path = os.path.join(os.path.dirname(__file__), 'robots.txt')
+    if os.path.exists(robots_path):
+        return send_from_directory(os.path.dirname(__file__), 'robots.txt')
+    else:
+        # 기본 robots.txt 내용 반환
+        return """User-agent: *
+Allow: /
+Sitemap: https://naratt.kr/sitemap.xml
+""", 200, {'Content-Type': 'text/plain'}
+
+@main_app.route('/sitemap.xml')
+def sitemap_xml():
+    """sitemap.xml 파일 서빙"""
+    import os
+    sitemap_path = os.path.join(os.path.dirname(__file__), 'sitemap.xml')
+    if os.path.exists(sitemap_path):
+        return send_from_directory(os.path.dirname(__file__), 'sitemap.xml'), 200, {'Content-Type': 'application/xml'}
+    else:
+        # 기본 sitemap.xml 내용 반환
+        from flask import request
+        base_url = request.scheme + '://' + request.host
+        return f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{base_url}/</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>{base_url}/secret/main_index.html/</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>{base_url}/secret/</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>{base_url}/mans/</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>{base_url}/y6/</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>{base_url}/tarot/</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>{base_url}/toj/</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>{base_url}/saju/</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
+""", 200, {'Content-Type': 'application/xml'}
+
+########################################################
+# 메인 메뉴 페이지
+########################################################    
 @main_app.route('/')
 def index():
     """메인 메뉴 페이지"""
@@ -173,7 +257,7 @@ def index():
             'path': 'toj'
         },
         {
-            'name': '사주팔자', 
+            'name': '사주보기', 
             'url': '/saju/', 
             'icon': '🌟', 
             'desc': '생년월일시 운명 분석', 
@@ -344,7 +428,7 @@ if __name__ == '__main__':
     if toj_app:
         print(f"📖 토정비결: {base_url}/toj/")
     if saju_app:
-        print(f"✨ 사주팔자: {base_url}/saju/")
+        print(f"✨ 사주보기: {base_url}/saju/")
     
     print("="*60)
     print("🔒 HTTPS 전용 서버 (HTTP 사용 불가)")

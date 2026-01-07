@@ -164,6 +164,11 @@ def calculate_saju():
         })
         
     except Exception as e:
+        import traceback
+        error_trace = traceback.format_exc()
+        print(f"\n❌ 사주 계산 오류 발생:")
+        print(f"   에러 메시지: {str(e)}")
+        print(f"   상세 정보:\n{error_trace}")
         return jsonify({
             'success': False,
             'error': str(e)

@@ -27,10 +27,12 @@ toast('✨ 78장의 카드가 무작위로 펼쳐졌습니다!');}
 function collectDeck(){spread.classList.add('deck-mode');const existingDeck=document.getElementById('deckStack');if(existingDeck){existingDeck.remove();}
 const deckStack=document.createElement('div');deckStack.id='deckStack';deckStack.className='deck-stack';deckStack.innerHTML='<div class="deck-prompt"><div class="deck-text">🎴 클릭하여 카드 펼치기</div></div>';deckStack.addEventListener('click',spreadDeck);spread.insertBefore(deckStack,spread.firstChild);}
 function initializeDeck(){const initialDeckStack=document.getElementById('deckStack');if(initialDeckStack){initialDeckStack.addEventListener('click',spreadDeck);}}
-function onPick(el,card){if(locked)return;const i=picked.findIndex((p)=>p.id===card.id);if(i>=0){picked.splice(i,1);el.classList.remove('flipped','selected');el.style.transform='';el.querySelector('.badge').textContent='#';updateSelectedUI();return;}
+function onPick(el,card){if(locked)return;const i=picked.findIndex((p)=>p.id===card.id);if(i>=0){picked.splice(i,1);el.classList.remove('flipped','selected');el.style.transform='';el.querySelector('.badge').textContent='#';if(picked.length===0){const resultWrap=document.getElementById('resultWrap');if(resultWrap){resultWrap.classList.add('hidden');}}
+updateSelectedUI();return;}
 const maxCount=parseInt(maxCountInput.value,10);if(picked.length>=maxCount)return;const reversed=Math.random()<0.5;const inner=el.querySelector('.inner');if(inner){inner.style.transition='none';}
 el.classList.add('flipped','selected');if(reversed){el.style.transform='rotate(180deg)';}else{el.style.transform='';}
-requestAnimationFrame(()=>{if(inner){inner.style.transition='';}});const kw=getKeywords(card,reversed);picked.push({id:card.id,en:card.en,kr:card.kr,reversed,kw});el.querySelector('.badge').textContent='#'+picked.length;updateSelectedUI();if(picked.length===maxCount){locked=true;}}
+requestAnimationFrame(()=>{if(inner){inner.style.transition='';}});const kw=getKeywords(card,reversed);picked.push({id:card.id,en:card.en,kr:card.kr,reversed,kw});el.querySelector('.badge').textContent='#'+picked.length;if(picked.length===1){const resultWrap=document.getElementById('resultWrap');if(resultWrap){resultWrap.classList.remove('hidden');}}
+updateSelectedUI();if(picked.length===maxCount){locked=true;}}
 function updateSelectedUI(){const maxCount=parseInt(maxCountInput.value,10);(document.getElementById('status')||{innerHTML:''}).innerHTML='진행: <b>'+
 picked.length+' / '+
 maxCount+'</b>'+
@@ -50,8 +52,9 @@ resultBox.textContent=picked.length?picked.map((p,i)=>i+
 p.kr+' ('+
 p.en+') — '+
 (p.reversed?'역위':'정위')+' | '+
-(p.kw?p.kw.join(', '):'')).join('\n'):'아직 선택된 카드가 없습니다.';}
-function resetAll(){picked=[];locked=false;document.querySelectorAll('.tarot').forEach((el)=>{el.classList.remove('flipped','selected');el.style.transform='';const b=el.querySelector('.badge');if(b)b.textContent='#';});updateSelectedUI();}
+(p.kw?p.kw.join(', '):'')).join('\n'):'아직 선택된 카드가 없습니다.';if(picked.length===0){const resultWrap=document.getElementById('resultWrap');if(resultWrap){resultWrap.classList.add('hidden');}}}
+function resetAll(){picked=[];locked=false;const resultWrap=document.getElementById('resultWrap');if(resultWrap){resultWrap.classList.add('hidden');}
+document.querySelectorAll('.tarot').forEach((el)=>{el.classList.remove('flipped','selected');el.style.transform='';const b=el.querySelector('.badge');if(b)b.textContent='#';});updateSelectedUI();}
 function reshuffleAll(){shuffleDeck();picked=[];locked=false;renderSpread(false);collectDeck();updateSelectedUI();toast('🔄 카드를 다시 섞었습니다! 덱을 클릭하여 펼치세요.');}
 function onMaxChange(){resetAll();updateSelectedUI();}
 document.querySelectorAll('.preset-spreads .preset').forEach((btn)=>btn.addEventListener('click',()=>applyPreset(btn.dataset.name)));btnReset.addEventListener('click',resetAll);btnReshuffle.addEventListener('click',reshuffleAll);maxCountInput.addEventListener('change',onMaxChange);showTips.addEventListener('change',updateSelectedUI);shuffleDeck();renderSpread(true);initializeDeck();updateSelectedUI();})();

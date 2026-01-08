@@ -1,132 +1,1003 @@
-const DATA=[{id: 'individual',title: '개인상담',mid: '문제 인식·정서조절·사고-행동 패턴 점검으로 기능 회복과 자기이해를 돕는 기초 개입.',detail: '평가→목표 합의→CBT·정서조절·행동실험→과제·피드백 루프.',tags: ['CBT','정서조절','행동실험','피드백'],items: [{id: 'depression',name: '우울',tags: ['행동활성화','인지재구성','수면'],mid: '활동 저하-부정사고-무기력 순환을 끊음.',detail: '행동활성화·즐거움/성취 기록·자동사고 재구성.',kv:{목표: '기능 회복',기법: '행동활성화,인지재구성',세션: '8~12회',},expert:{팁: '아주 작은 과제부터.'},note: '일관성이 핵심.',examples: [
- '일상활동표에 ‘5분 산책’부터 시작해 즐거움/성취 점수 기록.','자동사고: ‘난 아무것도 못해’ → 근거탐색·대안사고 도출.','수면위생 체크리스트: 취침·기상 고정,카페인 컷오프.',],},{id: 'anxiety',name: '불안·공황',tags: ['노출','안전행동감소'],mid: '회피·안전행동을 줄이며 새학습 촉진.',detail: '상황/감각 노출,재해석 훈련.',kv:{목표: '회피 감소',세션: '10~16회'},expert:{팁: '강도 3/10에서 시작'},note: '짧고 자주 노출.',examples: [
- '지하철 1정거장 시도(동행 없이)→ 체류 시간 늘리기.','인터로셉티브 노출: 30초 과호흡 후 감각 기록.','안전행동 목록화 후 1개씩 줄이기(물병·도피 신호).',],},{id: 'ocd',name: '강박(OCD)',tags: ['ERP','의식차단'],mid: '노출·반응방지(ERP)로 강박 순환 약화.',detail: '의식 기록·유발계층·ERP 반복.',kv:{목표: '의식 감소'},expert:{주의: '완벽 제거보다 기능 회복 목표'},note: '확신 추구를 줄이기.',examples: [
- '손씻기 강박: 비누 1회 규칙 설정 후 초과 금지 ERP.','확인 강박: 가스밸브 사진 1장만 촬영,추가 확인 금지.','오염 노출: 손잡이 만진 후 즉시 손씻기 지연 5분.',],},{id: 'social',name: '사회불안',tags: ['행동실험','주의전환'],mid: '자기초점 주의를 외부로 전환하고 행동실험.',detail: '예행연습·피드백·주의전환 훈련.',kv:{목표: '회피↓ 노출↑'},expert:{팁: '완벽 발표보다 참여'},note: '작은 발언부터.',examples: [
- '회의에서 1문장 발언 목표 → 결과/타인 반응 기록.','주의전환 훈련: 발언 중 의자 색·상대 표정 3가지 관찰.','역할연습: 즉석 자기소개 30초 × 3회.',],},{id: 'health',name: '건강염려',tags: ['증거탐색','불확실성수용'],mid: '확신 추구·검사 반복을 낮추기.',detail: '가능성-심각성 분리,불확실성 수용 훈련.',kv:{목표: '검사 집착 완화'},expert:{의학협력: '의학적 소견 존중'},note: '‘가능’과 ‘개연’ 구분.',examples: [
- '검색금식 48시간 실험 후 불안 곡선 기록.','재검사 지연: 72시간 룰 설정 후 증상 변화 관찰.','가능성/개연성 매트릭스로 사고 평가.',],},{id: 'grief',name: '애도(Grief)',tags: ['의미화','지지체계'],mid: '상실의 의미를 재정립하고 일상으로 재적응.',detail: '추억 작업·편지·의식·지지 연결.',kv:{목표: '애도 과제 통과'},expert:{주의: '복합애도 의심시 전문평가'},note: '느리지만 앞으로.',examples: [
- '고인에게 보내는 편지 1통 작성 및 낭독.','기념 의식 설계: 기일에 산책·음악 듣기.','지지 인물 3명 목록화·연락 계획.',],},{id: 'sleep',name: '수면·각성',tags: ['CBT-I','수면위생'],mid: '불면 유지요인 개선.',detail: '수면제한·자극조절·인지수면치유.',kv:{목표: '수면 효율↑'},expert:{주의: '낮잠·카페인 시간 관리'},note: '취침/기상 고정.',examples: [
- '일주일 수면일지 작성 후 수면 효율 계산.','침실=수면/성행위만: 누적 20분 뒤 자리 벗어나기.','기상 시간 고정+햇빛 노출 10분.',],},{id: 'burnout',name: '스트레스·번아웃',tags: ['자원관리','회복전략'],mid: '요구-자원 불균형을 재설계.',detail: '경계·에너지·미세회복 루틴.',kv:{목표: '지속가능성'},expert:{팁: '마이크로 회복'},note: '회복도 일정으로.',examples: [
- '업무 캘린더에 5분 회복 블록 3개 삽입.','요구-자원 매트릭스 작성 후 위임 2건 선정.','퇴근 의식(루틴)3단계 설계.',],},],},{id: 'family',title: '부부/가족상담',mid: '상호작용 순환·의사소통 패턴 분석으로 갈등 구조를 재설계.',detail: '경계선·역할 재정렬,NVC,가계도/순환질문.',tags: ['NVC','경계선','순환질문'],items: [{id: 'communication',name: '의사소통 재구성(NVC)',tags: ['I-메시지'],mid: '비난/방어 감소·욕구 기반 요청.',detail: '관찰-느낌-욕구-요청 4단계.',kv:{목표: '갈등 탈격화'},expert:{주의: '폭력 위험 사전 스크리닝'},note: '작은 사건부터.',examples: [
- '가정 예시: ‘너는 맨날’ → ‘(관찰)어제 9시에…,(느낌)…’로 전환.','반영적 경청 5분 타이머 번갈아 적용.','구체 요청 작성: ‘주 2회 설거지 합의’.',],},{id: 'boundaries',name: '경계선·역할',tags: ['삼각관계완화'],mid: '모호한 경계/역할 뒤섞임 개선.',detail: '가계도·경계 지도→역할 재배치.',kv:{목표: '역할 명료화'},expert:{팁: '합의사항 시각화'},note: '회의록 유지.',examples: [
- '가계도 3세대 작성 후 삼각관계 식별.','가사 역할표를 벽에 부착·2주 후 재평가.','‘아이 문제’에 조부 개입 제한 합의.',],},{id: 'parenting',name: '양육코칭',tags: ['긍정강화','일관성'],mid: '규칙·일관성·관계 회복.',detail: '구체 지시,즉시 강화,타임아웃 규정.',kv:{목표: '문제행동 감소'},expert:{주의: '부모 합의 필수'},note: '칭찬:지적=3:1 이상.',examples: [
- '‘지금 공을 상자에 넣자(구체 지시)’ → 성공 즉시 칭찬.','토큰 경제: 저녁 전 3개 모으면 10분 놀이.','타임아웃 규정 카드를 냉장고에 게시.',],},{id: 'coparent',name: '공동양육',tags: ['역할합의','협력'],mid: '갈등을 낮추고 일관된 메시지.',detail: '역할/시간표/규칙 합의문서화.',kv:{목표: '아이 중심 협력'},expert:{주의: '연락 규칙 정하기'},note: '아이 앞 감정표현 규칙.',examples: [
- '공동 캘린더에 등하교·병원 일정 공유.','비상 연락망·결정권 우선순위 합의서 작성.','채팅방 고정 공지로 규칙 게시.',],},],},{id: 'youth',title: '아동·청소년',mid: '정서·행동·학습·또래관계를 발달에 맞춰 다룸.',detail: '감정코칭,사회성,실행기능 코칭,부모훈련.',tags: ['놀이','사회성','실행기능','부모코칭'],items: [{id: 'adhd',name: '실행기능(ADHD)코칭',tags: ['계획','시간관리'],mid: '즉시 보상·시각화가 효과적.',detail: '분절·타이머·토큰경제·부모코칭.',kv:{목표: '시작/완료율↑'},expert:{주의: '학·의학 연계'},note: '2분 규칙.',examples: [
- '타이머 10분 집중+2분 보상 루프.','체크리스트: 준비물 5개 그림카드.','알림 울리면 즉시 시작 ‘2분만’ 규칙.',],},{id: 'anger',name: '분노조절·정서코칭',tags: ['신호탐지','대안행동'],mid: '신호 조기탐지 후 개입.',detail: '멈춤-호흡-거리두기·복기.',kv:{목표: '폭발 빈도/강도↓'},expert:{팁: '감정 온도계'},note: '회복 스크립트.',examples: [
- '감정 온도계 3/5/7단계별 대안행동 카드.','‘멈춤-물 1컵-10호흡’ 루틴.','사후 복기표(사건-느낌-생각-다음 행동).',],},{id: 'learning',name: '학습·읽기/수학',tags: ['보상','분절'],mid: '학습 어려움에 실행 전략.',detail: '분절학습·간격반복·피드백.',kv:{목표: '숙제/시험 수행↑'},expert:{주의: '학교 협력'},note: '작은 성공 체인.',examples: [
- '단어 10개를 2세트로 나눠 간격반복.','오답노트: 오류 유형 3가지로 분류.','숙제 완료 사진을 부모에게 즉시 공유.',],},{id: 'peer',name: '또래관계·따돌림',tags: ['의사소통','지지체계'],mid: '안전·보고·문제해결',detail: '보고체계·역할연습·지지 연결.',kv:{목표: '안전·대인기술'},expert:{주의: '학교/법·안전 프로토콜'},note: '혼자 두지 않기.',examples: [
- '학교 보고 라인(담임-상담사-보호자)저장.','역할연습: ‘멈춰줘’ 단호한 표현 훈련.','지지 친구 2명과 점심 약속 만들기.',],},],},{id: 'group',title: '집단상담',mid: '상호 피드백/모델링으로 대인기술 강화.',detail: '목표·규칙 합의,역할연습·피드백,전이 계획.',tags: ['대인기술','피드백','역할연습'],items: [{id: 'socialskills',name: '대인기술 훈련',tags: ['요청·거절'],mid: '과순응↔공격을 ‘단호·공감’으로.',detail: 'DESC·비언어 신호.',kv:{목표: '요청/거절'},expert:{주의: '안전 규칙'},note: '실전 과제화.',examples: [
- 'DESC로 ‘야근 요청 거절’ 대본 작성·연습.','눈맞춤·속도·볼륨 피드백 체크리스트.','주 1회 실전 과제 후 다음 회기 피드백.',],},{id: 'mindfulness',name: '마인드풀니스 그룹',tags: ['주의전환','수용'],mid: '주의를 현재로,반응을 유연하게.',detail: '호흡·바디스캔·수용훈련.',kv:{목표: '반응성↓'},expert:{팁: '짧고 자주 연습'},note: '하루 5분.',examples: [
- '3분 호흡 공간을 하루 3회 알람으로 수행.','식사 명상: 첫 3입 천천히 관찰.','가벼운 불편을 60초 수용·관찰.',],},{id: 'dbt',name: 'DBT 스킬',tags: ['정서조절','대인효과성'],mid: '감정·관계·위기대처 기술.',detail: '마음챙김·고통감내·감정조절·대인효과성.',kv:{목표: '위기 빈도↓'},expert:{주의: '가정 과제'},note: '스킬 카드 사용.',examples: [
- 'TIPP(온도·강호흡·근육이완)위기대처 세트.','DEAR MAN 대화 스크립트로 요구 전달.','감정 이름 붙이기 리스트 사용.',],},],},{id: 'trauma',title: '트라우마·PTSD',mid: '안전감 회복·과각성 조절·외상 기억 처리·의미 재구성의 단계적 접근.',detail: '안정화(자원·호흡·접지)→ 점진적 노출/서사화 → 의미 재통합.',tags: ['안정화','노출/서사화','접지'],items: [{id: 'stabilization',name: '안정화·접지',tags: ['호흡','감각접지'],mid: '과각성/해리 조절의 기반.',detail: '박자 호흡,5-4-3-2-1 접지,안전한 장소 심상.',kv:{목표: '각성 조절'},expert:{주의: '감당 가능한 창 유지'},note: '하루 3×2분.',examples: [
- '4-6 복식호흡: 4초 들숨·6초 날숨 10회.','5-4-3-2-1 감각접지 실제 환경에서 실습.','‘안전한 장소’ 이미지에 감각(온도·소리)추가.',],},{id: 'narrative',name: '서사화·의미 재구성',tags: ['서사','재평가'],mid: '파편 기억을 안전하게 이야기로.',detail: '타임라인·실감조절·의미 재평가.',kv:{목표: '기억 통합'},expert:{주의: '재외상화 방지'},note: '세션 후 자기돌봄.',examples: [
- '사건 타임라인을 색으로 코딩(위험/안전).','실감 0~10 스케일로 노출 강도 조절.','사건 후 변화한 가치·관계 재평가 글쓰기.',],},{id: 'emdr',name: 'EMDR 기초',tags: ['양측자극','재처리'],mid: '안정화 이후에 양측 자극으로 처리.',detail: '안전장소·리소스 빌딩 후 표적 재처리.',kv:{목표: '고통 반응 감소'},expert:{주의: '훈련된 임상가와 진행'},note: '세션 뒤 휴식.',examples: [
- '터핑/시각 추적으로 BLS 20~30세트.','긍정 인지 설치: ‘나는 지금 안전하다’.','세션 후 자기돌봄 체크리스트 점검.',],},],},{id: 'addiction',title: '중독·습관(알코올/디지털 등)',mid: '갈망 유발 단서를 파악하고 대체 행동·환경 설계로 재발 위험을 낮춤.',detail: '단서-반응 루프 분석,대체 보상,고위험 계획,지지체계.',tags: ['갈망관리','대체보상','재발예방'],items: [{id: 'craving',name: '갈망 관리',tags: ['지연·치환','단서차단'],mid: '갈망 파도에 휩쓸리지 않기.',detail: '10분 지연·산책·물/껌·앱 차단.',kv:{목표: '충동 지연'},expert:{주의: '고립 회피'},note: '파도는 지나간다.',examples: [
- '갈망 스케일 0~10 기록 후 10분 지연.','대체 행동 리스트(샤워·물·산책·스트레칭).','유발 단서(장소/시간/사람)지도 만들기.',],},{id: 'relapse',name: '재발 예방 계획',tags: ['고위험상황','후속계획'],mid: '미리 시나리오로 손상 최소화.',detail: '만약-그러면 계획·경고 신호·연락망.',kv:{목표: '손상 최소'},expert:{주의: '전부-아니면 사고 피하기'},note: '미끄러짐은 학습.',examples: [
- '‘회식 제안’ 상황 If-Then 스크립트 작성.','경고 신호 체크리스트(수면↓,고립↑ 등).','후속 계획: 미끄러짐 24시간 내 상담/지지 연락.',],},{id: 'digital',name: '디지털 사용 조절',tags: ['시간차단','대체활동'],mid: '기기 사용 환경과 보상을 재설계.',detail: '스크린타임·차단앱·오프라인 루틴.',kv:{목표: '총 사용시간↓'},expert:{팁: '수면 1시간 전 무기기'},note: '침실 분리.',examples: [
- '침실에 충전 금지·알람은 별도 시계.','앱 제한: SNS 30분/일 설정.','오프라인 루틴 3가지(책·산책·취미)예약.',],},],},{id: 'career',title: '진로·직무/의미',mid: '가치·강점·환경 적합도를 진단해 실행 가능한 경로를 설계.',detail: '가치-강점 매핑,실험 프로젝트,네트워킹·리소스.',tags: ['가치정렬','강점','실험'],items: [{id: 'values',name: '가치·강점 매핑',tags: ['VIA','스토리라인'],mid: '만족의 원천 언어화.',detail: '만족 장면 추적→공통 가치 도출.',kv:{목표: '적합도↑'},expert:{팁: '작은 실험으로 검증'},note: '작게·빨리·자주.',examples: [
- '최근 2주 ‘에너지+’ 장면 5개 기록.','강점 3개에 맞는 미니 프로젝트 설계.','가치-일상 ‘불일치’ 1개를 제거.',],},{id: 'design',name: '일 설계(재설계)',tags: ['경계설정','업무조정'],mid: '요구-자원 균형 재맞춤.',detail: '작업 재배치·성장과제·관계 재설계.',kv:{목표: '번아웃↓ 몰입↑'},expert:{주의: '협상 기록'},note: '의미를 다시 정의.',examples: [
- '업무 리스트에서 에너지-소모 상위 2개 조정 요청.','주 1회 ‘성장 과제’ 블록 90분 확보.','이해관계자 맵 작성 후 1:1 미팅 예약.',],},{id: 'search',name: '구직·포트폴리오',tags: ['네트워킹','실전준비'],mid: '시장 적합도와 노출 전략.',detail: '프로필·작품집·레퍼런스·정보인터뷰.',kv:{목표: '기회↑'},expert:{팁: '작은 발신 꾸준히'},note: '주 2회 아웃리치.',examples: [
- '이력서 1페이지 규격·핵심 성과 수치화.','작품집 3개 케이스에 문제-해결-성과 구조화.','정보인터뷰 주 1회 캘린더 예약.',],},],},{id: 'personality',title: '성격 특성·관계 패턴',mid: '극단적 패턴을 유연성 높은 대안 패턴으로 전환.',detail: '자기/타인지도,정서 조절,경계,스키마 인식·재구성.',tags: ['스키마','정서조절','경계'],items: [{id: 'schema',name: '스키마 작업',tags: ['핵심신념','행동실험'],mid: '반복 핵심 믿음·패턴 지도화.',detail: '스키마 모드·이미지리스크립팅.',kv:{목표: '유연성↑'},expert:{주의: '안전·페이싱'},note: '관찰자 시점.',examples: [
- '핵심 믿음 카드: ‘나는 버려질 것’ 식별.','증거일지: 믿음을 강화/반박하는 사건 기록.','대안 행동실험: 애착 회피 장면에 접근.',],},{id: 'bound',name: '관계 경계 훈련',tags: ['자기옹호','NO훈련'],mid: '과순응/침범에 맞선 건강 경계.',detail: '요청/거절 스크립트·한계 설정.',kv:{목표: '침범 감소'},expert:{팁: '작은 NO부터'},note: '경계=품질선.',examples: [
- '‘이번 주는 어렵습니다’ 문장 연습·발화.','요청/거절 DESC 스크립트 2종 작성.','한계 위반 시 후속 조치 표준화(반복 공지).',],},{id: 'attach',name: '애착 패턴 인식',tags: ['안정·불안·회피'],mid: '관계 기대·반응 패턴 이해.',detail: '상황-감정-행동 기록·대안 반응.',kv:{목표: '안정성↑'},expert:{주의: '실생활 연습'},note: '신뢰는 반복.',examples: [
- '갈등 시 ‘철수-추격’ 패턴 식별.','트리거-감정-행동 ABC 기록 3회/주.','대안 반응 스크립트(거리두기·시간 요청).',],},],},];const MID_EX={depression:
- '【상세】 우울은 활동저하→보상저하→부정사고 강화의 순환으로 유지됩니다. 초기 2주간은 행동활성화(BA)로 ‘작은 성취-긍정 정서’ 경험을 회복하고,중반에는 자동사고/핵심믿음에 대한 인지재구성(CBT),후반에는 재발신호·유지전략을 설계합니다. 수면위생·사회적 접촉·의미활동을 병행하여 기능 수준 회복을 목표로 합니다.',anxiety:
- '【상세】 불안은 회피·안전행동이 단기불안은 낮추지만 학습을 방해하여 만성화됩니다. 공포계층표를 토대로 ‘짧고 자주’ 노출을 반복하고,인터로셉티브(신체감각)노출로 감각에 대한 재해석을 학습합니다. 안전행동을 단계적으로 감축하며 주의전환·재평가를 병행합니다.',ocd: '【상세】 OCD는 강박사고-불안-의식행동(중화)의 고리가 음성강화를 통해 유지됩니다. ERP는 ‘의도적 노출+반응방지’로 새로운 안전기억을 형성합니다. 치유 목표는 ‘확신 없음에 머무는 능력’을 기르는 것으로,증상 제로보다 기능 회복과 삶의 확장을 중시합니다.',social:
- '【상세】 사회불안 핵심은 ‘자기초점주의·부정적 자기이미지’입니다. 행동실험과 영상/동료 피드백으로 인지왜곡을 교정하고,시선·속도·볼륨 등 비언어 스킬을 구체 훈련합니다. ‘완벽 발표’가 아닌 ‘반복 노출과 회복’을 목표로 합니다.',health:
- '【상세】 건강염려는 신체감각 과해석과 확신추구(재검사·검색)가 유지 요인입니다. 가능성/개연성 구분 훈련,재검사 지연,‘불확실성과 함께 살기’ 노출을 적용합니다. 의료적 레드플래그는 반드시 협력의료진과 평가합니다.',grief:
- '【상세】 정상 애도는 파동처럼 오르내리며 진행됩니다. 의미화 작업(의미 찾기)과 지지 연결,일상복귀 루틴이 도움이 됩니다. 복합애도·우울 합병 시 진단평가가 필요하며,의례(ritual)설계가 회복을 돕습니다.',sleep:
- '【상세】 불면은 ‘침대=각성’ 연합과 과각성 유지가 핵심입니다. CBT-I의 수면제한·자극조절·인지개입으로 수면효율을 회복합니다. 기상시간 고정이 가장 중요하며,낮잠·카페인·운동 시간을 구조화합니다.',burnout:
- '【상세】 번아웃은 요구>자원이 지속될 때 발생합니다. ‘요구-자원’ 매핑으로 제거/위임/조정 대상을 정하고,에너지 회복 루틴(마이크로 회복)과 경계 설정으로 재충전합니다. 조직·상사와의 협상 스크립트를 준비합니다.',communication:
- '【상세】 NVC는 관찰-느낌-욕구-요청의 구조로 비난·방어를 낮춥니다. 반영적 경청과 감정명명으로 정서 공동조절을 강화하고,구체요청(빈도·시간·역할)을 문서화합니다. 폭력 위험 스크리닝은 사전 필수입니다.',boundaries:
- '【상세】 가족체계에서 경계는 ‘침투성-경직성’ 균형입니다. 가계도/경계지도 분석 후 역할을 재배치(RACI 등)하고,삼각관계를 완화합니다. 합의사항은 시각화·서면화하여 유지합니다.',parenting:
- '【상세】 행동분석(ABC)기반으로 선행사건·결과를 조정합니다. 구체 지시,즉시 강화(차별강화),일관된 결과(타임아웃)로 학습합니다. 부모 간 합의와 가정-학교 일관성이 성공 요인입니다.',coparent:
- '【상세】 공동양육은 아이 중심 의사결정·정보공유·갈등탈격화가 핵심입니다. 일정/규칙 통합,의사결정 우선순위,비상연락·분쟁절차를 문서화하고 채널 규칙(연락시간/톤)을 합의합니다.',adhd: '【상세】 ADHD 코칭은 ‘즉시 보상·가시화·환경구조화’가 효과적입니다. 타이머·체크리스트·토큰경제로 시작·완료율을 높이고,부모 코칭으로 일관성을 확보합니다. 학교·의학적 평가와 연계를 고려합니다.',anger:
- '【상세】 분노는 급상승 전에 전조 신호가 존재합니다. 신호탐지→멈춤-호흡-거리두기→사후 복기의 루프를 훈련합니다. 강화는 ‘원하는 행동’에 집중하고,폭발 후 회복 스크립트를 사용합니다.',learning:
- '【상세】 학습개입은 분절학습·간격반복·피드백의 원리를 적용합니다. 오류유형 분석으로 전략을 맞춤화하고,작은 성공경험을 체인으로 연결하여 동기를 유지합니다.',peer: '【상세】 따돌림 개입은 ‘안전·보고·지지연결’이 최우선입니다. 학교 프로토콜 준수,증거보관,단호한 의사표현·역할연습을 포함하며,혼자 두지 않는 지지체계를 설계합니다.',socialskills:
- '【상세】 사회기술 훈련은 DESC 스크립트와 비언어 피드백을 반복 연습합니다. 역할연습→실전 과제→피드백의 사이클을 유지하여 일반화를 촉진합니다. 안전규칙과 비밀보장이 전제입니다.',mindfulness:
- '【상세】 마음챙김은 주의조절·체험개방성·자기연민을 증진합니다. 짧고 자주(3~5분)연습을 권장하며,해리·플래시백 위험 시 안정화 기술을 우선합니다.',dbt: '【상세】 DBT 스킬 트레이닝은 위기대처(고통감내)·감정조절·대인효과성·마음챙김의 모듈로 구성됩니다. 스킬 카드를 생활 속 과제로 연결하여 사용률을 높입니다.',stabilization:
- '【상세】 안전·안정화 단계는 호흡·감각접지·자원활성화로 자율신경계를 조절합니다. 창(Window of Tolerance)관찰과 휴식·자기돌봄 계획이 병행되어야 합니다.',narrative:
- '【상세】 서사화는 파편화된 기억을 시간/맥락에 재배치하여 의미를 회복합니다. 실감조절(grounding)과 단계적 노출을 병행하고,세션 후 자기돌봄이 필수입니다.',emdr: '【상세】 EMDR은 표적기억·부정인지·신체감각을 설정 후 양측자극(BLS)으로 재처리합니다. 안정화가 선행되어야 하며,세션 후 휴식과 일상 복귀 계획을 안내합니다.',craving:
- '【상세】 충동은 파도처럼 상승-하강합니다. 지연(10분)·치환·단서차단으로 파도의 지나감을 체험하게 하고,지지 연결로 고립을 줄입니다. 감정대처 기술과 함께 사용합니다.',relapse:
- '【상세】 재발 예방은 ‘경고 신호 인식→If-Then 계획→후속 회복 루틴’의 3단계입니다. 전부-아니면 사고를 교정하고,미끄러짐을 학습 기회로 재구성합니다.',digital:
- '【상세】 디지털 사용은 환경·보상이 결정적입니다. 침실 분리,알람 대체,차단앱,오프라인 루틴을 병행하며,취침 1시간 전 무기기 원칙을 핵심규칙으로 둡니다.',values:
- '【상세】 만족 장면에서 반복되는 가치·강점을 언어화하고,작은 실험으로 ‘적합도’를 검증합니다. 에너지·만족 점수를 주기적으로 기록해 의사결정에 반영합니다.',design:
- '【상세】 일 재설계는 타임오딧→방해요인 제거→집중블록 캘린더화→경계 설정→협상으로 진행됩니다. 성과 지표를 정의하여 지속가능성을 높입니다.',search:
- '【상세】 구직은 포지션-스킬 적합도와 노출전략이 핵심입니다. 작품집은 문제-해결-성과 구조,아웃리치는 작게·자주·맞춤형으로 일정을 고정합니다.',schema:
- '【상세】 스키마는 유년기 경험에서 형성된 지속적 신념·패턴입니다. 모드 인식,증거일지,이미지 리스크립팅,행동실험을 통합해 유연성을 높입니다.',bound:
- '【상세】 경계는 ‘권리·한계·후속조치’의 명료화입니다. 작은 NO부터 연습하고,반복 위반에는 표준화된 후속조치를 적용합니다.',attach:
- '【상세】 애착패턴(불안/회피)은 갈등 시 반응을 좌우합니다. 트리거-감정-행동 기록과 대안반응 스크립트로 ‘철수-추격’ 사이클을 완화하고 안정감을 확장합니다.',};const SPEC={depression:{smart: ['6주 내 외출/자기관리 주 3회,PHQ-9 5점↓'],kpi: ['PHQ-9','즐거움/성취','수면 효율'],plan: [
- '1주: 평가·BA 시작','2주: 자동사고 기록','3주: 대안행동 실험','4주: 수면·운동 루틴','5주: 사회적 접촉 추가','6주: 유지·재발신호',],hw: ['활동표','자동사고 기록지'],red: ['자/타해 위험,기능 급락'],},anxiety:{smart: ['회피 장면 3개 노출,GAD-7 4점↓'],kpi: ['GAD-7','노출 수행률','안전행동 빈도'],plan: [
- '1주: 계층표/안전행동','2주: 감각 노출','3주: 상황 노출','4주: 재해석/주의전환','5주: 고난도 노출','6주: 유지 계획',],hw: ['노출 기록지','안전행동 체크'],red: ['광범위 회피 확대,안전 문제'],},ocd:{smart: ['ERP 주 5회,OCI-R 20%↓'],kpi: ['OCI-R','의식 시간','ERP 준수율'],plan: [
- '1주: 분석·계층','2주: 저강도 ERP','3주: 중강도 ERP','4주: 인지 교정','5주: 고강도 ERP','6주: 유지·카드',],hw: ['ERP 기록지','확신추구 감축률'],red: ['신체 손상·가족 갈등·해리'],},social:{smart: ['회의 발언 주 2회,LSAS 15%↓'],kpi: ['LSAS','실험 횟수','자기초점 점수'],plan: [
- '1주: 주의전환','2주: 역할연습','3주: 노출 2건','4주: 비언어 체크','5주: 즉흥 스피치','6주: 유지',],hw: ['발언 로그','관찰 항목'],red: ['완전 회피,직무 손상'],},health:{smart: ['검색 70%↓,재검사 간격 72h'],kpi: ['검색/일','확신추구 빈도','SUDS'],plan: [
- '1주: 교육','2주: 검색 금식','3주: 재검사 지연','4주: 수용 훈련','5주: 노출','6주: 유지',],hw: ['욕구 기록','가능/개연 표'],red: ['의학적 경고증상 무시'],},grief:{smart: ['의식 2회,기능 1개 개선'],kpi: ['슬픔 강도','기능 수행'],plan: [
- '1주: 서사','2주: 편지·추억','3주: 의미화','4주: 일상 복귀','5주: 기념 의식','6주: 재적응',],hw: ['편지','복귀 체크'],red: ['복합애도 의심'],},sleep:{smart: ['수면효율 ≥85%,ISI 7점↓'],kpi: ['ISI','효율(%)','낮잠/카페인'],plan: [
- '1주: 일지','2주: 제한','3주: 자극조절','4주: 인지','5주: 최적화','6주: 유지',],hw: ['일지','걱정시간'],red: ['기면·무호흡 의심'],},burnout:{smart: ['회복 블록 주 5회,피로 30%↓'],kpi: ['피로 VAS','회복 횟수','초과근무'],plan: [
- '1주: 매핑','2주: 경계·재배치','3주: 마이크로 회복','4주: 지지 연결','5주: 의미·강점','6주: 유지',],hw: ['에너지 매트릭스','루틴 체크'],red: ['수면박탈·실수/사고'],},communication:{smart: ['비난 50%↓,NVC 주 4회'],kpi: ['갈등 빈도','NVC 횟수','만족도'],plan: [
- '1주: 패턴·안전','2주: NVC 교육','3주: 경청 5분','4주: 문제해결 루틴','5주: 신호 합의','6주: 유지',],hw: ['스크립트','대화 로그'],red: ['폭력 위험'],},boundaries:{smart: ['역할표 가시화,침범 70%해결'],kpi: ['이행률','해결률'],plan: [
- '1주: 경계 지형','2주: 역할표','3주: 합의','4주: 점검','5주: 시뮬','6주: 유지',],hw: ['RACI 표','대응 문구'],red: ['삼각관계 고착'],},parenting:{smart: ['목표행동 2배,문제행동 30%↓'],kpi: ['빈도','강화 비율'],plan: [
- '1주: ABC','2주: 강화','3주: 결과','4주: 대체행동','5주: 학교 연계','6주: 유지',],hw: ['토큰 차트','칭찬 리스트'],red: ['체벌·학대 위험'],},coparent:{smart: ['공동캘린더 100%,갈등메시지 50%↓'],kpi: ['커버리지','위반률','갈등비율'],plan: [
- '1주: 원칙','2주: 일정/규칙','3주: 우선순위','4주: 비상·분쟁','5주: 리뷰','6주: 유지',],hw: ['헌장','규칙 체크'],red: ['아동 도구화'],},adhd:{smart: ['시작지연 50%↓,완료율 30%↑'],kpi: ['지연 시간','완료율','보상'],plan: [
- '1주: 환경·체크','2주: 타이머','3주: 토큰','4주: 분절','5주: 학교 연계','6주: 유지',],hw: ['준비물 카드','타이머 루틴'],red: ['수면장애·위험행동'],},anger:{smart: ['폭발 40%↓,회복시간 50%↓'],kpi: ['빈도/강도','회복 시간','대안행동'],plan: [
- '1주: 트리거','2주: 멈춤-호흡','3주: 대안행동','4주: 복기','5주: 모델링','6주: 유지',],hw: ['감정 온도계','복기표'],red: ['자/타해 위험'],},learning:{smart: ['완료율 80%,성적+10'],kpi: ['완료율','오류감소','복습주기'],plan: [
- '1주: 진단','2주: 분절·간격','3주: 피드백','4주: 요약','5주: 약점 보완','6주: 유지',],hw: ['오답노트','스케줄'],red: ['학습장애 의심'],},peer:{smart: ['보고 100%,대응 24h'],kpi: ['보고율','지지활성','안전'],plan: [
- '1주: 안전/보고','2주: 역할연습','3주: 지지 연결','4주: 협력','5주: 온라인 안전','6주: 리뷰',],hw: ['스크립트','체크리스트'],red: ['지속적 위협'],},socialskills:{smart: ['DESC 4회,거절성공 60%'],kpi: ['연습 횟수','피드백','실전 적용'],plan: [
- '1주: DESC','2주: 비언어','3주: 스크립트','4주: 실전/피드백','5주: 난이도↑','6주: 유지',],hw: ['대본','피드백 카드'],red: ['보복 위험'],},mindfulness:{smart: ['주 5일×5분,VAS 30%↓'],kpi: ['일수','세션 길이','스트레스'],plan: [
- '1주: 3분 호흡','2주: 바디스캔','3주: 걷기','4주: 수용/자애','5주: 어려운 감정','6주: 일상 적용',],hw: ['기록표','유발 로그'],red: ['해리/플래시백'],},dbt:{smart: ['TIPP 3회,DEAR MAN 2회'],kpi: ['스킬 로그','위기 시간','관계 만족'],plan: [
- '1주: 관찰/명명','2주: TIPP','3주: ABC PLEASE','4주: DEAR MAN','5주: 통합','6주: 유지',],hw: ['스킬 카드','대처 계획'],red: ['자/타해·남용'],},stabilization:{smart: ['SUDS 30%↓,접지 3종 숙달'],kpi: ['SUDS','빈도','사용률'],plan: [
- '1주: 호흡','2주: 감각접지','3주: 심상','4주: 창 모니터링','5주: 미세 트리거','6주: 유지',],hw: ['SUDS 로그','체크표'],red: ['재외상화·해리'],},narrative:{smart: ['서사 1차 완성,PCL-5 20%↓'],kpi: ['PCL-5','노출 강도','안전계획'],plan: [
- '1주: 타임라인','2주: 저강도 서사','3주: 재평가','4주: 강도↑','5주: 가치 통합','6주: 유지',],hw: ['서사 가이드','돌봄 체크'],red: ['악몽/플래시백 급증'],},emdr:{smart: ['BLS 세션 4회,SUDS 40%↓'],kpi: ['SUDS','세션수','VOC'],plan: [
- '1주: 자원','2주: 표적 설정','3주: BLS/평가','4주: 재처리/설치','5주: 일반화','6주: 유지',],hw: ['상태 로그','긍정 인지'],red: ['감당 불가 각성'],},craving:{smart: ['지연성공 70%,사용 0회'],kpi: ['강도/지속','지연 성공','사용일'],plan: [
- '1주: 분석','2주: 지연/치환','3주: 회피/보상','4주: 지지','5주: 감정대처','6주: 유지',],hw: ['갈망 로그','대체 리스트'],red: ['의료 위험/법적 문제'],},relapse:{smart: ['If-Then 3개,24h 회복 100%'],kpi: ['감지율','회복시간','연락률'],plan: [
- '1주: 신호 맵핑','2주: If-Then','3주: 후속 계획','4주: 지지 리허설','5주: 고위험 리허설','6주: 유지',],hw: ['회복 카드','연락 리스트'],red: ['연속 사용·폭력'],},digital:{smart: ['총 사용 30%↓,취침 1h 무기기 80%'],kpi: ['총 사용','취침 전 사용','오프라인 활동'],plan: [
- '1주: 베이스라인/차단','2주: 침실 분리','3주: 대체 루틴','4주: 보상','5주: 유혹 관리','6주: 자동화',],hw: ['스크린타임','오프라인 일정'],red: ['수면/직무 저하'],},values:{smart: ['상위3 가치 도출,실험2 수행'],kpi: ['만족/에너지','실험수','적합도'],plan: [
- '1주: 스토리라인','2주: 강점 인터뷰','3주: 실험1','4주: 리뷰','5주: 실험2','6주: 다음 단계',],hw: ['가치-역할 매트릭스','실험 로그'],red: ['의미 상실 심화'],},design:{smart: ['Deep Work 90분×3/주,불필요 회의 20%↓'],kpi: ['집중 블록','회의 시간','몰입도'],plan: [
- '1주: 타임오딧','2주: 블록 캘린더','3주: 경계/협상','4주: 재배치','5주: 성과지표','6주: 유지',],hw: ['타임오딧','경계 템플릿'],red: ['심리안전 저하'],},search:{smart: ['정보인터뷰 4회,포폴 2개'],kpi: ['아웃리치','미팅','자산'],plan: [
- '1주: 타깃맵·레주메','2주: 포폴 구조','3주: 1차 아웃리치','4주: 피드백 반영','5주: 지원/맞춤','6주: 팔로업',],hw: ['스크립트','보드'],red: ['스트레스·자존감 붕괴'],},schema:{smart: ['트리거 인식 80%,대안행동 3종'],kpi: ['인식률','실행 수','자기연민'],plan: [
- '1주: 식별','2주: 증거일지','3주: 이미지','4주: 실험','5주: 관계 적용','6주: 유지',],hw: ['스키마 카드','증거일지'],red: ['해리/자기비난'],},bound:{smart: ['NO 실전 3회,침범 50%↓'],kpi: ['거절 성공','침범 빈도','불편감'],plan: [
- '1주: 권리/한계','2주: 대본','3주: 작은 NO','4주: 후속조치','5주: 어려운 상대','6주: 유지',],hw: ['DESC','대응표'],red: ['보복/위협'],},attach:{smart: ['패턴 변경 3회,안정감 20%↑'],kpi: ['디에스컬레이션','안정감/신뢰','대안 사용'],plan: [
- '1주: 지도화','2주: ABC 기록','3주: 대안 반응','4주: 적용/피드백','5주: 복잡 상황','6주: 유지',],hw: ['ABC','스크립트'],red: ['단절 장기화'],},};const menuList=document.getElementById('menuList');const cardGrid=document.getElementById('cardGrid');const subWrap=document.getElementById('subWrap');const subTitle=document.getElementById('subTitle');const chips=document.getElementById('chips');const modal=document.getElementById('modal');const closeBtn=modal.querySelector('.close');const titleEl=document.getElementById('modalTitle');const midEl=document.getElementById('modalMid');const detailEl=document.getElementById('modalDetail');const tagsEl=document.getElementById('modalTags');const kvDetail=document.getElementById('kvDetail');const expertKV=document.getElementById('expertKV');const noteBox=document.getElementById('noteBox');const exampleList=document.getElementById('exampleList');const smartList=document.getElementById('smartList');const kpiChips=document.getElementById('kpiChips');const redList=document.getElementById('redList');const planList=document.getElementById('planList');const hwList=document.getElementById('hwList');function li(parent,text) {const el=document.createElement('li');el.textContent=text;parent.appendChild(el);}function chipKPI(parent,text) {const el=document.createElement('span');el.className='chip-kpi';el.textContent=text;parent.appendChild(el);}function fillDL(dl,kv) {dl.innerHTML='';if (!kv)return;for (const [k,v] of Object.entries(kv)) {const dt=document.createElement('dt');dt.textContent=k;const dd=document.createElement('dd');dd.textContent=v;dl.append(dt,dd);}}const TAG_STYLES={cbt: 'cbt',act: 'act',dbt: 'dbt',erp: 'erp',mindfulness: 'mind',mind: 'mind',nvc: 'nvc','cbt-i': 'cbt-i',emdr: 'emdr',};function makeBadge(label) {const key=(label||'').toLowerCase();const cls=TAG_STYLES[key]||'';const span=document.createElement('span');span.className='badge '+cls;const dot=document.createElement('span');dot.className='dot';const text=document.createElement('span');text.textContent=label;span.appendChild(dot);span.appendChild(text);return span;}function fillTags(el,arr) {el.innerHTML='';(arr||[]).forEach(function (t) {el.appendChild(makeBadge(t));});}const ASMT={depression: [
- ['PHQ-9(우울)','https://phqscreeners.com/select-screener/'],[
- 'CES-D(정보)','https://www.apa.org/pi/about/publications/caregivers/practice-settings/assessment/tools/depression',],],anxiety: [
- ['GAD-7(불안)','https://www.phqscreeners.com/select-screener/'],[
- 'Panic 체크(정보)','https://www.anxiety.org/panic-attacks-and-panic-disorder',],],ocd: [
+function ozJOrMYW() {var r2QWUhLi = 6;return r2QWUhLi > 50;}
+function ylRykCMg() {var BXwEANxf = 52;return BXwEANxf > 50;}
+function jDATUET1() {var ghzotlyA = 86;return ghzotlyA > 50;}
+const DATA = [
+ {id: ZGqx1pZH("fXmgDUCZ=="),
+ VpR9GLV7: ZGqx1pZH("6rCc7J247IOB64u0"),
+ XXj3kyyw: ZGqx1pZH("66y47KCcIOyduOyLncK37KCV7ISc7KGw7KCIwrfsgqzqs6At7ZaJ64+ZIO2MqO2EtCDsoJDqsoDsnLzroZwg6riw64qlIO2ajOuzteqzvCDsnpDquLDsnbTtlbTrpbwg64+V64qUIOq4sOy0iCDqsJzsnoUu"),
+ jNhRbArI: ZGqx1pZH("7Y+J6rCA4oaS66qp7ZGcIO2VqeydmOKGkkNCVMK37KCV7ISc7KGw7KCIwrftlonrj5nsi6Ttl5jihpLqs7zsoJzCt+2UvOuTnOuwsSDro6jtlIQu"),
+ g9B9MHci: [ZGqx1pZH("Q0JU"), ZGqx1pZH("7KCV7ISc7KGw7KCI"), ZGqx1pZH("7ZaJ64+Z7Iuk7ZeY"), ZGqx1pZH("7ZS865Oc67Cx")],
+ ZguLmLww: [
+ {id: ZGqx1pZH("ZGVwcmVzc2lvbg=="),
+ c2YAbqjp: '우울',
+ g9B9MHci: [ZGqx1pZH("7ZaJ64+Z7Zmc7ISx7ZmU"), ZGqx1pZH("7J247KeA7J6s6rWs7ISx"), '수면'],
+ XXj3kyyw: ZGqx1pZH("7Zmc64+ZIOyggO2VmC3rtoDsoJXsgqzqs6At66y06riw66ClIOyInO2ZmOydhCDrgYrsnYwu"),
+ jNhRbArI: ZGqx1pZH("7ZaJ64+Z7Zmc7ISx7ZmUwrfsppDqsbDsm4Av7ISx7LeoIOq4sOuhncK37J6Q64+Z7IKs6rOgIOyerOq1rOyEsS4="),
+ kv: {목표: ZGqx1pZH("6riw64qlIO2ajOuztQ=="),
+ 기법: ZGqx1pZH("7ZaJ64+Z7Zmc7ISx7ZmULCDsnbjsp4DsnqzqtazshLE="),
+ 세션: ZGqx1pZH("OH4xMu2ajA=="),},
+ oDe7h5Tu: {팁: ZGqx1pZH("7JWE7KO8IOyekeydgCDqs7zsoJzrtoDthLAu")},
+ BSHRc1bx: ZGqx1pZH("7J286rSA7ISx7J20IO2VteyLrC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("7J287IOB7Zmc64+Z7ZGc7JeQIOKAmDXrtoQg7IKw7LGF4oCZ67aA7YSwIOyLnOyeke2VtCDsppDqsbDsm4Av7ISx7LeoIOygkOyImCDquLDroZ0u"),
+ ZGqx1pZH("7J6Q64+Z7IKs6rOgOiDigJjrgpwg7JWE66y06rKD64+EIOuqu+2VtOKAmSDihpIg6re86rGw7YOQ7IOJwrfrjIDslYjsgqzqs6Ag64+E7LacLg=="),
+ ZGqx1pZH("7IiY66m07JyE7IOdIOyytO2BrOumrOyKpO2KuDog7Leo7LmowrfquLDsg4Eg6rOg7KCVLCDsubTtjpjsnbgg7Lu37Jik7ZSELg=="),
+ ],},
+ {id: ZGqx1pZH("YW54aWV0eQ=="),
+ c2YAbqjp: ZGqx1pZH("67aI7JWIwrfqs7Xtmak="),
+ g9B9MHci: ['노출', ZGqx1pZH("7JWI7KCE7ZaJ64+Z6rCQ7IaM")],
+ XXj3kyyw: ZGqx1pZH("7ZqM7ZS8wrfslYjsoITtlonrj5nsnYQg7KSE7J2066mwIOyDiO2VmeyKtSDstInsp4Qu"),
+ jNhRbArI: ZGqx1pZH("7IOB7ZmpL+zoKfDC7W"),
+ kv: {목표: ZGqx1pZH("7ZqM7ZS8IOqwkOyGjA=="), 세션: ZGqx1pZH("MTB+MTbtmow=")},
+ oDe7h5Tu: {팁: ZGqx1pZH("6rCV64+EIDMvMTDsl5DshJwg7Iuc7J6R")},
+ BSHRc1bx: ZGqx1pZH("7Ken6rOgIOyekOyjvCDrhbjstpwu"),
+ Zihlm4kP: [
+ ZGqx1pZH("7KeA7ZWY7LKgIDHsoJXqsbDsnqUg7Iuc64+EKOuPme2WiSDsl4bsnbQpIOKGkiDssrTrpZgg7Iuc6rCEIOuKmOumrOq4sC4="),
+ ZGqx1pZH("7J247YSw66Gc7IWJ7Yuw67iMIOuFuOy2nDogMzDstIgg6rO87Zi47Z2hIO2bhCDqsJDqsIEg6riw66GdLg=="),
+ ZGqx1pZH("7JWI7KCE7ZaJ64+ZIOuqqeuhne2ZlCDtm4QgMeqwnOyUqSDspITsnbTquLAo66y867ORwrfrj4TtlLwg7Iug7Zi4KS4="),
+ ],},
+ {id: ZGqx1pZH("kTPyEchV"),
+ c2YAbqjp: ZGqx1pZH("6rCV67CVKE9DRCk="),
+ g9B9MHci: [ZGqx1pZH("RVJQ"), ZGqx1pZH("7J2Y7Iud7LCo64uo")],
+ XXj3kyyw: ZGqx1pZH("64W47LacwrfrsJjsnZHrsKnsp4AoRVJQKeuhnCDqsJXrsJUg7Iic7ZmYIOyVve2ZlC4="),
+ jNhRbArI: ZGqx1pZH("7J2Y7IudIOq4sOuhncK37Jyg67Cc6rOE7Li1wrdFUlAg67CY67O1Lg=="),
+ kv: {목표: ZGqx1pZH("7J2Y7IudIOqwkOyGjA==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7JmE67K9IOygnOqxsOuztOuLpCDquLDriqUg7ZqM67O1IOuqqe2RnA==")},
+ BSHRc1bx: ZGqx1pZH("7ZmV7IugIOy2lOq1rOulvCDspITsnbTquLAu"),
+ Zihlm4kP: [
+ ZGqx1pZH("7IaQ7JS76riwIOqwleuwlTog67mE64iEIDHtmowg6rec7LmZIOyEpOyglSDtm4Qg7LSI6rO8IOq4iOyngCBFUlAu"),
+ ZGqx1pZH("7ZmV7J24IOqwleuwlTog6rCA7Iqk67C467iMIOyCrOynhCAx7J6l66eMIOy0rOyYgSwg7LaU6rCAIO2ZleyduCDquIjsp4Au"),
+ ZGqx1pZH("7Jik7Je8IOuFuOy2nDog7IaQ7J6h7J20IOunjOynhCDtm4Qg7KaJ7IucIOyGkOyUu+nJwdnAiW="),
+ ],},
+ {id: ZGqx1pZH("a98Oq9zB"),
+ c2YAbqjp: ZGqx1pZH("7IKs7ZqM67aI7JWI"),
+ g9B9MHci: [ZGqx1pZH("7ZaJ64+Z7Iuk7ZeY"), ZGqx1pZH("7KO87J2Y7KCE7ZmY")],
+ XXj3kyyw: ZGqx1pZH("7J6Q6riw7LSI7KCQIOyjvOydmOulvCDsmbjrtoDroZwg7KCE7ZmY7ZWY6rOgIO2WieuPmeyLpO2XmC4="),
+ jNhRbArI: ZGqx1pZH("7JiI7ZaJ7Jew7Iq1wrftlLzrk5zrsLHCt+D7QTvKxQ"),
+ kv: {목표: ZGqx1pZH("7ZqM7ZS84oaTIOuFuOy2nOKGkQ==")},
+ oDe7h5Tu: {팁: ZGqx1pZH("7JmE67K9IOuwnO2RnOuztOuLpCDssLjsl6w=")},
+ BSHRc1bx: ZGqx1pZH("7J6R7J2AIOuwnOyWuOu2gO2EsC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("7ZqM7J2Y7JeQ7IScIDHrrLjsnqUg67Cc7Ja4IOuqqe2RnCDihpIg6rKw6rO8L+2DgOyduCDrsJjsnZEg6riw66GdLg=="),
+ ZGqx1pZH("7KO87J2Y7KCE7ZmYIO2biOugqDog67Cc7Ja4IOykkSDsnZjsnpAg7IOJwrfsg4HrjIAg7ZGc7KCVIDPqsIDsp4Ag6rSA7LCwLg=="),
+ ZGqx1pZH("7Jet7ZWg7Jew7Iq1OiDsponshJ0g7J6Q6riw7IaM6rCcIDMw7LSIIMOXIDPtmowu"),
+ ],},
+ {id: ZGqx1pZH("EyCuL2dG"),
+ c2YAbqjp: ZGqx1pZH("6rG06rCV7Je866Ck"),
+ g9B9MHci: [ZGqx1pZH("7Kad6rGw7YOQ7IOJ"), ZGqx1pZH("67aI7ZmV7Iuk7ISx7IiY7Jqp")],
+ XXj3kyyw: ZGqx1pZH("7ZmV7IugIOy2lOq1rMK36rKA7IKsIOuwmOuzteydhCDrgq7stpTquLAu"),
+ jNhRbArI: ZGqx1pZH("6rCA64ql7ISxLeyLrOqwgeyEsSDrtoTrpqwsIOu2iO2ZleyLpOyEsSDsiJjsmqkg7ZuI66CoLg=="),
+ kv: {목표: ZGqx1pZH("6rKA7IKsIOynkeywqSDsmYTtmZQ=")},
+ oDe7h5Tu: {의학협력: ZGqx1pZH("7J2Y7ZWZ7KCBIOyGjOqyrCDsobTspJE=")},
+ BSHRc1bx: ZGqx1pZH("4oCY6rCA64ql4oCZ6rO8IOKAmOqwnOyXsOKAmSDqtazrtoQu"),
+ Zihlm4kP: [
+ ZGqx1pZH("6rKA7IOJ6riI7IudIDQ47Iuc6rCEIOyLpO2XmCDtm4Qg67aI7JWIIOqzoeyEoCDquLDroZ0u"),
+ ZGqx1pZH("7J6s6rKA7IKsIOyngOyXsDogNzLsi5zqsIQg66OwIOyEpOyglSDtm4Qg7Kad7IOBIOuzgO2ZlCDqtIDssLAu"),
+ ZGqx1pZH("6rCA64ql7ISxL+f2eJ1dU0="),
+ ],},
+ {id: ZGqx1pZH("Z3JpZWY="),
+ c2YAbqjp: ZGqx1pZH("7JWg64+EKEdyaWVmKQ=="),
+ g9B9MHci: [ZGqx1pZH("7J2Y66+47ZmU"), ZGqx1pZH("7KeA7KeA7LK06rOE")],
+ XXj3kyyw: ZGqx1pZH("7IOB7Iuk7J2YIOydmOuvuOulvCDsnqzsoJXrpr3tlZjqs6Ag7J287IOB7Jy866GcIOyerOyggeydkS4="),
+ jNhRbArI: ZGqx1pZH("7LaU7Ja1IOyekeyXhcK37Y647KeAwrfsnZjsi53Ct+E99iOhCA"),
+ kv: {목표: ZGqx1pZH("7JWg64+EIOqzvOygnCDthrXqs7w=")},
+ oDe7h5Tu: {주의: ZGqx1pZH("67O17ZWp7JWg64+EIOydmOyLrOyLnCDsoITrrLjtj4nqsIA=")},
+ BSHRc1bx: ZGqx1pZH("64qQ66as7KeA66eMIOyVnuycvOuhnC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("6rOg7J247JeQ6rKMIOuztOuCtOuKlCDtjrjsp4AgMe2GtSDsnpHshLEg67CPIOuCreuPhS4="),
+ ZGqx1pZH("6riw64WQIOydmOyLnSDshKTqs4Q6IOq4sOydvOyXkCDsgrDssYXCt+nFX41Nb8"),
+ ZGqx1pZH("7KeA7KeAIOyduOusvCAz66qFIOuqqeuhne2ZlMK37Jew6529IOqzhO2ajS4="),
+ ],},
+ {id: ZGqx1pZH("SDelJOLa="),
+ c2YAbqjp: ZGqx1pZH("7IiY66m0wrfqsIHshLE="),
+ g9B9MHci: [ZGqx1pZH("Q0JULUk="), ZGqx1pZH("7IiY66m07JyE7IOd")],
+ XXj3kyyw: ZGqx1pZH("67aI66m0IOycoOyngOyalOyduCDqsJzshKAu"),
+ jNhRbArI: ZGqx1pZH("7IiY66m07KCc7ZWcwrfsnpDqt7nsobDsoIjCt+gxCzgM35="),
+ kv: {목표: ZGqx1pZH("7IiY66m0IO2aqOycqOKGkQ==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("64Ku7J6gwrfsubTtjpjsnbgg7Iuc6rCEIOq0gOumrA==")},
+ BSHRc1bx: ZGqx1pZH("7Leo7LmoL+fKzcqR5b"),
+ Zihlm4kP: [
+ ZGqx1pZH("7J287KO87J28IOyImOuptOydvOyngCDsnpHshLEg7ZuEIOyImOuptCDtmqjsnKgg6rOE7IKwLg=="),
+ ZGqx1pZH("7Lmo7IukPeyImOuptC/xXQizmWS+J2damlYz="),
+ ZGqx1pZH("6riw7IOBIOyLnOqwhCDqs6DsoJUgKyDtlofruZsg64W47LacIDEw67aELg=="),
+ ],},
+ {id: ZGqx1pZH("YnVybm91dA=="),
+ c2YAbqjp: ZGqx1pZH("7Iqk7Yq466CI7IqkwrfrsojslYTsm4M="),
+ g9B9MHci: [ZGqx1pZH("7J6Q7JuQ6rSA66as"), ZGqx1pZH("7ZqM67O17KCE6561")],
+ XXj3kyyw: ZGqx1pZH("7JqU6rWsLeyekOybkCDrtojqt6DtmJXsnYQg7J6s7ISk6rOELg=="),
+ jNhRbArI: ZGqx1pZH("6rK96rOEwrfsl5DrhIjsp4DCt+xg7wmDSH"),
+ kv: {목표: ZGqx1pZH("7KeA7IaN6rCA64ql7ISx")},
+ oDe7h5Tu: {팁: ZGqx1pZH("66eI7J207YGs66GcIO2ajOuztQ==")},
+ BSHRc1bx: ZGqx1pZH("7ZqM67O164+EIOydvOygleycvOuhnC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("7JeF66y0IOy6mOumsOuNlOyXkCA167aEIO2ajOuztSDruJTroZ0gM+JxY9dCI5"),
+ ZGqx1pZH("7JqU6rWsLeyekOybkCDrp6Ttirjrpq3siqQg7J6R7ISxIO2bhCDsnITsnoQgMuqxtCDshKDsoJUu"),
+ ZGqx1pZH("7Ye06re8IOydmOyLnSjro6jti7QpIDPri6jqs4Qg7ISk6rOELg=="),
+ ],},
+ ],},
+ {id: ZGqx1pZH("ZmFtaWx5"),
+ VpR9GLV7: ZGqx1pZH("67aA67aAL+yECZrCsp=="),
+ XXj3kyyw: ZGqx1pZH("7IOB7Zi47J6R7JqpIOyInO2ZmMK37J2Y7IKs7IaM7Ya1IO2MqO2EtCDrtoTshJ3snLzroZwg6rCI65OxIOq1rOyhsOulvCDsnqzshKTqs4Qu"),
+ jNhRbArI: ZGqx1pZH("6rK96rOE7ISgwrfsl63tlaAg7J6s7KCV66CsLCBOVkMsIOqwgOqzhOuPhC/hoSl81xq"),
+ g9B9MHci: [ZGqx1pZH("TlZD"), ZGqx1pZH("6rK96rOE7ISg"), ZGqx1pZH("7Iic7ZmY7KeI66y4")],
+ ZguLmLww: [
+ {id: ZGqx1pZH("Y29tbXVuaWNhdGlvbg=="),
+ c2YAbqjp: ZGqx1pZH("7J2Y7IKs7IaM7Ya1IOyerOq1rOyEsShOVkMp"),
+ g9B9MHci: [ZGqx1pZH("SS3rqZTsi5zsp4A=")],
+ XXj3kyyw: ZGqx1pZH("67mE64KcL+GzSRNOX4+rDZk43j7=="),
+ jNhRbArI: ZGqx1pZH("6rSA7LCwLeuKkOuCjC3smpXqtawt7JqU7LKtIDTri6jqs4Qu"),
+ kv: {목표: ZGqx1pZH("6rCI65OxIO2DiOqyqe2ZlA==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7Y+pyPOV0cN")},
+ BSHRc1bx: ZGqx1pZH("7J6R7J2AIOyCrOqxtOu2gO2EsC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("6rCA7KCVIOyYiOyLnDog4oCY64SI64qUIOunqOuCoOKAmSDihpIg4oCYKOq0gOywsCkg7Ja07KCcIDnsi5zsl5DigKYsICjripDrgowp4oCm4oCZ66GcIOyghO2ZmC4="),
+ ZGqx1pZH("67CY7JiB7KCBIOqyveyyrSA167aEIO2DgOydtOuouCDrsojqsIjslYQg7KCB7JqpLg=="),
+ ZGqx1pZH("6rWs7LK0IOyalOyyrSDsnpHshLE6IOKAmOyjvCAy7ZqMIOyEpOqxsOyngCDtlansnZjigJku"),
+ ],},
+ {id: ZGqx1pZH("Ym91bmRhcmllcw=="),
+ c2YAbqjp: ZGqx1pZH("6rK96rOE7ISgwrfsl63tlaA="),
+ g9B9MHci: [ZGqx1pZH("7IK86rCB6rSA6rOE7JmE7ZmU")],
+ XXj3kyyw: ZGqx1pZH("66qo7Zi47ZWcIOqyveqzhC/VHZFgQaO="),
+ jNhRbArI: ZGqx1pZH("6rCA6rOE64+Ewrfqsr3qs4Qg7KeA64+E4oaS7Jet7ZWgIOyerOuwsOy5mC4="),
+ kv: {목표: ZGqx1pZH("7Jet7ZWgIOuqheujjO2ZlA==")},
+ oDe7h5Tu: {팁: ZGqx1pZH("7ZWp7J2Y7IKs7ZWtIOyLnOqwge2ZlA==")},
+ BSHRc1bx: ZGqx1pZH("7ZqM7J2Y66GdIOycoOyngC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("6rCA6rOE64+EIDPshLjrjIAg7J6R7ISxIO2bhCDsgrzqsIHqtIDqs4Qg7Iud67OELg=="),
+ ZGqx1pZH("6rCA7IKsIOyXre2VoO2RnOulvCDrsr3sl5Ag67aA7LCpwrcy7KO8IO2bhCDsnqztj4nqsIAu"),
+ ZGqx1pZH("4oCY7JWE7J20IOusuOygnOKAmeyXkCDsobDrtoAg6rCc7J6FIOygnO2VnCDtlansnZgu"),
+ ],},
+ {id: ZGqx1pZH("AxPZISEv"),
+ c2YAbqjp: ZGqx1pZH("7JaR7Jyh7L2U7Lmt"),
+ g9B9MHci: [ZGqx1pZH("6riN7KCV6rCV7ZmU"), ZGqx1pZH("7J286rSA7ISx")],
+ XXj3kyyw: ZGqx1pZH("6rec7LmZwrfsnbzqtIDshLHCt+oDERdHTi"),
+ jNhRbArI: ZGqx1pZH("6rWs7LK0IOyngOyLnCwg7KaJ7IucIOqwle2ZlCwg7YOA7J6E7JWE7JuDIOq3nOyglS4="),
+ kv: {목표: ZGqx1pZH("66y47KCc7ZaJ64+ZIOqwkOyGjA==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("67aA66qoIO2VqeydmCDtlYTsiJg=")},
+ BSHRc1bx: ZGqx1pZH("7Lmt7LCsOuyngOyggT0zOjEg7J207IOBLg=="),
+ Zihlm4kP: [
+ ZGqx1pZH("4oCY7KeA6riIIOqzteydhCDsg4HsnpDsl5Ag64Sj7J6QKOq1rOyytCDsp4Dsi5wp4oCZIOKGkiDshLHqs7Ug7KaJ7IucIOy5reywrC4="),
+ ZGqx1pZH("7Yag7YGwIOqyveygnDog7KCA64WBIOyghCAz6rCcIOuqqOycvOuptCAxMOu2hCDrhoDsnbQu"),
+ ZGqx1pZH("7YOA7J6E7JWE7JuDIOq3nOyglSDsubTrk5zrpbwg64OJ7J6l6rOg7JeQIOqyjOyLnC4="),
+ ],},
+ {id: ZGqx1pZH("Y29wYXJlbnQ="),
+ c2YAbqjp: ZGqx1pZH("6rO164+Z7JaR7Jyh"),
+ g9B9MHci: [ZGqx1pZH("7Jet7ZWg7ZWp7J2Y"), '협력'],
+ XXj3kyyw: ZGqx1pZH("6rCI65Ox7J2EIOuCruy2lOqzoCDsnbzqtIDrkJwg66mU7Iuc7KeALg=="),
+ jNhRbArI: ZGqx1pZH("7Jet7ZWgL+Mkqwe3Tu/qCkYU32U=="),
+ kv: {목표: ZGqx1pZH("7JWE7J20IOykkeyLrCDtmJHroKU=")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7Jew6529IOq3nOy5mSDsoJXtlZjquLA=")},
+ BSHRc1bx: ZGqx1pZH("7JWE7J20IOyVniDqsJDsoJXtkZztmIQg6rec7LmZLg=="),
+ Zihlm4kP: [
+ ZGqx1pZH("6rO164+ZIOy6mOumsOuNlOyXkCDrk7HtlZjqtZDCt+DolcxXfG=="),
+ ZGqx1pZH("67mE7IOBIOyXsOudveunncK36rKw7KCV6raMIOyasOyEoOyInOychCDtlansnZjshJwg7J6R7ISxLg=="),
+ ZGqx1pZH("7LGE7YyF67CpIOqzoOyglSDqs7Xsp4DroZwg6rec7LmZIOqyjOyLnC4="),
+ ],},
+ ],},
+ {id: ZGqx1pZH("Idf3bmRJ="),
+ VpR9GLV7: ZGqx1pZH("7JWE64+Zwrfssq3shozrhYQ="),
+ XXj3kyyw: ZGqx1pZH("7KCV7IScwrftlonrj5nCt+2VmeyKtcK365iQ656Y6rSA6rOE66W8IOuwnOuLrOyXkCDrp57strAg64uk66O4Lg=="),
+ jNhRbArI: ZGqx1pZH("6rCQ7KCV7L2U7LmtLCDsgqztmozshLEsIOyLpO2Wieq4sOuKpSDsvZTsua0sIOu2gOuqqO2biOugqC4="),
+ g9B9MHci: ['놀이', ZGqx1pZH("7IKs7ZqM7ISx"), ZGqx1pZH("7Iuk7ZaJ6riw64ql"), ZGqx1pZH("67aA66qo7L2U7Lmt")],
+ ZguLmLww: [
+ {id: ZGqx1pZH("YWRoZA=="),
+ c2YAbqjp: ZGqx1pZH("7Iuk7ZaJ6riw64qlKEFESEQpIOy9lOy5rQ=="),
+ g9B9MHci: ['계획', ZGqx1pZH("7Iuc6rCE6rSA66as")],
+ XXj3kyyw: ZGqx1pZH("7KaJ7IucIOuztOyDgcK37Iuc6rCB7ZmU6rCAIO2aqOqzvOyggS4="),
+ jNhRbArI: ZGqx1pZH("67aE7KCIwrftg4DsnbTrqLjCt+2GoO2BsOqyveygnMK367aA66qo7L2U7LmtLg=="),
+ kv: {목표: ZGqx1pZH("7Iuc7J6RL+BvRSJxfS==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7ZWZwrfsnZjtlZkg7Jew6rOE")},
+ BSHRc1bx: ZGqx1pZH("Muu2hCDqt5zsuZku"),
+ Zihlm4kP: [
+ ZGqx1pZH("7YOA7J2066i4IDEw67aEIOynkeykkSArIDLrtoQg67O07IOBIOujqO2UhC4="),
+ ZGqx1pZH("7LK07YGs66as7Iqk7Yq4OiDspIDruYTrrLwgNeqwnCDqt7jrprzsubTrk5wu"),
+ ZGqx1pZH("7JWM66a8IOyauOumrOuptCDsponsi5wg7Iuc7J6RIOKAmDLrtoTrp4zigJkg6rec7LmZLg=="),
+ ],},
+ {id: ZGqx1pZH("YW5nZXI="),
+ c2YAbqjp: ZGqx1pZH("67aE64W47KGw7KCIwrfsoJXshJzsvZTsua0="),
+ g9B9MHci: [ZGqx1pZH("7Iug7Zi47YOQ7KeA"), ZGqx1pZH("64yA7JWI7ZaJ64+Z")],
+ XXj3kyyw: ZGqx1pZH("7Iug7Zi4IOyhsOq4sO2DkOyngCDtm4Qg6rCc7J6FLg=="),
+ jNhRbArI: ZGqx1pZH("66mI7LakLe2YuO2doS3qsbDrpqzrkZDquLDCt+vC8CiTrg="),
+ kv: {목표: ZGqx1pZH("7Y+n2b4Qzad/Qed8xWku=")},
+ oDe7h5Tu: {팁: ZGqx1pZH("6rCQ7KCVIOyYqOuPhOqzhA==")},
+ BSHRc1bx: ZGqx1pZH("7ZqM67O1IOyKpO2BrOumve2KuC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("6rCQ7KCVIOyYqOuPhOqzhCAzLzUvN+ZQocRzld=="),
+ ZGqx1pZH("4oCY66mI7LakLeusvCAx7Lu1LTEw7Zi47Z2h4oCZIOujqO2LtC4="),
+ ZGqx1pZH("7IKs7ZuEIOuzteq4sO2RnCjsgqzqsbQt64qQ64KMLeyDneqwgS3ri6TsnYwg7ZaJ64+ZKS4="),
+ ],},
+ {id: ZGqx1pZH("BHR2nE5y="),
+ c2YAbqjp: ZGqx1pZH("7ZWZ7Iq1wrfsnb3quLAv7IiY7ZWZ"),
+ g9B9MHci: ['보상', '분절'],
+ XXj3kyyw: ZGqx1pZH("7ZWZ7Iq1IOyWtOugpOybgOyXkCDsi6Ttlokg7KCE6561Lg=="),
+ jNhRbArI: ZGqx1pZH("67aE7KCI7ZWZ7Iq1wrfqsITqsqnrsJjrs7XCt+2UvOuTnOuwsS4="),
+ kv: {목표: ZGqx1pZH("7IiZ7KCcL+Ln7lL4Ik=")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7ZWZ6rWQIO2YkeugpQ==")},
+ BSHRc1bx: ZGqx1pZH("7J6R7J2AIOyEseqztSDssrTsnbgu"),
+ Zihlm4kP: [
+ ZGqx1pZH("64uo7Ja0IDEw6rCc66W8IDLshLjtirjroZwg64KY64igIOqwhOqyqeuwmOuztS4="),
+ ZGqx1pZH("7Jik64u164W47Yq4OiDsmKTrpZgg7Jyg7ZiVIDPqsIDsp4DroZwg67aE66WYLg=="),
+ ZGqx1pZH("7IiZ7KCcIOyZhOujjCDsgqzsp4TsnYQg67aA66qo7JeQ6rKMIOymieyLnCDqs7XsnKAu"),
+ ],},
+ {id: ZGqx1pZH("nXCddYaZ=="),
+ c2YAbqjp: ZGqx1pZH("65iQ656Y6rSA6rOEwrfrlLDrj4zrprw="),
+ g9B9MHci: [ZGqx1pZH("7J2Y7IKs7IaM7Ya1"), ZGqx1pZH("7KeA7KeA7LK06rOE")],
+ XXj3kyyw: ZGqx1pZH("7JWI7KCEwrfrs7Tqs6DCt+OYZxnWWo=="),
+ jNhRbArI: ZGqx1pZH("67O06rOg7LK06rOEwrfsl63tlaDsl7DsirXCt+E99iOhCA"),
+ kv: {목표: ZGqx1pZH("7JWI7KCEwrfrjIDsnbjquLDsiKA=")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7ZWZ6rWQL+lKcnkM0V==")},
+ BSHRc1bx: ZGqx1pZH("7Zi87J6QIOuRkOyngCDslYrquLAu"),
+ Zihlm4kP: [
+ ZGqx1pZH("7ZWZ6rWQIOuztOqzoCDrnbzsnbgo64u07J6ELeyDgeuLtOyCrC3rs7TtmLjsnpApIOyggOyepS4="),
+ ZGqx1pZH("7Jet7ZWg7Jew7Iq1OiDigJjrqYjstrDspJjigJkg64uo7Zi47ZWcIO2RnO2YhCDtm4jroKgu"),
+ ZGqx1pZH("7KeA7KeAIOy5nOq1rCAy66qF6rO8IOygkOyLrCDslb3sho0g66eM65Ok6riwLg=="),
+ ],},
+ ],},
+ {id: ZGqx1pZH("Z3JvdXA="),
+ VpR9GLV7: ZGqx1pZH("7KeR64uo7IOB64u0"),
+ XXj3kyyw: ZGqx1pZH("7IOB7Zi4IO2UvOuTnOuwsS/Ce0q2150="),
+ jNhRbArI: ZGqx1pZH("66qp7ZGcwrfqt5zsuZkg7ZWp7J2YLCDsl63tlaDsl7DsirXCt+2UvOuTnOuwsSwg7KCE7J20IOqzhO2ajS4="),
+ g9B9MHci: [ZGqx1pZH("64yA7J246riw7Iig"), ZGqx1pZH("7ZS865Oc67Cx"), ZGqx1pZH("7Jet7ZWg7Jew7Iq1")],
+ ZguLmLww: [
+ {id: ZGqx1pZH("uAG7kDf0"),
+ c2YAbqjp: ZGqx1pZH("64yA7J246riw7IigIO2biOugqA=="),
+ g9B9MHci: [ZGqx1pZH("7JqU7LKtwrfqsbDsoIg=")],
+ XXj3kyyw: ZGqx1pZH("6rO87Iic7J2R4oaU6rO16rKp7J2EIOKAmOuLqO2YuMK36rO16rCQ4oCZ7Jy866GcLg=="),
+ jNhRbArI: ZGqx1pZH("REVTQ8K367mE7Ja47Ja0IOyLoO2YuC4="),
+ kv: {목표: ZGqx1pZH("7JqU7LKtL+pv4m0jKl==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7JWI7KCEIOq3nOy5mQ==")},
+ BSHRc1bx: ZGqx1pZH("7Iuk7KCEIOqzvOygnO2ZlC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("REVTQ+GTaZfVnE"),
+ ZGqx1pZH("64iI66ee7Lakwrfsho3rj4TCt+KU6Yuejd=="),
+ ZGqx1pZH("7KO8IDHtmowg7Iuk7KCEIOqzvOygnCDtm4Qg64uk7J2MIO2ajOq4sCDtlLzrk5zrsLEu"),
+ ],},
+ {id: ZGqx1pZH("VFl5okmL="),
+ c2YAbqjp: ZGqx1pZH("66eI7J2465Oc7ZKA64uI7IqkIOq3uOujuQ=="),
+ g9B9MHci: [ZGqx1pZH("7KO87J2Y7KCE7ZmY"), '수용'],
+ XXj3kyyw: ZGqx1pZH("7KO87J2Y66W8IO2YhOyerOuhnCwg67CY7J2R7J2EIOycoOyXsO2VmOqyjC4="),
+ jNhRbArI: ZGqx1pZH("7Zi47Z2hwrfrsJTrlJTsiqTsupTCt+sz3YvQ9y="),
+ kv: {목표: ZGqx1pZH("67CY7J2R7ISx4oaT")},
+ oDe7h5Tu: {팁: ZGqx1pZH("7Ken6rOgIOyekOyjvCDsl7DsirU=")},
+ BSHRc1bx: ZGqx1pZH("7ZWY66OoIDXrtoQu"),
+ Zihlm4kP: [
+ ZGqx1pZH("M+Tb1iXjvf"),
+ ZGqx1pZH("7Iud7IKsIOuqheyDgTog7LKrIDPsnoUg7LKc7LKc7Z6IIOq0gOywsC4="),
+ ZGqx1pZH("6rCA67K87Jq0IOu2iO2OuOydhCA2MOy0iCDsiJjsmqnCt+fLNeug6E="),
+ ],},
+ {id: ZGqx1pZH("ZGJ0"),
+ c2YAbqjp: ZGqx1pZH("REJUIOyKpO2CrA=="),
+ g9B9MHci: [ZGqx1pZH("7KCV7ISc7KGw7KCI"), ZGqx1pZH("64yA7J247Zqo6rO87ISx")],
+ XXj3kyyw: ZGqx1pZH("6rCQ7KCVwrfqtIDqs4TCt+pU0ugyBO"),
+ jNhRbArI: ZGqx1pZH("66eI7J2M7LGZ6rmAwrfqs6DthrXqsJDrgrTCt+uJdzcWA0=="),
+ kv: {목표: ZGqx1pZH("7JyE6riwIOu5iOuPhOKGkw==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("6rCA7KCVIOqzvOygnA==")},
+ BSHRc1bx: ZGqx1pZH("7Iqk7YKsIOy5tOuTnCDsgqzsmqku"),
+ Zihlm4kP: [
+ ZGqx1pZH("VElQUCjsmKjrj4TCt+Y6o6U0mq=="),
+ ZGqx1pZH("REVBUiBNQU4g64yA7ZmUIOyKpO2BrOumve2KuOuhnCDsmpTqtawg7KCE64usLg=="),
+ ZGqx1pZH("6rCQ7KCVIOydtOumhCDrtpnsnbTquLAg66as7Iqk7Yq4IOyCrOyaqS4="),
+ ],},
+ ],},
+ {id: ZGqx1pZH("CXmBsiah"),
+ VpR9GLV7: ZGqx1pZH("7Yq465287Jqw66eIwrdQVFNE"),
+ XXj3kyyw: ZGqx1pZH("7JWI7KCE6rCQIO2ajOuztcK36rO86rCB7ISxIOyhsOygiMK37Jm47IOBIOq4sOyWtSDsspjrpqzCt+mpQ7TQCb="),
+ jNhRbArI: ZGqx1pZH("7JWI7KCV7ZmUKOyekOybkMK37Zi47Z2hwrfsoJHsp4ApIOKGkiDsoJDsp4TsoIEg64W47LacL+aFn0TOPo+4IOyerO2Gte2VqS4="),
+ g9B9MHci: [ZGqx1pZH("7JWI7KCV7ZmU"), ZGqx1pZH("64W47LacL+baogxVeQ=="), '접지'],
+ ZguLmLww: [
+ {id: ZGqx1pZH("AHOlZICk=="),
+ c2YAbqjp: ZGqx1pZH("7JWI7KCV7ZmUwrfsoJHsp4A="),
+ g9B9MHci: ['호흡', ZGqx1pZH("6rCQ6rCB7KCR7KeA")],
+ XXj3kyyw: ZGqx1pZH("6rO86rCB7ISxL+2VtOumrCDsobDsoIjsnZgg6riw67CYLg=="),
+ jNhRbArI: ZGqx1pZH("67CV7J6QIO2YuO2doSwgNS00LTMtMi0xIOygkeyngCwg7JWI7KCE7ZWcIOyepeyGjCDsi6zsg4Eu"),
+ kv: {목표: ZGqx1pZH("6rCB7ISxIOyhsOygiA==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("6rCQ64u5IOqwgOuKpe2VnCDssL0g7Jyg7KeA")},
+ BSHRc1bx: ZGqx1pZH("7ZWY66OoIDPDlzLrtoQu"),
+ Zihlm4kP: [
+ ZGqx1pZH("NC02IOuzteyLne2YuO2doTogNOy0iCDrk6TsiKjCtzbstIgg64Kg7IioIDEw7ZqMLg=="),
+ ZGqx1pZH("NS00LTMtMi0xIOqwkOqwgeygkeyngCDsi6TsoJwg7ZmY6rK97JeQ7IScIOyLpOyKtS4="),
+ ZGqx1pZH("4oCY7JWI7KCE7ZWcIOyepeyGjOKAmSDsnbTrr7jsp4Dsl5Ag6rCQ6rCBKOyYqOuPhMK37IaM66asKSDstpTqsIAu"),
+ ],},
+ {id: ZGqx1pZH("qc0jwKs8"),
+ c2YAbqjp: ZGqx1pZH("7ISc7IKs7ZmUwrfsnZjrr7gg7J6s6rWs7ISx"),
+ g9B9MHci: ['서사', ZGqx1pZH("7J6s7Y+J6rCA")],
+ XXj3kyyw: ZGqx1pZH("7YyM7Y64IOq4sOyWteydhCDslYjsoITtlZjqsowg7J207JW86riw66GcLg=="),
+ jNhRbArI: ZGqx1pZH("7YOA7J6E65287J24wrfsi6TqsJDsobDsoIjCt+SeM6IWlw"),
+ kv: {목표: ZGqx1pZH("6riw7Ja1IO2Gte2VqQ==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7J6s7Jm47IOB7ZmUIOuwqeyngA==")},
+ BSHRc1bx: ZGqx1pZH("7IS47IWYIO2bhCDsnpDquLDrj4zrtIQu"),
+ Zihlm4kP: [
+ ZGqx1pZH("7IKs6rG0IO2DgOyehOudvOyduOydhCDsg4nsnLzroZwg7L2U65SpKOychO2XmC/IcZYt1Fj=="),
+ ZGqx1pZH("7Iuk6rCQIDB+MTAg7Iqk7LyA7J2866GcIOuFuOy2nCDqsJXrj4Qg7KGw7KCILg=="),
+ ZGqx1pZH("7IKs6rG0IO2bhCDrs4DtmZTtlZwg6rCA7LmYwrfqtIDqs4Qg7J6s7Y+J6rCAIOq4gOyTsOq4sC4="),
+ ],},
+ {id: ZGqx1pZH("ZW1kcg=="),
+ c2YAbqjp: ZGqx1pZH("RU1EUiDquLDstIg="),
+ g9B9MHci: [ZGqx1pZH("7JaR7Lih7J6Q6re5"), ZGqx1pZH("7J6s7LKY66as")],
+ XXj3kyyw: ZGqx1pZH("7JWI7KCV7ZmUIOydtO2bhOyXkCDslpHsuKEg7J6Q6re57Jy866GcIOyymOumrC4="),
+ jNhRbArI: ZGqx1pZH("7JWI7KCE7J6l7IaMwrfrpqzshozsiqQg67mM65SpIO2bhCDtkZzsoIEg7J6s7LKY66asLg=="),
+ kv: {목표: ZGqx1pZH("6rOg7Ya1IOuwmOydkSDqsJDshow=")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7ZuI66Co65CcIOyehOyDgeqwgOyZgCDsp4Ttlok=")},
+ BSHRc1bx: ZGqx1pZH("7IS47IWYIOuSpCDtnLTsi50u"),
+ Zihlm4kP: [
+ ZGqx1pZH("7YSw7ZWRL+pdkTUagy=="),
+ ZGqx1pZH("6riN7KCVIOyduOyngCDshKTsuZg6IOKAmOuCmOuKlCDsp4DquIgg7JWI7KCE7ZWY64uk4oCZLg=="),
+ ZGqx1pZH("7IS47IWYIO2bhCDsnpDquLDrj4zrtIQg7LK07YGs66as7Iqk7Yq4IOygkOqygC4="),
+ ],},
+ ],},
+ {id: ZGqx1pZH("YWRkaWN0aW9u"),
+ VpR9GLV7: ZGqx1pZH("7KSR64+FwrfsirXqtIAo7JWM7L2U7JisL+mPEE7vKO"),
+ XXj3kyyw: ZGqx1pZH("6rCI66edIOycoOuwnCDri6jshJzrpbwg7YyM7JWF7ZWY6rOgIOuMgOyytCDtlonrj5nCt+2ZmOqyvSDshKTqs4TroZwg7J6s67CcIOychO2XmOydhCDrgq7stqQu"),
+ jNhRbArI: ZGqx1pZH("64uo7IScLeuwmOydkSDro6jtlIQg67aE7ISdLCDrjIDssrQg67O07IOBLCDqs6DsnITtl5gg6rOE7ZqNLCDsp4Dsp4DssrTqs4Qu"),
+ g9B9MHci: [ZGqx1pZH("6rCI66ed6rSA66as"), ZGqx1pZH("64yA7LK067O07IOB"), ZGqx1pZH("7J6s67Cc7JiI67Cp")],
+ ZguLmLww: [
+ {id: ZGqx1pZH("Y3JhdmluZw=="),
+ c2YAbqjp: ZGqx1pZH("6rCI66edIOq0gOumrA=="),
+ g9B9MHci: [ZGqx1pZH("7KeA7JewwrfsuZjtmZg="), ZGqx1pZH("64uo7ISc7LCo64uo")],
+ XXj3kyyw: ZGqx1pZH("6rCI66edIO2MjOuPhOyXkCDtnKnsk7jrpqzsp4Ag7JWK6riwLg=="),
+ jNhRbArI: ZGqx1pZH("MTDrtoQg7KeA7JewwrfsgrDssYXCt+SvtVCbbq/UyihPFNN+CZ5otXKG"),
+ kv: {목표: ZGqx1pZH("7Lap64+ZIOyngOyXsA==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("6rOg66a9IO2ajO2UvA==")},
+ BSHRc1bx: ZGqx1pZH("7YyM64+E64qUIOyngOuCmOqwhOuLpC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("6rCI66edIOyKpOy8gOydvCAwfjEwIOq4sOuhnSDtm4QgMTDrtoQg7KeA7JewLg=="),
+ ZGqx1pZH("64yA7LK0IO2WieuPmSDrpqzsiqTtirgo7IOk7JuMwrfrrLzCt+LRfvWGBg="),
+ ZGqx1pZH("7Jyg67CcIOuLqOyEnCjsnqXshowv7Iuc6rCEL+nfQ6Rcpu+EIOunjOuTpOq4sC4="),
+ ],},
+ {id: ZGqx1pZH("BQc7VT64=="),
+ c2YAbqjp: ZGqx1pZH("7J6s67CcIOyYiOuwqSDqs4Ttmo0="),
+ g9B9MHci: [ZGqx1pZH("6rOg7JyE7ZeY7IOB7Zmp"), ZGqx1pZH("7ZuE7IaN6rOE7ZqN")],
+ XXj3kyyw: ZGqx1pZH("(5*13+1)+466asIOyLnOuCmOumrOyYpOuhnCDshpDsg4Eg7LWc7IaM7ZmULg=="),
+ jNhRbArI: ZGqx1pZH("66eM7JW9Leq3uOufrOuptCDqs4Ttmo3Ct+f70olUri+kF0jMbw0="),
+ kv: {목표: ZGqx1pZH("7IaQ7IOBIOy1nOyGjA==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7KCE67aALeyVhOuLiOuptCDsgqzqs6Ag7ZS87ZWY6riw")},
+ BSHRc1bx: ZGqx1pZH("(3*22)+464GE65+p4rZpOeK="),
+ Zihlm4kP: [
+ ZGqx1pZH("4oCY7ZqM7IudIOygnOyViOKAmSDsg4HtmakgSWYtVGhlbiDsiqTtgazrpr3tirgg7J6R7ISxLg=="),
+ ZGqx1pZH("6rK96rOgIOyLoO2YuCDssrTtgazrpqzsiqTtirgo7IiY66m04oaTLCDqs6Drpr3ihpEg65OxKS4="),
+ ZGqx1pZH("7ZuE7IaNIOqzhO2ajTog66+464GE65+HOJSaGqC="),
+ ],},
+ {id: ZGqx1pZH("ZGlnaXRhbA=="),
+ c2YAbqjp: ZGqx1pZH("65SU7KeA7YS4IOyCrOyaqSDsobDsoIg="),
+ g9B9MHci: [ZGqx1pZH("7Iuc6rCE7LCo64uo"), ZGqx1pZH("64yA7LK07Zmc64+Z")],
+ XXj3kyyw: ZGqx1pZH("6riw6riwIOyCrOyaqSDtmZjqsr3qs7wg67O07IOB7J2EIOyerOyEpOqzhC4="),
+ jNhRbArI: ZGqx1pZH("7Iqk7YGs66aw7YOA7J6EwrfssKjri6jslbHCt+BYTxg5Mj"),
+ kv: {목표: ZGqx1pZH("7LSdIOyCrOyaqeyLnOqwhOKGkw==")},
+ oDe7h5Tu: {팁: ZGqx1pZH("7IiY66m0IDHsi5zqsIQg7KCEIOustOq4sOq4sA==")},
+ BSHRc1bx: ZGqx1pZH("7Lmo7IukIOu2hOumrC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("7Lmo7Iuk7JeQIOy2qeyghCDquIjsp4DCt+xea7AQ7T=="),
+ ZGqx1pZH("7JWxIOygnO2VnDogU05TIDMw67aEL+DipMlctk"),
+ ZGqx1pZH("7Jik7ZSE65287J24IOujqO2LtCAz6rCA7KeAKOyxhcK37IKw7LGFwrfst6jrr7gpIOyYiOyVvS4="),
+ ],},
+ ],},
+ {id: ZGqx1pZH("Y2FyZWVy"),
+ VpR9GLV7: ZGqx1pZH("7KeE66Gcwrfsp4HrrLQv7J2Y66+(10-6)"),
+ XXj3kyyw: ZGqx1pZH("6rCA7LmYwrfqsJXsoJDCt+2ZmOqyvSDsoIHtlanrj4Trpbwg7KeE64uo7ZW0IOyLpO2WiSDqsIDriqXtlZwg6rK966Gc66W8IOyEpOqzhC4="),
+ jNhRbArI: ZGqx1pZH("6rCA7LmYLeqwleygkCDrp6TtlZEsIOyLpO2XmCDtlITroZzsoJ3tirgsIOuEpO2KuOybjO2CucK366as7IaM7IqkLg=="),
+ g9B9MHci: [ZGqx1pZH("6rCA7LmY7KCV66Cs"), '강점', '실험'],
+ ZguLmLww: [
+ {id: ZGqx1pZH("y242abRg"),
+ c2YAbqjp: ZGqx1pZH("6rCA7LmYwrfqsJXsoJAg66ek7ZWR"),
+ g9B9MHci: [ZGqx1pZH("VklB"), ZGqx1pZH("7Iqk7Yag66as65287J24")],
+ XXj3kyyw: ZGqx1pZH("66eM7KGx7J2YIOybkOyynCDslrjslrTtmZQu"),
+ jNhRbArI: ZGqx1pZH("66eM7KGxIOyepeuptCDstpTsoIHihpLqs7XthrUg6rCA7LmYIOuPhOy2nC4="),
+ kv: {목표: ZGqx1pZH("7KCB7ZWp64+E4oaR")},
+ oDe7h5Tu: {팁: ZGqx1pZH("7J6R7J2AIOyLpO2XmOycvOuhnCDqsoDspp0=")},
+ BSHRc1bx: ZGqx1pZH("7J6R6rKMwrfruajrpqzCt+wj6u6Gcg="),
+ Zihlm4kP: [
+ ZGqx1pZH("7LWc6re8IDLso7wg4oCY7JeQ64SI7KeAK+KAmSDsnqXrqbQgNeqwnCDquLDroZ0u"),
+ ZGqx1pZH("6rCV7KCQIDPqsJzsl5Ag66ee64qUIOuvuOuLiCDtlITroZzsoJ3tirgg7ISk6rOELg=="),
+ ZGqx1pZH("6rCA7LmYLeydvOyDgSDigJjrtojsnbzsuZjigJkgMeqwnOulvCDsoJzqsbAu"),
+ ],},
+ {id: ZGqx1pZH("ZGVzaWdu"),
+ c2YAbqjp: ZGqx1pZH("7J28IOyEpOqzhCjsnqzshKTqs4Qp"),
+ g9B9MHci: [ZGqx1pZH("6rK96rOE7ISk7KCV"), ZGqx1pZH("7JeF66y07KGw7KCV")],
+ XXj3kyyw: ZGqx1pZH("7JqU6rWsLeyekOybkCDqt6DtmJUg7J6s66ee7LakLg=="),
+ jNhRbArI: ZGqx1pZH("7J6R7JeFIOyerOuwsOy5mMK37ISx7J6l6rO87KCcwrfqtIDqs4Qg7J6s7ISk6rOELg=="),
+ kv: {목표: ZGqx1pZH("67KI7JWE7JuD4oaTIOuqsOyeheKGkQ==")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7ZiR7IOBIOq4sOuhnQ==")},
+ BSHRc1bx: ZGqx1pZH("7J2Y66+466W8IOuLpOyLnCDsoJXsnZgu"),
+ Zihlm4kP: [
+ ZGqx1pZH("7JeF66y0IOumrOyKpO2KuOyXkOyEnCDsl5DrhIjsp4At7IaM66qoIOyDgeychCAy6rCcIOyhsOyglSDsmpTssq0u"),
+ ZGqx1pZH("7KO8IDHtmowg4oCY7ISx7J6lIOqzvOygnOKAmSDruJTroZ0gOTDrtoQg7ZmV67O0Lg=="),
+ ZGqx1pZH("7J207ZW06rSA6rOE7J6QIOuntSDsnpHshLEg7ZuEIDE6MSDrr7jtjIUg7JiI7JW9Lg=="),
+ ],},
+ {id: ZGqx1pZH("aV8f8oKr"),
+ c2YAbqjp: ZGqx1pZH("6rWs7KeBwrftj6ztirjtj7TrpqzsmKQ="),
+ g9B9MHci: [ZGqx1pZH("64Sk7Yq47JuM7YK5"), ZGqx1pZH("7Iuk7KCE7KSA67mE")],
+ XXj3kyyw: ZGqx1pZH("7Iuc7J6lIOygge2VqeuPhOyZgCDrhbjstpwg7KCE6561Lg=="),
+ jNhRbArI: ZGqx1pZH("7ZSE66Gc7ZWEwrfsnpHtkojsp5HCt+jnYgXPL2=="),
+ kv: {목표: ZGqx1pZH("6riw7ZqM4oaR")},
+ oDe7h5Tu: {팁: ZGqx1pZH("7J6R7J2AIOuwnOyLoCDqvrjspIDtnog=")},
+ BSHRc1bx: ZGqx1pZH("7KO8IDLtmowg7JWE7JuD66as7LmYLg=="),
+ Zihlm4kP: [
+ ZGqx1pZH("7J2066Cl7IScIDHtjpjsnbTsp4Ag6rec6rKpwrftlbXsi6wg7ISx6rO8IOyImOy5mO2ZlC4="),
+ ZGqx1pZH("7J6R7ZKI7KeRIDPqsJwg7LyA7J207Iqk7JeQIOusuOygnC3tlbTqsrAt7ISx6rO8IOq1rOyhsO2ZlC4="),
+ ZGqx1pZH("7KCV67O07J247YSw67ewIOyjvCAx7ZqMIOy6mOumsOuNlCDsmIjslb0u"),
+ ],},
+ ],},
+ {id: ZGqx1pZH("HM6Okhsf="),
+ VpR9GLV7: ZGqx1pZH("7ISx6rKpIO2KueyEscK36rSA6rOEIO2MqO2EtA=="),
+ XXj3kyyw: ZGqx1pZH("6re564uo7KCBIO2MqO2EtOydhCDsnKDsl7DshLEg64aS7J2AIOuMgOyViCDtjKjthLTsnLzroZwg7KCE7ZmYLg=="),
+ jNhRbArI: ZGqx1pZH("7J6Q6riwL+2DgOyduOyngOuPhCwg7KCV7IScIOyhsOygiCwg6rK96rOELCDsiqTtgqTrp4gg7J247IudwrfsnqzqtazshLEu"),
+ g9B9MHci: [ZGqx1pZH("7Iqk7YKk66eI"), ZGqx1pZH("7KCV7ISc7KGw7KCI"), '경계'],
+ ZguLmLww: [
+ {id: ZGqx1pZH("VPVFlg4D"),
+ c2YAbqjp: ZGqx1pZH("7Iqk7YKk66eIIOyekeyXhQ=="),
+ g9B9MHci: [ZGqx1pZH("7ZW17Ius7Iug64WQ"), ZGqx1pZH("7ZaJ64+Z7Iuk7ZeY")],
+ XXj3kyyw: ZGqx1pZH("67CY67O1IO2VteyLrCDrr7/Z7Xs6svC+2MqO2EtCDsp4Drj4TtmZQu"),
+ jNhRbArI: ZGqx1pZH("7Iqk7YKk66eIIOuqqOuTnMK37J2066+47KeA66as7Iqk7YGs66a97YyFLg=="),
+ kv: {목표: ZGqx1pZH("7Jyg7Jew7ISx4oaR")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7JWI7KCEwrftjpjsnbTsi7E=")},
+ BSHRc1bx: ZGqx1pZH("6rSA7LCw7J6QIOyLnOygkC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("7ZW17IusIOuvv+v7YcRbc4="),
+ ZGqx1pZH("7Kad6rGw7J287KeAOiDrr7/CsQ6Irzb+sduz0JJk=="),
+ ZGqx1pZH("64yA7JWIIO2WieuPmeyLpO2XmDog7JWg7LCpIO2ajO2UvCDsnqXrqbTsl5Ag7KCR6re8Lg=="),
+ ],},
+ {id: ZGqx1pZH("Ym91bmQ="),
+ c2YAbqjp: ZGqx1pZH("6rSA6rOEIOqyveqzhCDtm4jroKg="),
+ g9B9MHci: [ZGqx1pZH("7J6Q6riw7Ji57Zi4"), ZGqx1pZH("Tk/GYiUs0FJ=")],
+ XXj3kyyw: ZGqx1pZH("6rO87Iic7J2RL+MLQEha2C="),
+ jNhRbArI: ZGqx1pZH("7JqU7LKtL+IEIg6mFX+2VnOqzhCDshKTsoJUu"),
+ kv: {목표: ZGqx1pZH("7Lmo67KUIOqwkOyGjA==")},
+ oDe7h5Tu: {팁: ZGqx1pZH("7J6R7J2AIE5P67aA7YSw")},
+ BSHRc1bx: ZGqx1pZH("6rK96rOEPe2SiOyniOyEoC4="),
+ Zihlm4kP: [
+ ZGqx1pZH("4oCY7J2067KIIOyjvOuKlCDslrTroLXsirXri4jri6TigJkg66y47J6lIOyXsOyKtcK367Cc7ZmULg=="),
+ ZGqx1pZH("7JqU7LKtL+Vh9ZDspC="),
+ ZGqx1pZH("7ZWc6rOEIOychOuwmCDsi5wg7ZuE7IaNIOyhsOy5mCDtkZzspIDtmZQo67CY67O1IOqzteyngCku"),
+ ],},
+ {id: ZGqx1pZH("YXR0YWNo"),
+ c2YAbqjp: ZGqx1pZH("7JWg7LCpIO2MqO2EtCDsnbjsi50="),
+ g9B9MHci: [ZGqx1pZH("7JWI7KCVwrfrtojslYjCt+2ajO2UvA==")],
+ XXj3kyyw: ZGqx1pZH("6rSA6rOEIOq4sOuMgMK367CY7J2RIO2MqO2EtCDsnbTtlbQu"),
+ jNhRbArI: ZGqx1pZH("7IOB7ZmpLeqwkOyglS3tlonrj5kg6riw66GdwrfrjIDslYgg67CY7J2RLg=="),
+ kv: {목표: ZGqx1pZH("7JWI7KCV7ISx4oaR")},
+ oDe7h5Tu: {주의: ZGqx1pZH("7Iuk7IOd7ZmcIOyXsOyKtQ==")},
+ BSHRc1bx: ZGqx1pZH("7Iug66Kw64qUIOuwmOuztS4="),
+ Zihlm4kP: [
+ ZGqx1pZH("6rCI65OxIOyLnCDigJjssqDsiJgt7LaU6rKp4oCZIO2MqO2EtCDsi53rs4Qu"),
+ ZGqx1pZH("7Yq466as6rGwLeqwkOyglS3tlonrj5kgQUJDIOq4sOuhnSAz7ZqML+LW7aEVdO="),
+ ZGqx1pZH("64yA7JWIIOuwmOydkSDsiqTtgazrpr3tirgo6rGw66as65GQ6riwwrfsi5zqsIQg7JqU7LKtKS4="),
+ ],},
+ ],},
+ ];const MID_EX = {acaJhmeS:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOyasOyauOydgCDtmZzrj5nsoIDtlZjihpLrs7Tsg4HsoIDtlZjihpLrtoDsoJXsgqzqs6Ag6rCV7ZmU7J2YIOyInO2ZmOycvOuhnCDsnKDsp4DrkKnri4jri6QuIOy0iOq4sCAy7KO86rCE7J2AIO2WieuPme2ZnOyEse2ZlChCQSnroZwg4oCY7J6R7J2AIOyEsey3qC3quI3soJUg7KCV7ISc4oCZIOqyve2XmOydhCDtmozrs7XtlZjqs6AsIOykkeuwmOyXkOuKlCDsnpDrj5nsgqzqs6Av7ZW17Ius66+/7J2M7JeQIOuMgO2VnCDsnbjsp4DsnqzqtazshLEoQ0JUKSwg7ZuE67CY7JeQ64qUIOyerOuwnOyLoO2YuMK37Jyg7KeA7KCE65617J2EIOyEpOqzhO2VqeuLiOuLpC4g7IiY66m07JyE7IOdwrfsgqztmozsoIEg7KCR7LSJwrfsnZjrr7jtmZzrj5nsnYQg67OR7ZaJ7ZWY7JesIOq4sOuKpSDsiJjspIAg7ZqM67O17J2EIOuqqe2RnOuhnCDtlanri4jri6Qu"),
+ fWSfvdUX:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOu2iOyViOydgCDtmoztlLzCt+ET1HoK1l+aRJATSjp+Z7J2EIOuLqOqzhOyggeycvOuhnCDqsJDstpXtlZjrqbAg7KO87J2Y7KCE7ZmYwrfsnqztj4nqsIDrpbwg67OR7ZaJ7ZWp64uI64ukLg=="),
+ Sndam6Ke: ZGqx1pZH("44CQ7IOB7IS444CRIE9DROuKlCDqsJXrsJXsgqzqs6At67aI7JWILeydmOyLne2WieuPmSjspJHtmZQp7J2YIOqzoOumrOqwgCDsnYzshLHqsJXtmZTrpbwg7Ya17ZW0IOycoOyngOuQqeuLiOuLpC4gRVJQ64qUIOKAmOydmOuPhOyggSDrhbjstpwgKyDrsJjsnZHrsKnsp4DigJnroZwg7IOI66Gc7Jq0IOyViOyghOq4sOyWteydhCDtmJXshLHtlanri4jri6QuIOy5mOycoCDrqqntkZzripQg4oCY7ZmV7IugIOyXhuydjOyXkCDrqLjrrLTripQg64ql66Cl4oCZ7J2EIOq4sOultOuKlCDqsoPsnLzroZwsIOymneyDgSDsoJzroZzrs7Tri6Qg6riw64qlIO2ajOuzteqzvCDsgrbsnZgg7ZmV7J6l7J2EIOykkeyLnO2VqeuLiOuLpC4="),
+ AHBVyYZf:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOyCrO2ajOu2iOyViCDtlbXsi6zsnYAg4oCY7J6Q6riw7LSI7KCQ7KO87J2YwrfrtoDsoJXsoIEg7J6Q6riw7J2066+47KeA4oCZ7J6F64uI64ukLiDtlonrj5nsi6Ttl5jqs7wg7JiB7IOBL+acrfrw00+D8mlElJC=="),
+ lxGaxSTY:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOqxtOqwleyXvOugpOuKlCDsi6DssrTqsJDqsIEg6rO87ZW07ISd6rO8IO2ZleyLoOy2lOq1rCjsnqzqsoDsgqzCt+tLxXs6QR+MpMSAT8u+J6rCA7ZWp64uI64ukLg=="),
+ e1Es1Vfq:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOygleyDgSDslaDrj4TripQg7YyM64+Z7LKY65+8IOyYpOultOuCtOumrOupsCDsp4TtlonrkKnri4jri6QuIOydmOuvuO2ZlCDsnpHsl4Uo7J2Y66+4IOywvuq4sCnqs7wg7KeA7KeAIOyXsOqysCwg7J287IOB67O16reAIOujqO2LtOydtCDrj4Tsm4DsnbQg65Cp64uI64ukLiDrs7XtlanslaDrj4TCt+gyG2N1MU+V7Iq164uI64ukLg=="),
+ ePvZ29Mi:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOu2iOuptOydgCDigJjsuajrjIA96rCB7ISx4oCZIOyXsO2VqeqzvCDqs7zqsIHshLEg7Jyg7KeA6rCAIO2VteyLrOyeheuLiOuLpC4gQ0JULUnsnZgg7IiY66m07KCc7ZWcwrfsnpDqt7nsobDsoIjCt+UPGz2RJJ="),
+ kI4s04e8:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOuyiOyVhOybg+osuduEH7+7J6Q7JuQ7J20IOyngOyGjeuQoCDrlYwg67Cc7IOd7ZWp64uI64ukLiDigJjsmpTqtawt7J6Q7JuQ4oCZIOunpO2VkeycvOuhnCDsoJzqsbAv7JyE7J6EL+Ulf125NM"),
+ KQDe59l8:
+ ZGqx1pZH("44CQ7IOB7IS444CRIE5WQ+CS7JREk3+dViKz9bq"),
+ kkQb5IOc:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOqwgOyhseyytOqzhOyXkOyEnCDqsr3qs4TripQg4oCY7Lmo7Yis7ISxLeqyveyngeyEseKAmSDqt6DtmJXsnoXri4jri6QuIOqwgOqzhOuPhC/Ju73pWT5="),
+ y4u4KwI8:
+ ZGqx1pZH("44CQ7IOB7IS444CRIO2WieuPmeu2hOyEnShBQkMpIOq4sOuwmOycvOuhnCDshKDtlonsgqzqsbTCt+qWyRiPDg="),
+ pzGyez1y:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOqzteuPmeyWkeycoeydgCDslYTsnbQg7KSR7IusIOydmOyCrOqysOyglcK37KCV67O06rO17JygwrfqsIjrk7Htg4jqsqntmZTqsIAg7ZW17Ius7J6F64uI64ukLiDsnbzsoJUv6rec7LmZIO2Gte2VqSwg7J2Y7IKs6rKw7KCVIOyasOyEoOyInOychCwg67mE7IOB7Jew6529wrfrtoTsn4HsoIjssKjrpbwg66y47ISc7ZmU7ZWY6rOgIOyxhOuEkCDqt5zsuZko7Jew65297Iuc6rCEL+2GpCnsnYQg7ZWp7J2Y7ZWp64uI64ukLg=="),
+ XxXlpax5: ZGqx1pZH("44CQ7IOB7IS444CRIEFESEQg7L2U7Lmt7J2AIOKAmOymieyLnCDrs7Tsg4HCt+iBRjwuWb+2GoO2BsOqyveygnOuhnCDsi5zsnpHCt+t2qdGqMx+J6rCA7JmAIOyXsOqzhOulvCDqs6DroKTtlanri4jri6Qu"),
+ CGvZEJRD:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOu2hOuFuOuKlCDquInsg4Hsirkg7KCE7JeQIOyghOyhsCDsi6DtmLjqsIAg7KG07J6s7ZWp64uI64ukLiDsi6DtmLjtg5Dsp4DihpLrqYjstqQt7Zi47Z2hLeqxsOumrOuRkOq4sOKGkuyCrO2bhCDrs7XquLDsnZgg66Oo7ZSE66W8IO2biOugqO2VqeuLiOuLpC4g6rCV7ZmU64qUIOKAmOybkO2VmOuKlCDtlonrj5nigJnsl5Ag7KeR7KSR7ZWY6rOgLCDtj63rsJwg7ZuEIO2ajOuztSDsiqTtgazrpr3tirjrpbwg7IKs7Jqp7ZWp64uI64ukLg=="),
+ rhdNBudc:
+ ZGqx1pZH("44CQ7IOB7IS444CRIO2VmeyKteqwnOyeheydgCDrtoTsoIjtlZnsirXCt+vERdAWHB"),
+ zndutPfB: ZGqx1pZH("44CQ7IOB7IS444CRIOuUsOuPjOumvCDqsJzsnoXsnYAg4oCY7JWI7KCEwrfrs7Tqs6DCt+b1hXHELS+ba4HgVVd"),
+ d6E7yKJF:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOyCrO2ajOq4sOyIoCDtm4jroKjsnYAgREVTQyDsiqTtgazrpr3tirjsmYAg67mE7Ja47Ja0IO2UvOuTnOuwseydhCDrsJjrs7Ug7Jew7Iq17ZWp64uI64ukLiDsl63tlaDsl7DsirXihpLsi6TsoIQg6rO87KCc4oaS7ZS865Oc67Cx7J2YIOyCrOydtO2BtOydhCDsnKDsp4DtlZjsl6wg7J2867CY7ZmU66W8IOy0ieynhO2VqeuLiOuLpC4g7JWI7KCE6rec7LmZ6rO8IOu5hOuwgOuztOyepeydtCDsoITsoJzsnoXri4jri6Qu"),
+ PWzkXZ0f:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOuniOydjOyxmeq5gOydgCDso7zsnZjsobDsoIjCt+J283cpI0+87J2EIOymneynhO2VqeuLiOuLpC4g7Ken6rOgIOyekOyjvCgzfjXrtoQpIOyXsOyKteydhCDqtozsnqXtlZjrqbAsIO2VtOumrMK37ZSM656Y7Iuc67CxIOychO2XmCDsi5wg7JWI7KCV7ZmUIOq4sOyIoOydhCDsmrDshKDtlanri4jri6Qu"),
+ El1RvoT3: ZGqx1pZH("44CQ7IOB7IS444CRIERCVCDsiqTtgqwg7Yq466CI7J2064ud7J2AIOychOq4sOuMgOyymCjqs6DthrXqsJDrgrQpwrfqsJDsoJXsobDsoIjCt+lWcz59RF"),
+ qrZjMZLD:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOyViOyghMK37JWI7KCV7ZmUIOuLqOqzhOuKlCDtmLjtnaHCt+ndExXwzB"),
+ Ucwop0eq:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOyEnOyCrO2ZlOuKlCDtjIztjrjtmZTrkJwg6riw7Ja17J2EIOyLnOqwhC/kvWwzJFK"),
+ MpkfUlDm: ZGqx1pZH("44CQ7IOB7IS444CRIEVNRFLsnYAg7ZGc7KCB6riw7Ja1wrfrtoDsoJXsnbjsp4DCt+r0V3Yl4X="),
+ dHCBOwik:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOy2qeuPmeydgCDtjIzrj4Tsspjrn7wg7IOB7Iq5Le2VmOqwle2VqeuLiOuLpC4g7KeA7JewKDEw67aEKcK37LmY7ZmYwrfri6jshJzssKjri6jsnLzroZwg7YyM64+E7J2YIOyngOuCmOqwkOydhCDssrTtl5jtlZjqsowg7ZWY6rOgLCDsp4Dsp4Ag7Jew6rKw66GcIOqzoOumveydhCDspITsnoXri4jri6QuIOqwkOygleuMgOyymCDquLDsiKDqs7wg7ZWo6ruYIOyCrOyaqe2VqeuLiOuLpC4="),
+ KHz32bz4:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOyerOuwnCDsmIjrsKnsnYAg4oCY6rK96rOgIOyLoO2YuCDsnbjsi53ihpJJZi1UaGVuIOqzhO2ajeKGku2bhOyGjSDtmozrs7Ug66Oo7Yu04oCZ7J2YIDPri6jqs4TsnoXri4jri6QuIOyghOu2gC3slYTri4jrqbQg7IKs6rOg66W8IOq1kOygle2VmOqzoCwg66+464GE65+ujCIlHh7=="),
+ JymJuQFX:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOuUlOyngO2EuCDsgqzsmqnsnYAg7ZmY6rK9wrfrs7Tsg4HsnbQg6rKw7KCV7KCB7J6F64uI64ukLiDsuajsi6Qg67aE66asLCDslYzrnowg64yA7LK0LCDssKjri6jslbEsIOyYpO2UhOudvOyduCDro6jti7TsnYQg67OR7ZaJ7ZWY66mwLCDst6jsuaggMeyLnOqwhCDsoIQg66y06riw6riwIOybkOy5meydhCDtlbXsi6zqt5zsuZnsnLzroZwg65Gh64uI64ukLg=="),
+ rclKW1pH:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOunjOyhsSDsnqXrqbTsl5DshJwg67CY67O165CY64qUIOqwgOy5mMK36rCV7KCQ7J2EIOyWuOyWtO2ZlO2VmOqzoCwg7J6R7J2AIOyLpO2XmOycvOuhnCDigJjsoIHtlanrj4TigJnrpbwg6rKA7Kad7ZWp64uI64ukLiDsl5DrhIjsp4DCt+HDaJpwzR=="),
+ NgD5vlCA:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOydvCDsnqzshKTqs4TripQg7YOA7J6E7Jik65Sn4oaS67Cp7ZW07JqU7J24IOygnOqxsOKGkuynkeykkeu4lOuhnSDsupjrprDrjZTtmZTihpLqsr3qs4Qg7ISk7KCV4oaS7ZiR7IOB7Jy866GcIOynhO2WieuQqeuLiOuLpC4g7ISx6rO8IOyngO2RnOulvCDsoJXsnZjtlZjsl6wg7KeA7IaN6rCA64ql7ISx7J2EIOuGkuyeheuLiOuLpC4="),
+ RNNzhER5:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOq1rOyngeydgCDtj6zsp4DshZgt7Iqk7YKsIOygge2VqeuPhOyZgCDrhbjstpzsoITrnrXsnbQg7ZW17Ius7J6F64uI64ukLiDsnpHtkojsp5HsnYAg66y47KCcLe2VtOqysC3shLHqs7wg6rWs7KGwLCDslYTsm4PrpqzsuZjripQg7J6R6rKMwrfsnpDso7zCt+VlemrXkv=="),
+ Bgj2movj:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOyKpO2CpOuniOuKlCDsnKDrhYTquLAg6rK97ZeY7JeQ7IScIO2YleyEseuQnCDsp4Dsho3soIEg7Iug64WQwrftjKjthLTsnoXri4jri6QuIOuqqOuTnCDsnbjsi50sIOymneqxsOydvOyngCwg7J2066+47KeAIOumrOyKpO2BrOumve2MhSwg7ZaJ64+Z7Iuk7ZeY7J2EIO2Gte2Vqe2VtCDsnKDsl7DshLHsnYQg64aS7J6F64uI64ukLg=="),
+ vts2A0rC:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOqyveqzhOuKlCDigJjqtozrpqzCt+2VnOqzhMK37ZuE7IaN7KGw7LmY4oCZ7J2YIOuqheujjO2ZlOyeheuLiOuLpC4g7J6R7J2AIE5P67aA7YSwIOyXsOyKte2VmOqzoCwg67CY67O1IOychOuwmOyXkOuKlCDtkZzspIDtmZTrkJwg7ZuE7IaN7KGw7LmY66W8IOyggeyaqe2VqeuLiOuLpC4="),
+ pDvQbS7v:
+ ZGqx1pZH("44CQ7IOB7IS444CRIOyVoOywqe2MqO2EtCjrtojslYgv7ZqM7ZS8KeydgCDqsIjrk7Eg7IucIOuwmOydkeydhCDsoozsmrDtlanri4jri6QuIO2KuOumrOqxsC3qsJDsoJUt7ZaJ64+ZIOq4sOuhneqzvCDrjIDslYjrsJjsnZEg7Iqk7YGs66a97Yq466GcIOKAmOyyoOyImC3stpTqsqnigJkg7IKs7J207YG07J2EIOyZhO2ZlO2VmOqzoCDslYjsoJXqsJDsnYQg7ZmV7J6l7ZWp64uI64ukLg=="),};const SPEC = {acaJhmeS: {h6vqRpY2: [ZGqx1pZH("NuyjvCDrgrQg7Jm47LacL+GICEklaq+2ajCwgUEhRLTkgNeygkOKGkw==")],
+ izQxHzOO: [ZGqx1pZH("UEhRLTk="), ZGqx1pZH("7KaQ6rGw7JuAL+rXtjeXnR=="), ZGqx1pZH("7IiY66m0IO2aqOycqA==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7Y+J6rCAwrdCQSDsi5zsnpE="),
+ ZGqx1pZH("MuyjvDog7J6Q64+Z7IKs6rOgIOq4sOuhnQ=="),
+ ZGqx1pZH("M+RwPlf7vD+ZIOyLpO2XmA=="),
+ ZGqx1pZH("NOyjvDog7IiY66m0wrfsmrTrj5kg66Oo7Yu0"),
+ ZGqx1pZH("NeyjvDog7IKs7ZqM7KCBIOygkey0iSDstpTqsIA="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeAwrfsnqzrsJzsi6DtmLg="),
+ ],
+ hw: [ZGqx1pZH("7Zmc64+Z7ZGc"), ZGqx1pZH("7J6Q64+Z7IKs6rOgIOq4sOuhneyngA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7J6QL+2DgO2VtCDsnITtl5gsIOq4sOuKpSDquInrnb0=")],},
+ fWSfvdUX: {h6vqRpY2: [ZGqx1pZH("7ZqM7ZS8IOyepeuptCAz6rCcIOuFuOy2nCwgR0FELTcgNOygkOKGkw==")],
+ izQxHzOO: [ZGqx1pZH("R0FELTc="), ZGqx1pZH("64W47LacIOyImO2WieuloA=="), ZGqx1pZH("7JWI7KCE7ZaJ64+ZIOu5iOuPhA==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog6rOE7Li17ZGcL+lq7VWLQA=="),
+ ZGqx1pZH("MuyjvDog6rCQ6rCBIOuFuOy2nA=="),
+ ZGqx1pZH("M+FwbzK7QU=="),
+ ZGqx1pZH("NOyjvDog7J6s7ZW07ISdL+ArJxpPxg=="),
+ ZGqx1pZH("NeyjvDog6rOg64Kc64+EIOuFuOy2nA=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeAIOqzhO2ajQ=="),
+ ],
+ hw: [ZGqx1pZH("64W47LacIOq4sOuhneyngA=="), ZGqx1pZH("7JWI7KCE7ZaJ64+ZIOyytO2BrA==")],
+ Q3Z9ihRI: [ZGqx1pZH("6rSR67KU7JyEIO2ajO2UvCDtmZXrjIAsIOyViOyghCDrrLjsoJw=")],},
+ Sndam6Ke: {h6vqRpY2: [ZGqx1pZH("RVJQIOyjvCA17ZqMLCBPQ0ktUiAyMCXihpM=")],
+ izQxHzOO: [ZGqx1pZH("T0NJLVI="), ZGqx1pZH("7J2Y7IudIOyLnOqwhA=="), ZGqx1pZH("RVJQIOykgOyImOycqA==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog67aE7ISdwrfqs4TsuLU="),
+ ZGqx1pZH("MuyjvDog7KCA6rCV64+EIEVSUA=="),
+ ZGqx1pZH("M+kWBHAAsq+EIEVSUA=="),
+ ZGqx1pZH("NOyjvDog7J247KeAIOq1kOyglQ=="),
+ ZGqx1pZH("NeyjvDog6rOg6rCV64+EIEVSUA=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeAwrfsubTrk5w="),
+ ],
+ hw: [ZGqx1pZH("RVJQIOq4sOuhneyngA=="), ZGqx1pZH("7ZmV7Iug7LaU6rWsIOqwkOy2leuloA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7Iug7LK0IOyGkOyDgcK36rCA7KGxIOqwiOuTscK37ZW066as")],},
+ AHBVyYZf: {h6vqRpY2: [ZGqx1pZH("7ZqM7J2YIOuwnOyWuCDso7wgMu2ajCwgTFNBUyAxNSXihpM=")],
+ izQxHzOO: [ZGqx1pZH("TFNBUw=="), ZGqx1pZH("7Iuk7ZeYIO2an+X60kt7B6=="), ZGqx1pZH("7J6Q6riw7LSI7KCQIOygkOyImA==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7KO87J2Y7KCE7ZmY"),
+ ZGqx1pZH("MuyjvDog7Jet7ZWg7Jew7Iq1"),
+ ZGqx1pZH("M+Vh8ZKNcX="),
+ ZGqx1pZH("NOyjvDog67mE7Ja47Ja0IOyytO2BrA=="),
+ ZGqx1pZH("NeyjvDog7KaJ7Z2lIOyKpO2UvOy5mA=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("67Cc7Ja4IOuhnOq3uA=="), ZGqx1pZH("6rSA7LCwIO2VreuqqQ==")],
+ Q3Z9ihRI: [ZGqx1pZH("7JmE7KCEIO2ajO2UvCwg7KeB66y0IOyGkOyDgQ==")],},
+ lxGaxSTY: {h6vqRpY2: [ZGqx1pZH("6rKA7IOJIDcwJeKGkywg7J6s6rKA7IKsIOqwhOqyqSA3Mmg=")],
+ izQxHzOO: [ZGqx1pZH("6rKA7IOJL+yOtuJ75Y=="), ZGqx1pZH("7ZmV7Iug7LaU6rWsIOu5iOuPhA=="), ZGqx1pZH("U1VEUw==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog6rWQ7Jyh"),
+ ZGqx1pZH("MuyjvDog6rKA7IOJIOq4iOyLnQ=="),
+ ZGqx1pZH("M+u35iDiOp=="),
+ ZGqx1pZH("NOyjvDog7IiY7JqpIO2biOugqA=="),
+ ZGqx1pZH("NeyjvDog64W47Lac"),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7JqV6rWsIOq4sOuhnQ=="), ZGqx1pZH("6rCA64qlL+v1ap0MQ6=")],
+ Q3Z9ihRI: [ZGqx1pZH("7J2Y7ZWZ7KCBIOqyveqzoOymneyDgSDrrLTsi5w=")],},
+ e1Es1Vfq: {h6vqRpY2: [ZGqx1pZH("7J2Y7IudIDLtmowsIOq4sOuKpSAx6rCcIOqwnOyEoA==")],
+ izQxHzOO: [ZGqx1pZH("7Iqs7ZSUIOqwleuPhA=="), ZGqx1pZH("6riw64qlIOyImO2WiQ==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7ISc7IKs"),
+ ZGqx1pZH("MuyjvDog7Y647KeAwrfstpTslrU="),
+ ZGqx1pZH("M+JlU4Ipt5+47ZmU"),
+ ZGqx1pZH("NOyjvDog7J287IOBIOuzteq3gA=="),
+ ZGqx1pZH("NeyjvDog6riw64WQIOydmOyLnQ=="),
+ ZGqx1pZH("NuyjvDog7J6s7KCB7J2R"),
+ ],
+ hw: ['편지', ZGqx1pZH("67O16reAIOyytO2BrA==")],
+ Q3Z9ihRI: [ZGqx1pZH("67O17ZWp7JWg64+EIOydmOyLrA==")],},
+ ePvZ29Mi: {h6vqRpY2: [ZGqx1pZH("7IiY66m07Zqo7JyoIOKJpTg1JSwgSVNJIDfsoJDihpM=")],
+ izQxHzOO: [ZGqx1pZH("SVNJ"), ZGqx1pZH("7Zqo7JyoKCUp"), ZGqx1pZH("64Ku7J6gL+WmYIYCpz==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7J287KeA"),
+ ZGqx1pZH("MuyjvDog7KCc7ZWc"),
+ ZGqx1pZH("M+RmgZkllL"),
+ ZGqx1pZH("NOyjvDog7J247KeA"),
+ ZGqx1pZH("NeyjvDog7LWc7KCB7ZmU"),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: ['일지', ZGqx1pZH("6rGx7KCV7Iuc6rCE")],
+ Q3Z9ihRI: [ZGqx1pZH("6riw66m0wrfrrLTtmLjtnaEg7J2Y7Ius")],},
+ kI4s04e8: {h6vqRpY2: [ZGqx1pZH("7ZqM67O1IOu4lOuhnSDso7wgNe2ajCwg7ZS866GcIDMwJeKGkw==")],
+ izQxHzOO: [ZGqx1pZH("7ZS866GcIFZBUw=="), ZGqx1pZH("7ZqM67O1IO2an+X60kt7B6=="), ZGqx1pZH("7LSI6rO86re866y0")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog66ek7ZWR"),
+ ZGqx1pZH("MuyjvDog6rK96rOEwrfsnqzrsLDsuZg="),
+ ZGqx1pZH("M+UAYY0tgL=="),
+ ZGqx1pZH("NOyjvDog7KeA7KeAIOyXsOqysA=="),
+ ZGqx1pZH("NeyjvDog7J2Y66+4wrfqsJXsoJA="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7JeQ64SI7KeAIOunpO2KuOumreyKpA=="), ZGqx1pZH("66Oo7Yu0IOyytO2BrA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7IiY66m067CV7YOIwrfsi6TsiJgv7IKs6rOg")],},
+ KQDe59l8: {h6vqRpY2: [ZGqx1pZH("67mE64KcIDUwJeKGkywgTlZDIOyjvCA07ZqM")],
+ izQxHzOO: [ZGqx1pZH("6rCI65OxIOu5iOuPhA=="), ZGqx1pZH("TlZDIO2an+X60kt7B6=="), ZGqx1pZH("66eM7KGx64+E")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7Yyo7YS0wrfslYjsoIQ="),
+ ZGqx1pZH("MuyjvDogTlZDIOq1kOycoQ=="),
+ ZGqx1pZH("M+pwc6zRbz="),
+ ZGqx1pZH("NOyjvDog66y47KCc7ZW06rKwIOujqO2LtA=="),
+ ZGqx1pZH("NeyjvDog7Iug7Zi4IO2VqeydmA=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7Iqk7YGs66a97Yq4"), ZGqx1pZH("64yA7ZmUIOuhnOq3uA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7Y+wvOW8giH==")],},
+ kkQb5IOc: {h6vqRpY2: [ZGqx1pZH("7Jet7ZWg7ZGcIOqwgOyLnO2ZlCwg7Lmo67KUIDcwJSDtlbTqsrA=")],
+ izQxHzOO: [ZGqx1pZH("7J207ZaJ66Wg"), ZGqx1pZH("7ZW06rKw66Wg")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog6rK96rOEIOyngO2YlQ=="),
+ ZGqx1pZH("MuyjvDog7Jet7ZWg7ZGc"),
+ ZGqx1pZH("M+xMybcXhz"),
+ ZGqx1pZH("NOyjvDog7KCQ6rKA"),
+ ZGqx1pZH("NeyjvDog7Iuc666s"),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("UkFDSSDtkZw="), ZGqx1pZH("64yA7J2RIOusuOq1rA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7IK86rCB6rSA6rOEIOqzoOywqQ==")],},
+ y4u4KwI8: {h6vqRpY2: [ZGqx1pZH("66qp7ZGc7ZaJ64+ZIDLrsLAsIOusuOygnO2WieuPmSAzMCXihpM=")],
+ izQxHzOO: ['빈도', ZGqx1pZH("6rCV7ZmUIOu5hOycqA==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDogQUJD"),
+ ZGqx1pZH("MuyjvDog6rCV7ZmU"),
+ ZGqx1pZH("M+jjVbnCUM"),
+ ZGqx1pZH("NOyjvDog64yA7LK07ZaJ64+Z"),
+ ZGqx1pZH("NeyjvDog7ZWZ6rWQIOyXsOqzhA=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7Yag7YGwIOywqO2KuA=="), ZGqx1pZH("7Lmt7LCsIOumrOyKpO2KuA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7LK067KMwrftlZnrjIAg7JyE7ZeY")],},
+ pzGyez1y: {h6vqRpY2: [ZGqx1pZH("6rO164+Z7LqY66aw642UIDEwMCUsIOqwiOuTseuplOyLnOyngCA1MCXihpM=")],
+ izQxHzOO: [ZGqx1pZH("7Luk67KE66as7KeA"), ZGqx1pZH("7JyE67CY66Wg"), ZGqx1pZH("6rCI65Ox67mE7Jyo")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7JuQ7LmZ"),
+ ZGqx1pZH("MuyjvDog7J287KCVL+OoAcVgZj=="),
+ ZGqx1pZH("M+E8Ipb7pR"),
+ ZGqx1pZH("NOyjvDog67mE7IOBwrfrtoTsn4E="),
+ ZGqx1pZH("NeyjvDog66as67ew"),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: ['헌장', ZGqx1pZH("6rec7LmZIOyytO2BrA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7JWE64+ZIOuPhOq1rO2ZlA==")],},
+ XxXlpax5: {h6vqRpY2: [ZGqx1pZH("7Iuc7J6R7KeA7JewIDUwJeKGkywg7JmE66OM7JyoIDMwJeKGkQ==")],
+ izQxHzOO: [ZGqx1pZH("7KeA7JewIOyLnOqwhA=="), ZGqx1pZH("7JmE66OM7Jyo"), '보상'],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7ZmY6rK9wrfssrTtgaw="),
+ ZGqx1pZH("MuyjvDog7YOA7J2066i4"),
+ ZGqx1pZH("M+JoKQRGeq"),
+ ZGqx1pZH("NOyjvDog67aE7KCI"),
+ ZGqx1pZH("NeyjvDog7ZWZ6rWQIOyXsOqzhA=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7KSA67mE66y8IOy5tOuTnA=="), ZGqx1pZH("7YOA7J2066i4IOujqO2LtA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7IiY66m07J6l7JWgwrfsnITtl5jtlonrj5k=")],},
+ CGvZEJRD: {h6vqRpY2: [ZGqx1pZH("7Y+sXivVTKq==")],
+ izQxHzOO: [ZGqx1pZH("67mI64+EL+gUdt6JJC=="), ZGqx1pZH("7ZqM67O1IOyLnOqwhA=="), ZGqx1pZH("64yA7JWI7ZaJ64+Z")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7Yq466as6rGw"),
+ ZGqx1pZH("MuyjvDog66mI7LakLe2YuO2doQ=="),
+ ZGqx1pZH("M+RwPlf7vD+Z"),
+ ZGqx1pZH("NOyjvDog67O16riw"),
+ ZGqx1pZH("NeyjvDog66qo642466eB"),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("6rCQ7KCVIOyYqOuPhOqzhA=="), ZGqx1pZH("67O16riw7ZGc")],
+ Q3Z9ihRI: [ZGqx1pZH("7J6QL+2DgO2VtCDsnITtl5g=")],},
+ rhdNBudc: {h6vqRpY2: [ZGqx1pZH("7JmE66OM7JyoIDgwJSwg7ISx7KCBICsxMA==")],
+ izQxHzOO: [ZGqx1pZH("7JmE66OM7Jyo"), ZGqx1pZH("7Jik66WY6rCQ7IaM"), ZGqx1pZH("67O17Iq17KO86riw")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7KeE64uo"),
+ ZGqx1pZH("MuyjvDog67aE7KCIwrfqsITqsqk="),
+ ZGqx1pZH("M+ghdKUyUr"),
+ ZGqx1pZH("NOyjvDog7JqU7JW9"),
+ ZGqx1pZH("NeyjvDog7JW97KCQIOuztOyZhA=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7Jik64u164W47Yq4"), ZGqx1pZH("7Iqk7LyA7KSE")],
+ Q3Z9ihRI: [ZGqx1pZH("7ZWZ7Iq17J6l7JWgIOydmOyLrA==")],},
+ zndutPfB: {h6vqRpY2: [ZGqx1pZH("67O06rOgIDEwMCUsIOuMgOydkSAyNGg=")],
+ izQxHzOO: [ZGqx1pZH("67O06rOg7Jyo"), ZGqx1pZH("7KeA7KeA7Zmc7ISx"), '안전'],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7JWI7KCEL+TyCnVDHj=="),
+ ZGqx1pZH("MuyjvDog7Jet7ZWg7Jew7Iq1"),
+ ZGqx1pZH("M+RKXMUPe2=="),
+ ZGqx1pZH("NOyjvDog7ZiR66Cl"),
+ ZGqx1pZH("NeyjvDog7Jio65287J24IOyViOyghA=="),
+ ZGqx1pZH("NuyjvDog66as67ew"),
+ ],
+ hw: [ZGqx1pZH("7Iqk7YGs66a97Yq4"), ZGqx1pZH("7LK07YGs66as7Iqk7Yq4")],
+ Q3Z9ihRI: [ZGqx1pZH("7KeA7IaN7KCBIOychO2YkQ==")],},
+ d6E7yKJF: {h6vqRpY2: [ZGqx1pZH("REVTQyA07ZqMLCDqsbDsoIjshLHqs7UgNjAl")],
+ izQxHzOO: [ZGqx1pZH("7Jew7Iq1IO2an+X60kt7B6=="), ZGqx1pZH("7ZS865Oc67Cx"), ZGqx1pZH("7Iuk7KCEIOyggeyaqQ==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDogREVTQw=="),
+ ZGqx1pZH("MuyjvDog67mE7Ja47Ja0"),
+ ZGqx1pZH("M+P7qhf2of"),
+ ZGqx1pZH("NOyjvDog7Iuk7KCEL+2UvOuTnOuwsQ=="),
+ ZGqx1pZH("NeyjvDog64Kc7J2064+E4oaR"),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: ['대본', ZGqx1pZH("7ZS865Oc67CxIOy5tOuTnA==")],
+ Q3Z9ihRI: [ZGqx1pZH("67O067O1IOychO2XmA==")],},
+ PWzkXZ0f: {h6vqRpY2: [ZGqx1pZH("7KO8IDXsnbzDlzXrtoQsIFZBUyAzMCXihpM=")],
+ izQxHzOO: ['일수', ZGqx1pZH("7IS47IWYIOq4uOydtA=="), ZGqx1pZH("7Iqk7Yq466CI7Iqk")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDogM+iUZGL3tp="),
+ ZGqx1pZH("MuyjvDog67CU65SU7Iqk7LqU"),
+ ZGqx1pZH("M+h52iZVbr"),
+ ZGqx1pZH("NOyjvDog7IiY7JqpL+ZqzBKod6=="),
+ ZGqx1pZH("NeyjvDog7Ja066Ck7Jq0IOqwkOyglQ=="),
+ ZGqx1pZH("NuyjvDog7J287IOBIOyggeyaqQ=="),
+ ],
+ hw: [ZGqx1pZH("6riw66Gd7ZGc"), ZGqx1pZH("7Jyg67CcIOuhnOq3uA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7ZW066asL+2UjOuemOyLnOuwsQ==")],},
+ El1RvoT3: {h6vqRpY2: [ZGqx1pZH("VElQUCAz7ZqMLCBERUFSIE1BTiAy7ZqM")],
+ izQxHzOO: [ZGqx1pZH("7Iqk7YKsIOuhnOq3uA=="), ZGqx1pZH("7JyE6riwIOyLnOqwhA=="), ZGqx1pZH("6rSA6rOEIOunjOyhsQ==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog6rSA7LCwL+W4eybsyQ=="),
+ ZGqx1pZH("MuyjvDogVElQUA=="),
+ ZGqx1pZH("M+az6Ez416=="),
+ ZGqx1pZH("NOyjvDogREVBUiBNQU4="),
+ ZGqx1pZH("NeyjvDog7Ya17ZWp"),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7Iqk7YKsIOy5tOuTnA=="), ZGqx1pZH("64yA7LKYIOqzhO2ajQ==")],
+ Q3Z9ihRI: [ZGqx1pZH("7J6QL+2DgO2VtMK364Ko7Jqp")],},
+ qrZjMZLD: {h6vqRpY2: [ZGqx1pZH("U1VEUyAzMCXihpMsIOygkeyngCAz7KKFIOyImeuLrA==")],
+ izQxHzOO: [ZGqx1pZH("U1VEUw=="), '빈도', ZGqx1pZH("7IKs7Jqp66Wg")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7Zi47Z2h"),
+ ZGqx1pZH("MuyjvDog6rCQ6rCB7KCR7KeA"),
+ ZGqx1pZH("M+m8ulVD3s"),
+ ZGqx1pZH("NOyjvDog7LC9IOuqqOuLiO2EsOungQ=="),
+ ZGqx1pZH("NeyjvDog66+47IS4IO2KuOumrOqxsA=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("U1VEUyDroZzqt7g="), ZGqx1pZH("7LK07YGs7ZGc")],
+ Q3Z9ihRI: [ZGqx1pZH("7J6s7Jm47IOB7ZmUwrftlbTrpqw=")],},
+ Ucwop0eq: {h6vqRpY2: [ZGqx1pZH("7ISc7IKsIDHssKgg7JmE7ISxLCBQQ0wtNSAyMCXihpM=")],
+ izQxHzOO: [ZGqx1pZH("UENMLTU="), ZGqx1pZH("64W47LacIOqwleuPhA=="), ZGqx1pZH("7JWI7KCE6rOE7ZqN")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7YOA7J6E65287J24"),
+ ZGqx1pZH("MuyjvDog7KCA6rCV64+EIOyEnOyCrA=="),
+ ZGqx1pZH("M+Gw7ryG2q+J6rCA"),
+ ZGqx1pZH("NOyjvDog6rCV64+E4oaR"),
+ ZGqx1pZH("NeyjvDog6rCA7LmYIO2Gte2VqQ=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7ISc7IKsIOqwgOydtOuTnA=="), ZGqx1pZH("(4*16)+M67SEIOyytO2BrA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7JWF66q9L+2UjOuemOyLnOuwsSDquInspp0=")],},
+ MpkfUlDm: {h6vqRpY2: [ZGqx1pZH("QkxTIOyEuOyFmCA07ZqMLCBTVURTIDQwJeKGkw==")],
+ izQxHzOO: [ZGqx1pZH("U1VEUw=="), ZGqx1pZH("7IS47IWY7IiY"), ZGqx1pZH("Vk9D")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7J6Q7JuQ"),
+ ZGqx1pZH("MuyjvDog7ZGc7KCBIOyEpOyglQ=="),
+ ZGqx1pZH("M+DRtRc3d8+2PieqwgA=="),
+ ZGqx1pZH("NOyjvDog7J6s7LKY66asL+tp8RGcYq=="),
+ ZGqx1pZH("NeyjvDog7J2867CY7ZmU"),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7IOB7YOcIOuhnOq3uA=="), ZGqx1pZH("6riN7KCVIOyduOyngA==")],
+ Q3Z9ihRI: [ZGqx1pZH("6rCQ64u5IOu2iOqwgCDqsIHshLE=")],},
+ dHCBOwik: {h6vqRpY2: [ZGqx1pZH("7KeA7Jew7ISx6rO1IDcwJSwg7IKs7JqpIDDtmow=")],
+ izQxHzOO: [ZGqx1pZH("6rCV64+EL+NBd8f7FJ=="), ZGqx1pZH("7KeA7JewIOyEseqztQ=="), ZGqx1pZH("7IKs7Jqp7J28")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog67aE7ISd"),
+ ZGqx1pZH("MuyjvDog7KeA7JewL+Z0Pvwvgu=="),
+ ZGqx1pZH("M+lgh9JvVq+F1lwqwUu=="),
+ ZGqx1pZH("NOyjvDog7KeA7KeA"),
+ ZGqx1pZH("NeyjvDog6rCQ7KCV64yA7LKY"),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("6rCI66edIOuhnOq3uA=="), ZGqx1pZH("64yA7LK0IOumrOyKpO2KuA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7J2Y66OMIOychO2XmC/Ldkgudnp")],},
+ KHz32bz4: {h6vqRpY2: [ZGqx1pZH("SWYtVGhlbiAz6rCcLCAyNGgg7ZqM67O1IDEwMCU=")],
+ izQxHzOO: [ZGqx1pZH("6rCQ7KeA7Jyo"), ZGqx1pZH("7ZqM67O17Iuc6rCE"), ZGqx1pZH("7Jew652966Wg")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7Iug7Zi4IOunte2VkQ=="),
+ ZGqx1pZH("MuyjvDogSWYtVGhlbg=="),
+ ZGqx1pZH("M+TBIkfLzi=="),
+ ZGqx1pZH("NOyjvDog7KeA7KeAIOumrO2XiOyEpA=="),
+ ZGqx1pZH("NeyjvDog6rOg7JyE7ZeYIOumrO2XiOyEpA=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7ZqM67O1IOy5tOuTnA=="), ZGqx1pZH("7Jew6529IOumrOyKpO2KuA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7Jew7IaNIOyCrOyaqcK37Y+S4RxPtcE")],},
+ JymJuQFX: {h6vqRpY2: [ZGqx1pZH("7LSdIOyCrOyaqSAzMCXihpMsIOy3qOy5qCAxaCDrrLTquLDquLAgODAl")],
+ izQxHzOO: [ZGqx1pZH("7LSdIOyCrOyaqQ=="), ZGqx1pZH("7Leo7LmoIOyghCDsgqzsmqk="), ZGqx1pZH("7Jik7ZSE65287J24IO2ZnOuPmQ==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog67Kg7J207Iqk65287J24L+ffzk0t0k=="),
+ ZGqx1pZH("MuyjvDog7Lmo7IukIOu2hOumrA=="),
+ ZGqx1pZH("M+wqOvnyof=="),
+ ZGqx1pZH("NOyjvDog67O07IOB"),
+ ZGqx1pZH("NeyjvDog7Jyg7Zi5IOq0gOumrA=="),
+ ZGqx1pZH("NuyjvDog7J6Q64+Z7ZmU"),
+ ],
+ hw: [ZGqx1pZH("7Iqk7YGs66aw7YOA7J6E"), ZGqx1pZH("7Jik7ZSE65287J24IOydvOyglQ==")],
+ Q3Z9ihRI: [ZGqx1pZH("7IiY66m0L+MGdnPDXx=")],},
+ rclKW1pH: {h6vqRpY2: [ZGqx1pZH("7IOB7JyEMyDqsIDsuZgg64+E7LacLCDsi6Ttl5gyIOyImO2WiQ==")],
+ izQxHzOO: [ZGqx1pZH("66eM7KGxL+oqJCgH3M=="), ZGqx1pZH("7Iuk7ZeY7IiY"), ZGqx1pZH("7KCB7ZWp64+E")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7Iqk7Yag66as65287J24"),
+ ZGqx1pZH("MuyjvDog6rCV7KCQIOyduO2EsOu3sA=="),
+ ZGqx1pZH("M+RqJIhH3O=="),
+ ZGqx1pZH("NOyjvDog66as67ew"),
+ ZGqx1pZH("NeyjvDog7Iuk7ZeYMg=="),
+ ZGqx1pZH("NuyjvDog64uk7J2MIOuLqOqzhA=="),
+ ],
+ hw: [ZGqx1pZH("6rCA7LmYLeyXre2VoCDrp6Ttirjrpq3siqQ="), ZGqx1pZH("7Iuk7ZeYIOuhnOq3uA==")],
+ Q3Z9ihRI: [ZGqx1pZH("7J2Y66+4IOyDgeyLpCDsi6ztmZQ=")],},
+ NgD5vlCA: {h6vqRpY2: [ZGqx1pZH("RGVlcCBXb3JrIDkw67aEw5czL+bJarrq1t=")],
+ izQxHzOO: [ZGqx1pZH("7KeR7KSRIOu4lOuhnQ=="), ZGqx1pZH("7ZqM7J2YIOyLnOqwhA=="), ZGqx1pZH("66qw7J6F64+E")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7YOA7J6E7Jik65Sn"),
+ ZGqx1pZH("MuyjvDog67iU66GdIOy6mOumsOuNlA=="),
+ ZGqx1pZH("M+htHFts8W+2YkeyDgQ=="),
+ ZGqx1pZH("NOyjvDog7J6s67Cw7LmY"),
+ ZGqx1pZH("NeyjvDog7ISx6rO87KeA7ZGc"),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7YOA7J6E7Jik65Sn"), ZGqx1pZH("6rK96rOEIO2FnO2UjOumvw==")],
+ Q3Z9ihRI: [ZGqx1pZH("7Ius66as7JWI7KCEIOyggO2VmA==")],},
+ RNNzhER5: {h6vqRpY2: [ZGqx1pZH("7KCV67O07J247YSw67ewIDTtmowsIO2PrO2PtCAy6rCc")],
+ izQxHzOO: [ZGqx1pZH("7JWE7JuD66as7LmY"), '미팅', '자산'],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7YOA6rmD66e1wrfroIjso7zrqZQ="),
+ ZGqx1pZH("MuyjvDog7Y+KeNl0O3u+0IOq1rOyhsA=="),
+ ZGqx1pZH("M+KWbrBxQr="),
+ ZGqx1pZH("NOyjvDog7ZS865Oc67CxIOuwmOyYgQ=="),
+ ZGqx1pZH("NeyjvDog7KeA7JuQL+rt6DKNvy=="),
+ ZGqx1pZH("NuyjvDog7YyU66Gc7JeF"),
+ ],
+ hw: [ZGqx1pZH("7Iqk7YGs66a97Yq4"), '보드'],
+ Q3Z9ihRI: [ZGqx1pZH("7Iqk7Yq466CI7IqkwrfsnpDsobTqsJAg67aV6rS0")],},
+ Bgj2movj: {h6vqRpY2: [ZGqx1pZH("7Yq466as6rGwIOyduOyLnSA4MCUsIOuMgOyViO2WieuPmSAz7KKF")],
+ izQxHzOO: [ZGqx1pZH("7J247Iud66Wg"), ZGqx1pZH("7Iuk7ZaJIOyImA=="), ZGqx1pZH("7J6Q6riw7Jew66+(7--1)")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7Iud67OE"),
+ ZGqx1pZH("MuyjvDog7Kad6rGw7J287KeA"),
+ ZGqx1pZH("M+I63v8z8e+47KeA"),
+ ZGqx1pZH("NOyjvDog7Iuk7ZeY"),
+ ZGqx1pZH("NeyjvDog6rSA6rOEIOyggeyaqQ=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("7Iqk7YKk66eIIOy5tOuTnA=="), ZGqx1pZH("7Kad6rGw7J287KeA")],
+ Q3Z9ihRI: [ZGqx1pZH("7ZW066asL+fVoqfbON==")],},
+ vts2A0rC: {h6vqRpY2: [ZGqx1pZH("Tk8g7Iuk7KCEIDPtmowsIOy5qOuylCA1MCXihpM=")],
+ izQxHzOO: [ZGqx1pZH("6rGw7KCIIOyEseqztQ=="), ZGqx1pZH("7Lmo67KUIOu5iOuPhA=="), ZGqx1pZH("67aI7Y646rCQ")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog6raM66asL+2VnOqzhA=="),
+ ZGqx1pZH("MuyjvDog64yA67O4"),
+ ZGqx1pZH("M+zCfBwQY3"),
+ ZGqx1pZH("NOyjvDog7ZuE7IaN7KGw7LmY"),
+ ZGqx1pZH("NeyjvDog7Ja066Ck7Jq0IOyDgeuMgA=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("REVTQw=="), ZGqx1pZH("64yA7J2R7ZGc")],
+ Q3Z9ihRI: [ZGqx1pZH("67O067O1L+wbQ1aV9j==")],},
+ pDvQbS7v: {h6vqRpY2: [ZGqx1pZH("7Yyo7YS0IOuzgOqyvSAz7ZqMLCDslYjsoJXqsJAgMjAl4oaR")],
+ izQxHzOO: [ZGqx1pZH("65SU7JeQ7Iqk7Lus66CI7J207IWY"), ZGqx1pZH("7JWI7KCV6rCQL+vxBJbjZS=="), ZGqx1pZH("64yA7JWIIOyCrOyaqQ==")],
+ y50b7MQF: [
+ ZGqx1pZH("MeyjvDog7KeA64+E7ZmU"),
+ ZGqx1pZH("MuyjvDogQUJDIOq4sOuhnQ=="),
+ ZGqx1pZH("M+qYdLWikH=="),
+ ZGqx1pZH("NOyjvDog7KCB7JqpL+2UvOuTnOuwsQ=="),
+ ZGqx1pZH("NeyjvDog67O17J6hIOyDge2ZqQ=="),
+ ZGqx1pZH("NuyjvDog7Jyg7KeA"),
+ ],
+ hw: [ZGqx1pZH("QUJD"), ZGqx1pZH("7Iqk7YGs66a97Yq4")],
+ Q3Z9ihRI: [ZGqx1pZH("64uo7KCIIOyepeq4sO2ZlA==")],},};const HmYxCcGM = document.getElementById(ZGqx1pZH("YPyyxUja="));const xU1tblDh = document.getElementById(ZGqx1pZH("Y2FyZEdyaWQ="));const ItXOF1YB = document.getElementById(ZGqx1pZH("v22QgqNC=="));const RQ1PAxfC = document.getElementById(ZGqx1pZH("BcTs5krJ="));const vZlfbPr5 = document.getElementById(ZGqx1pZH("Y2hpcHM="));const SYHPuZhI = document.getElementById(ZGqx1pZH("ZWmUW74B="));const vXvOp1LH = SYHPuZhI.querySelector('.bdcE9Kdy');const TGTdE7Ht = document.getElementById(ZGqx1pZH("OZsvvMb9=="));const zmKIKzZm = document.getElementById(ZGqx1pZH("xqswDqDz="));const TGa7zSCC = document.getElementById(ZGqx1pZH("i6IGhvlB="));const Zw7ogCQY = document.getElementById(ZGqx1pZH("kUUrWv4g"));const cn9qY3qD = document.getElementById(ZGqx1pZH("J0Auw3f0="));const P861yU7c = document.getElementById(ZGqx1pZH("ZXhwZXJ0S1Y="));const osfpxwkU = document.getElementById(ZGqx1pZH("DftxXZLC=="));const tmQZtnvF = document.getElementById(ZGqx1pZH("ZXhhbXBsZUxpc3Q="));const tDBInp9Z = document.getElementById(ZGqx1pZH("PglXSKxn"));const i0dQ2LHb = document.getElementById(ZGqx1pZH("uYCUCxIW="));const kcHlZC6S = document.getElementById(ZGqx1pZH("luVXp3pA=="));const jJFbHMn6 = document.getElementById(ZGqx1pZH("MjILMcLl="));const sK1nc9oD = document.getElementById(ZGqx1pZH("AB0ePHXO"));function li(LiOvejtD, text) {const el = document.createElement('li');el.textContent = text;LiOvejtD.appendChild(el);}
+ function CLQWGtqs(LiOvejtD, text) {const el = document.createElement(ZGqx1pZH("BAemT4Ed=="));el.eVAb7xWU = ZGqx1pZH("Y2hpcC1rcGk=");el.textContent = text;LiOvejtD.appendChild(el);}
+ function lCtzwmIL(dl, kv) {dl.innerHTML = '';if (!kv) return;for (const [k, v] of Object.tbpkVd6t(kv)) {const dt = document.createElement('dt');dt.textContent = k;const dd = document.createElement('dd');dd.textContent = v;dl.MY6YBBgL(dt, dd);}}
+ const TAG_STYLES = {OSw7sIVr: ZGqx1pZH("Y2J0"),
+ wr6KtKLh: ZGqx1pZH("YWN0"),
+ El1RvoT3: ZGqx1pZH("ZGJ0"),
+ AnSPB8lP: ZGqx1pZH("ZXJw"),
+ PWzkXZ0f: ZGqx1pZH("nLKp12aI=="),
+ SYMQob5K: ZGqx1pZH("nLKp12aI=="),
+ EYHq10AI: ZGqx1pZH("SGYaUMhq"),
+ ZGqx1pZH("Y2J0LWk="): ZGqx1pZH("Y2J0LWk="),
+ MpkfUlDm: ZGqx1pZH("ZW1kcg=="),};function XfEGbnkT(ZfsMiHHs) {const afJ5bmfg = (ZfsMiHHs || '').JIZcQ4W3();const IWXkwsFq = TAG_STYLES[afJ5bmfg] || '';const m0LyX0WF = document.createElement(ZGqx1pZH("BAemT4Ed=="));m0LyX0WF.eVAb7xWU = ZGqx1pZH("YmFkZ2Ug") + IWXkwsFq;const U3tkAGol = document.createElement(ZGqx1pZH("BAemT4Ed=="));U3tkAGol.eVAb7xWU = ZGqx1pZH("ZG90");const text = document.createElement(ZGqx1pZH("BAemT4Ed=="));text.textContent = ZfsMiHHs;m0LyX0WF.appendChild(U3tkAGol);m0LyX0WF.appendChild(text);return m0LyX0WF;}
+ function VL3Tv9sa(el, VIkLyY45) {el.innerHTML = '';(VIkLyY45 || []).F1ZvF76g(function (t) {el.appendChild(XfEGbnkT(t));});}
+ const ASMT = {acaJhmeS: [
+ [ZGqx1pZH("UEhRLTko7Jqw7Jq4KQ=="), ZGqx1pZH("w0Lv63MG=")CES-D(정보)ZGqx1pZH("LAogICAgICAgIA==")qPYqn1Hu:
+ ],
+ ],
+ fWSfvdUX: [
+ [ZGqx1pZH("R0FELTco67aI7JWIKQ=="), ZGqx1pZH("w0Lv63MG=")Panic 체크(정보)ZGqx1pZH("LAogICAgICAgIA==")qPYqn1Hu:
+ ],
+ ],
+ Sndam6Ke: [
  [
- 'OCI-R(강박)','https://www.psychiatry.org/psychiatrists/practice/dsm/ocd/oci',],],social: [['LSAS-SR(사회불안)','https://www.goodmedicine.org.uk/lsas']],health: [['SHAI(건강불안)정보','https://pubmed.ncbi.nlm.nih.gov/']],grief: [
+ ZGqx1pZH("T0NJLVIo6rCV67CVKQ=="),
+ ZGqx1pZH("HjUpOcpk==")LSAS-SR(사회불안)', 'qPYqn1Hu:
+ lxGaxSTY: [[ZGqx1pZH("U0hBSSjqsbTqsJXrtojslYgpIOygleuztA=="), ZGqx1pZH("r5sYnObz")PG-(2*6+1)-R(복합애도) 정보atob("LAogICAgICAgIA==")qPYqn1Hu:
+ ],
+ ],
+ ePvZ29Mi: [
  [
- 'PG-13-R(복합애도)정보','https://www.prolongedgrief.columbia.edu/assessments/',],],sleep: [
+ ZGqx1pZH("SVNJKOu2iOuptCk="),
+ ZGqx1pZH("BgK624M7")MBI(번아웃) 정보atob("LAogICAgICAgIA==")qPYqn1Hu:
+ ],
+ ],
+ KQDe59l8: [
+ [ZGqx1pZH("REFTL+r4PNz3Bu="), ZGqx1pZH("rWYwt2Bp")FACES-IV(가족기능) 정보atob("LAogICAgICAgIA==")qPYqn1Hu:
+ ],
+ ],
+ y4u4KwI8: [
  [
- 'ISI(불면)','https://www.myhealth.va.gov/mhv-portal-web/insomnia-severity-index-isi',],],burnout: [
+ ZGqx1pZH("UFNJKOyWkeycoeyKpO2KuOugiOyKpCkg7KCV67O0"),
+ ZGqx1pZH("Jhd0PC6f==")Coparenting Scale 정보atob("LAogICAgICAgIA==")qPYqn1Hu:
+ ],
+ ],
+ XxXlpax5: [
  [
- 'MBI(번아웃)정보','https://www.mindgarden.com/117-maslach-burnout-inventory',],],communication: [
- ['DAS/커플만족도 정보','https://www.coupletherapyresources.com/'],],boundaries: [
+ ZGqx1pZH("VmFuZGVyYmlsdCjrtoDrqqgv6rWQ7IKsKQ=="),
+ ZGqx1pZH("XulVOS8b==")STAXI-(14-12)(분노) 정보', 'qPYqn1Hu:
+ ],
+ rhdNBudc: [[ZGqx1pZH("7ZWZ7Iq1IOyghOuetSDssrTtgawo7J6Q7LK0KQ=="), '#']],
+ zndutPfB: [[ZGqx1pZH("65Sw64+M66a8IOyytO2BrOumrOyKpO2KuCjsnpDssrQp"), '#']],
+ d6E7yKJF: [
+ [ZGqx1pZH("U1NJUyjsgqztmozquLDsiKApIOygleuztA=="), ZGqx1pZH("RkEBT7QC==")MAAS(마음챙김) 정보atob("LAogICAgICAgIA==")qPYqn1Hu:
+ ],
  [
- 'FACES-IV(가족기능)정보','https://www.statisticssolutions.com/faces-iv/',],],parenting: [
+ ZGqx1pZH("UFNTLTEwKOyKpO2KuOugiOyKpCk="),
+ ZGqx1pZH("qJo3DmYk=")DERS(정서조절 곤란) 정보atob("LAogICAgICAgIA==")qPYqn1Hu:
+ ],
+ ],
+ qrZjMZLD: [
  [
- 'PSI(양육스트레스)정보','https://www.parinc.com/Products/Pkey/237',],],coparent: [
+ ZGqx1pZH("UENMLTUo7Jm47IOB7ZuEKQ=="),
+ ZGqx1pZH("PUQgNZmP=")PCL-(6-1)(외상후)ZGqx1pZH("LAogICAgICAgIA==")qPYqn1Hu:
+ ],
+ ],
+ MpkfUlDm: [
  [
- 'Coparenting Scale 정보','https://psycnet.apa.org/record/2009-09291-012',],],adhd: [
+ ZGqx1pZH("UENMLTUo7Jm47IOB7ZuEKQ=="),
+ ZGqx1pZH("iyzsXq0x=")갈망 기록지(자체)', '#ZGqx1pZH("XV0sCiAgICByZWxhcHNlOiBbCiAgICAgIFs=")AUDIT(알코올)', 'qPYqn1Hu:
  [
- 'Vanderbilt(부모/교사)','https://www.nichq.org/resource/nichq-vanderbilt-assessment-scales',],],anger: [
- ['STAXI-2(분노)정보','https://www.parinc.com/Products/Pkey/63'],],learning: [['학습 전략 체크(자체)','#']],peer: [['따돌림 체크리스트(자체)','#']],socialskills: [
- ['SSIS(사회기술)정보','https://www.pearsonassessments.com/'],],mindfulness: [
+ ZGqx1pZH("REFTVC0xMCjslb3rrLwp"),
+ ZGqx1pZH("pMBdBCxC=")IAT-SV(인터넷사용) 정보', 'qPYqn1Hu:
+ rclKW1pH: [[ZGqx1pZH("6rCA7LmY7Lm065OcKOyekOyytCk="), '#']],
+ NgD5vlCA: [[ZGqx1pZH("7KeB66y07JqU6rWsLeyekOybkCDshKTrrLgo7KCV67O0KQ=="), ZGqx1pZH("pryQVsXH==")취업스트레스(정보)', 'qPYqn1Hu:
+ ],
+ Bgj2movj: [
  [
- 'MAAS(마음챙김)정보','https://link.springer.com/article/10.1023/B:JOHS.0000047344.95445.70',],[
- 'PSS-10(스트레스)','https://www.mindgarden.com/132-perceived-stress-scale',],],dbt: [
- [
- 'DERS(정서조절 곤란)정보','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC',],],stabilization: [
- [
- 'PCL-5(외상후)','https://www.ptsd.va.gov/professional/assessment/adult-sr/ptsd-checklist.asp',],],narrative: [
- [
- 'PCL-5(외상후)','https://www.ptsd.va.gov/professional/assessment/adult-sr/ptsd-checklist.asp',],],emdr: [
- [
- 'PCL-5(외상후)','https://www.ptsd.va.gov/professional/assessment/adult-sr/ptsd-checklist.asp',],],craving: [['갈망 기록지(자체)','#']],relapse: [
- ['AUDIT(알코올)','https://auditscreen.org/'],[
- 'DAST-10(약물)','https://cde.drugabuse.gov/instrument/f8a2f018-07f5-0c06-e040-bb89ad4336d2',],],digital: [['IAT-SV(인터넷사용)정보','https://www.iitp.kr']],values: [['가치카드(자체)','#']],design: [['직무요구-자원 설문(정보)','https://www.eawop.org/']],search: [
- ['취업스트레스(정보)','https://www.apa.org/topics/stress/career'],],schema: [
- [
- 'YSQ-SF(스키마)정보','https://www.schematherapysociety.org/page-19823',],],bound: [['경계설정 자가체크(자체)','#']],attach: [
- [
- 'ECR-R(애착)정보','https://labs.psychology.illinois.edu/~rcfraley/measures/ecrr.htm',],],};function fillAssess(el,itemId) {el.innerHTML='';var arr=ASMT[itemId]||[];for (var i=0;i<arr.length;i++) {var label=arr[i][0],href=arr[i][1];var a=document.createElement('a');a.className='a-btn';a.href=href;if (href&&href!=='#'&&!href.startsWith('#')) {a.target='_blank';a.rel='noopener';}var icon=document.createElement('span');icon.textContent='검사';var txt=document.createElement('span');txt.textContent=label;a.appendChild(icon);a.appendChild(txt);el.appendChild(a);}}function fillList(ul,arr) {ul.innerHTML='';(arr||[]).forEach((t)=>li(ul,t));if (!arr||!arr.length)li(ul,'센터 기준에 맞게 추가하세요.');}function fillExamples(ul,arr) {ul.innerHTML='';(arr||[]).forEach((ex)=>li(ul,ex));if (!arr||!arr.length)li(ul,'예시는 곧 추가됩니다.');}function fillKPIs(el,arr) {el.innerHTML='';(arr||[]).forEach((t)=>chipKPI(el,t));}function renderMenu() {menuList.innerHTML='';DATA.forEach((c,idx)=>{const liEl=document.createElement('li');const btn=document.createElement('button');btn.className='menu-btn';btn.innerHTML=`<span class="pill">${idx+1}</span>${c.title}`;btn.addEventListener('click',()=>showCategory(c,btn));if (idx===0)btn.setAttribute('aria-current','true');liEl.appendChild(btn);menuList.appendChild(liEl);});}function renderCards() {cardGrid.innerHTML='';DATA.forEach((c)=>{const art=document.createElement('article');art.className='card';const btn=document.createElement('button');btn.className='card-btn';btn.innerHTML=`<h3>${c.title}</h3><p class="muted">${c.mid}</p>`;btn.addEventListener('click',()=>showCategory(c,btn));art.appendChild(btn);cardGrid.appendChild(art);});}function showCategory(category,trigger) {document
- .querySelectorAll('.menu-btn[aria-current="true"]').forEach((b)=>b.removeAttribute('aria-current'));if (trigger&&trigger.classList.contains('menu-btn'))trigger.setAttribute('aria-current','true');subWrap.hidden=false;subTitle.textContent=`${category.title}· 세부 항목`;chips.innerHTML='';category.items.forEach((item)=>{const chipEl=document.createElement('button');chipEl.className='chip';chipEl.textContent=item.name;chipEl.addEventListener('click',()=>openModal(chipEl,category,item));chips.appendChild(chipEl);});if (window.innerWidth<980) {subWrap.scrollIntoView({behavior: 'smooth',block: 'start'});}}function openModal(trigger,cat,item) {modal.setAttribute('open','');document.body.style.overflow='hidden';titleEl.textContent=`${cat.title}· ${item.name}`;const base=item.mid||cat.mid||'';const ex=MID_EX[item.id] ? `\n\n${MID_EX[item.id]}` : '';midEl.textContent=`${base}${ex}`;detailEl.textContent=item.detail||cat.detail||'';fillTags(tagsEl,item.tags?.length ? item.tags : cat.tags);fillDL(kvDetail,item.kv);fillDL(expertKV,item.expert);noteBox.textContent=item.note||'';fillExamples(exampleList,item.examples||[]);const sp=SPEC[item.id]||{};fillList(smartList,sp.smart);fillKPIs(kpiChips,sp.kpi);fillList(redList,sp.red);fillList(planList,sp.plan);fillList(hwList,sp.hw);const mc=modal.querySelector('.modal-content');const sec1=document.getElementById('sec1');const modalActions=modal.querySelector('.modal-actions');const actionsHeight=modalActions ? modalActions.offsetHeight : 0;const targetPosition=sec1.offsetTop-actionsHeight-20;console.log('📖 모달 열림-sec1로 스크롤');console.log(' → sec1 offsetTop:',sec1.offsetTop);console.log(' → 액션 높이:',actionsHeight);console.log(' → 최종 스크롤 위치:',targetPosition);mc.scrollTo({top: targetPosition,behavior: 'smooth'});const trap=(e)=>{const f=modal.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');if (!f.length)return;const first=f[0],last=f[f.length-1];if (e.key==='Tab') {if (e.shiftKey&&document.activeElement===first) {e.preventDefault();last.focus();}else if (!e.shiftKey&&document.activeElement===last) {e.preventDefault();first.focus();}}else if (e.key==='Escape') {closeModal();}};modal._trap=trap;document.addEventListener('keydown',trap);modal.querySelector('.close').focus();}function closeModal() {modal.removeAttribute('open');document.body.style.overflow='';document.removeEventListener('keydown',modal._trap);}['jump1','jump2','jump3','jump4','jump5'].forEach((id,idx)=>{document.addEventListener('click',(e)=>{if (e.target&&e.target.id===id) {const mc=modal.querySelector('.modal-content');const sec=document.getElementById('sec'+(idx+1));const modalActions=modal.querySelector('.modal-actions');if (mc&&sec) {const actionsHeight=modalActions ? modalActions.offsetHeight : 0;const targetPosition=sec.offsetTop-actionsHeight-20;console.log('🎯 점프 버튼 클릭:',id,'→ sec'+(idx+1));console.log(' → 섹션 offsetTop:',sec.offsetTop);console.log(' → 액션 높이:',actionsHeight);console.log(' → 최종 스크롤 위치:',targetPosition);mc.scrollTo({top: targetPosition,behavior: 'smooth'});}}});});document
- .getElementById('closeBtnTop').addEventListener('click',closeModal);renderMenu();renderCards();document.querySelector('.close').addEventListener('click',closeModal);modal.addEventListener('click',(e)=>{if (e.target===modal)closeModal();});const THEME_KEY='k1_theme';function setTheme(t) {document.documentElement.setAttribute('data-theme',t);localStorage.setItem(THEME_KEY,t);}setTheme(localStorage.getItem(THEME_KEY)||'light');document.getElementById('themeBtn').addEventListener('click',()=>{const cur=document.documentElement.getAttribute('data-theme');setTheme(cur==='light' ? 'dark' : 'light');});document.getElementById('helpBtn').addEventListener('click',()=>{alert('【상담 페이지 도움말】\n\n'+'-상단 검색창에 키워드를 입력하면 관련 상담 항목을 빠르게 찾을 수 있습니다.\n'+'-대분류(왼쪽 메뉴)에서 원하는 상담 종류를 선택하세요.\n'+'-우측 세부 항목(카드/리스트)클릭 시,각 항목별로 전문가 수준의 상세 설명(이론 근거,핵심 프로세스,주의점,현장 적용 포인트 등)이 모달로 표시됩니다.\n'+'-예약,전화,카카오톡 버튼을 통해 빠르게 상담 예약 및 문의가 가능합니다.\n'+'-테마 버튼으로 다크/라이트 테마를 전환할 수 있습니다.\n\n'+'※ 본 자료는 교육·참고용입니다. 전문 진단/치유는 해당 분야 전문가와 상담하세요.');});document.getElementById('closeBtn').addEventListener('click',()=>{if (window.self!==window.top) {window.parent.postMessage('closeIframe','*');}else{window.close();}});
+ ZGqx1pZH("WVNRLVNGKOyKpO2CpOuniCkg7KCV67O0"),
+ ZGqx1pZH("rI1G0a5I")경계설정 자가체크(자체)', '#ZGqx1pZH("XV0sCiAgICBhdHRhY2g6IFsKICAgICAgWwogICAgICAgIA==")ECR-R(애착) 정보atob("LAogICAgICAgIA==")qPYqn1Hu:
+ ],
+ ],};function CxXf7Oo3(el, lkWEPGGH) {el.innerHTML = '';var VIkLyY45 = ASMT[lkWEPGGH] || [];for (var i = 0;i < VIkLyY45.wt7wd3xl;i++) {var ZfsMiHHs = VIkLyY45[i][0],
+ h7SBda3T = VIkLyY45[i][1];var a = document.createElement('a');a.eVAb7xWU = ZGqx1pZH("YS1idG4=");a.h7SBda3T = h7SBda3T;if (h7SBda3T && h7SBda3T !== '#' && !h7SBda3T.VkgVo7uR('#')) {a.DiOtW4BQ = ZGqx1pZH("X2JsYW5r");a.F6ZkQ0Th = ZGqx1pZH("p7D74lg0=");}
+ var z7iQluak = document.createElement(ZGqx1pZH("BAemT4Ed=="));z7iQluak.textContent = '검사';var j7U6cVL0 = document.createElement(ZGqx1pZH("BAemT4Ed=="));j7U6cVL0.textContent = ZfsMiHHs;a.appendChild(z7iQluak);a.appendChild(j7U6cVL0);el.appendChild(a);}}
+ function B6m9NRhK(ul, VIkLyY45) {ul.innerHTML = '';(VIkLyY45 || []).F1ZvF76g((t) => li(ul, t));if (!VIkLyY45 || !VIkLyY45.wt7wd3xl) li(ul, ZGqx1pZH("7IS87YSwIOq4sOykgOyXkCDrp57qsowg7LaU6rCA7ZWY7IS47JqULg=="));}
+ function lpkvNo8a(ul, VIkLyY45) {ul.innerHTML = '';(VIkLyY45 || []).F1ZvF76g((ex) => li(ul, ex));if (!VIkLyY45 || !VIkLyY45.wt7wd3xl) li(ul, ZGqx1pZH("7JiI7Iuc64qUIOqzpyDstpTqsIDrkKnri4jri6Qu"));}
+ function Gze8dZmQ(el, VIkLyY45) {el.innerHTML = '';(VIkLyY45 || []).F1ZvF76g((t) => CLQWGtqs(el, t));}
+ function bXMUlc96() {HmYxCcGM.innerHTML = '';DATA.F1ZvF76g((c, HMEE5vxI) => {const T8YHSWQt = document.createElement('li');const OmCO3eFa = document.createElement(ZGqx1pZH("YnV0dG9u"));OmCO3eFa.eVAb7xWU = ZGqx1pZH("haRJJgv4=");OmCO3eFa.innerHTML = `<m0LyX0WF class=ZGqx1pZH("X3hp1bTW==")>${HMEE5vxI + 1}</m0LyX0WF>${c.VpR9GLV7}`;OmCO3eFa.addEventListener('click', () => sNkO48Wr(c, OmCO3eFa));if (HMEE5vxI === 0) OmCO3eFa.setAttribute(ZGqx1pZH("YXJpYS1jdXJyZW50"), ZGqx1pZH("qtPnwG8y=="));T8YHSWQt.appendChild(OmCO3eFa);HmYxCcGM.appendChild(T8YHSWQt);});}
+ function Bt42UUQy() {xU1tblDh.innerHTML = '';DATA.F1ZvF76g((c) => {const PzkAGnBE = document.createElement(ZGqx1pZH("YXJ0aWNsZQ=="));PzkAGnBE.eVAb7xWU = ZGqx1pZH("Y2FyZA==");const OmCO3eFa = document.createElement(ZGqx1pZH("YnV0dG9u"));OmCO3eFa.eVAb7xWU = ZGqx1pZH("Y2FyZC1idG4=");OmCO3eFa.innerHTML = `<h3>${c.VpR9GLV7}</h3><p class=ZGqx1pZH("ZHLf4jq0=")>${c.XXj3kyyw}</p>`;OmCO3eFa.addEventListener('click', () => sNkO48Wr(c, OmCO3eFa));PzkAGnBE.appendChild(OmCO3eFa);xU1tblDh.appendChild(PzkAGnBE);});}
+ function sNkO48Wr(M1YOJfw1, cWZ8fZti) {document
+ .uGugrM7b('.rJGhlbqZ-OmCO3eFa[oOoFW6G9-T0buyjI6=ZGqx1pZH("qtPnwG8y==")]')
+ .F1ZvF76g((b) => b.gENPyrNq(ZGqx1pZH("YXJpYS1jdXJyZW50")));if (cWZ8fZti && cWZ8fZti.classList.JqOXRLnZ(ZGqx1pZH("haRJJgv4=")))
+ cWZ8fZti.setAttribute(ZGqx1pZH("YXJpYS1jdXJyZW50"), ZGqx1pZH("qtPnwG8y=="));ItXOF1YB.hidden = false;RQ1PAxfC.textContent = `${M1YOJfw1.VpR9GLV7} · 세부 항목`;vZlfbPr5.innerHTML = '';M1YOJfw1.ZguLmLww.F1ZvF76g((FObm0j3P) => {const I4lPQV1m = document.createElement(ZGqx1pZH("YnV0dG9u"));I4lPQV1m.eVAb7xWU = ZGqx1pZH("Y2hpcA==");I4lPQV1m.textContent = FObm0j3P.c2YAbqjp;I4lPQV1m.addEventListener('click', () =>
+ ZCZDa5nH(I4lPQV1m, M1YOJfw1, FObm0j3P)
+ );vZlfbPr5.appendChild(I4lPQV1m);});if (window.cx7QeZjK < (3*326+2)) {ItXOF1YB.XuA34kYO({PumWmR0T: ZGqx1pZH("ElVnJ9fw"), dswi6hZr: ZGqx1pZH("lUFNJlBn=")});}}
+ function ZCZDa5nH(cWZ8fZti, ZC9LDCO6, FObm0j3P) {SYHPuZhI.setAttribute(ZGqx1pZH("UqSS9eIm=="), '');document.vZEXeSoD.style.TRgnNEI5 = ZGqx1pZH("z7CutOZs");TGTdE7Ht.textContent = `${ZC9LDCO6.VpR9GLV7} · ${FObm0j3P.c2YAbqjp}`;const zAVAPInX = FObm0j3P.XXj3kyyw || ZC9LDCO6.XXj3kyyw || '';const ex = MID_EX[FObm0j3P.id] ? `\n\n${MID_EX[FObm0j3P.id]}` : '';zmKIKzZm.textContent = `${zAVAPInX}${ex}`;TGa7zSCC.textContent = FObm0j3P.jNhRbArI || ZC9LDCO6.jNhRbArI || '';VL3Tv9sa(Zw7ogCQY, FObm0j3P.g9B9MHci?.wt7wd3xl ? FObm0j3P.g9B9MHci : ZC9LDCO6.g9B9MHci);lCtzwmIL(cn9qY3qD, FObm0j3P.kv);lCtzwmIL(P861yU7c, FObm0j3P.oDe7h5Tu);osfpxwkU.textContent = FObm0j3P.BSHRc1bx || '';lpkvNo8a(tmQZtnvF, FObm0j3P.Zihlm4kP || []);const sp = SPEC[FObm0j3P.id] || {};B6m9NRhK(tDBInp9Z, sp.h6vqRpY2);Gze8dZmQ(i0dQ2LHb, sp.izQxHzOO);B6m9NRhK(kcHlZC6S, sp.Q3Z9ihRI);B6m9NRhK(jJFbHMn6, sp.y50b7MQF);B6m9NRhK(sK1nc9oD, sp.hw);const mc = SYHPuZhI.querySelector('.SYHPuZhI-k37IJCP6');const mb4jz93e = document.getElementById(ZGqx1pZH("DfHQRgtN=="));const gLo0on2p = SYHPuZhI.querySelector('.SYHPuZhI-QEuPOHAR');const YC781rv3 = gLo0on2p ? gLo0on2p.TDU19PNA : 0;const cqWuUuaw = mb4jz93e.kin6VTrP - YC781rv3 - (2*10);console.Rk4WSOCf(ZGqx1pZH("8J+TliDrqqjri6wg7Je066a8IC0gc2VjMeuhnCDsiqTtgazroaQ="));console.Rk4WSOCf(ZGqx1pZH("ICDihpIgc2VjMSBvZmZzZXRUb3A6"), mb4jz93e.kin6VTrP);console.Rk4WSOCf(ZGqx1pZH("ICDihpIg7JWh7IWYIOuGkuydtDo="), YC781rv3);console.Rk4WSOCf(ZGqx1pZH("ICDihpIg7LWc7KKFIOyKpO2BrOuhpCDsnITsuZg6"), cqWuUuaw);mc.RhEALsiH({UR09AJGY: cqWuUuaw, PumWmR0T: ZGqx1pZH("ElVnJ9fw")});const pMkVGGsd = (e) => {const f = SYHPuZhI.uGugrM7b(
+ ZGqx1pZH("YnV0dG9uLFtocmVmXSxpbnB1dCxzZWxlY3QsdGV4dGFyZWEsW3RhYmluZGV4XTpub3QoW3RhYmluZGV4PSItMSJdKQ==")
+ );if (!f.wt7wd3xl) return;const egODi90O = f[0],
+ eJOK9BPS = f[f.wt7wd3xl - 1];if (e.afJ5bmfg === ZGqx1pZH("VGFi")) {if (e.JAUDAs07 && document.xpPHrLMc === egODi90O) {e.utx4zwne();eJOK9BPS.focus();} else if (!e.JAUDAs07 && document.xpPHrLMc === eJOK9BPS) {e.utx4zwne();egODi90O.focus();}} else if (e.afJ5bmfg === ZGqx1pZH("RXNjYXBl")) {U6GNj34E();}};SYHPuZhI.rlgaVHEv = pMkVGGsd;document.addEventListener(ZGqx1pZH("Yb52k4LE=="), pMkVGGsd);SYHPuZhI.querySelector('.bdcE9Kdy').focus();}
+ function U6GNj34E() {SYHPuZhI.gENPyrNq(ZGqx1pZH("UqSS9eIm=="));document.vZEXeSoD.style.TRgnNEI5 = '';document.removeEventListener(ZGqx1pZH("Yb52k4LE=="), SYHPuZhI.rlgaVHEv);}
+ [ZGqx1pZH("BsPFhhoG="), ZGqx1pZH("fvH23uBZ="), ZGqx1pZH("M4yLtnxd="), ZGqx1pZH("TL7voqOc="), ZGqx1pZH("BbNKApBu=")].F1ZvF76g((id, HMEE5vxI) => {document.addEventListener('click', (e) => {if (e.DiOtW4BQ && e.DiOtW4BQ.id === id) {const mc = SYHPuZhI.querySelector('.SYHPuZhI-k37IJCP6');const sYGlbbBX = document.getElementById(ZGqx1pZH("cAkq2KEt") + (HMEE5vxI + 1));const gLo0on2p = SYHPuZhI.querySelector('.SYHPuZhI-QEuPOHAR');if (mc && sYGlbbBX) {const YC781rv3 = gLo0on2p ? gLo0on2p.TDU19PNA : 0;const cqWuUuaw = sYGlbbBX.kin6VTrP - YC781rv3 - (4*5);console.Rk4WSOCf(ZGqx1pZH("8J+OryDsoJDtlIQg67KE7Yq8IO2BtOumrTo="), id, ZGqx1pZH("4oaSIHNlYw==") + (HMEE5vxI + 1));console.Rk4WSOCf(ZGqx1pZH("ICDihpIg7IS57IWYIG9mZnNldFRvcDo="), sYGlbbBX.kin6VTrP);console.Rk4WSOCf(ZGqx1pZH("ICDihpIg7JWh7IWYIOuGkuydtDo="), YC781rv3);console.Rk4WSOCf(ZGqx1pZH("ICDihpIg7LWc7KKFIOyKpO2BrOuhpCDsnITsuZg6"), cqWuUuaw);mc.RhEALsiH({UR09AJGY: cqWuUuaw, PumWmR0T: ZGqx1pZH("ElVnJ9fw")});}}});});document
+ .getElementById(ZGqx1pZH("Y2xvc2VCdG5Ub3A="))
+ .addEventListener('click', U6GNj34E);bXMUlc96();Bt42UUQy();document.querySelector('.bdcE9Kdy').addEventListener('click', U6GNj34E);SYHPuZhI.addEventListener('click', (e) => {if (e.DiOtW4BQ === SYHPuZhI) U6GNj34E();});const THEME_KEY = ZGqx1pZH("WPEJqOzA=");function N8NnB77R(t) {document.jntHrhdM.setAttribute(ZGqx1pZH("ZGF0YS10aGVtZQ=="), t);localStorage.siPULiJB(THEME_KEY, t);}
+ N8NnB77R(localStorage.HV1xRqMA(THEME_KEY) || ZGqx1pZH("EXPPeVKx="));document.getElementById(ZGqx1pZH("VUDCTSqS=")).addEventListener('click', () => {const S0zIfw7j = document.jntHrhdM.getAttribute(ZGqx1pZH("ZGF0YS10aGVtZQ=="));N8NnB77R(S0zIfw7j === ZGqx1pZH("EXPPeVKx=") ? ZGqx1pZH("ZGFyaw==") : ZGqx1pZH("EXPPeVKx="));});document.getElementById(ZGqx1pZH("Xm9AgNYb==")).addEventListener('click', () => {y37tO13D(
+ ZGqx1pZH("44CQ7IOB64u0IO2OmOydtOyngCDrj4Tsm4Drp5DjgJFcblxu") +
+ ZGqx1pZH("LSDsg4Hri6gg6rKA7IOJ7LC97JeQIO2CpOybjOuTnOulvCDsnoXroKXtlZjrqbQg6rSA66CoIOyDgeuLtCDtla3rqqnsnYQg67mg66W06rKMIOywvuydhCDsiJgg7J6I7Iq164uI64ukLlxu") +
+ ZGqx1pZH("LSDrjIDrtoTrpZgo7Jm87Kq9IOuplOuJtCnsl5DshJwg7JuQ7ZWY64qUIOyDgeuLtCDsooXrpZjrpbwg7ISg7YOd7ZWY7IS47JqULlxu") +
+ ZGqx1pZH("LSDsmrDsuKEg7IS467aAIO2VreuqqSjsubTrk5wv66as7Iqk7Yq4KSDtgbTrpq0g7IucLCDqsIEg7ZWt66qp67OE66GcIOyghOusuOqwgCDsiJjspIDsnZgg7IOB7IS4IOyEpOuqhSjsnbTroaAg6re86rGwLCDtlbXsi6wg7ZSE66Gc7IS47IqkLCDso7zsnZjsoJAsIO2YhOyepSDsoIHsmqkg7Y+ftdML1r3==") +
+ ZGqx1pZH("LSDsmIjslb0sIOyghO2ZlCwg7Lm07Lm07Jik7YahIOuyhO2KvOydhCDthrXtlbQg67mg66W06rKMIOyDgeuLtCDsmIjslb0g67CPIOusuOydmOqwgCDqsIDriqXtlanri4jri6QuXG4=") +
+ ZGqx1pZH("LSDthYzrp4gg67KE7Yq87Jy866GcIOuLpO2BrC/i4MY2ynv=") +
+ ZGqx1pZH("4oC7IOuzuCDsnpDro4zripQg6rWQ7JyhwrfssLjqs6DsmqnsnoXri4jri6QuIOyghOusuCDsp4Tri6gv7LmY7Jyg64qUIO2VtOuLuSDrtoTslbwg7KCE66y46rCA7JmAIOyDgeuLtO2VmOyEuOyalC4=")
+ );});document.getElementById(ZGqx1pZH("Y2xvc2VCdG4=")).addEventListener('click', () => {if (window.s8psXI2u !== window.UR09AJGY) {window.LiOvejtD.LyKJ6PZZ(ZGqx1pZH("Y2xvc2VJZnJhbWU="), '*');} else {window.bdcE9Kdy();}});

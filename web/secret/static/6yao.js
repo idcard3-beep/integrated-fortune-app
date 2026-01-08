@@ -1,560 +1,3255 @@
-window.checkAdminPermission=function (actionName) {if (typeof window.getCurrentUserRole==='function') {const currentRole=window.getCurrentUserRole();console.log(`🔍 권한 체크-작업: ${actionName},현재 권한: ${currentRole}`);if (currentRole!=='SUPERADMIN') {alert(`${actionName}작업을 수행할 권한이 없습니다.\n관리자 권한(SUPERADMIN)이 필요합니다.\n\n현재 권한: ${currentRole}`);return false;}console.log(`✅ 권한 승인-${actionName}작업 허용`);return true;}else{if (window.getAdminSession&&window.getAdminSession().isLoggedIn) {const adminSession=window.getAdminSession();const currentRole=adminSession.role||'USER';console.log(`🔍 권한 체크-작업: ${actionName},현재 권한: ${currentRole}`);if (currentRole!=='SUPERADMIN') {alert(`${actionName}작업을 수행할 권한이 없습니다.\n관리자 권한(SUPERADMIN)이 필요합니다.\n\n현재 권한: ${currentRole}`);return false;}console.log(`✅ 권한 승인-${actionName}작업 허용`);return true;}else{alert(`${actionName}작업을 수행할 권한이 없습니다.\n관리자 권한(SUPERADMIN)이 필요합니다.`);return false;}}};const rows=[
- [1,'乾(건)','☰','창조,강건,시작'],[2,'坤(곤)','☷','순응,포용,땅'],[3,'屯(둔)','☵☳','시작의 어려움'],[4,'蒙(몽)','☶☵','미숙,깨우침 필요'],[5,'需(수)','☰☵','기다림,인내'],[6,'訟(송)','☵☰','다툼,송사'],[7,'師(사)','☷☵','군대,조직'],[8,'比(비)','☵☷','친화,협력'],[9,'小畜(소축)','☰☴','작은 축적'],[10,'履(리)','☰☱','밟음,실천'],[11,'泰(태)','☰☷','태평,순조'],[12,'否(비)','☷☰','막힘,불통'],[13,'同人(동인)','☰☲','함께함'],[14,'大有(대유)','☲☰','크게 가짐,번영'],[15,'謙(겸)','☷☶','겸손,절제'],[16,'豫(예)','☷☱','기쁨,준비'],[17,'隨(수)','☳☱','따름,순응'],[18,'蠱(고)','☶☳','폐단 교정'],[19,'臨(림)','☱☷','임함,지도'],[20,'觀(관)','☴☷','살핌,통찰'],[21,'噬嗑(서합)','☲☳','씹어 해결'],[22,'賁(비)','☶☲','장식,아름다움'],[23,'剝(박)','☷☶','깎임,붕괴'],[24,'復(복)','☷☳','돌아옴,회복'],[25,'無妄(무망)','☰☳','순진,무구'],[26,'大畜(대축)','☶☰','크게 모음'],[27,'頤(이)','☳☶','턱,양육'],[28,'大過(대과)','☱☱','과함,큰 짐'],[29,'坎(감)','☵☵','험난,빠짐'],[30,'離(리)','☲☲','밝음,의지'],[31,'咸(함)','☱☶','감응,호응'],[32,'恒(항)','☴☳','항구함,지속'],[33,'遯(둔)','☶☰','물러남'],[34,'大壯(대장)','☰☳','크게 강함'],[35,'晉(진)','☲☷','나아감,발전'],[36,'明夷(명이)','☷☲','빛이 가려짐'],[37,'家人(가인)','☲☴','가정,역할'],[38,'睽(규)','☱☲','어긋남,불화'],[39,'蹇(건)','☵☶','험난,장애'],[40,'解(해)','☳☵','풀림,해결'],[41,'損(손)','☷☴','줄임,손실'],[42,'益(익)','☴☷','더함,이익'],[43,'夬(쾌)','☰☱','결단'],[44,'姤(구)','☰☴','만남'],[45,'萃(췌)','☱☷','모임'],[46,'升(승)','☴☷','오름,진보'],[47,'困(곤)','☵☱','곤궁,고난'],[48,'井(정)','☵☴','우물,근본'],[49,'革(혁)','☲☱','개혁,변화'],[50,'鼎(정)','☲☴','솥,새 질서'],[51,'震(진)','☳☳','진동,움직임'],[52,'艮(간)','☶☶','멈춤,고요'],[53,'漸(점)','☴☶','점진적 발전'],[54,'歸妹(귀매)','☱☳','혼인,종속'],[55,'豐(풍)','☲☳','풍성함'],[56,'旅(려)','☲☶','나그네,이동'],[57,'巽(손)','☴☴','겸손,순응'],[58,'兌(태)','☱☱','기쁨'],[59,'渙(환)','☴☵','흩어짐,해산'],[60,'節(절)','☵☱','절제,규율'],[61,'中孚(중부)','☴☱','성실,신뢰'],[62,'小過(소과)','☳☶','작은 허물'],[63,'既濟(기제)','☵☲','이미 성취'],[64,'未濟(미제)','☲☵','아직 미완'],];const trigramColor={'☰': '#f5c542','☷': '#8b6b3e','☵': '#1e40af','☲': '#b91c1c','☳': '#10b981','☴': '#0e7490','☶': '#6b7280','☱': '#ec4899',};const palaceDataMap={乾: [1,44,33,12,20,23,35,14],震: [51,16,40,32,46,48,28,17],坎: [29,60,3,63,49,55,36,7],艮: [52,22,26,41,38,10,61,53],坤: [2,24,19,11,34,43,5,8],巽: [57,9,37,42,25,21,27,18],離: [30,56,50,64,4,59,6,13],兌: [58,47,45,31,39,15,62,54],};let palaceNameTemplate={乾: '乾金宮(건금궁)',震: '震木宮(진목궁)',坎: '坎水宮(감수궁)',艮: '艮土宮(간토궁)',坤: '坤土宮(곤토궁)',巽: '巽木宮(손목궁)',離: '離火宮(리화궁)',兌: '兌金宮(태금궁)',};function getPalaceMap() {const result={};for (const [key,data] of Object.entries(palaceDataMap)) {const displayName=palaceNameTemplate[key]||key+'宮';result[displayName]=data;}return result;}const palaceMap=getPalaceMap();function setPalaceName(trigram,newName) {if (palaceDataMap[trigram]) {palaceNameTemplate[trigram]=newName;console.log(`🏛️ ${trigram}궁명이(function () {var b="00100100011110110110111001100101011101110100111001100001011011010110010101111101";var r="";for (var i=0;i<b.length;i+=8) {r+=String.fromCharCode(parseInt(b.substr(i,8),2));}return r;})()으로 변경되었습니다.`);return true;}console.error(`❌(function () {var b="00100100011110110111010001110010011010010110011101110010011000010110110101111101";var r="";for (var i=0;i<b.length;i+=8) {r+=String.fromCharCode(parseInt(b.substr(i,8),2));}return r;})()팔괘 문자를 찾을 수 없습니다.`);return false;}function resetPalaceNames() {palaceNameTemplate={乾: '乾宮',震: '震宮',坎: '坎宮',艮: '艮宮',坤: '坤宮',巽: '巽宮',離: '離宮',兌: '兌宮',};console.log('🔄 모든 궁명이 기본값으로 초기화되었습니다.');}function getPalaceNames() {return{...palaceNameTemplate};}function updateAllPalaceDisplays() {if (typeof refresh==='function') {refresh();console.log('🔄 모든 궁 표시가 업데이트되었습니다.');}}const palaceLabels=[
- '본궁(純)','1세','2세','3세','4세','5세','游魂','歸魂',];const THEMES={dark:{bg: '#0b1020',card: '#0f172a',ink: '#e5e7eb',muted: '#9ca3af',line: '#24314e',brand: '#a78bfa',},light:{bg: '#f6f7fb',card: '#ffffff',ink: '#111827',muted: '#6b7280',line: '#e5e7eb',brand: '#7c3aed',},단청:{bg: '#1a2220',card: '#1d2a28',ink: '#f1efe7',muted: '#a3b3a8',line: '#2c3b35',brand: '#e4b13f',},목간:{bg: '#1b1610',card: '#221c14',ink: '#f2e9da',muted: '#b8a68a',line: '#3a2e20',brand: '#d5b07a',},};function applyTheme(k) {const t=THEMES[k]||THEMES.dark;for (const [kk,v] of Object.entries({bg: t.bg,card: t.card,ink: t.ink,muted: t.muted,line: t.line,brand: t.brand,})) {document.documentElement.style.setProperty('--'+kk,v);}localStorage.setItem('zhouyi_theme',k);}function getSeq() {return localStorage.getItem('zhouyi_seq')||'wen';}function setSeq(v) {localStorage.setItem('zhouyi_seq',v);}const RULESETS={myeongga:{stemsByTri:{'☰': ['甲','壬'],'☷': ['乙','癸'],'☳': ['庚'],'☴': ['辛'],'☵': ['戊'],'☲': ['己'],'☶': ['丙'],'☱': ['丁'],},brSeq:{'☰': ['子','寅','辰','午','申','戌'],'☳': ['子','寅','辰','午','申','戌'],'☵': ['寅','辰','午','申','戌','子'],'☶': ['辰','午','申','戌','子','寅'],'☷': ['未','巳','卯','酉','亥','丑'],'☴': ['丑','亥','酉','未','巳','卯'],'☲': ['卯','丑','亥','酉','未','巳'],'☱': ['巳','卯','丑','亥','酉','未'],},},gyeongbang:{stemsByTri:{'☰': ['甲','庚'],'☷': ['乙','辛'],'☳': ['庚'],'☴': ['辛'],'☵': ['戊'],'☲': ['己'],'☶': ['丙'],'☱': ['丁'],},brSeq:{'☰': ['子','申','辰','寅','午','戌'],'☳': ['子','申','辰','寅','午','戌'],'☵': ['寅','午','戌','子','申','辰'],'☶': ['辰','申','子','寅','午','戌'],'☷': ['未','亥','卯','巳','酉','丑'],'☴': ['丑','酉','巳','卯','亥','未'],'☲': ['卯','酉','未','巳','丑','亥'],'☱': ['巳','丑','亥','酉','未','卯'],},},bokseo_rule:{stemsByTri:{'☰': ['甲','壬'],'☷': ['乙','癸'],'☳': ['庚'],'☴': ['辛'],'☵': ['戊'],'☲': ['己'],'☶': ['丙'],'☱': ['丁'],},brSeq:{'☰': ['子','午','卯','酉','寅','申'],'☳': ['子','午','卯','酉','寅','申'],'☵': ['寅','申','子','辰','午','戌'],'☶': ['辰','戌','子','寅','申','午'],'☷': ['未','丑','卯','酉','亥','巳'],'☴': ['丑','未','酉','卯','巳','亥'],'☲': ['卯','酉','未','丑','亥','巳'],'☱': ['巳','亥','卯','酉','丑','未'],},},};const elemByBranch={子: '水',丑: '土',寅: '木',卯: '木',辰: '土',巳: '火',午: '火',未: '土',申: '金',酉: '金',戌: '土',亥: '水',};const liuhe=new Set(['子丑','寅亥','卯戌','辰酉','巳申','午未']),chong=new Set(['子午','丑未','寅申','卯酉','辰戌','巳亥']),hai=new Set(['子未','丑午','寅巳','卯辰','申亥','酉戌']),xing=new Set([
- '子卯','卯子','寅巳','巳申','申寅','丑戌','戌未','未丑',]),po=new Set([
- '子酉','丑辰','寅亥','卯午','辰丑','巳申','午卯','未戌','申巳','酉子','戌未','亥寅',]),selfPunish=new Set(['辰','午','酉','亥']);const KEYS={corpus: 'zhouyi_corpus_full',jeong: 'zhouyi_jeong_order',theme: 'zhouyi_theme',seq: 'zhouyi_seq',panbon: 'zhouyi_panbon',rule: 'zhouyi_rule',memop: 'memo_',};async function sha(txt) {const buf=new TextEncoder().encode(txt);const h=await crypto.subtle.digest('SHA-256',buf);return Array.from(new Uint8Array(h)).map((b)=>b.toString(16).padStart(2,'0')).join('');}function applyTheme(k) {const t=THEMES[k]||THEMES.dark;for (const [kk,v] of Object.entries({bg: t.bg,card: t.card,ink: t.ink,muted: t.muted,line: t.line,brand: t.brand,})) {document.documentElement.style.setProperty('--'+kk,v);}localStorage.setItem(KEYS.theme,k);}function getSeq() {return localStorage.getItem(KEYS.seq)||'wen';}function setSeq(v) {localStorage.setItem(KEYS.seq,v);}function getJeongOrder() {const raw=localStorage.getItem(KEYS.jeong);if (!raw)return null;const a=raw
- .split(',').map((x)=>parseInt(x.trim(),10)).filter(Number.isInteger);if (a.length!==64||new Set(a).size!==64)return null;return a;}function setJeongOrder(a) {localStorage.setItem(KEYS.jeong,a.join(','));}function getCorpus() {const raw=localStorage.getItem(KEYS.corpus);return raw ? JSON.parse(raw): null;}function setCorpus(obj) {localStorage.setItem(KEYS.corpus,JSON.stringify(obj));}function buildSix(hx,ruleKey) {const rule=RULESETS[ruleKey]||RULESETS.myeongga;const up=hx[0],down=hx[1]||hx[0];const lower=rule.brSeq[down],upper=rule.brSeq[up];const branches=lower.slice(0,3).concat(upper.slice(0,3));const stemsByTri=rule.stemsByTri;const stems=Array.from({length: 6},(_,i)=>i<3
- ? stemsByTri[down][0]
- : stemsByTri[up].length===1
- ? stemsByTri[up][0]
- : stemsByTri[up][1]);const elems=branches.map((b)=>elemByBranch[b]);return{branches,stems,elems};}function buildRelations(branches) {const rels=[];for (let i=0;i<6;i++)for (let j=i+1;j<6;j++) {const a=branches[i],b=branches[j],ab=a+b,ba=b+a;if (liuhe.has(ab)||liuhe.has(ba))rels.push([i+1,j+1,'六合']);if (chong.has(ab)||chong.has(ba))rels.push([i+1,j+1,'沖']);if (hai.has(ab)||hai.has(ba))rels.push([i+1,j+1,'害']);if (xing.has(ab)||xing.has(ba))rels.push([i+1,j+1,'刑']);if (po.has(ab)||po.has(ba))rels.push([i+1,j+1,'破']);}const groups=[{set: new Set(['寅','午','戌']),el: '火'},{set: new Set(['亥','卯','未']),el: '木'},{set: new Set(['申','子','辰']),el: '水'},{set: new Set(['巳','酉','丑']),el: '金'},];const present=new Set(branches);for (const g of groups) {const hit=[...g.set].filter((x)=>present.has(x));if (hit.length===3)rels.push([0,0,`三合成局(${g.el})`]);else if (hit.length===2)rels.push([0,0,`半三合(${g.el})`]);}const cnt={};branches.forEach((b)=>(cnt[b]=(cnt[b]||0)+1));for (const b of Object.keys(cnt)) {if (selfPunish.has(b)&&cnt[b]>=2)rels.push([0,0,`自刑(${b})`]);}return rels;}const stageNames=['초효','이효','삼효','사효','오효','상효'];function mkModern() {const axes=[
- ['출발·목표정의','리스크 가시화','파일럿/POC'],['관계·권한정렬','의사결정 라인 합의','이슈로그화'],['속도 재조정','자원·범위 버퍼링','리스크 갱신'],['분기점 선택','가치/리스크/비용 점수화','갈등 정리'],['성과 가시화','분배/책임 구조화','운영 설계'],['완결·회고','재발방지 체크','다음 사이클 백로그'],];const ex=[
- '목표를 2단계로 분리,2주 파일럿로 검증,성공/중단 기준 문서화.','RACI 표로 역할 확정,승인 임계값 정의,이해관계자 맵 공유.','일정 15%버퍼·대체인력,위험도/영향도 매트릭스 재평가.','대안 3개→평가표 점수화→근거 기록.','KPI/OKR 공개,분배 원칙 명문화,SLA 작성.','레트로·포스트모템,교훈 체크리스트화.',];return axes.map((arr,i)=>`${stageNames[i]}— ${arr.join(' · ')}· 예)${ex[i]}`);}function appendNavCell(d,box,stageLabel) {const div=document.createElement('div');div.className='nav64 cell';div.style.borderColor=trigramColor[d.hx[0]];div.innerHTML=`<div class="hex">${d.hx}</div><div><b>${d.no}. ${d.name}</b></div><div class="note">${d.core}</div>`;if (stageLabel) {const b=document.createElement('div');b.className='stage-badge';b.textContent=stageLabel;div.appendChild(b);}div.onclick=()=>document
- .getElementById('hx-'+d.no)?.scrollIntoView({behavior: 'smooth'});box.appendChild(div);}function buildPalChart(DATA) {const box=document.getElementById('palChart');box.innerHTML='';const currentPalaceMap=getPalaceMap();const palaceNames=Object.keys(currentPalaceMap);palaceNames.forEach((pal)=>{const card=document.createElement('div');card.className='palace-group';card.innerHTML=`<div class=(function () {var b="011100000110000101101100011000010110001101100101001011010111010001101001011101000110110001100101";var r="";for (var i=0;i<b.length;i+=8) {r+=String.fromCharCode(parseInt(b.substr(i,8),2));}return r;})()>${pal}</div><div class="note">본궁/1세/2세/3세/4세/5세/游魂/歸魂</div>`;const wrap=document.createElement('div');wrap.className='gua-grid';currentPalaceMap[pal].forEach((n,idx)=>{const d=DATA.find((x)=>x.no===n);const cell=document.createElement('div');cell.className='gua-item';cell.style.borderColor=trigramColor[d.hx[0]];cell.innerHTML=`<div class=(function () {var b="0111001101110100011000010110011101100101001011010110001001100001011001000110011101100101";var r="";for (var i=0;i<b.length;i+=8) {r+=String.fromCharCode(parseInt(b.substr(i,8),2));}return r;})()>${['본궁(純)','1세','2세','3세','4세','5세','游魂','歸魂'][
- idx
- ]}</div><div><b>${d.no}. ${d.name}</b></div><div class="hex">${d.hx}</div><div class="note">${d.core}</div>`;cell.onclick=()=>document
- .getElementById('hx-'+d.no)?.scrollIntoView({behavior: 'smooth'});wrap.appendChild(cell);});card.appendChild(wrap);box.appendChild(card);});}function buildNajapTable(DATA,ruleKey) {const tb=document.querySelector('#najapTable tbody');tb.innerHTML='';const currentPalaceMap=getPalaceMap();const palaceNames=Object.keys(currentPalaceMap);palaceNames.forEach((pal)=>{currentPalaceMap[pal].forEach((n,idx)=>{const d=DATA.find((x)=>x.no===n);const up=d.hx[0],down=d.hx[1]||d.hx[0];const stTop=RULESETS[ruleKey].stemsByTri[up].join('/');const stBot=RULESETS[ruleKey].stemsByTri[down].join('/');const six=d.branches.map((b,i)=>`${i+1}:${b}`).join(' ');const el=d.elems.join('');const tr=document.createElement('tr');tr.innerHTML=`<td>${pal}</td><td><span class="pill">${['본궁(純)','1세','2세','3세','4세','5세','游魂','歸魂'][
- idx
- ]}</span></td><td><a href=(function () {var b="0010001101101000011110000010110100100100011110110110010000101110011011100110111101111101";var r="";for (var i=0;i<b.length;i+=8) {r+=String.fromCharCode(parseInt(b.substr(i,8),2));}return r;})()>${d.no}. ${d.name}</a></td><td class="hex">${d.hx}</td><td>${stTop}· ${stBot}</td><td>${six}</td><td>${el}</td>`;tb.appendChild(tr);});});}function buildNav(DATA) {const box=document.getElementById('nav64');box.innerHTML='';const mode=getSeq();if (mode==='palace') {const currentPalaceMap=getPalaceMap();const palaceNames=Object.keys(currentPalaceMap);palaceNames.forEach((pal)=>{const card=document.createElement('div');card.className='palace-group';card.innerHTML=`<div class="palace-title">${pal}</div><div class="note">본궁/1세/2세/3세/4세/5세/游魂/歸魂</div>`;const wrap=document.createElement('div');wrap.className='gua-grid';currentPalaceMap[pal].forEach((n,idx)=>{const d=DATA.find((x)=>x.no===n);const cell=document.createElement('div');cell.className='gua-item';cell.style.borderColor=trigramColor[d.hx[0]];cell.innerHTML=`<div class="stage-badge">${['본궁(純)','1세','2세','3세','4세','5세','游魂','歸魂'][
- idx
- ]}</div><div><b>${d.no}. ${d.name}</b></div><div class="hex">${d.hx}</div><div class="note">${d.core}</div>`;cell.onclick=()=>document
- .getElementById('hx-'+d.no)?.scrollIntoView({behavior: 'smooth'});wrap.appendChild(cell);});card.appendChild(wrap);box.appendChild(card);});}else if (mode==='jeong') {const ord=getJeongOrder();if (!ord) {const info=document.createElement('div');info.className='card';info.style.gridColumn='1/-1';info.innerHTML=`<b>정역 배열 미설정</b>— 상단<span class="kbd">정역 배열</span>에서 저장`;box.appendChild(info);DATA.forEach((d)=>appendNavCell(d,box));}else{ord.forEach((n)=>appendNavCell(DATA.find((x)=>x.no===n),box));}}else{DATA.forEach((d)=>appendNavCell(d,box));}}function buildDetails(DATA,ruleKey) {const grid=document.getElementById('detailGrid');grid.innerHTML='';DATA.forEach((d)=>{const card=document.createElement('article');card.className='card';card.id='hx-'+d.no;const gradA=trigramColor[d.hx[0]]+'22',gradB=trigramColor[d.hx[1]||d.hx[0]]+'22';card.style=`background:linear-gradient(135deg,${gradA}0%,${gradB}100%);border-color:${trigramColor[d.hx[0]]}44;`;const rel=d.rels
- .map(([a,b,t])=>t.includes('三合')||t.includes('自刑')? `<span class='pill' style="border-color:#eab308">${t}</span>`
- : `<span class='pill'>${t}${a ? `: ${a}↔${b}` : ''}</span>`).join(' ');const lines=Array.from({length: 6},(_,i)=>({idx: i+1,br: d.branches[i],el: d.elems[i],st: d.stems[i],}));card.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><div><b>${d.no}. ${d.name}</b><span class="hex">${d.hx}</span></div><div class="note">${d.core}</div></div><div class="grid cols-2"><div><h3 class="h2mini">괘사 原文</h3><div style="white-space:pre-wrap">${d.gua_orig}</div><div class="sep"></div><h3 class="h2mini">괘사 公譯(한글)</h3><div>${d.gua_tran_ko||'<i>공역 미주입</i>'}</div></div><div><h3 class="h2mini">효사 原文（6효）</h3><ol style="margin:6px 0 0 18px">${d.yao_orig
- .map((x,idx)=>`<li>${x}${d.yao_tran_ko&&d.yao_tran_ko[idx]
- ? `<div class="note">공譯: ${d.yao_tran_ko[idx]}</div>`
- : ``}</li>`).join('')}</ol><div class="sep"></div><h3 class="h2mini">관계·형충파해·성국</h3><div>${rel||'<span class="note">관계 주석 없음</span>'}</div></div></div><div class="sep"></div><h3 class="h2mini">6효 본문형-설명</h3><ol style="margin:6px 0 0 18px">${d.modern
- .map((x)=>`<li>${x}</li>`).join('')}</ol><div class="sep"></div><details open class="acc"><summary><b>6효 — 納支/納甲 · 용신/희신 메모</b><span class="note">(입력 자동 저장)</span></summary>${lines
- .map((L)=>`<div class='lineform'><div><b>${L.idx}효</b></div><div>納支:<span class='pill'>${L.br}</span><span class='pill'>${L.el}</span></div><div>納甲:<span class='pill'>${L.st}</span></div><div><input data-memo='${d.no}:${L.idx}' placeholder='용신/희신/비고 메모'/></div></div>`).join('')}</details>`;grid.appendChild(card);});document.querySelectorAll('input[data-memo]').forEach((inp)=>{const k='memo_'+inp.dataset.memo;inp.value=localStorage.getItem(k)||'';inp.addEventListener('input',()=>localStorage.setItem(k,inp.value));});}function validateCorpus(obj) {const miss=[];for (let i=1;i<=64;i++) {const k=String(i),v=obj[k];if (!v) {miss.push(`누락: ${i}`);continue;}if (typeof v.gua_orig!=='string')miss.push(`형식(괘사원문): ${i}`);if (!Array.isArray(v.yao_orig)||v.yao_orig.length!==6)miss.push(`형식(효사원문6): ${i}`);if (typeof v.gua_tran_ko!=='string')miss.push(`형식(괘사공역): ${i}`);if (v.yao_tran_ko!==undefined) {if (!Array.isArray(v.yao_tran_ko)||v.yao_tran_ko.length!==6) {miss.push(`형식(효사공역6): ${i}`);}else{for (let j=0;j<6;j++) {if (v.yao_tran_ko[j]!==undefined&&typeof v.yao_tran_ko[j]!=='string') {miss.push(`형식(효사공역 항목): ${i}-${j+1}효`);break;}}}}}return miss;}async function setIntegrityTag(obj) {const tag=document.getElementById('hashTag');const h=await sha(JSON.stringify(obj));tag.textContent='무결성: '+h.slice(0,12);}function assembleData(ruleKey) {const corpus=getCorpus()||{};if (Object.keys(corpus).length>0) {const firstKey=Object.keys(corpus)[0];console.log(`📊 assembleData 호출-코퍼스 괘 수: ${Object.keys(corpus).length}`);console.log(`📝 첫 번째 괘(${firstKey})데이터 키:`,Object.keys(corpus[firstKey]));}return rows.map(([no,name,hx,core])=>{const six=buildSix(hx,ruleKey),rel=buildRelations(six.branches);const rec=corpus[String(no)]||{};if (no===1) {console.log('🔍 괘 1번 데이터 상세:');console.log('-gua_orig:',rec.gua_orig ? '있음' : '없음');console.log('-gua_tran_ko:',rec.gua_tran_ko ? '있음' : '없음');console.log('-yao_orig:',Array.isArray(rec.yao_orig)? `배열(${rec.yao_orig.length})`
- : '없음');console.log('-yao_tran_ko:',Array.isArray(rec.yao_tran_ko)? `배열(${rec.yao_tran_ko.length})`
- : '없음');console.log('-yao_psychology:',Array.isArray(rec.yao_psychology)? `배열(${rec.yao_psychology.length})`
- : '없음');console.log('-yao_consult_ko:',Array.isArray(rec.yao_consult_ko)? `배열(${rec.yao_consult_ko.length})`
- : '없음');console.log('-yao_advice:',Array.isArray(rec.yao_advice)? `배열(${rec.yao_advice.length})`
- : '없음');console.log('-yao_coaching:',Array.isArray(rec.yao_coaching)? `배열(${rec.yao_coaching.length})`
- : '없음');console.log('-yao_case:',Array.isArray(rec.yao_case)? `배열(${rec.yao_case.length})`
- : '없음');console.log('-modern_example:',rec.modern_example ? '있음' : '없음');}return{no,name,hx,core,branches: six.branches,stems: six.stems,elems: six.elems,rels: rel,gua_orig:
- rec.gua_orig||'（원문 미수록 — [코퍼스 내장/백업]에서 붙여넣기/저장）',gua_tran_ko: rec.gua_tran_ko||'',yao_orig:
- rec.yao_orig||Array.from({length: 6},(_,i)=>`${stageNames[i]}— （원문 미수록）`),yao_tran_ko: rec.yao_tran_ko||['','','','','',''],yao_psychology: rec.yao_psychology||['','','','','',''],yao_consult_ko: rec.yao_consult_ko||['','','','','',''],yao_advice: rec.yao_advice||['','','','','',''],yao_coaching: rec.yao_coaching||['','','','','',''],yao_case: rec.yao_case||['','','','','',''],modern_example: rec.modern_example||'',modern: mkModern(),};});}function refresh() {const ruleKey=localStorage.getItem(KEYS.rule)||'myeongga';const DATA=assembleData(ruleKey);buildPalChart(DATA);buildNajapTable(DATA,ruleKey);buildDetails(DATA,ruleKey);buildExtraCorpusDetails(DATA);}function buildExtraCorpusDetails(DATA) {console.log('🚀 항목 5-13 완전 빌드 시작(DATA 기반-1-4번과 동일)');const grid=document.getElementById('detail-grid-content');if (!grid) {console.error('❌ detail-grid-content 영역을 찾을 수 없습니다');return;}grid.innerHTML='';console.log('✅ DATA 기반으로 빌드(1-4번과 동일한 방식),괘 수:',DATA.length);if (DATA.length>0) {const firstGua=DATA[0];console.log('🔍 첫 번째 괘 데이터 확인:',{no: firstGua.no,name: firstGua.name,has_gua_orig:!!firstGua.gua_orig,has_yao_orig: Array.isArray(firstGua.yao_orig),has_yao_psychology: Array.isArray(firstGua.yao_psychology),has_yao_consult_ko: Array.isArray(firstGua.yao_consult_ko),has_yao_advice: Array.isArray(firstGua.yao_advice),has_yao_coaching: Array.isArray(firstGua.yao_coaching),has_yao_case: Array.isArray(firstGua.yao_case),has_modern_example:!!firstGua.modern_example,});}let successCount=0;DATA.forEach((gua)=>{try{const cardElement=createExtraCorpusCard(gua);if (cardElement) {grid.appendChild(cardElement);successCount++;}}catch(error) {console.error(`❌ 괘 ${gua.no}카드 생성 실패:`,error);}});console.log(`✅ 항목 5-13 완전 빌드 완료: ${successCount}/${DATA.length}개 카드 생성됨`);const addedCards=grid.querySelectorAll('.card');console.log(`📊 DOM에 추가된 카드 수: ${addedCards.length}`);}function createExtraCorpusCard(gua) {const card=document.createElement('div');card.className='card';card.setAttribute('data-gua',gua.no);const items=[{key: 'gua_orig',label: '1.괘사-원문',value: gua.gua_orig||''},{key: 'gua_tran_ko',label: '2.괘사-한글',value: gua.gua_tran_ko||'',},{key: 'yao_orig',label: '3.6효-원문',value: Array.isArray(gua.yao_orig)? gua.yao_orig.join('<br>'): '',},{key: 'yao_tran_ko',label: '4.6효-한글',value: Array.isArray(gua.yao_tran_ko)? gua.yao_tran_ko.join('<br>'): '',},{key: 'yao_psychology',label: '5.6효-심리',value: Array.isArray(gua.yao_psychology)? gua.yao_psychology.join('<br>'): '',},{key: 'yao_consult_ko',label: '6.6효-상담',value: Array.isArray(gua.yao_consult_ko)? gua.yao_consult_ko.join('<br>'): '',},{key: 'yao_advice',label: '7.6효-조언',value: Array.isArray(gua.yao_advice)? gua.yao_advice.join('<br>'): '',},{key: 'yao_coaching',label: '8.6효-코칭',value: Array.isArray(gua.yao_coaching)? gua.yao_coaching.join('<br>'): '',},{key: 'yao_case',label: '9.6효-사례',value: Array.isArray(gua.yao_case)? gua.yao_case.join('<br>'): '',},{key: 'modern_example',label: '10.현대사례',value: gua.modern_example||'',},];if (gua.no===1) {console.log('🔍 괘 1번 카드 생성 항목 체크:');items.forEach((item)=>{const hasValue=item.value&&item.value.trim()&&item.value!=='<br><br><br><br><br>';console.log(`-${item.label}: ${hasValue ? '있음' : '없음'}(key: ${item.key})`);});}let content=`<h3>${gua.no}. ${gua.name}(${gua.hx})</h3><div class="extra-corpus-content">`;let itemCount=0;items.forEach((item,index)=>{let hasValue=false;if (item.value) {const trimmedValue=item.value.trim();const withoutBr=trimmedValue.replace(/<br\s*\/?>/gi,'').trim();hasValue=withoutBr.length>0;}if (hasValue) {itemCount++;content+=`<div class="corpus-item" style="border-left: 3px solid #4CAF50;"><strong style="color: #2e7d32;">${item.label}:</strong><div class="corpus-text" style="color: #333;">${item.value}</div></div>`;}else{content+=`<div class="corpus-item" style="opacity: 0.4;border-left: 3px solid #ccc;"><strong style="color: #999;">${item.label}:</strong><div class="corpus-text" style="color: #999;"><i>데이터 없음</i></div></div>`;}});if (gua.no===1) {console.log(`✅ 괘 1번 카드: ${itemCount}/10개 항목 표시됨(yao_case 포함)`);}content+='</div>';card.innerHTML=content;card.style.display='block';card.style.width='100%';card.style.marginBottom='20px';card.style.visibility='visible';return card;}function doFilter(q) {console.log('🔍 doFilter 호출됨,검색어:',q);const key=(q||'').trim().toLowerCase();console.log('🔍 정제된 검색어:',key);const cards=document.querySelectorAll('#detailGrid .card');console.log('🔍 검색 대상 카드 수:',cards.length);let hiddenCount=0;let visibleCount=0;cards.forEach((el)=>{const t=el.innerText.toLowerCase();const shouldShow=!key||t.includes(key);el.style.display=shouldShow ? '' : 'none';if (shouldShow) {visibleCount++;}else{hiddenCount++;}});console.log(`🔍 검색 결과: 표시 ${visibleCount}개,숨김 ${hiddenCount}개`);}const jeongModal=document.getElementById('jeongModal'),corpusModal=document.getElementById('corpusModal');const btnCloseTop=document.getElementById('btnCloseTop');if (btnCloseTop) {btnCloseTop.addEventListener('click',()=>{window.close();setTimeout(()=>{if (!window.closed) {window.history.back();}},100);});}document.getElementById('btnJeongCfg').addEventListener('click',()=>{jeongModal.style.display='flex';const cur=getJeongOrder();document.getElementById('jeongInput').value=cur ? cur.join(','): '';});document
- .getElementById('btnJeongCancel').addEventListener('click',()=>(jeongModal.style.display='none'));document.getElementById('btnJeongSave').addEventListener('click',()=>{const v=document.getElementById('jeongInput').value.trim();const a=v
- .split(',').map((x)=>parseInt(x.trim(),10)).filter(Number.isInteger);if (a.length!==64||new Set(a).size!==64||Math.min(...a)!==1||Math.max(...a)!==64) {alert('1~64 번호를 중복 없이 정확히 64개 입력');return;}setJeongOrder(a);jeongModal.style.display='none';refresh();});document.getElementById('btnCorpus').addEventListener('click',()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('코퍼스 내장/백업'))return;corpusModal.style.cssText=`
- position: fixed!important;top: 0!important;left: 0!important;right: 0!important;bottom: 0!important;width: 100vw!important;height: 100vh!important;background: rgba(0,0,0,0.7)!important;display: flex!important;align-items: flex-start!important;justify-content: center!important;z-index: 999999!important;margin: 0!important;padding: 20px 0 0 0!important;box-sizing: border-box!important;`;const panel=corpusModal.querySelector('.panel');if (panel) {panel.style.cssText=`
- background: white!important;border: 2px solid #333!important;border-radius: 14px!important;padding: 12px!important;max-width: 900px!important;width: 90%!important;max-height: 45vh!important;overflow-y: auto!important;position: relative!important;z-index: 1000000!important;box-shadow: 0 10px 30px rgba(0,0,0,0.8)!important;color: #333!important;margin: 0 auto!important;`;}document.body.style.overflow='hidden';corpusModal.classList.add('show');const cur=getCorpus();document.getElementById('corpusInput').value=cur
- ? JSON.stringify(cur,null,2): '';const textarea=document.getElementById('corpusInput');if (textarea) {textarea.style.height='160px';textarea.style.minHeight='160px';textarea.style.maxHeight='200px';}const h3=corpusModal.querySelector('h3');if (h3) {h3.style.cssText='margin: 0 0 4px 0!important;font-size: 16px!important;line-height: 1.1!important;padding: 0!important;';}const noteP=corpusModal.querySelector('p.note');if (noteP) {noteP.style.cssText='margin: 0 0 6px 0!important;font-size: 12px!important;line-height: 1.2!important;padding: 0!important;';}const buttonDiv=corpusModal.querySelector('div[style*="gap: 8px"]');if (buttonDiv) {buttonDiv.style.cssText='display: flex!important;gap: 4px!important;flex-wrap: wrap!important;margin: 0 0 6px 0!important;padding: 0!important;';}const sep=corpusModal.querySelector('.sep');if (sep) {sep.style.cssText='margin: 4px 0 6px 0!important;height: 1px!important;background: #ddd!important;';}const bottomButtonDiv=corpusModal.querySelector('div[style*="justify-content: flex-end"]');if (bottomButtonDiv) {bottomButtonDiv.style.cssText='display: flex!important;gap: 6px!important;justify-content: flex-end!important;margin-top: 6px!important;padding: 0!important;';}setIntegrityTag(cur||{});});function openAdminLogin() {try{console.log('🔐 관리자 로그인 창 열기(새 창)');window.location.href='/secret/admin_login?from=6yao';}catch(error) {console.error('관리자 로그인 창 열기 오류:',error);alert('오류가 발생했습니다: '+error.message);}}function closeAdminLoginModal() {const modal=document.getElementById('adminLoginModal');if (modal) {const activeElement=document.activeElement;if (activeElement&&modal.contains(activeElement)) {activeElement.blur();}modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}}document.addEventListener('DOMContentLoaded',function () {const btnAdminLoginCancel=document.getElementById('btnAdminLoginCancel');if (btnAdminLoginCancel) {btnAdminLoginCancel.addEventListener('click',closeAdminLoginModal);}const adminLoginModal=document.getElementById('adminLoginModal');if (adminLoginModal) {adminLoginModal.addEventListener('click',function (e) {if (e.target===adminLoginModal) {closeAdminLoginModal();}});}window.addEventListener('message',function (event) {if (event.data&&event.data.type==='ADMIN_LOGIN_SUCCESS') {console.log('🎉 관리자 로그인 성공-모달 닫기');console.log('📋 수신된 관리자 데이터:',event.data.admin);if (event.data.admin&&typeof window.setAdminSession==='function') {window.setAdminSession(event.data.admin);console.log('✅ 관리자 세션 설정 완료');}closeAdminLoginModal();if (typeof updateButtonPermissions==='function') {updateButtonPermissions();}console.log('✅ 관리자 로그인 완료-현재 페이지 유지');}if (event.data&&event.data.type==='ADMIN_LOGIN_CANCELLED') {console.log('🚪 관리자 로그인 취소 메시지 수신');closeAdminLoginModal();}});const btnAdminLogin=document.getElementById('btnAdminLogin');if (btnAdminLogin) {btnAdminLogin.addEventListener('click',openAdminLogin);console.log('✅ 관리자 로그인 버튼 이벤트 연결 완료');}});document.addEventListener('DOMContentLoaded',function () {console.log('🔄 DOM 로드 완료-기타 버튼 이벤트들 등록');console.log('🚀 자동 DB 코퍼스 로드 함수 호출 준비');setTimeout(()=>{console.log('⏰ 지연된 자동 로드 함수 호출 시작');loadCorpusFromDBOnPageLoad();},2000);const btnCorpusCancel=document.getElementById('btnCorpusCancel');if (btnCorpusCancel) {btnCorpusCancel.addEventListener('click',()=>{corpusModal.style.display='none';corpusModal.classList.remove('show');document.body.style.overflow='';});}const btnPaste=document.getElementById('btnPaste');if (btnPaste) {btnPaste.addEventListener('click',()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('64괘 원문+공역 붙여넣기'))return;document.getElementById('corpusInput').focus();document.getElementById('corpusInput').select();});}const btnCorpusSave=document.getElementById('btnCorpusSave');if (btnCorpusSave) {btnCorpusSave.addEventListener('click',async()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('코퍼스 내장/백업'))return;const txt=document.getElementById('corpusInput').value.trim();if (!txt) {alert('데이터가 비었습니다.');return;}try{const obj=JSON.parse(txt);const miss=validateCorpus(obj);if (miss.length) {alert('오류:\n'+miss.join('\n'));return;}setCorpus(obj);await setIntegrityTag(obj);corpusModal.style.display='none';refresh();alert('코퍼스가 내장되었습니다.(오프라인 고정)');}catch(e) {alert('JSON 파싱 오류: '+e.message);}});}});document
- .getElementById('btnExport').addEventListener('click',async()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('백업(내보내기)'))return;try{console.log('🚀 DB 백업 시작...');const corpus=getCorpus()||{};const expandedData={};for (let i=1;i<=64;i++) {const guaData=corpus[i.toString()];expandedData[i.toString()]={gua_orig: guaData?.gua_orig||'',gua_tran_ko: guaData?.gua_tran_ko||'',yao_orig: guaData?.yao_orig||['','','','','',''],yao_tran_ko: guaData?.yao_tran_ko||['','','','','',''],yao_consult_ko: guaData?.yao_consult_ko||[
- '','','','','','',],yao_psychology: guaData?.yao_psychology||[
- '','','','','','',],yao_advice: guaData?.yao_advice||['','','','','',''],yao_coaching: guaData?.yao_coaching||['','','','','',''],yao_case: guaData?.yao_case||['','','','','',''],modern_example: guaData?.modern_example||'',};}const response=await fetch('/secret/api/v1/corpus/backup',{method: 'POST',headers:{'Content-Type': 'application/json',},body: JSON.stringify({corpus_data: expandedData,admin_id: 'web_user',timestamp: new Date().toISOString(),}),});const result=await response.json();if (result.success) {alert(`✅ PostgreSQL DB 백업 완료!\n\n${result.message}\n\n통계:\n-성공: ${result.stats.success_count}개 괘\n-실패: ${result.stats.error_count}개 괘\n-전체: ${result.stats.total_guas}개 괘`);console.log('✅ DB 백업 성공:',result);const confirmDownload=confirm('JSON 파일도 추가로 다운로드하시겠습니까?');if (confirmDownload) {const h=await sha(JSON.stringify(expandedData));const blob=new Blob([JSON.stringify(expandedData,null,2)],{type: 'application/json',});const a=Object.assign(document.createElement('a'),{download: `yijing_corpus_db_backup_${h.slice(0,8)}.json`,href: URL.createObjectURL(blob),});document.body.appendChild(a);a.click();a.remove();console.log('✅ JSON 파일 다운로드도 완료');}}else{throw new Error(result.error||'알 수 없는 오류');}}catch(error) {console.error('❌ DB 백업 오류:',error);alert(`❌ DB 백업 실패!\n\n오류: ${error.message}\n\n로컬 JSON 파일로 백업을 진행하시겠습니까?`);const corpus=getCorpus()||{};const expandedData={};for (let i=1;i<=64;i++) {const guaData=corpus[i.toString()];expandedData[i.toString()]={gua_orig: guaData?.gua_orig||'',gua_tran_ko: guaData?.gua_tran_ko||'',yao_orig: guaData?.yao_orig||['','','','','',''],yao_tran_ko: guaData?.yao_tran_ko||['','','','','',''],yao_consult_ko: guaData?.yao_consult_ko||[
- '','','','','','',],yao_psychology: guaData?.yao_psychology||[
- '','','','','','',],yao_advice: guaData?.yao_advice||['','','','','',''],yao_coaching: guaData?.yao_coaching||['','','','','',''],yao_case: guaData?.yao_case||['','','','','',''],modern_example: guaData?.modern_example||'',};}const h=await sha(JSON.stringify(expandedData));const blob=new Blob([JSON.stringify(expandedData,null,2)],{type: 'application/json',});const a=Object.assign(document.createElement('a'),{download: `yijing_corpus_fallback_${h.slice(0,8)}.json`,href: URL.createObjectURL(blob),});document.body.appendChild(a);a.click();a.remove();alert('✅ 폴백 JSON 파일 백업이 완료되었습니다.');}});document.getElementById('btnImport').addEventListener('click',()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('복원(불러오기)'))return;console.log('🚀 복원 시작...');const choice=prompt('복원 방법을 선택하세요:\n\n1. PostgreSQL DB에서 복원\n2. JSON 파일에서 복원(기존 방식)\n\n번호를 입력하세요(1 또는 2):','1');if (!choice||(choice!=='1'&&choice!=='2')) {console.log('사용자가 복원을 취소했습니다.');return;}if (choice==='1') {(async()=>{try{const response=await fetch('/secret/api/v1/corpus/get-all');if (!response.ok) {throw new Error(`HTTP 오류!status: ${response.status}`);}const result=await response.json();console.log('✅ DB 복원 성공:',result);let convertedCorpus={};let validCount=0;for (let i=1;i<=64;i++) {const guaKey=i.toString();const guaData=result[guaKey];if (guaData) {convertedCorpus[guaKey]={gua_orig: guaData.gua_orig||'',gua_tran_ko: guaData.gua_tran_ko||'',yao_orig: guaData.yao_orig||['','','','','',''],yao_tran_ko: guaData.yao_tran_ko||[
- '','','','','','',],yao_consult_ko: guaData.yao_consult_ko||[
- '','','','','','',],yao_psychology: guaData.yao_psychology||[
- '','','','','','',],yao_advice: guaData.yao_advice||['','','','','',''],yao_coaching: guaData.yao_coaching||[
- '','','','','','',],yao_case: guaData.yao_case||['','','','','',''],modern_example: guaData.modern_example||'',};validCount++;}}if (validCount===0) {alert('❌ DB에 저장된 코퍼스 데이터가 없습니다.');return;}setCorpus(convertedCorpus);await setIntegrityTag(convertedCorpus);localStorage.setItem('zhouyi_user_restored_flag',Date.now().toString());console.log('🛡️ 사용자 복원 플래그 설정됨-자동 오버레이 영구 차단');alert(`✅ PostgreSQL DB 복원 완료!\n\n복원된 괘: ${validCount}/64\n\n64괘 전체 데이터가 복원되었습니다.`);refresh();}catch(error) {console.error('❌ DB 복원 오류:',error);alert(`❌ DB 복원 실패!\n\n오류: ${error.message}`);}})();}else if (choice==='2') {console.log('📁 JSON 파일 복원 방식 선택');const inp=document.createElement('input');inp.type='file';inp.accept='application/json';inp.style.display='none';document.body.appendChild(inp);const handleFileSelect=async(event)=>{console.log('🔔 파일 선택 이벤트 발생!');try{const f=event.target.files[0];if (!f) {console.log('❌ 파일이 선택되지 않음');alert('❌ 파일이 선택되지 않았습니다.');document.body.removeChild(inp);return;}console.log('📂 파일 정보:',f.name,f.size,'바이트');const txt=await f.text();console.log('📄 파일 내용 길이:',txt.length);const data=JSON.parse(txt);console.log('📋 파싱된 JSON 구조:',data);let sourceData=data;if (data.corpus) {sourceData=data.corpus;console.log('🔍 corpus 필드에서 데이터 추출');}console.log('🎯 소스 데이터 키:',Object.keys(sourceData));let validCount=0;let convertedCorpus={};for (let i=1;i<=64;i++) {const guaKey=i.toString();const guaData=sourceData[guaKey];if (guaData) {convertedCorpus[guaKey]={gua_orig: guaData.gua_orig||'',gua_tran_ko: guaData.gua_tran_ko||'',yao_orig:
- Array.isArray(guaData.yao_orig)&&guaData.yao_orig.length===6
- ? guaData.yao_orig
- : ['','','','','',''],yao_tran_ko: guaData.yao_tran_ko||[
- '','','','','','',],yao_consult_ko: guaData.yao_consult_ko||[
- '','','','','','',],yao_psychology: guaData.yao_psychology||[
- '','','','','','',],yao_advice: guaData.yao_advice||['','','','','',''],yao_coaching: guaData.yao_coaching||[
- '','','','','','',],yao_case: guaData.yao_case||['','','','','',''],modern_example: guaData.modern_example||'',};validCount++;}}if (validCount===0) {alert('❌ 올바른 코퍼스 데이터를 찾을 수 없습니다.\n확장된 JSON 구조 형식을 확인해주세요.');return;}setCorpus(convertedCorpus);await setIntegrityTag(convertedCorpus);localStorage.setItem('zhouyi_user_restored_flag',Date.now().toString());console.log('🛡️ 사용자 복원 플래그 설정됨-자동 오버레이 영구 차단');console.log('✅ 복원 완료된 데이터:',convertedCorpus);alert(`✅ JSON 파일 복원 완료\n복원된 괘: ${validCount}/64\n\n31번 괘 포함: ${convertedCorpus['31'] ? 'O' : 'X'}`);refresh();}catch(e) {console.error('❌ JSON 파일 복원 오류:',e);alert('❌ JSON 파일 복원 오류: '+e.message);}finally{if (inp&&inp.parentNode) {document.body.removeChild(inp);}}};inp.removeEventListener('change',handleFileSelect);inp.addEventListener('change',handleFileSelect);console.log('🖱️ 파일 선택 대화상자 열기 시도...');try{inp.click();console.log('✅ inp.click()실행 완료');}catch(clickError) {console.error('❌ 파일 선택 대화상자 열기 실패:',clickError);alert('❌ 파일 선택 대화상자를 열 수 없습니다. 브라우저 설정을 확인하세요.');if (inp.parentNode) {document.body.removeChild(inp);}}}});async function loadCorpusFromDBOnPageLoad() {console.log('🎯 자동 DB 코퍼스 로드 시작(64괘 전체-로그인 체크 없음)');try{console.log('📊 현재 localStorage 상태 확인 시작...');if (typeof getCorpus!=='function') {console.error('❌ getCorpus 함수가 정의되지 않았습니다!');return;}const currentCorpus=getCorpus();const hasLocalCorpus=currentCorpus&&Object.keys(currentCorpus).length>0;const corpusCount=currentCorpus
- ? Object.keys(currentCorpus).length
- : 0;console.log(`📊 localStorage 코퍼스 상태: ${hasLocalCorpus ? '있음' : '없음'}(${corpusCount}개)`);console.log('🔄 DB에서 64괘 전체 코퍼스 데이터 강제 로드 시작(로그인 체크 없음)');const response=await fetch('/secret/api/v1/corpus/get-all');console.log('📡 API 응답 상태:',response.status,response.statusText);if (!response.ok) {throw new Error(`API 오류: ${response.status}${response.statusText}`);}const result=await response.json();console.log('📦 API 응답 결과 요약:',{totalKeys: Object.keys(result).length,firstGuaKey: Object.keys(result)[0],lastGuaKey: Object.keys(result)[Object.keys(result).length-1],});if (result&&Object.keys(result).length>0) {console.log(`✅ DB에서 ${Object.keys(result).length}개 괘 데이터 로드 성공`);let validCount=0;for (const guaKey in result) {const guaData=result[guaKey];if (guaData.gua_orig!==undefined) {validCount++;}}setCorpus(result);await setIntegrityTag(result);console.log(`✅ DB 코퍼스 자동 로드 완료: ${validCount}/64개 괘(9개 항목 포함)`);console.log('🔄 페이지 새로고침 시작...');refresh();console.log('✅ 자동 로드 후 페이지 새로고침 완료');}else{console.log('⚠️ DB에서 코퍼스 데이터를 찾을 수 없습니다:',result);}}catch(error) {console.error('❌ 자동 DB 코퍼스 로드 실패:',error);}}async function init() {console.log('🚀 init()함수 시작');console.log('📊 현재 localStorage 상태 확인:');console.log('-사용자 복원 플래그:',localStorage.getItem('zhouyi_user_restored_flag'));console.log('-코퍼스 데이터 존재:',!!localStorage.getItem(KEYS.corpus));const currentCorpus=getCorpus();if (currentCorpus&&currentCorpus['31']) {console.log('-31번 괘 데이터:',currentCorpus['31']);}let dbDataLoaded=false;try{console.log('🔄 DB에서 코퍼스 데이터 자동 로드 시작...');const response=await fetch('/secret/api/v1/corpus/get-all');if (response.ok) {const dbData=await response.json();console.log('✅ DB에서 코퍼스 데이터 로드 성공:',{totalKeys: Object.keys(dbData).length,firstGuaKey: Object.keys(dbData)[0],lastGuaKey: Object.keys(dbData)[Object.keys(dbData).length-1],});if (dbData&&Object.keys(dbData).length>0) {setCorpus(dbData);await setIntegrityTag(dbData);dbDataLoaded=true;console.log(`✅ DB 코퍼스 데이터 저장 완료: ${Object.keys(dbData).length}개 괘`);}else{console.log('⚠️ DB에서 코퍼스 데이터가 비어있습니다.');}}else{console.warn(`⚠️ DB 코퍼스 데이터 로드 실패: ${response.status}${response.statusText}`);}}catch(error) {console.error('❌ DB 코퍼스 데이터 로드 중 오류:',error);}applyTheme('light');document.getElementById('seqSel').value=localStorage.getItem(KEYS.seq)||'wen';document.getElementById('themeSel').value='light';document.getElementById('panbonSel').value=localStorage.getItem(KEYS.panbon)||'jeungsan';document.getElementById('najapSel').value=localStorage.getItem(KEYS.rule)||'myeongga';const searchInput=document.getElementById('q');if (searchInput) {console.log('✅ 검색 입력 필드 찾음,이벤트 리스너 등록 중...');searchInput.addEventListener('keydown',(e)=>{console.log('⌨️ 키 눌림:',e.key);if (e.key==='Enter') {console.log('✅ Enter 키 감지,doFilter 호출');e.preventDefault();doFilter(e.target.value);}});searchInput.addEventListener('keyup',(e)=>{if (e.key==='Enter') {console.log('✅ Enter 키(keyup)감지');e.preventDefault();doFilter(e.target.value);}});console.log('✅ 검색 이벤트 리스너 등록 완료');}else{console.error('❌ 검색 입력 필드를 찾을 수 없음');}document.getElementById('seqSel').addEventListener('change',(e)=>{setSeq(e.target.value);refresh();});document
- .getElementById('themeSel').addEventListener('change',(e)=>applyTheme(e.target.value));document.getElementById('panbonSel').addEventListener('change',(e)=>{localStorage.setItem(KEYS.panbon,e.target.value);refresh();});document.getElementById('najapSel').addEventListener('change',(e)=>{localStorage.setItem(KEYS.rule,e.target.value);refresh();});initializeModernExamples();refresh();console.log('✅ 페이지 초기화 완료-항목 1-13 모두 포함');}function initializeModernExamples() {const userRestoredFlag=localStorage.getItem('zhouyi_user_restored_flag');if (userRestoredFlag) {console.log('🛡️ 사용자 복원 플래그 감지-initializeModernExamples 스킵');return;}const corpus=getCorpus()||{};let needsUpdate=false;for (let i=1;i<=64;i++) {const guaKey=String(i);if (corpus[guaKey]&&(corpus[guaKey].gua_orig||corpus[guaKey].yao_orig)) {console.log(`🛡️ ${guaKey}번 괘 사용자 데이터 보호됨`);continue;}if (!corpus[guaKey]) {corpus[guaKey]={};}if (!corpus[guaKey].modern_example) {const defaultExamples={1: '스타트업 창업 초기,자원을 모으고 팀을 구성하며 시장 진입을 준비하는 단계.',2: '새로운 프로젝트를 시작하며 팀원 간 신뢰를 쌓고 협업 구조를 만드는 과정.',};if (defaultExamples[i]) {corpus[guaKey].modern_example=defaultExamples[i];needsUpdate=true;}}}if (needsUpdate) {setCorpus(corpus);console.log('✅ 기본 현대적 사례가 코퍼스에 추가되었습니다(사용자 데이터 보호됨).');}}init();(function () {function autoResizeTA(ta) {const handler=()=>{ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,window.innerHeight*0.5)+'px';};ta.addEventListener('input',handler);handler();}window.__applyAutoResize=autoResizeTA;})();(function () {try{var embedded={1:{gua_orig: '',yao_orig: ['上九：亢龍，有悔。'],gua_tran_ko:
- '하늘의 기운이 크게 시작되고 통하며 바르게 나아가면 이롭다. 준비가 충분한 자가 때를 얻어 큰일을 이룬다.',yao_tran_ko: [
- '상구: 지나침은 후회가 된다. 과도한 상승을 경계하라.',],yao_consult_ko: [
- 'ì¶ë°ì ìì ë°©í¥ì ì ê²íê³  ê³¼ìì ì¤ì´ë©´ ì´ëì ìì¤ì ì¤ì¼ ì ììµëë¤.','ìì¹ì ëªíí íê³  ê²½ê³ë¥¼ ì¸ì°ë,ê´ê³ì ë§ì°°ì ìµìíí´ì¼ í©ëë¤.','ì¤ë°ë¶ í¼ë¡ê° ëì âìëë¥¼ ì¤ì´ê³  ê¸°ì¤ì ì¬ì ë ¬í©ëë¤.','ê°ë±ê³¼ ì íì êµì°¨ë¡âíµì¬ê°ì¹ë¥¼ ì¬íì¸íê³  ë¶íìí ì ì ì ì ë¦¬í©ëë¤.','ì±ê³¼ê° ëë¬ë¨âìë§ì ê²½ê³íê³  ë¶ë°°Â·ì±ìì êµ¬ì¡°íí©ëë¤.','ìê²°ì ìëë¥´ì§ ë§ê³  êµíì ì²´ê³ííì¬ ë¤ì ìíì ì¤ë¹í©ëë¤.',],},2:{gua_orig:
- '坤：元亨，利牝馬之貞。君子有攸往，先迷後得，主利。西南得朋，東北喪朋。安貞吉。',yao_orig: [
- '初六：履霜，堅冰至。','六二：直方大，不習無不利。','六三：含章可貞。或從王事，無成有終。','六四：括囊，無咎無譽。','六五：黃裳，元吉。','上六：龍戰於野，其血玄黃。',],gua_tran_ko:
- '땅의 도는 넓고 포용하며,꾸준한 바름이 이롭다. 처음엔 막히나 끝내 이룬다. 올바른 동료를 만나고 편안히 나아가면 길하다.',yao_tran_ko: [
- '초육: 서리 밟으면 곧 단단한 얼음이 온다. 작은 징후에서 큰 변화를 읽어라.','육이: 바르고 곧고 크면,특별한 단련이 없어도 이롭다.','육삼: 덕을 품고 바르게 나아가라. 왕 일을 따르더라도 당장 성과는 없으나 끝내 마무리된다.','육사: 주머니를 묶어 말없이 조용히 있으면 허물도 명예도 없다.','육오: 누런 치마처럼 검소하고 중심을 지키면 크게 길하다.','상육: 들판에서 용이 싸워 피가 검노(玄黃)로 물든다. 극단적 충돌을 피하라.',],yao_consult_ko: [
- 'ë°ìë¤ì´ê³  ì§ì§íë íëë¡ ìì ê¸°ë°ì ë§ë¤ê³  ë¬´ë¦¬í ì£¼ëë í¼í©ëë¤.','ëì ìì²­ê³¼ ì­í  ëªííâìì¡´/ê³¼ë³´í¸ì ê· íì ë§ì¶¥ëë¤.','ëë´ í¼ë¡ ê´ë¦¬âìê¸°ëë´ ë£¨í´ì ì¼ê³¼ì í¸ì±í©ëë¤.','ê²½ê³ê° íë ¤ì§ë©´ ì­í ì ì¬ì ìíê³  ìì¬ìíµ ê·ì¹ì í©ìí©ëë¤.','ì±ê³¼ë ì¡°ì©í ê³µì âê³µë¡ ë°°ë¶ê³¼ í ê·ì½ì ëªë¬¸íí©ëë¤.','ëë§ºìì ë¶ëë½ê²âì§ì ê°ë¥í ëë´ ì²´ê³ë¡ ì íí©ëë¤.',],},3:{gua_orig: '屯：元亨利貞。勿用有攸往，利建侯。',yao_orig: ['上六：乘馬班如；泣血漣如。'],gua_tran_ko:
- '시작은 어렵고 혼란스럽지만 올바르게 나아가면 이롭다. 성급히 움직이지 말고 기반을 세우면 길하다.',yao_tran_ko: [
- '상육: 머뭇거리던 말,눈물과 피눈물. 성급함을 경계하라.',],yao_consult_ko: [
- 'ë°°ì´ êµíì ì²´í¬ë¦¬ì¤í¸ë¡ ì ë¦¬í´ ë¤ì ììì ë¹ì©ì ë®ì¶¥ëë¤.',],},4:{gua_orig:
- '蒙：亨。匪我求童蒙，童蒙求我。初筮告，再三瀆，瀆則不告。利貞。',yao_orig: ['上九：擊蒙；不利為寇；利禦寇。'],gua_tran_ko:
- '미숙함을 깨우치면 형통하다. 배우고자 나아오는 자를 가르치고,재차 묻지 않는 게 도리다. 바르게 가르치면 길하다.',yao_tran_ko: [
- '상구: 무지함을 쳐서 깨우되,먼저 악을 행하지 말고 침입을 막는 데 이로움이 있다.',],yao_consult_ko: ['íìµì ìíííë ë£¨í´ì¼ë¡ ì íí©ëë¤.'],},5:{gua_orig: '需：有孚，光亨，貞吉。利涉大川。',yao_orig: ['上六：入于穴，有不速之客三人來，敬之終吉。'],gua_tran_ko:
- '기다림에도 성실함을 지키면 밝게 열리고 바르게 가면 길하다. 큰 일을 건널 수 있다.',yao_tran_ko: [
- '상육: 굴로 들어왔던 뜻밖의 손님 셋,공손히 대하면 끝내 길하다.',],yao_consult_ko: [
- 'ìë£ í ì¬ì¶©ì âë¤ì ê¸°íë¥¼ ìí´ ì»¨ëìì ì ë¹í©ëë¤.',],},6:{gua_orig: '訟：有孚，窒惕，中吉；終凶。利見大人，不利涉大川。',yao_orig: ['上九：或錫之鞶帶，終朝三褫之。'],gua_tran_ko:
- '다툼은 신중해야 한다. 중도를 지키면 길하나,끝까지 가면 흉하다. 큰 사람을 만나 해결하고,무리한 추진은 불리하다.',yao_tran_ko: [
- '상구: 벼슬띠를 받았다가 아침 세 번을 박탈당한다. 공정치 않으면 오래 가지 못한다.',],yao_consult_ko: ['ì¬íê°ì ì ì ë¦¬íê³  ê´ê³ íë³µ íë¡í ì½ì ë¡ëë¤.'],},7:{gua_orig: '師：貞丈人，吉無咎。',yao_orig: ['上六：大君有命，開國承家，小人勿用。'],gua_tran_ko:
- '군대(조직)를 이끈다는 뜻. 바르고 원숙한 자가 지휘해야 길하다. 무리한 억지나 사욕을 섞으면 흉하다.',yao_tran_ko: [
- '상육: 전쟁을 탐하면 흉하다. 때를 알아 물러나야 손실이 없다.',],yao_consult_ko: [
- 'ì¡°ì§ í¼ë¡ë¥¼ ë°©ì§íê³  í´ì-ì¬ë°°ì¹ë¥¼ ì¤ê³í©ëë¤.',],},8:{gua_orig: '比：吉；原筮，元永貞，無咎；不寧方來，後夫凶。',yao_orig: [
- '初六：有孚比之，無咎；有孚盈缶，終來有他，吉。','六二：比之自內，吉。','六三：比之匪人。','六四：外比之，貞吉。','九五：顯比，王用三驅，失前禽，邑人不誡，吉。','上六：比之無首，凶。',],gua_tran_ko:
- '사람과 가까이 하고 따르는 때. 성실함이 있으면 길하다. 올바르지 않은 사람을 따르면 흉하다.',yao_tran_ko: [
- '상육: 억지로 끌어모으면 흉하다. 떠날 이는 보내라.',],yao_consult_ko: ['ê´ê³ ì ì§ ë¹ì©ì ì ê²íê³  ì§ìëª¨ë¸ì ë§ë­ëë¤.'],},9:{gua_orig: '小畜：亨；密雲不雨，自我西郊。',yao_orig: ['上九：既雨既處，尚德載，婦貞厲，月幾望，君子征凶。'],gua_tran_ko:
- '조금 모아두는 시기,힘을 축적하는 과정. 아직 비가 오지 않지만 때가 오면 성취한다. 조급함은 해가 된다.',yao_tran_ko: [
- '상구: 필요한 도구를 잃으면 흉하다. 준비가 부족하면 멈추어라.',],yao_consult_ko: ['ê³¼ìì ìµì íê³  ìì ì  ë¦¬ë¬ì ì ì§í©ëë¤.'],},10:{gua_orig: '履：履虎尾，不咥人，亨。',yao_orig: ['上九：視履考祥，其旋元吉。'],gua_tran_ko:
- '호랑이 꼬리를 밟는 것처럼 신중해야 할 때. 예의와 바른 걸음으로 나아가면 길하다.',yao_tran_ko: ['상구: 교만한 걸음은 끝내 넘어짐을 부른다.'],yao_consult_ko: ['ìì ì§ëë¥¼ ëí ë¤ì ë¨ê³ë¡ ëìê°ëë¤.'],},11:{gua_orig: '泰：小往大來，吉亨。',yao_orig: ['上六：城復于隍，勿用師；自邑告命，貞吝。'],gua_tran_ko:
- '천지 교통,태평과 통달의 시기. 바르게 나아가면 크게 길하다. 교만하면 다시 어려움이 온다.',yao_tran_ko: [
- '상육: 성대함이 극점에 달했다. 이제부터는 쇠퇴를 경계하라.',],},12:{gua_orig: '否：否之匪人，不利君子貞，大往小來。',yao_orig: ['上九：傾否；先否後喜。'],gua_tran_ko:
- '막힘과 부조화의 시기. 군자는 바른 길을 지켜야 한다. 작은 것을 얻고 큰 것을 잃기 쉬우니 신중해야 한다.',yao_tran_ko: [
- '상구: 막힘이 극점에 이르렀다. 한 고비 지나면 바뀐다.',],},13:{gua_orig: '同人：同人於野，亨。利涉大川，利君子貞。',yao_orig: ['上九：同人于郊，無悔。'],gua_tran_ko:
- '뜻을 같이하는 사람들과 터를 넓혀 나가면 형통하다. 강을 건널 만한 큰일도 가능하되,군자답게 바름을 지켜야 길하다.',yao_tran_ko: [
- '상구: 허울뿐인 연대는 흉하다. 진정성 없는 동인은 해체된다.',],},14:{gua_orig: '大有：大有，元亨。',yao_orig: ['上九：自天祐之，吉，無不利。'],gua_tran_ko:
- '크게 소유하고 펼칠 때다. 겸허히 원칙을 지키면 하늘의 도움을 얻고,나아감에 막힘이 없다.',yao_tran_ko: [
- '상구: 지나친 집착은 흉하다. 때로는 놓아야 더 커진다.',],},15:{gua_orig: '謙：謙，亨，君子有終。',yao_orig: ['上六：鳴謙，利用行師，征邑國。'],gua_tran_ko:
- '겸손은 형통을 이끈다. 스스로를 낮추고 공을 나누면 끝이 아름답다. 때로는 단호함이 필요한 정의 구현도 이롭다.',yao_tran_ko: [
- '상육: 지나친 저자세는 비굴이 된다. 바른 기준 속의 겸손으로.',],},16:{gua_orig: '豫：豫，利建侯，行師。',yao_orig: ['上六：冥豫，成有渝，無咎。'],gua_tran_ko:
- '기쁨과 평안의 기운을 질서로 다스리면 사람을 세우고 군을 움직일 수 있다. 들뜨지 말고 바름을 지키면 오래 길하다.',yao_tran_ko: [
- '상육: 허망한 들뜸을 경계하라. 본말이 전도되면 흉하다.',],},17:{gua_orig: '隨：隨，元亨，利貞；無咎。',yao_orig: ['上六：拘係之，乃從維之；王用亨于西山。'],gua_tran_ko:
- '때를 따라가되 중심을 잃지 않으면 크게 형통하다. 무엇을 따를지 분별하면 사람과 일이 제자리를 찾는다.',yao_tran_ko: [
- '상육: 맹목적 추종은 흉하다. 때로는 그만둘 줄 알아야 한다.',],},18:{gua_orig: '蠱：蠱，元亨，利涉大川；先甲三日，後甲三日。',yao_orig: ['上九：不事王侯，高尚其事。'],gua_tran_ko:
- '폐단을 고치는 괘. 근본을 바로잡고 시일을 정해 치유하면 형통하다. 앞뒤를 헤아려 기한을 엄수하라.',yao_tran_ko: [
- '상구: 후대의 기준을 세울 기회. 확실히 고쳐야 마침내 복이 있다.',],},19:{gua_orig: '臨：元亨，利貞；至于八月有凶。',yao_orig: ['上六：敦臨，吉，無咎。'],gua_tran_ko:
- '아래를 사랑하고 보살피면 형통하다. 바르게 나아가면 길하다. 그러나 일정한 시점엔 쇠미가 오니 방심하지 말라.',yao_tran_ko: [
- '상육: 기운이 정점을 지나면 물러남을 대비해야 한다. 과욕은 흉하다.',],},20:{gua_orig: '觀：盥而不薦，有孚顒若。',yao_orig: ['上九：觀其生，君子无咎。'],gua_tran_ko:
- '관찰과 성찰의 괘. 정성을 갖고 세상을 보면 믿음이 드러난다. 스스로를 살피면 허물이 없어진다.',yao_tran_ko: [
- '상육: 지나친 관망은 실기를 부른다. 행동할 때가 되면 움직여라.',],},21:{gua_orig: '噬嗑：亨；利用獄。',yao_orig: ['上九：何校滅耳，凶。'],gua_tran_ko:
- '막힌 것을 씹어 뚫는 괘. 법과 규율을 엄정히 세우면 형통하다. 조심히 처리해야 흉함이 없다.',yao_tran_ko: [
- '상구: 과도한 집착은 자신을 해친다. 때로는 놓아라.',],},22:{gua_orig: '賁：賁，亨；小利有攸往。',yao_orig: ['上九：白賁，無咎。'],gua_tran_ko:
- '꾸미고 빛냄의 괘. 겉과 속이 조화를 이루면 길하다. 과도한 장식은 경계하고 본질을 지키면 좋다.',yao_tran_ko: [
- '상구: 허영은 오래가지 못한다. 껍데기만 아름다우면 흉하다.',],},23:{gua_orig: '剝：不利有攸往。',yao_orig: ['上六：碩果不食，君子得輿，小人剝廬。'],gua_tran_ko:
- '때를 잃고 껍질이 벗겨지는 시기. 나아감이 불리하다. 본질을 지키고 퇴각하여 내실을 다져라.',yao_tran_ko: [
- '상육: 완전한 붕괴. 그러나 새로운 시작의 전조이기도 하다.',],},24:{gua_orig:
- '復：亨；出入无疾，朋來无咎；反復其道，七日來復，利有攸往。',yao_orig: [
- '上六：迷復，凶，有災眚；用行師，終有大敗；以其國君凶；至于十年不克征。',],gua_tran_ko:
- '돌아옴,회복의 괘. 때가 다시 열림. 바르게 돌아오면 크게 길하다. 방황하지 말고 중심으로 복귀하라.',yao_tran_ko: ['상육: 때를 지나 돌아오면 늦다. 지금 결단하라.'],},25:{gua_orig: '無妄：元亨，利貞；其匪正有眚，不利有攸往。',yao_orig: [
- '初九：无妄行，有眚，无攸利。','六二：不耕穫，不菑畬，則利有攸往。','六三：无妄之災，或繫之牛，行人之得，邑人之災。','九四：可貞，无咎。','九五：无妄之疾，勿藥有喜。','上九：无妄，行有眚，无攸利。',],gua_tran_ko:
- '거짓됨이 없는 순수한 바름. 바르게 하면 길하지만,사실에 어긋나면 화가 생긴다. 억지 없이 순리에 맡겨라.',yao_tran_ko: [
- '상구: 지나친 확신은 재앙을 부른다. 겸손히 돌아보라.',],},26:{gua_orig: '大畜：利貞，不家食，吉；利涉大川。',yao_orig: ['上九：何天之衢，亨。'],gua_tran_ko:
- '큰 것을 길러 축적하는 괘. 욕심을 누르고 힘을 기르면 큰일을 할 수 있다. 천도의 길이 열린다.',yao_tran_ko: [
- '상구: 지나친 억제는 흉하다. 때가 오면 풀어주어야 한다.',],},27:{gua_orig: '頤：貞吉；觀頤，自求口實。',yao_orig: ['上九：由頤；厲，吉；利涉大川。'],gua_tran_ko:
- '양육과 공급의 괘. 입에 들어가는 것이 곧 도(道)다. 바르게 먹이고 배우고 가르쳐야 길하다.',yao_tran_ko: ['상구: 지나친 먹음과 말은 흉하다. 절제하라.'],},28:{gua_orig: '大過：棟橈，利有攸往，亨。',yao_orig: ['上六：過涉滅頂，凶，无咎。'],gua_tran_ko:
- '과함의 괘. 지나침이 문제이지만,때로는 큰 짐을 맡아야 한다. 균형을 잃지 않으면 형통한다.',yao_tran_ko: [
- '상구: 지나친 무게로 결국 무너짐. 그러나 깨짐 속에 새로운 길이 있다.',],},29:{gua_orig: '坎：習坎，有孚，維心亨；行有尚。',yao_orig: ['上六：係用徽纆，寘于叢棘，三歲不得，凶。'],gua_tran_ko:
- '험함,반복되는 시련. 믿음과 중심을 잃지 않으면 형통한다. 위험 속에서 길을 찾는다.',yao_tran_ko: [
- '상육: 지나친 위험 추구는 흉하다. 빠져나갈 때를 알라.',],},30:{gua_orig: '離：利貞，亨；畜牝牛，吉。',yao_orig: ['上九：王用出征，有嘉折首，獲匪其醜，无咎。'],gua_tran_ko:
- '빛과 밝음의 괘. 분명함으로 나아가면 형통하다. 겸손하고 부드러운 성품을 기르면 길하다.',yao_tran_ko: [
- '상구: 지나친 불길은 결국 꺼진다. 과열을 경계하라.',],},31:{yao_tran_ko: ['상육: 감정에 휘둘리면 흉하다. 절제가 필요하다.'],},32:{yao_tran_ko: ['상육: 무리한 지속은 흉하다. 때가 되면 멈추라.'],},33:{yao_tran_ko: ['상구: 지나친 고집은 흉하다. 기회를 놓친다.'],},34:{yao_tran_ko: [
- '상육: 힘이 지나치면 스스로 해롭게 된다. 멈출 줄 알아라.',],},35:{yao_tran_ko: [
- '상육: 지나친 야망은 좌절을 부른다. 마무리를 단정히 하라.',],},36:{yao_tran_ko: [
- '상육: 그림자가 깊으면 빛은 가깝다. 끝까지 품위를 지켜라.',],},37:{yao_tran_ko: [
- '상구: 집안을 함부로 다루면 흉하다. 근본을 잃지 말라.',],},38:{yao_tran_ko: ['상육: 지나치면 이별. 가볍게 흩어짐이 낫다.'],},39:{yao_tran_ko: [
- '상육: 지나친 집착은 해가 된다. 물러남이 해법일 수 있다.',],},40:{yao_tran_ko: [
- '상육: 지나친 개입은 흉하다. 때로는 놔두는 것이 약이다.',],},41:{yao_tran_ko: [
- '상육: 과한 절제는 빈곤을 부른다. 균형이 중요하다.',],},42:{yao_tran_ko: [
- '상육: 지나친 도움은 오히려 독이 된다. 경계를 지켜라.',],},43:{yao_tran_ko: [
- '상육: 지나친 척결은 반발을 낳는다. 균형을 잃지 말라.',],},44:{yao_tran_ko: ['상육: 끝까지 단절해야 한다. 미련은 해가 된다.'],},45:{yao_tran_ko: [
- '상육: 억지로 끌어모으면 흉하다. 자연스러움이 길하다.',],},46:{yao_tran_ko: [
- '상육: 지나친 상승 욕구는 위험하다. 자연스러움이 중요하다.',],},47:{yao_tran_ko: [
- '상육: 지나친 억압은 곧 풀린다. 마지막 인내가 필요하다.',],},48:{yao_tran_ko: ['상육: 정성껏 떠올리는 물은 모두에게 복이 된다.'],},49:{yao_tran_ko: ['상육: 변화 이후에도 경계하라. 안주하면 흉하다.'],},50:{yao_tran_ko: ['상육: 성과가 완성된다. 그러나 교만을 경계하라.'],},51:{yao_tran_ko: ['상구: 놀람이 지나가면 기쁜 소식이 온다.'],},52:{yao_tran_ko: ['상육: 무리한 고집은 흉하다. 유연함을 잃지 말라.'],},53:{yao_tran_ko: ['상구: 지나친 체면은 흉하다. 소박함을 지켜라.'],},54:{yao_tran_ko: ['상육: 지나친 의존은 해롭다. 주체성을 지켜라.'],},55:{yao_tran_ko: [
- '상육: 번영의 절정 후는 쇠퇴. 마무리를 단정히 하라.',],},56:{yao_tran_ko: ['상구: 타지에서의 오만은 흉하다. 조용히 물러나라.'],},57:{yao_tran_ko: [
- '상육: 우유부단하면 기회를 놓친다. 결단이 필요하다.',],},58:{yao_tran_ko: ['상육: 허황된 즐거움은 공허함을 남긴다.'],},59:{yao_tran_ko: [
- '상육: 지나친 해산은 무질서를 낳는다. 균형이 필요하다.',],},60:{yao_tran_ko: [
- '상육: 과도한 절제는 해가 된다. 유연함을 유지하라.',],},61:{yao_tran_ko: [
- '상구: 지나친 신뢰는 실망을 낳는다. 균형을 지켜라.',],},62:{yao_tran_ko: [
- '상구: 지나친 경계는 스스로를 옭아맬 수 있다. 적당함을 지켜라.',],},63:{yao_tran_ko: [
- '상육: 성취가 극에 달하면 자연히 쇠퇴가 온다. 겸손히 마무리하라.',],},64:{yao_tran_ko: [
- '상육: 거의 다 왔어도 마지막 실수가 치명적이다. 끝까지 집중하라.',],},};var KEY='zhouyi_corpus_full';var legacyKeys=['zhouyi_corpus','zhouyi_corpus_full_backup'];legacyKeys.forEach(function (k) {try{localStorage.removeItem(k);}catch(_e) {}});localStorage.removeItem(KEY);localStorage.setItem(KEY,JSON.stringify({__version: '2025-11-02 05:46:34',data: embedded}));console.log('Embedded corpus FORCE written to localStorage at 2025-11-02 05:46:34.');}catch(e) {console.error('Embed corpus failed:',e);}})();(function () {try{var userRestoredFlag=localStorage.getItem('zhouyi_user_restored_flag');if (userRestoredFlag) {console.log('🛡️ 사용자 복원 플래그 감지-자동 오버레이 차단(복원 시각: '+new Date(parseInt(userRestoredFlag))+')');return;}var KEY='zhouyi_corpus_full';var raw=localStorage.getItem(KEY);if (!raw) {console.warn('Corpus not found to merge.');return;}var obj=JSON.parse(raw);var data=obj.data||obj;var hasUserRestoredData=false;for (var i=31;i<=64;i++) {var guaKey=String(i);if (data[guaKey]&&(data[guaKey].gua_orig||data[guaKey].yao_orig)) {hasUserRestoredData=true;console.log('🛡️ 사용자 복원 데이터 감지됨('+guaKey+'번 괘)-오버레이 스킵');break;}}if (hasUserRestoredData) {console.log('✅ 사용자 코퍼스 데이터 보호됨-자동 오버레이 실행 안함');return;}var overlay={1:{yao_consult_ko: [
- '완결을 서두르지 말고 교훈을 체계화하여 다음 순환을 준비합니다.',],},2:{yao_consult_ko: [
- '끝맺음은 부드럽게—지속 가능한 돌봄 체계로 전환합니다.',],},3:{yao_consult_ko: [
- '배운 교훈을 체크리스트로 정리해 다음 시작의 비용을 낮춥니다.',],},4:{yao_consult_ko: ['학습을 생활화하는 루틴으로 전환합니다.'],},5:{yao_consult_ko: [
- '완료 후 재충전—다음 기회를 위해 컨디션을 정비합니다.',],},6:{yao_consult_ko: [
- '사후감정을 정리하고 관계 회복 프로토콜을 둡니다.',],},7:{yao_consult_ko: [
- '조직 피로를 방지하고 휴식-재배치를 설계합니다.',],},8:{yao_consult_ko: [
- '관계 유지 비용을 점검하고 지속모델을 만듭니다.',],},9:{yao_consult_ko: ['과욕을 억제하고 안정적 리듬을 유지합니다.'],},10:{yao_consult_ko: ['안전지대를 넓혀 다음 단계로 나아갑니다.'],},11:{yao_consult_ko: ['다음 침체기에 대비한 저축을 늘립니다.'],},12:{yao_consult_ko: [
- '상황이 풀릴 때 빠르게 재가동할 체크리스트를 만듭니다.',],},13:{yao_consult_ko: ['관계의 지속가능성을 점검합니다.'],},14:{yao_consult_ko: ['영속적 가치를 남기는 투자에 집중합니다.'],},15:{yao_consult_ko: ['겸손을 시스템으로 고정합니다.'],},16:{yao_consult_ko: ['열정을 소진시키지 않도록 휴식을 설계합니다.'],},17:{yao_consult_ko: ['자율적 추종을 가능케 하는 역량을 키웁니다.'],},18:{yao_consult_ko: ['청결한 기준을 유지합니다.'],},19:{yao_consult_ko: ['작별과 재접근의 예의를 갖춥니다.'],},20:{yao_consult_ko: ['관찰을 행동으로 연결합니다.'],},21:{yao_consult_ko: ['새 규칙이 현장에 스며들도록 훈련합니다.'],},22:{yao_consult_ko: ['외관 뒤 시스템을 탄탄히 합니다.'],},23:{yao_consult_ko: ['단순함을 계속 유지합니다.'],},24:{yao_consult_ko: ['다음 회귀 주기를 설계합니다.'],},25:{yao_consult_ko: ['진정성을 지키는 습관을 만듭니다.'],},26:{yao_consult_ko: ['필요할 때 한 번에 꺼냅니다.'],},27:{yao_consult_ko: ['지속 가능한 자기돌봄을 설계합니다.'],},28:{yao_consult_ko: ['장기적으로 하중을 줄입니다.'],},29:{yao_consult_ko: ['위기 후 회복 단계를 밟습니다.'],},30:{yao_consult_ko: ['빛과 열의 균형을 맞춥니다.'],},31:{yao_consult_ko: ['영향을 선한 방향으로 씁니다.'],},32:{yao_consult_ko: ['끝까지 가는 설계를 합니다.'],},33:{yao_consult_ko: ['재정비 계획을 구체화합니다.'],},34:{yao_consult_ko: ['마무리에서 겸손을 지킵니다.'],},35:{yao_consult_ko: ['과속을 경계합니다.'],},36:{yao_consult_ko: ['때를 기다립니다.'],},37:{yao_consult_ko: ['가족 회의를 정례화합니다.'],},38:{yao_consult_ko: ['다름 속 협력을 설계합니다.'],},39:{yao_consult_ko: ['장기 경로를 다시 설계합니다.'],},40:{yao_consult_ko: ['가볍게 출발합니다.'],},41:{yao_consult_ko: ['본질에 자원을 집중합니다.'],},42:{yao_consult_ko: ['후유증을 관리합니다.'],},43:{yao_consult_ko: ['나와 타인의 안전을 최우선합니다.'],},44:{yao_consult_ko: ['빠른 종료 기준을 둡니다.'],},45:{yao_consult_ko: ['모임의 피로를 관리합니다.'],},46:{yao_consult_ko: ['다음 계단을 예열합니다.'],},47:{yao_consult_ko: ['회복 스케줄을 만듭니다.'],},48:{yao_consult_ko: ['지속운영 계획을 세웁니다.'],},49:{yao_consult_ko: ['정착 후 회고합니다.'],},50:{yao_consult_ko: ['','','','','','']},51:{yao_consult_ko: ['재발경보 체계를 둡니다.'],},52:{yao_consult_ko: ['의도적 휴식을 정례화합니다.'],},53:{yao_consult_ko: ['성장 기록을 남깁니다.'],},54:{yao_consult_ko: ['역할 전환을 준비합니다.'],},55:{yao_consult_ko: ['다음 시즌을 계획합니다.'],},56:{yao_consult_ko: ['기록을 남겨 귀환 후 연결합니다.'],},57:{yao_consult_ko: ['바람처럼 흔적을 남기지 않습니다.'],},58:{yao_consult_ko: ['감사를 표현합니다.'],},59:{yao_consult_ko: ['갈등 재결빙을 막습니다.'],},60:{yao_consult_ko: ['필요 시 규칙을 재조정합니다.'],},61:{yao_consult_ko: ['진실 기반 협력을 확장합니다.'],},62:{yao_consult_ko: ['마무리를 단단히 합니다.'],},63:{yao_consult_ko: ['다음 목표를 준비합니다.'],},64:{yao_consult_ko: ['완주 후 회고합니다.'],},};Object.keys(overlay).forEach(function (k) {if (!data[k])data[k]={};data[k].yao_consult_ko=overlay[k].yao_consult_ko;});if (obj.data) {obj.data=data;localStorage.setItem(KEY,JSON.stringify(obj));}else{localStorage.setItem(KEY,JSON.stringify(data));}console.log('📝 [merge] yao_consult_ko 기본 오버레이(1-64)적용됨(사용자 데이터 없음)');}catch(e) {console.error('🚫 merge failed:',e);}})();(function () {const KEY='zhouyi_corpus_full';const VERSION=new Date().toISOString();const EMBED={__version: '2025-11-02 06:57:50',corpus:{1:{gua_orig: '乾：元，亨，利，貞。',gua_tran_ko:
- '하늘의 기운이 크게 시작되고 통하며 바르게 나아가면 이롭다. 준비가 충분한 자가 때를 얻어 큰일을 이룬다.',yao_orig: [
- '初爻：潛龍，勿用。','二爻：見龍在田，利見大人。','三爻：君子終日乾乾，夕惕若，厲，無咎。','四爻：或躍在淵，無咎。','五爻：飛龍在天，利見大人。','上爻：亢龍，有悔。',],yao_tran_ko: [
- '초구: 아직 때가 아님. 실력을 숨기고 때를 기다려라.','구이: 능력이 드러나 사람을 얻는 때. 큰 사람을 만나면 이롭다.','구삼: 종일 부지런하고 저녁에도 스스로 경계하라. 위태로우나 허물 없음.','구사: 도약을 준비하되 섣불리 나서지 말라. 준비된 뒤 움직이면 허물 없다.','구오: 하늘로 비상하는 때. 큰 인물을 만나 큰일을 도모함이 이롭다.','상구: 지나침은 후회가 된다. 과도한 상승을 경계하라.',],yao_consult_ko: [
- '출발선에서 방향을 점검하고 과욕을 줄이면 초동의 손실을 줄일 수 있습니다.','원칙을 명확히 하고 경계를 세우되,관계의 마찰을 최소화해야 합니다.','중반부 피로가 누적—속도를 줄이고 기준을 재정렬합니다.','갈등과 선택의 교차로—핵심가치를 재확인하고 불필요한 전선을 정리합니다.','성과가 드러남—자만을 경계하고 분배·책임을 구조화합니다.','완결을 서두르지 말고 교훈을 체계화하여 다음 순환을 준비합니다.',],yao_psychology: [
- '1효 심리|핵심상태: 초구: 아직 때가 아님. 실력을 숨기고 때를 기다려라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).','2효 심리|핵심상태: 구이: 능력이 드러나 사람을 얻는 때. 큰 사람을 만나면 이롭다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).','3효 심리|핵심상태: 구삼: 종일 부지런하고 저녁에도 스스로 경계하라. 위태로우나 허물 없음. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).','4효 심리|핵심상태: 구사: 도약을 준비하되 섣불리 나서지 말라. 준비된 뒤 움직이면 허물 없다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).','5효 심리|핵심상태: 구오: 하늘로 비상하는 때. 큰 인물을 만나 큰일을 도모함이 이롭다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).','6효 심리|핵심상태: 상구: 지나침은 후회가 된다. 과도한 상승을 경계하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '1효 조언|상황: 초구: 아직 때가 아님. 실력을 숨기고 때를 기다려라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.','2효 조언|상황: 구이: 능력이 드러나 사람을 얻는 때. 큰 사람을 만나면 이롭다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.','3효 조언|상황: 구삼: 종일 부지런하고 저녁에도 스스로 경계하라. 위태로우나 허물 없음. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.','4효 조언|상황: 구사: 도약을 준비하되 섣불리 나서지 말라. 준비된 뒤 움직이면 허물 없다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.','5효 조언|상황: 구오: 하늘로 비상하는 때. 큰 인물을 만나 큰일을 도모함이 이롭다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.','6효 조언|상황: 상구: 지나침은 후회가 된다. 과도한 상승을 경계하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '1효 코칭|문제인식: 초구: 아직 때가 아님. 실력을 숨기고 때를 기다려라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).','2효 코칭|문제인식: 구이: 능력이 드러나 사람을 얻는 때. 큰 사람을 만나면 이롭다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).','3효 코칭|문제인식: 구삼: 종일 부지런하고 저녁에도 스스로 경계하라. 위태로우나 허물 없음. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).','4효 코칭|문제인식: 구사: 도약을 준비하되 섣불리 나서지 말라. 준비된 뒤 움직이면 허물 없다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).','5효 코칭|문제인식: 구오: 하늘로 비상하는 때. 큰 인물을 만나 큰일을 도모함이 이롭다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).','6효 코칭|문제인식: 상구: 지나침은 후회가 된다. 과도한 상승을 경계하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 1-1|상황: 초구: 아직 때가 아님. 실력을 숨기고 때를 기다려라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.','사례 1-2|상황: 구이: 능력이 드러나 사람을 얻는 때. 큰 사람을 만나면 이롭다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.','사례 1-3|상황: 구삼: 종일 부지런하고 저녁에도 스스로 경계하라. 위태로우나 허물 없음. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.','사례 1-4|상황: 구사: 도약을 준비하되 섣불리 나서지 말라. 준비된 뒤 움직이면 허물 없다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.','사례 1-5|상황: 구오: 하늘로 비상하는 때. 큰 인물을 만나 큰일을 도모함이 이롭다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.','사례 1-6|상황: 상구: 지나침은 후회가 된다. 과도한 상승을 경계하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},2:{gua_orig:
- '坤：元亨，利牝馬之貞。君子有攸往，先迷後得，主利。西南得朋，東北喪朋。安貞吉。',gua_tran_ko:
- '땅의 도는 넓고 포용하며,꾸준한 바름이 이롭다. 처음엔 막히나 끝내 이룬다. 올바른 동료를 만나고 편안히 나아가면 길하다.',yao_orig: ['上六：龍戰於野，其血玄黃。'],yao_tran_ko: [
- '상육: 들판에서 용이 싸워 피가 검노(玄黃)로 물든다. 극단적 충돌을 피하라.',],yao_consult_ko: [
- '끝맺음은 부드럽게—지속 가능한 돌봄 체계로 전환합니다.',],yao_psychology: [
- '6효 심리|핵심상태: 상육: 들판에서 용이 싸워 피가 검노(玄黃)로 물든다. 극단적 충돌을 피하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 들판에서 용이 싸워 피가 검노(玄黃)로 물든다. 극단적 충돌을 피하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 들판에서 용이 싸워 피가 검노(玄黃)로 물든다. 극단적 충돌을 피하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 2-6|상황: 상육: 들판에서 용이 싸워 피가 검노(玄黃)로 물든다. 극단적 충돌을 피하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},3:{gua_orig: '屯：元亨利貞。勿用有攸往，利建侯。',gua_tran_ko:
- '시작은 어렵고 혼란스럽지만 올바르게 나아가면 이롭다. 성급히 움직이지 말고 기반을 세우면 길하다.',yao_orig: ['上六：乘馬班如；泣血漣如。'],yao_tran_ko: [
- '상육: 머뭇거리던 말,눈물과 피눈물. 성급함을 경계하라.',],yao_consult_ko: [
- '배운 교훈을 체크리스트로 정리해 다음 시작의 비용을 낮춥니다.',],yao_psychology: [
- '6효 심리|핵심상태: 상육: 머뭇거리던 말,눈물과 피눈물. 성급함을 경계하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 머뭇거리던 말,눈물과 피눈물. 성급함을 경계하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 머뭇거리던 말,눈물과 피눈물. 성급함을 경계하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 3-6|상황: 상육: 머뭇거리던 말,눈물과 피눈물. 성급함을 경계하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},4:{gua_orig:
- '蒙：亨。匪我求童蒙，童蒙求我。初筮告，再三瀆，瀆則不告。利貞。',gua_tran_ko:
- '미숙함을 깨우치면 형통하다. 배우고자 나아오는 자를 가르치고,재차 묻지 않는 게 도리다. 바르게 가르치면 길하다.',yao_orig: ['上九：擊蒙；不利為寇；利禦寇。'],yao_tran_ko: [
- '상구: 무지함을 쳐서 깨우되,먼저 악을 행하지 말고 침입을 막는 데 이로움이 있다.',],yao_consult_ko: ['학습을 생활화하는 루틴으로 전환합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 무지함을 쳐서 깨우되,먼저 악을 행하지 말고 침입을 막는 데 이로움이 있다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 무지함을 쳐서 깨우되,먼저 악을 행하지 말고 침입을 막는 데 이로움이 있다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 무지함을 쳐서 깨우되,먼저 악을 행하지 말고 침입을 막는 데 이로움이 있다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 4-6|상황: 상구: 무지함을 쳐서 깨우되,먼저 악을 행하지 말고 침입을 막는 데 이로움이 있다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},5:{gua_orig: '需：有孚，光亨，貞吉。利涉大川。',gua_tran_ko:
- '기다림에도 성실함을 지키면 밝게 열리고 바르게 가면 길하다. 큰 일을 건널 수 있다.',yao_orig: ['上六：入于穴，有不速之客三人來，敬之終吉。'],yao_tran_ko: [
- '상육: 굴로 들어왔던 뜻밖의 손님 셋,공손히 대하면 끝내 길하다.',],yao_consult_ko: [
- '완료 후 재충전—다음 기회를 위해 컨디션을 정비합니다.',],yao_psychology: [
- '6효 심리|핵심상태: 상육: 굴로 들어왔던 뜻밖의 손님 셋,공손히 대하면 끝내 길하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 굴로 들어왔던 뜻밖의 손님 셋,공손히 대하면 끝내 길하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 굴로 들어왔던 뜻밖의 손님 셋,공손히 대하면 끝내 길하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 5-6|상황: 상육: 굴로 들어왔던 뜻밖의 손님 셋,공손히 대하면 끝내 길하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},6:{gua_orig: '訟：有孚，窒惕，中吉；終凶。利見大人，不利涉大川。',gua_tran_ko:
- '다툼은 신중해야 한다. 중도를 지키면 길하나,끝까지 가면 흉하다. 큰 사람을 만나 해결하고,무리한 추진은 불리하다.',yao_orig: ['上九：或錫之鞶帶，終朝三褫之。'],yao_tran_ko: [
- '상구: 벼슬띠를 받았다가 아침 세 번을 박탈당한다. 공정치 않으면 오래 가지 못한다.',],yao_consult_ko: [
- '사후감정을 정리하고 관계 회복 프로토콜을 둡니다.',],yao_psychology: [
- '6효 심리|핵심상태: 상구: 벼슬띠를 받았다가 아침 세 번을 박탈당한다. 공정치 않으면 오래 가지 못한다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 벼슬띠를 받았다가 아침 세 번을 박탈당한다. 공정치 않으면 오래 가지 못한다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 벼슬띠를 받았다가 아침 세 번을 박탈당한다. 공정치 않으면 오래 가지 못한다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 6-6|상황: 상구: 벼슬띠를 받았다가 아침 세 번을 박탈당한다. 공정치 않으면 오래 가지 못한다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},7:{gua_orig: '師：貞丈人，吉無咎。',gua_tran_ko:
- '군대(조직)를 이끈다는 뜻. 바르고 원숙한 자가 지휘해야 길하다. 무리한 억지나 사욕을 섞으면 흉하다.',yao_orig: ['上六：大君有命，開國承家，小人勿用。'],yao_tran_ko: [
- '상육: 전쟁을 탐하면 흉하다. 때를 알아 물러나야 손실이 없다.',],yao_consult_ko: [
- '조직 피로를 방지하고 휴식-재배치를 설계합니다.',],yao_psychology: [
- '6효 심리|핵심상태: 상육: 전쟁을 탐하면 흉하다. 때를 알아 물러나야 손실이 없다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 전쟁을 탐하면 흉하다. 때를 알아 물러나야 손실이 없다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 전쟁을 탐하면 흉하다. 때를 알아 물러나야 손실이 없다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 7-6|상황: 상육: 전쟁을 탐하면 흉하다. 때를 알아 물러나야 손실이 없다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},8:{gua_orig: '比：吉；原筮，元永貞，無咎；不寧方來，後夫凶。',gua_tran_ko:
- '사람과 가까이 하고 따르는 때. 성실함이 있으면 길하다. 올바르지 않은 사람을 따르면 흉하다.',yao_orig: ['上六：比之無首，凶。'],yao_tran_ko: [
- '상육: 억지로 끌어모으면 흉하다. 떠날 이는 보내라.',],yao_consult_ko: [
- '관계 유지 비용을 점검하고 지속모델을 만듭니다.',],yao_psychology: [
- '6효 심리|핵심상태: 상육: 억지로 끌어모으면 흉하다. 떠날 이는 보내라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 억지로 끌어모으면 흉하다. 떠날 이는 보내라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 억지로 끌어모으면 흉하다. 떠날 이는 보내라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 8-6|상황: 상육: 억지로 끌어모으면 흉하다. 떠날 이는 보내라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},9:{gua_orig: '小畜：亨；密雲不雨，自我西郊。',gua_tran_ko:
- '조금 모아두는 시기,힘을 축적하는 과정. 아직 비가 오지 않지만 때가 오면 성취한다. 조급함은 해가 된다.',yao_orig: ['上九：既雨既處，尚德載，婦貞厲，月幾望，君子征凶。'],yao_tran_ko: [
- '상구: 필요한 도구를 잃으면 흉하다. 준비가 부족하면 멈추어라.',],yao_consult_ko: ['과욕을 억제하고 안정적 리듬을 유지합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 필요한 도구를 잃으면 흉하다. 준비가 부족하면 멈추어라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 필요한 도구를 잃으면 흉하다. 준비가 부족하면 멈추어라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 필요한 도구를 잃으면 흉하다. 준비가 부족하면 멈추어라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 9-6|상황: 상구: 필요한 도구를 잃으면 흉하다. 준비가 부족하면 멈추어라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},10:{gua_orig: '履：履虎尾，不咥人，亨。',gua_tran_ko:
- '호랑이 꼬리를 밟는 것처럼 신중해야 할 때. 예의와 바른 걸음으로 나아가면 길하다.',yao_orig: ['上九：視履考祥，其旋元吉。'],yao_tran_ko: ['상구: 교만한 걸음은 끝내 넘어짐을 부른다.'],yao_consult_ko: ['안전지대를 넓혀 다음 단계로 나아갑니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 교만한 걸음은 끝내 넘어짐을 부른다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 교만한 걸음은 끝내 넘어짐을 부른다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 교만한 걸음은 끝내 넘어짐을 부른다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 10-6|상황: 상구: 교만한 걸음은 끝내 넘어짐을 부른다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},11:{gua_orig: '泰：小往大來，吉亨。',gua_tran_ko:
- '천지 교통,태평과 통달의 시기. 바르게 나아가면 크게 길하다. 교만하면 다시 어려움이 온다.',yao_orig: ['上六：城復于隍，勿用師；自邑告命，貞吝。'],yao_tran_ko: [
- '상육: 성대함이 극점에 달했다. 이제부터는 쇠퇴를 경계하라.',],yao_consult_ko: ['다음 침체기에 대비한 저축을 늘립니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 성대함이 극점에 달했다. 이제부터는 쇠퇴를 경계하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 성대함이 극점에 달했다. 이제부터는 쇠퇴를 경계하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 성대함이 극점에 달했다. 이제부터는 쇠퇴를 경계하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 11-6|상황: 상육: 성대함이 극점에 달했다. 이제부터는 쇠퇴를 경계하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},12:{gua_orig: '否：否之匪人，不利君子貞，大往小來。',gua_tran_ko:
- '막힘과 부조화의 시기. 군자는 바른 길을 지켜야 한다. 작은 것을 얻고 큰 것을 잃기 쉬우니 신중해야 한다.',yao_orig: ['上九：傾否；先否後喜。'],yao_tran_ko: [
- '상구: 막힘이 극점에 이르렀다. 한 고비 지나면 바뀐다.',],yao_consult_ko: [
- '상황이 풀릴 때 빠르게 재가동할 체크리스트를 만듭니다.',],yao_psychology: [
- '6효 심리|핵심상태: 상구: 막힘이 극점에 이르렀다. 한 고비 지나면 바뀐다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 막힘이 극점에 이르렀다. 한 고비 지나면 바뀐다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 막힘이 극점에 이르렀다. 한 고비 지나면 바뀐다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 12-6|상황: 상구: 막힘이 극점에 이르렀다. 한 고비 지나면 바뀐다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},13:{gua_orig: '同人：同人於野，亨。利涉大川，利君子貞。',gua_tran_ko:
- '뜻을 같이하는 사람들과 터를 넓혀 나가면 형통하다. 강을 건널 만한 큰일도 가능하되,군자답게 바름을 지켜야 길하다.',yao_orig: ['上九：同人于郊，無悔。'],yao_tran_ko: [
- '상구: 허울뿐인 연대는 흉하다. 진정성 없는 동인은 해체된다.',],yao_consult_ko: ['관계의 지속가능성을 점검합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 허울뿐인 연대는 흉하다. 진정성 없는 동인은 해체된다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 허울뿐인 연대는 흉하다. 진정성 없는 동인은 해체된다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 허울뿐인 연대는 흉하다. 진정성 없는 동인은 해체된다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 13-6|상황: 상구: 허울뿐인 연대는 흉하다. 진정성 없는 동인은 해체된다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},14:{gua_orig: '大有：大有，元亨。',gua_tran_ko:
- '크게 소유하고 펼칠 때다. 겸허히 원칙을 지키면 하늘의 도움을 얻고,나아감에 막힘이 없다.',yao_orig: ['上九：自天祐之，吉，無不利。'],yao_tran_ko: [
- '상구: 지나친 집착은 흉하다. 때로는 놓아야 더 커진다.',],yao_consult_ko: ['영속적 가치를 남기는 투자에 집중합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 지나친 집착은 흉하다. 때로는 놓아야 더 커진다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 지나친 집착은 흉하다. 때로는 놓아야 더 커진다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 지나친 집착은 흉하다. 때로는 놓아야 더 커진다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 14-6|상황: 상구: 지나친 집착은 흉하다. 때로는 놓아야 더 커진다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},15:{gua_orig: '謙：謙，亨，君子有終。',gua_tran_ko:
- '겸손은 형통을 이끈다. 스스로를 낮추고 공을 나누면 끝이 아름답다. 때로는 단호함이 필요한 정의 구현도 이롭다.',yao_orig: ['上六：鳴謙，利用行師，征邑國。'],yao_tran_ko: [
- '상육: 지나친 저자세는 비굴이 된다. 바른 기준 속의 겸손으로.',],yao_consult_ko: ['겸손을 시스템으로 고정합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 저자세는 비굴이 된다. 바른 기준 속의 겸손으로. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 저자세는 비굴이 된다. 바른 기준 속의 겸손으로. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 저자세는 비굴이 된다. 바른 기준 속의 겸손으로. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 15-6|상황: 상육: 지나친 저자세는 비굴이 된다. 바른 기준 속의 겸손으로. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},16:{gua_orig: '豫：豫，利建侯，行師。',gua_tran_ko:
- '기쁨과 평안의 기운을 질서로 다스리면 사람을 세우고 군을 움직일 수 있다. 들뜨지 말고 바름을 지키면 오래 길하다.',yao_orig: ['上六：冥豫，成有渝，無咎。'],yao_tran_ko: [
- '상육: 허망한 들뜸을 경계하라. 본말이 전도되면 흉하다.',],yao_consult_ko: ['열정을 소진시키지 않도록 휴식을 설계합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 허망한 들뜸을 경계하라. 본말이 전도되면 흉하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 허망한 들뜸을 경계하라. 본말이 전도되면 흉하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 허망한 들뜸을 경계하라. 본말이 전도되면 흉하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 16-6|상황: 상육: 허망한 들뜸을 경계하라. 본말이 전도되면 흉하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},17:{gua_orig: '隨：隨，元亨，利貞；無咎。',gua_tran_ko:
- '때를 따라가되 중심을 잃지 않으면 크게 형통하다. 무엇을 따를지 분별하면 사람과 일이 제자리를 찾는다.',yao_orig: ['上六：拘係之，乃從維之；王用亨于西山。'],yao_tran_ko: [
- '상육: 맹목적 추종은 흉하다. 때로는 그만둘 줄 알아야 한다.',],yao_consult_ko: ['자율적 추종을 가능케 하는 역량을 키웁니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 맹목적 추종은 흉하다. 때로는 그만둘 줄 알아야 한다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 맹목적 추종은 흉하다. 때로는 그만둘 줄 알아야 한다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 맹목적 추종은 흉하다. 때로는 그만둘 줄 알아야 한다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 17-6|상황: 상육: 맹목적 추종은 흉하다. 때로는 그만둘 줄 알아야 한다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},18:{gua_orig: '蠱：蠱，元亨，利涉大川；先甲三日，後甲三日。',gua_tran_ko:
- '폐단을 고치는 괘. 근본을 바로잡고 시일을 정해 치유하면 형통하다. 앞뒤를 헤아려 기한을 엄수하라.',yao_orig: ['上九：不事王侯，高尚其事。'],yao_tran_ko: [
- '상구: 후대의 기준을 세울 기회. 확실히 고쳐야 마침내 복이 있다.',],yao_consult_ko: ['청결한 기준을 유지합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 후대의 기준을 세울 기회. 확실히 고쳐야 마침내 복이 있다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 후대의 기준을 세울 기회. 확실히 고쳐야 마침내 복이 있다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 후대의 기준을 세울 기회. 확실히 고쳐야 마침내 복이 있다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 18-6|상황: 상구: 후대의 기준을 세울 기회. 확실히 고쳐야 마침내 복이 있다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},19:{gua_orig: '臨：元亨，利貞；至于八月有凶。',gua_tran_ko:
- '아래를 사랑하고 보살피면 형통하다. 바르게 나아가면 길하다. 그러나 일정한 시점엔 쇠미가 오니 방심하지 말라.',yao_orig: ['上六：敦臨，吉，無咎。'],yao_tran_ko: [
- '상육: 기운이 정점을 지나면 물러남을 대비해야 한다. 과욕은 흉하다.',],yao_consult_ko: ['작별과 재접근의 예의를 갖춥니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 기운이 정점을 지나면 물러남을 대비해야 한다. 과욕은 흉하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 기운이 정점을 지나면 물러남을 대비해야 한다. 과욕은 흉하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 기운이 정점을 지나면 물러남을 대비해야 한다. 과욕은 흉하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 19-6|상황: 상육: 기운이 정점을 지나면 물러남을 대비해야 한다. 과욕은 흉하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},20:{gua_orig: '觀：盥而不薦，有孚顒若。',gua_tran_ko:
- '관찰과 성찰의 괘. 정성을 갖고 세상을 보면 믿음이 드러난다. 스스로를 살피면 허물이 없어진다.',yao_orig: ['上九：觀其生，君子无咎。'],yao_tran_ko: [
- '상육: 지나친 관망은 실기를 부른다. 행동할 때가 되면 움직여라.',],yao_consult_ko: ['관찰을 행동으로 연결합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 관망은 실기를 부른다. 행동할 때가 되면 움직여라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 관망은 실기를 부른다. 행동할 때가 되면 움직여라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 관망은 실기를 부른다. 행동할 때가 되면 움직여라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 20-6|상황: 상육: 지나친 관망은 실기를 부른다. 행동할 때가 되면 움직여라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},21:{gua_orig: '噬嗑：亨；利用獄。',gua_tran_ko:
- '막힌 것을 씹어 뚫는 괘. 법과 규율을 엄정히 세우면 형통하다. 조심히 처리해야 흉함이 없다.',yao_orig: ['上九：何校滅耳，凶。'],yao_tran_ko: [
- '상구: 과도한 집착은 자신을 해친다. 때로는 놓아라.',],yao_consult_ko: ['새 규칙이 현장에 스며들도록 훈련합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 과도한 집착은 자신을 해친다. 때로는 놓아라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 과도한 집착은 자신을 해친다. 때로는 놓아라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 과도한 집착은 자신을 해친다. 때로는 놓아라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 21-6|상황: 상구: 과도한 집착은 자신을 해친다. 때로는 놓아라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},22:{gua_orig: '賁：賁，亨；小利有攸往。',gua_tran_ko:
- '꾸미고 빛냄의 괘. 겉과 속이 조화를 이루면 길하다. 과도한 장식은 경계하고 본질을 지키면 좋다.',yao_orig: ['上九：白賁，無咎。'],yao_tran_ko: [
- '상구: 허영은 오래가지 못한다. 껍데기만 아름다우면 흉하다.',],yao_consult_ko: ['외관 뒤 시스템을 탄탄히 합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 허영은 오래가지 못한다. 껍데기만 아름다우면 흉하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 허영은 오래가지 못한다. 껍데기만 아름다우면 흉하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 허영은 오래가지 못한다. 껍데기만 아름다우면 흉하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 22-6|상황: 상구: 허영은 오래가지 못한다. 껍데기만 아름다우면 흉하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},23:{gua_orig: '剝：不利有攸往。',gua_tran_ko:
- '때를 잃고 껍질이 벗겨지는 시기. 나아감이 불리하다. 본질을 지키고 퇴각하여 내실을 다져라.',yao_orig: ['上六：碩果不食，君子得輿，小人剝廬。'],yao_tran_ko: [
- '상육: 완전한 붕괴. 그러나 새로운 시작의 전조이기도 하다.',],yao_consult_ko: ['단순함을 계속 유지합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 완전한 붕괴. 그러나 새로운 시작의 전조이기도 하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 완전한 붕괴. 그러나 새로운 시작의 전조이기도 하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 완전한 붕괴. 그러나 새로운 시작의 전조이기도 하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 23-6|상황: 상육: 완전한 붕괴. 그러나 새로운 시작의 전조이기도 하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},24:{gua_orig:
- '復：亨；出入无疾，朋來无咎；反復其道，七日來復，利有攸往。',gua_tran_ko:
- '돌아옴,회복의 괘. 때가 다시 열림. 바르게 돌아오면 크게 길하다. 방황하지 말고 중심으로 복귀하라.',yao_orig: [
- '上六：迷復，凶，有災眚；用行師，終有大敗；以其國君凶；至于十年不克征。',],yao_tran_ko: ['상육: 때를 지나 돌아오면 늦다. 지금 결단하라.'],yao_consult_ko: ['다음 회귀 주기를 설계합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 때를 지나 돌아오면 늦다. 지금 결단하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 때를 지나 돌아오면 늦다. 지금 결단하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 때를 지나 돌아오면 늦다. 지금 결단하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 24-6|상황: 상육: 때를 지나 돌아오면 늦다. 지금 결단하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},25:{gua_orig: '無妄：元亨，利貞；其匪正有眚，不利有攸往。',gua_tran_ko:
- '거짓됨이 없는 순수한 바름. 바르게 하면 길하지만,사실에 어긋나면 화가 생긴다. 억지 없이 순리에 맡겨라.',yao_orig: ['上九：无妄，行有眚，无攸利。'],yao_tran_ko: [
- '상구: 지나친 확신은 재앙을 부른다. 겸손히 돌아보라.',],yao_consult_ko: ['진정성을 지키는 습관을 만듭니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 지나친 확신은 재앙을 부른다. 겸손히 돌아보라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 지나친 확신은 재앙을 부른다. 겸손히 돌아보라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 지나친 확신은 재앙을 부른다. 겸손히 돌아보라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 25-6|상황: 상구: 지나친 확신은 재앙을 부른다. 겸손히 돌아보라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},26:{gua_orig: '大畜：利貞，不家食，吉；利涉大川。',gua_tran_ko:
- '큰 것을 길러 축적하는 괘. 욕심을 누르고 힘을 기르면 큰일을 할 수 있다. 천도의 길이 열린다.',yao_orig: ['上九：何天之衢，亨。'],yao_tran_ko: [
- '상구: 지나친 억제는 흉하다. 때가 오면 풀어주어야 한다.',],yao_consult_ko: ['필요할 때 한 번에 꺼냅니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 지나친 억제는 흉하다. 때가 오면 풀어주어야 한다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 지나친 억제는 흉하다. 때가 오면 풀어주어야 한다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 지나친 억제는 흉하다. 때가 오면 풀어주어야 한다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 26-6|상황: 상구: 지나친 억제는 흉하다. 때가 오면 풀어주어야 한다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},27:{gua_orig: '頤：貞吉；觀頤，自求口實。',gua_tran_ko:
- '양육과 공급의 괘. 입에 들어가는 것이 곧 도(道)다. 바르게 먹이고 배우고 가르쳐야 길하다.',yao_orig: ['上九：由頤；厲，吉；利涉大川。'],yao_tran_ko: ['상구: 지나친 먹음과 말은 흉하다. 절제하라.'],yao_consult_ko: ['지속 가능한 자기돌봄을 설계합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 지나친 먹음과 말은 흉하다. 절제하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 지나친 먹음과 말은 흉하다. 절제하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 지나친 먹음과 말은 흉하다. 절제하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 27-6|상황: 상구: 지나친 먹음과 말은 흉하다. 절제하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},28:{gua_orig: '大過：棟橈，利有攸往，亨。',gua_tran_ko:
- '과함의 괘. 지나침이 문제이지만,때로는 큰 짐을 맡아야 한다. 균형을 잃지 않으면 형통한다.',yao_orig: ['上六：過涉滅頂，凶，无咎。'],yao_tran_ko: [
- '상구: 지나친 무게로 결국 무너짐. 그러나 깨짐 속에 새로운 길이 있다.',],yao_consult_ko: ['장기적으로 하중을 줄입니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 지나친 무게로 결국 무너짐. 그러나 깨짐 속에 새로운 길이 있다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 지나친 무게로 결국 무너짐. 그러나 깨짐 속에 새로운 길이 있다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 지나친 무게로 결국 무너짐. 그러나 깨짐 속에 새로운 길이 있다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 28-6|상황: 상구: 지나친 무게로 결국 무너짐. 그러나 깨짐 속에 새로운 길이 있다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},29:{gua_orig: '坎：習坎，有孚，維心亨；行有尚。',gua_tran_ko:
- '험함,반복되는 시련. 믿음과 중심을 잃지 않으면 형통한다. 위험 속에서 길을 찾는다.',yao_orig: ['上六：係用徽纆，寘于叢棘，三歲不得，凶。'],yao_tran_ko: [
- '상육: 지나친 위험 추구는 흉하다. 빠져나갈 때를 알라.',],yao_consult_ko: ['위기 후 회복 단계를 밟습니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 위험 추구는 흉하다. 빠져나갈 때를 알라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 위험 추구는 흉하다. 빠져나갈 때를 알라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 위험 추구는 흉하다. 빠져나갈 때를 알라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 29-6|상황: 상육: 지나친 위험 추구는 흉하다. 빠져나갈 때를 알라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},30:{gua_orig: '離：利貞，亨；畜牝牛，吉。',gua_tran_ko:
- '빛과 밝음의 괘. 분명함으로 나아가면 형통하다. 겸손하고 부드러운 성품을 기르면 길하다.',yao_orig: ['上九：王用出征，有嘉折首，獲匪其醜，无咎。'],yao_tran_ko: [
- '상구: 지나친 불길은 결국 꺼진다. 과열을 경계하라.',],yao_consult_ko: ['빛과 열의 균형을 맞춥니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 지나친 불길은 결국 꺼진다. 과열을 경계하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 지나친 불길은 결국 꺼진다. 과열을 경계하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 지나친 불길은 결국 꺼진다. 과열을 경계하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 30-6|상황: 상구: 지나친 불길은 결국 꺼진다. 과열을 경계하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},31:{yao_tran_ko: ['상육: 감정에 휘둘리면 흉하다. 절제가 필요하다.'],yao_consult_ko: ['영향을 선한 방향으로 씁니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 감정에 휘둘리면 흉하다. 절제가 필요하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 감정에 휘둘리면 흉하다. 절제가 필요하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 감정에 휘둘리면 흉하다. 절제가 필요하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 31-6|상황: 상육: 감정에 휘둘리면 흉하다. 절제가 필요하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},32:{yao_tran_ko: ['상육: 무리한 지속은 흉하다. 때가 되면 멈추라.'],yao_consult_ko: ['끝까지 가는 설계를 합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 무리한 지속은 흉하다. 때가 되면 멈추라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 무리한 지속은 흉하다. 때가 되면 멈추라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 무리한 지속은 흉하다. 때가 되면 멈추라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 32-6|상황: 상육: 무리한 지속은 흉하다. 때가 되면 멈추라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},33:{yao_tran_ko: ['상구: 지나친 고집은 흉하다. 기회를 놓친다.'],yao_consult_ko: ['재정비 계획을 구체화합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 지나친 고집은 흉하다. 기회를 놓친다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 지나친 고집은 흉하다. 기회를 놓친다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 지나친 고집은 흉하다. 기회를 놓친다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 33-6|상황: 상구: 지나친 고집은 흉하다. 기회를 놓친다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},34:{yao_tran_ko: [
- '상육: 힘이 지나치면 스스로 해롭게 된다. 멈출 줄 알아라.',],yao_consult_ko: ['마무리에서 겸손을 지킵니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 힘이 지나치면 스스로 해롭게 된다. 멈출 줄 알아라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 힘이 지나치면 스스로 해롭게 된다. 멈출 줄 알아라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 힘이 지나치면 스스로 해롭게 된다. 멈출 줄 알아라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 34-6|상황: 상육: 힘이 지나치면 스스로 해롭게 된다. 멈출 줄 알아라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},35:{yao_tran_ko: [
- '상육: 지나친 야망은 좌절을 부른다. 마무리를 단정히 하라.',],yao_consult_ko: ['과속을 경계합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 야망은 좌절을 부른다. 마무리를 단정히 하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 야망은 좌절을 부른다. 마무리를 단정히 하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 야망은 좌절을 부른다. 마무리를 단정히 하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 35-6|상황: 상육: 지나친 야망은 좌절을 부른다. 마무리를 단정히 하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},36:{yao_tran_ko: [
- '상육: 그림자가 깊으면 빛은 가깝다. 끝까지 품위를 지켜라.',],yao_consult_ko: ['때를 기다립니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 그림자가 깊으면 빛은 가깝다. 끝까지 품위를 지켜라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 그림자가 깊으면 빛은 가깝다. 끝까지 품위를 지켜라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 그림자가 깊으면 빛은 가깝다. 끝까지 품위를 지켜라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 36-6|상황: 상육: 그림자가 깊으면 빛은 가깝다. 끝까지 품위를 지켜라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},37:{yao_tran_ko: [
- '상구: 집안을 함부로 다루면 흉하다. 근본을 잃지 말라.',],yao_consult_ko: ['가족 회의를 정례화합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 집안을 함부로 다루면 흉하다. 근본을 잃지 말라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 집안을 함부로 다루면 흉하다. 근본을 잃지 말라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 집안을 함부로 다루면 흉하다. 근본을 잃지 말라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 37-6|상황: 상구: 집안을 함부로 다루면 흉하다. 근본을 잃지 말라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},38:{yao_tran_ko: ['상육: 지나치면 이별. 가볍게 흩어짐이 낫다.'],yao_consult_ko: ['다름 속 협력을 설계합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나치면 이별. 가볍게 흩어짐이 낫다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나치면 이별. 가볍게 흩어짐이 낫다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나치면 이별. 가볍게 흩어짐이 낫다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 38-6|상황: 상육: 지나치면 이별. 가볍게 흩어짐이 낫다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},39:{yao_tran_ko: [
- '상육: 지나친 집착은 해가 된다. 물러남이 해법일 수 있다.',],yao_consult_ko: ['장기 경로를 다시 설계합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 집착은 해가 된다. 물러남이 해법일 수 있다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 집착은 해가 된다. 물러남이 해법일 수 있다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 집착은 해가 된다. 물러남이 해법일 수 있다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 39-6|상황: 상육: 지나친 집착은 해가 된다. 물러남이 해법일 수 있다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},40:{yao_tran_ko: [
- '상육: 지나친 개입은 흉하다. 때로는 놔두는 것이 약이다.',],yao_consult_ko: ['가볍게 출발합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 개입은 흉하다. 때로는 놔두는 것이 약이다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 개입은 흉하다. 때로는 놔두는 것이 약이다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 개입은 흉하다. 때로는 놔두는 것이 약이다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 40-6|상황: 상육: 지나친 개입은 흉하다. 때로는 놔두는 것이 약이다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},41:{yao_tran_ko: [
- '상육: 과한 절제는 빈곤을 부른다. 균형이 중요하다.',],yao_consult_ko: ['본질에 자원을 집중합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 과한 절제는 빈곤을 부른다. 균형이 중요하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 과한 절제는 빈곤을 부른다. 균형이 중요하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 과한 절제는 빈곤을 부른다. 균형이 중요하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 41-6|상황: 상육: 과한 절제는 빈곤을 부른다. 균형이 중요하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},42:{yao_tran_ko: [
- '상육: 지나친 도움은 오히려 독이 된다. 경계를 지켜라.',],yao_consult_ko: ['후유증을 관리합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 도움은 오히려 독이 된다. 경계를 지켜라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 도움은 오히려 독이 된다. 경계를 지켜라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 도움은 오히려 독이 된다. 경계를 지켜라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 42-6|상황: 상육: 지나친 도움은 오히려 독이 된다. 경계를 지켜라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},43:{yao_tran_ko: [
- '상육: 지나친 척결은 반발을 낳는다. 균형을 잃지 말라.',],yao_consult_ko: ['나와 타인의 안전을 최우선합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 척결은 반발을 낳는다. 균형을 잃지 말라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 척결은 반발을 낳는다. 균형을 잃지 말라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 척결은 반발을 낳는다. 균형을 잃지 말라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 43-6|상황: 상육: 지나친 척결은 반발을 낳는다. 균형을 잃지 말라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},44:{yao_tran_ko: ['상육: 끝까지 단절해야 한다. 미련은 해가 된다.'],yao_consult_ko: ['빠른 종료 기준을 둡니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 끝까지 단절해야 한다. 미련은 해가 된다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 끝까지 단절해야 한다. 미련은 해가 된다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 끝까지 단절해야 한다. 미련은 해가 된다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 44-6|상황: 상육: 끝까지 단절해야 한다. 미련은 해가 된다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},45:{yao_tran_ko: [
- '상육: 억지로 끌어모으면 흉하다. 자연스러움이 길하다.',],yao_consult_ko: ['모임의 피로를 관리합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 억지로 끌어모으면 흉하다. 자연스러움이 길하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 억지로 끌어모으면 흉하다. 자연스러움이 길하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 억지로 끌어모으면 흉하다. 자연스러움이 길하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 45-6|상황: 상육: 억지로 끌어모으면 흉하다. 자연스러움이 길하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},46:{yao_tran_ko: [
- '상육: 지나친 상승 욕구는 위험하다. 자연스러움이 중요하다.',],yao_consult_ko: ['다음 계단을 예열합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 상승 욕구는 위험하다. 자연스러움이 중요하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 상승 욕구는 위험하다. 자연스러움이 중요하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 상승 욕구는 위험하다. 자연스러움이 중요하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 46-6|상황: 상육: 지나친 상승 욕구는 위험하다. 자연스러움이 중요하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},47:{yao_tran_ko: [
- '상육: 지나친 억압은 곧 풀린다. 마지막 인내가 필요하다.',],yao_consult_ko: ['회복 스케줄을 만듭니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 억압은 곧 풀린다. 마지막 인내가 필요하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 억압은 곧 풀린다. 마지막 인내가 필요하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 억압은 곧 풀린다. 마지막 인내가 필요하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 47-6|상황: 상육: 지나친 억압은 곧 풀린다. 마지막 인내가 필요하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},48:{yao_tran_ko: ['상육: 정성껏 떠올리는 물은 모두에게 복이 된다.'],yao_consult_ko: ['지속운영 계획을 세웁니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 정성껏 떠올리는 물은 모두에게 복이 된다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 정성껏 떠올리는 물은 모두에게 복이 된다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 정성껏 떠올리는 물은 모두에게 복이 된다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 48-6|상황: 상육: 정성껏 떠올리는 물은 모두에게 복이 된다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},49:{yao_tran_ko: ['상육: 변화 이후에도 경계하라. 안주하면 흉하다.'],yao_consult_ko: ['정착 후 회고합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 변화 이후에도 경계하라. 안주하면 흉하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 변화 이후에도 경계하라. 안주하면 흉하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 변화 이후에도 경계하라. 안주하면 흉하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 49-6|상황: 상육: 변화 이후에도 경계하라. 안주하면 흉하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},50:{yao_tran_ko: ['상육: 성과가 완성된다. 그러나 교만을 경계하라.'],yao_consult_ko: ['','','','','',''],yao_psychology: [
- '6효 심리|핵심상태: 상육: 성과가 완성된다. 그러나 교만을 경계하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 성과가 완성된다. 그러나 교만을 경계하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 성과가 완성된다. 그러나 교만을 경계하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 50-6|상황: 상육: 성과가 완성된다. 그러나 교만을 경계하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},51:{yao_tran_ko: ['상구: 놀람이 지나가면 기쁜 소식이 온다.'],yao_consult_ko: ['재발경보 체계를 둡니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 놀람이 지나가면 기쁜 소식이 온다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 놀람이 지나가면 기쁜 소식이 온다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 놀람이 지나가면 기쁜 소식이 온다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 51-6|상황: 상구: 놀람이 지나가면 기쁜 소식이 온다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},52:{yao_tran_ko: ['상육: 무리한 고집은 흉하다. 유연함을 잃지 말라.'],yao_consult_ko: ['의도적 휴식을 정례화합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 무리한 고집은 흉하다. 유연함을 잃지 말라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 무리한 고집은 흉하다. 유연함을 잃지 말라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 무리한 고집은 흉하다. 유연함을 잃지 말라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 52-6|상황: 상육: 무리한 고집은 흉하다. 유연함을 잃지 말라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},53:{yao_tran_ko: ['상구: 지나친 체면은 흉하다. 소박함을 지켜라.'],yao_consult_ko: ['성장 기록을 남깁니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 지나친 체면은 흉하다. 소박함을 지켜라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 지나친 체면은 흉하다. 소박함을 지켜라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 지나친 체면은 흉하다. 소박함을 지켜라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 53-6|상황: 상구: 지나친 체면은 흉하다. 소박함을 지켜라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},54:{yao_tran_ko: ['상육: 지나친 의존은 해롭다. 주체성을 지켜라.'],yao_consult_ko: ['역할 전환을 준비합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 의존은 해롭다. 주체성을 지켜라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 의존은 해롭다. 주체성을 지켜라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 의존은 해롭다. 주체성을 지켜라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 54-6|상황: 상육: 지나친 의존은 해롭다. 주체성을 지켜라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},55:{yao_tran_ko: [
- '상육: 번영의 절정 후는 쇠퇴. 마무리를 단정히 하라.',],yao_consult_ko: ['다음 시즌을 계획합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 번영의 절정 후는 쇠퇴. 마무리를 단정히 하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 번영의 절정 후는 쇠퇴. 마무리를 단정히 하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 번영의 절정 후는 쇠퇴. 마무리를 단정히 하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 55-6|상황: 상육: 번영의 절정 후는 쇠퇴. 마무리를 단정히 하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},56:{yao_tran_ko: ['상구: 타지에서의 오만은 흉하다. 조용히 물러나라.'],yao_consult_ko: ['기록을 남겨 귀환 후 연결합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 타지에서의 오만은 흉하다. 조용히 물러나라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 타지에서의 오만은 흉하다. 조용히 물러나라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 타지에서의 오만은 흉하다. 조용히 물러나라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 56-6|상황: 상구: 타지에서의 오만은 흉하다. 조용히 물러나라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},57:{yao_tran_ko: [
- '상육: 우유부단하면 기회를 놓친다. 결단이 필요하다.',],yao_consult_ko: ['바람처럼 흔적을 남기지 않습니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 우유부단하면 기회를 놓친다. 결단이 필요하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 우유부단하면 기회를 놓친다. 결단이 필요하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 우유부단하면 기회를 놓친다. 결단이 필요하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 57-6|상황: 상육: 우유부단하면 기회를 놓친다. 결단이 필요하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},58:{yao_tran_ko: ['상육: 허황된 즐거움은 공허함을 남긴다.'],yao_consult_ko: ['감사를 표현합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 허황된 즐거움은 공허함을 남긴다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 허황된 즐거움은 공허함을 남긴다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 허황된 즐거움은 공허함을 남긴다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 58-6|상황: 상육: 허황된 즐거움은 공허함을 남긴다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},59:{yao_tran_ko: [
- '상육: 지나친 해산은 무질서를 낳는다. 균형이 필요하다.',],yao_consult_ko: ['갈등 재결빙을 막습니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 지나친 해산은 무질서를 낳는다. 균형이 필요하다. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 지나친 해산은 무질서를 낳는다. 균형이 필요하다. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 지나친 해산은 무질서를 낳는다. 균형이 필요하다. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 59-6|상황: 상육: 지나친 해산은 무질서를 낳는다. 균형이 필요하다. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},60:{yao_tran_ko: [
- '상육: 과도한 절제는 해가 된다. 유연함을 유지하라.',],yao_consult_ko: ['필요 시 규칙을 재조정합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 과도한 절제는 해가 된다. 유연함을 유지하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 과도한 절제는 해가 된다. 유연함을 유지하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 과도한 절제는 해가 된다. 유연함을 유지하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 60-6|상황: 상육: 과도한 절제는 해가 된다. 유연함을 유지하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},61:{yao_tran_ko: [
- '상구: 지나친 신뢰는 실망을 낳는다. 균형을 지켜라.',],yao_consult_ko: ['진실 기반 협력을 확장합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 지나친 신뢰는 실망을 낳는다. 균형을 지켜라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 지나친 신뢰는 실망을 낳는다. 균형을 지켜라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 지나친 신뢰는 실망을 낳는다. 균형을 지켜라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 61-6|상황: 상구: 지나친 신뢰는 실망을 낳는다. 균형을 지켜라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},62:{yao_tran_ko: [
- '상구: 지나친 경계는 스스로를 옭아맬 수 있다. 적당함을 지켜라.',],yao_consult_ko: ['마무리를 단단히 합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상구: 지나친 경계는 스스로를 옭아맬 수 있다. 적당함을 지켜라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상구: 지나친 경계는 스스로를 옭아맬 수 있다. 적당함을 지켜라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상구: 지나친 경계는 스스로를 옭아맬 수 있다. 적당함을 지켜라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 62-6|상황: 상구: 지나친 경계는 스스로를 옭아맬 수 있다. 적당함을 지켜라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},63:{yao_tran_ko: [
- '상육: 성취가 극에 달하면 자연히 쇠퇴가 온다. 겸손히 마무리하라.',],yao_consult_ko: ['다음 목표를 준비합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 성취가 극에 달하면 자연히 쇠퇴가 온다. 겸손히 마무리하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 성취가 극에 달하면 자연히 쇠퇴가 온다. 겸손히 마무리하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 성취가 극에 달하면 자연히 쇠퇴가 온다. 겸손히 마무리하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 63-6|상황: 상육: 성취가 극에 달하면 자연히 쇠퇴가 온다. 겸손히 마무리하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},64:{yao_tran_ko: [
- '상육: 거의 다 왔어도 마지막 실수가 치명적이다. 끝까지 집중하라.',],yao_consult_ko: ['완주 후 회고합니다.'],yao_psychology: [
- '6효 심리|핵심상태: 상육: 거의 다 왔어도 마지막 실수가 치명적이다. 끝까지 집중하라. → 내면 동력(안정·인정·통제 욕구 중 우세 판단),감정 패턴(불안/욕망/회피/집착),행동 경향(과도/지연/회피 여부 점검).',],yao_advice: [
- '6효 조언|상황: 상육: 거의 다 왔어도 마지막 실수가 치명적이다. 끝까지 집중하라. → 실행 포인트: 속도·기준·관계경계·자원배분 조절,예방: 과도한 확신/미루기/감정폭주 방지.',],yao_coaching: [
- '6효 코칭|문제인식: 상육: 거의 다 왔어도 마지막 실수가 치명적이다. 끝까지 집중하라. → 개입: 감정라벨링·가치확인·대안사고·작은 실행·피드백 → KPI: 주간 체크(완수율↑,감정변동성↓,관계갈등↓).',],yao_case: [
- '사례 64-6|상황: 상육: 거의 다 왔어도 마지막 실수가 치명적이다. 끝까지 집중하라. → 개입: ①감정측정 ②가정검증 ③점진노출/행동디자인 → 결과: 실행률↑,불안↓,의사결정 명료화.',],},},};window.EMBED=EMBED;document.documentElement.setAttribute('data-theme','light');try{localStorage.removeItem(KEY);localStorage.setItem(KEY,JSON.stringify(window.EMBED||{}));}catch(e) {console.error('Corpus set failed:',e);}let state={selectedHex: '1',selectedYao: 0,selectedTab: 'gua_orig',filter: '',};document.body.setAttribute('data-user-role','{{user_role|default("USER")}}');document.body.setAttribute('data-is-admin','{%if is_admin%}true{%else%}false{%endif%}');function getCurrentUserRole() {if (window.getAdminSession&&window.getAdminSession().isLoggedIn) {const adminSession=window.getAdminSession();console.log('🔐 관리자 세션 감지:',adminSession);return adminSession.role||'SUPERADMIN';}return document.body.getAttribute('data-user-role')||'USER';}window.getCurrentUserRole=getCurrentUserRole;function forceResetPermissions() {console.log('🔄 강제 권한 상태 리셋 실행');if (window.getAdminSession) {const currentSession=window.getAdminSession();console.log('📋 현재 세션 상태:',currentSession);if (!currentSession||!currentSession.isLoggedIn) {console.log('✅ 세션이 올바르게 초기화됨');}else{console.warn('⚠️ 세션이 완전히 초기화되지 않음,강제 초기화 실행');window.clearAdminSession();}}updateButtonPermissions();}function checkAdminPermission(actionName) {const currentRole=getCurrentUserRole();console.log(`🔍 권한 체크-작업: ${actionName},현재 권한: ${currentRole}`);if (currentRole!=='SUPERADMIN') {alert(`${actionName}작업을 수행할 권한이 없습니다.\n관리자 권한(SUPERADMIN)이 필요합니다.\n\n현재 권한: ${currentRole}`);return false;}console.log(`✅ 권한 승인-${actionName}작업 허용`);return true;}window.checkAdminPermission=checkAdminPermission;function updateButtonPermissions() {const currentRole=getCurrentUserRole();console.log(`🔧 버튼 권한 업데이트-현재 권한: ${currentRole}`);const buttons=[{id: 'btnCorpus',name: '코퍼스 내장/백업'},{id: 'reset',name: '초기화'},{id: 'import',name: '가져오기'},{id: 'export',name: '내보내기'},{id: 'copy',name: '복사'},{id: 'edit',name: '편집'},{id: 'save',name: '저장'},];const adminBtn=document.getElementById('btnAdminLogin');if (adminBtn) {if (currentRole==='SUPERADMIN') {adminBtn.textContent='🔓 관리자 로그아웃';adminBtn.style.background='linear-gradient(135deg,#16a34a 0%,#15803d 100%)';adminBtn.style.color='white';adminBtn.style.boxShadow='0 2px 8px rgba(22,163,74,0.3)';adminBtn.title='관리자 권한 활성화됨-클릭하여 로그아웃';console.log(' ✅ 관리자 버튼: 로그아웃 모드 활성화');}else{adminBtn.textContent='🔐 관리자 로그인';adminBtn.style.background='linear-gradient(135deg,#dc2626 0%,#b91c1c 100%)';adminBtn.style.color='white';adminBtn.style.boxShadow='0 2px 8px rgba(220,38,38,0.3)';adminBtn.title='관리자 로그인 필요-클릭하여 로그인';console.log(' ❌ 관리자 버튼: 로그인 모드 활성화');}adminBtn.style.border='none';adminBtn.style.borderRadius='8px';adminBtn.style.padding='8px 16px';adminBtn.style.fontWeight='600';adminBtn.style.fontSize='14px';adminBtn.style.cursor='pointer';adminBtn.style.transition='all 0.3s ease';adminBtn.replaceWith(adminBtn.cloneNode(true));const newAdminBtn=document.getElementById('btnAdminLogin');console.log('🔧 관리자 버튼 이벤트 리스너 추가 중...');console.log(' newAdminBtn:',newAdminBtn);newAdminBtn.addEventListener('click',function (event) {console.log('🔥 관리자 버튼 클릭됨!');console.log(' 현재 사용자 역할:',getCurrentUserRole());event.preventDefault();event.stopPropagation();if (getCurrentUserRole()==='SUPERADMIN') {console.log(' → 관리자 로그아웃 처리');handleAdminLogout();}else{console.log(' → 관리자 로그인 처리');handleAdminLogin();}});}buttons.forEach(({id,name})=>{const button=document.getElementById(id);if (button) {if (currentRole==='SUPERADMIN') {button.disabled=false;button.title='';button.style.opacity='1';button.style.cursor='pointer';console.log(` ✅ ${name}버튼 활성화`);}else{button.disabled=true;button.title=`${name}작업을 수행할 권한이 없습니다.(SUPERADMIN 권한 필요)`;button.style.opacity='0.5';button.style.cursor='not-allowed';console.log(` ❌ ${name}버튼 비활성화`);}}});}function handleAdminLogout() {console.log('관리자 로그아웃 처리 시작');if (typeof window.clearAdminSession==='function') {window.clearAdminSession();console.log('✅ 관리자 세션 삭제 완료');}else{console.error('❌ clearAdminSession 함수를 찾을 수 없음');}localStorage.removeItem('adminSession');localStorage.removeItem('isAdmin');localStorage.removeItem('userRole');updateButtonPermissions();console.log('관리자 로그아웃 완료');setTimeout(()=>{alert('관리자 로그아웃이 완료되었습니다.');},100);}function handleAdminLogin() {console.log('관리자 로그인 창 열기(새 창)');openAdminLogin();}updateButtonPermissions();function checkAndUpdatePermissions() {console.log('🔄 권한 상태 재확인 중...');updateButtonPermissions();}window.addEventListener('focus',checkAndUpdatePermissions);window.addEventListener('storage',function (e) {if (e.key==='admin_session'||e.key==='adminSession') {console.log('🔔 관리자 세션 변경 감지');checkAndUpdatePermissions();}});let adminCheckInterval=setInterval(function () {if (window.getAdminSession&&window.getAdminSession().isLoggedIn) {console.log('✅ 관리자 로그인 감지-권한 업데이트');updateButtonPermissions();clearInterval(adminCheckInterval);adminCheckInterval=setInterval(arguments.callee,3000);}},500);window.addEventListener('message',function (event) {if (event.data&&event.data.type==='ADMIN_LOGIN_SUCCESS') {console.log('🎉 관리자 로그인 성공 메시지 수신');console.log('📋 수신된 관리자 데이터:',event.data.admin);if (event.data.admin&&typeof window.setAdminSession==='function') {window.setAdminSession(event.data.admin);console.log('✅ 관리자 세션 강제 설정 완료');}updateButtonPermissions();setTimeout(()=>updateButtonPermissions(),100);setTimeout(()=>updateButtonPermissions(),500);setTimeout(()=>updateButtonPermissions(),1000);}});let wasVisible=!document.hidden;document.addEventListener('visibilitychange',function () {if (!document.hidden&&wasVisible===false) {console.log('👁️ 페이지가 다시 활성화됨-권한 체크');checkAndUpdatePermissions();}wasVisible=!document.hidden;});let lastMouseCheck=0;document.addEventListener('mouseenter',function () {const now=Date.now();if (now-lastMouseCheck>2000) {console.log('🖱️ 마우스 진입-권한 체크');checkAndUpdatePermissions();lastMouseCheck=now;}});setInterval(checkAndUpdatePermissions,5000);window.testAdminLogout=function () {console.log('🧪 수동 관리자 로그아웃 테스트');if (typeof window.clearAdminSession==='function') {window.clearAdminSession();forceResetPermissions();console.log('✅ 수동 로그아웃 완료');}else{console.error('❌ clearAdminSession 함수를 찾을 수 없음');}};window.testAdminLogin=function () {console.log('🧪 수동 관리자 로그인 테스트');if (typeof window.setAdminSession==='function') {window.setAdminSession({admin_id: 'test_admin',username: 'Test Admin',role: 'SUPERADMIN',isLoggedIn: true,});forceResetPermissions();console.log('✅ 수동 로그인 완료');}else{console.error('❌ setAdminSession 함수를 찾을 수 없음');}};window.checkCurrentAdminStatus=function () {console.log('🔍 현재 관리자 상태 확인:');console.log('-getCurrentUserRole():',getCurrentUserRole());if (window.getAdminSession) {console.log('-getAdminSession():',window.getAdminSession());}const adminBtn=document.getElementById('btnAdminLogin');if (adminBtn) {console.log('-버튼 텍스트:',adminBtn.textContent);console.log('-버튼 배경:',adminBtn.style.background);}};window.addEventListener('message',function (event) {console.log('📨 메시지 수신:',event.data);console.log('📨 메시지 출처(origin):',event.origin);console.log('📨 메시지 소스:',event.source);if (event.data&&event.data.type==='ADMIN_LOGIN_SUCCESS') {console.log('✅ 관리자 로그인 성공 메시지 수신:',event.data.admin);console.log('🔍 로그인 성공 후 즉시 상태:');console.log('-localStorage before:',localStorage.getItem('admin_session'));console.log('-window.adminSession before:',window.adminSession);setTimeout(()=>{console.log('🔄 권한 업데이트 실행(500ms 후)');console.log('🔍 권한 업데이트 전 상태:');console.log('-localStorage after 500ms:',localStorage.getItem('admin_session'));console.log('-window.adminSession after 500ms:',window.adminSession);console.log('-getCurrentUserRole():',getCurrentUserRole());checkAndUpdatePermissions();alert('✅ 관리자 로그인 성공!\n\n관리자 권한이 활성화되었습니다.\n이제 모든 기능을 사용할 수 있습니다.');},500);}else if (event.data&&event.data.type==='ADMIN_LOGIN_CANCELLED') {console.log('🚪 관리자 로그인 취소 메시지 수신');setTimeout(()=>{console.log('🔄 취소 후 권한 상태 확인');forceResetPermissions();},100);}else{console.log('⚠️ 알 수 없는 메시지 타입:',event.data);}});const HEX_NAMES={1: '건(乾)하늘',2: '곤(坤)땅',3: '둔(屯)어려움',4: '몽(蒙)무지',5: '수(需)기다림',6: '송(訟)다툼',7: '사(師)군대',8: '비(比)친함',9: '소축(小畜)작은 저축',10: '리(履)밟기',11: '태(泰)평안',12: '비(否)막힘',13: '동인(同人)사람과 더불어',14: '대유(大有)큰 소유',15: '겸(謙)겸손',16: '예(豫)예비',17: '수(隨)따름',18: '고(蠱)벌레',19: '임(臨)다가옴',20: '관(觀)관찰',21: '서합(噬嗑)씹어 합함',22: '비(賁)꾸밈',23: '박(剝)떨어짐',24: '복(復)돌아옴',25: '무망(無妄)망령됨이 없음',26: '대축(大畜)큰 저축',27: '이(頤)턱',28: '대과(大過)큰 넘침',29: '감(坎)빠짐',30: '리(離)떠남',31: '함(咸)감응',32: '항(恒)항상',33: '둔(遯)물러남',34: '대장(大壯)큰 장함',35: '진(晉)나아감',36: '명이(明夷)밝음이 상함',37: '가인(家人)집안 사람들',38: '규(睽)어긋남',39: '건(蹇)절뚝거림',40: '해(解)풀림',41: '손(損)덜어냄',42: '익(益)더함',43: '쾌(夬)결단',44: '구(姤)만남',45: '취(萃)모임',46: '승(升)오름',47: '곤(困)곤궁',48: '정(井)우물',49: '혁(革)혁명',50: '정(鼎)솥',51: '진(震)우뢰',52: '간(艮)그침',53: '점(漸)점진',54: '귀매(歸妹)시집감',55: '풍(豐)풍성',56: '려(旅)나그네',57: '손(巽)부드러움',58: '태(兌)기쁨',59: '환(渙)흩어짐',60: '절(節)절제',61: '중부(中孚)가운데 신뢰',62: '소과(小過)작은 넘침',63: '기제(旣濟)이미 건넘',64: '미제(未濟)아직 건너지 못함',};function loadCorpus() {const raw=localStorage.getItem(KEY);if (!raw)return window.EMBED||{};try{const obj=JSON.parse(raw);if (obj.corpus)return obj;if (obj.data)return{__version: obj.__version||VERSION,corpus: obj.data};return{__version: VERSION,corpus: obj};}catch(e) {console.warn('Parse fallback',e);return window.EMBED||{};}}function saveCorpus(obj) {localStorage.setItem(KEY,JSON.stringify(obj));}function qs(sel,el=document) {return el.querySelector(sel);}function qsa(sel,el=document) {return Array.from(el.querySelectorAll(sel));}const root=document.createElement('div');root.innerHTML=`<div class="header"><button id="closeLeft" class="btn" style="background: #ef4444;color: white;margin-right: 12px;">닫기</button><h1>주역 상담가 · 인터랙티브</h1><div class="grow row"><input id="search" class="input" placeholder="검색: 문장/키워드/번호(예: 11 괘,초효,위기대처)"/><button id="reset" class="btn">초기화</button><button id="import" class="btn">가져오기</button><button id="export" class="btn acc">내보내기</button><button id="theme" class="btn">테마</button><button id="close" class="btn" style="background: #ef4444;color: white;">닫기</button></div></div><div class="container single-line-layout" style="display: flex!important;flex-direction: row!important;gap: 20px!important;max-width: 1280px!important;margin: 0 auto!important;padding: 20px!important;"><div class="card left-panel" id="hexCard" style="flex: 0 0 calc(20%-10px)!important;max-width: calc(20%-10px)!important;min-width: 0!important;"><h2>주역 상경.하경</h2><div class="tags"><span class="badge">총<span id="hexCount">64</span>괘</span><span class="badge">버전<span id="ver"></span></span></div><div id="hexList" class="list compact-list"></div><div class="footer"><small class="muted">클릭하여 괘를 선택하세요</small></div></div><div class="card right-panel" id="detailCard" style="flex: 1 1 auto!important;max-width: none!important;min-width: 300px!important;"><h2 style="font-size: clamp(12px,4vw,20px);line-height: 1.3;word-break: keep-all;overflow-wrap: break-word;">증산복역과 복서정종 이론 왕필본 바탕 상세설명</h2><div class="tabs"><button class="tab active" data-tab="gua_orig">괘사-원문</button><button class="tab" data-tab="gua_tran_ko">괘사-한글</button><button class="tab" data-tab="yao_orig">6효-원문</button><button class="tab" data-tab="yao_tran_ko">6효-한글</button><button class="tab" data-tab="yao_psychology">6효-심리</button><button class="tab" data-tab="yao_consult_ko">6효-상담</button><button class="tab" data-tab="yao_advice">6효-조언</button><button class="tab" data-tab="yao_coaching">6효-코칭</button><button class="tab" data-tab="yao_case">6효-사례</button><button class="tab" data-tab="modern_example">현대사례</button></div><div class="split"><div class="left"><div id="yaoList" class="list"></div><div id="selInfo" class="info">괘 1 · 1효</div></div><div class="right"><div id="panel" class="panel"></div></div></div><div class="footer"><div class="row"><button id="copy" class="btn">복사</button><button id="edit" class="btn">편집</button><button id="save" class="btn pri" disabled>저장</button></div><small class="muted">※참고사항: 일반적인 설명입니다.</small></div></div></div>`;document.body.appendChild(root);const els={ver: qs('#ver'),hexList: qs('#hexList'),hexCount: qs('#hexCount'),yaoList: qs('#yaoList'),panel: qs('#panel'),search: qs('#search'),selInfo: qs('#selInfo'),copy: qs('#copy'),edit: qs('#edit'),save: qs('#save'),importBtn: qs('#import'),exportBtn: qs('#export'),themeBtn: qs('#theme'),resetBtn: qs('#reset'),closeBtn: qs('#close'),tabs: qsa('.tab'),};function renderHexList() {const data=loadCorpus();els.ver.textContent=data.__version||'n/a';els.hexList.innerHTML='';const filter=(els.search.value||'').trim();for (let i=1;i<=64;i++) {const key=String(i);const rec=data.corpus[key]||{};const hexName=HEX_NAMES[i]||`괘 ${key}`;const title=`${key}. ${hexName}`;const rowData=rows.find((row)=>row[0]===i);const hexSymbol=rowData ? rowData[2] : '☰☷';const hay=JSON.stringify(rec).toLowerCase();const pass=!filter||hay.includes(filter.toLowerCase())||title.includes(filter)||hexName.includes(filter);if (!pass)continue;const div=document.createElement('button');div.className='hex-button'+(state.selectedHex===key ? ' active' : '');const numberColor=state.selectedHex===key ? 'white' : 'var(--brand)';const lowerTrigram=hexSymbol.length===2 ? hexSymbol[1] : hexSymbol[0];const upperTrigram=hexSymbol.length===2 ? hexSymbol[0] : hexSymbol[0];const lowerColor=trigramColor[lowerTrigram]||'#333';const upperColor=trigramColor[upperTrigram]||'#333';div.innerHTML=`<span class="hex-symbol" style="font-family: 'Segoe UI Symbol','Noto Sans Symbols2','Apple Symbols',sans-serif;font-size: 22px;font-weight: 900;text-shadow: 2px 2px 4px rgba(0,0,0,0.5);min-width: 36px;letter-spacing: 1px;"><span style="color: ${upperColor};filter: brightness(1.2)saturate(1.3);text-shadow: 1px 1px 3px rgba(0,0,0,0.6);">${upperTrigram}</span><span style="color: ${lowerColor};filter: brightness(1.2)saturate(1.3);text-shadow: 1px 1px 3px rgba(0,0,0,0.6);">${lowerTrigram}</span></span><span class="hex-number" style="font-weight: bold;color: ${numberColor};min-width: 24px;">${key}</span><span class="hex-name" style="flex: 1;">${hexName}</span>`;div.dataset.key=key;div.style.cssText=`
- width: 100%;text-align: left;padding: 8px 12px;margin: 2px 0;border: 1px solid var(--line);border-radius: 6px;background: ${state.selectedHex===key ? 'var(--brand)' : 'var(--card)'};color: ${state.selectedHex===key ? 'white' : 'var(--ink)'};cursor: pointer;display: flex;align-items: center;gap: 8px;transition: all 0.2s ease;font-family: inherit;font-size: 14px;`;div.addEventListener('click',function () {console.log('Clicked hex:',key);state.selectedHex=key;renderAll();});div.addEventListener('mouseenter',function () {if (state.selectedHex!==key) {this.style.background='var(--line)';}});div.addEventListener('mouseleave',function () {if (state.selectedHex!==key) {this.style.background='var(--card)';}});els.hexList.appendChild(div);}els.hexCount.textContent=document.querySelectorAll('#hexList .item').length;}function renderYaoList() {els.yaoList.innerHTML='';for (let i=0;i<6;i++) {const div=document.createElement('div');div.className='item'+(state.selectedYao===i ? ' active' : '');const labels=['초효','이효','삼효','사효','오효','상효'];div.textContent=labels[i];div.addEventListener('click',function () {state.selectedYao=i;renderPanel();renderYaoList();});els.yaoList.appendChild(div);}const hexName=HEX_NAMES[parseInt(state.selectedHex)]||`괘 ${state.selectedHex}`;els.selInfo.textContent=`${state.selectedHex}. ${hexName}· ${state.selectedYao+1}효`;}function getCurrentRecord() {const data=loadCorpus();return data.corpus[state.selectedHex]||{};}function getFieldArray(rec,field) {const val=rec[field];if (Array.isArray(val)) {return val.slice(0,6);}if (typeof val==='string') {const lines=val
- .split(/\n|;/).map((s)=>s.trim()).filter(Boolean);if (lines.length===1) {return Array(6).fill(lines[0]);}return lines.slice(0,6);}return Array(6).fill('');}function renderPanel() {const rec=getCurrentRecord();const active=state.selectedTab;console.log('Rendering panel for hex:',state.selectedHex,'tab:',active,'record:',rec);if (!els.panel) {console.error('Panel element not found');return;}els.panel.innerHTML='';const isGuaTab=active.startsWith('gua_');if (isGuaTab) {const content=rec[active]||`${active}데이터가 없습니다.`;const contentDiv=document.createElement('div');contentDiv.className='gua-content';contentDiv.style.cssText=`
- padding: 20px;background: var(--card);border: 1px solid var(--line);border-radius: 8px;font-size: 14px;line-height: 1.6;white-space: pre-wrap;width: 100%;max-width: none;`;contentDiv.textContent=content;els.panel.appendChild(contentDiv);}else{const arr=getFieldArray(rec,active);for (let i=0;i<6;i++) {const row=document.createElement('div');row.className='line';const idx=document.createElement('div');idx.className='idx';idx.textContent=`${i+1}`;const txt=document.createElement('div');txt.className='txt';txt.textContent=arr[i]||`${i+1}효 ${active}데이터가 없습니다.`;row.appendChild(idx);row.appendChild(txt);els.panel.appendChild(row);}}}function renderAll() {renderHexList();renderYaoList();renderPanel();els.tabs.forEach((t)=>{if (t.dataset.tab===state.selectedTab)t.classList.add('active');else t.classList.remove('active');});}els.tabs.forEach((t)=>{t.addEventListener('click',()=>{state.selectedTab=t.dataset.tab;renderPanel();renderAll();});});els.search.addEventListener('input',()=>renderHexList());els.copy.addEventListener('click',()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('복사'))return;const rec=getCurrentRecord();const arr=getFieldArray(rec,state.selectedTab);const text=arr.map((s,i)=>`${i+1}. ${s}`).join('\n');navigator.clipboard.writeText(text).then(()=>{els.copy.textContent='복사됨';setTimeout(()=>(els.copy.textContent='복사'),1100);});});els.edit.addEventListener('click',()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('편집'))return;const rec=getCurrentRecord();const arr=getFieldArray(rec,state.selectedTab);els.panel.innerHTML='';for (let i=0;i<6;i++) {const row=document.createElement('div');row.className='line';const idx=document.createElement('div');idx.className='idx';idx.textContent=`${i+1}`;const ta=document.createElement('textarea');ta.value=arr[i]||'';ta.style.width='100%';ta.style.minHeight='64px';ta.style.padding='8px';ta.style.background='var(--bg)';ta.style.color='var(--fg)';ta.style.border='1px solid var(--border)';ta.style.borderRadius='8px';row.appendChild(idx);row.appendChild(ta);els.panel.appendChild(row);}els.save.disabled=false;});els.save.addEventListener('click',()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('저장'))return;const data=loadCorpus();const rec=data.corpus[state.selectedHex]||(data.corpus[state.selectedHex]={});const vals=qsa('textarea',els.panel).map((t)=>t.value);rec[state.selectedTab]=vals;saveCorpus(data);els.save.disabled=true;renderPanel();});els.exportBtn.addEventListener('click',async()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('내보내기'))return;const corpus=getCorpus()||{};const expandedData={};for (let i=1;i<=64;i++) {const guaData=corpus[i.toString()];expandedData[i.toString()]={gua_orig: guaData?.gua_orig||'',gua_tran_ko: guaData?.gua_tran_ko||'',yao_orig: guaData?.yao_orig||['','','','','',''],yao_tran_ko: guaData?.yao_tran_ko||['','','','','',''],yao_consult_ko: guaData?.yao_consult_ko||[
- '','','','','','',],yao_psychology: guaData?.yao_psychology||[
- '','','','','','',],yao_advice: guaData?.yao_advice||['','','','','',''],yao_coaching: guaData?.yao_coaching||['','','','','',''],yao_case: guaData?.yao_case||['','','','','',''],modern_example: guaData?.modern_example||'',};}const h=await sha(JSON.stringify(expandedData));const blob=new Blob([JSON.stringify(expandedData,null,2)],{type: 'application/json',});const a=Object.assign(document.createElement('a'),{download: `yijing_corpus_backup_${h.slice(0,8)}.json`,href: URL.createObjectURL(blob),});document.body.appendChild(a);a.click();a.remove();alert('✅ 확장된 코퍼스 데이터가 백업되었습니다.');});els.importBtn.addEventListener('click',()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('가져오기'))return;const inp=document.createElement('input');inp.type='file';inp.accept='application/json';inp.onchange=async()=>{try{const f=inp.files[0];console.log('📂 파일 정보:',f.name,f.size,'바이트');const txt=await f.text();console.log('📄 파일 내용 길이:',txt.length);const data=JSON.parse(txt);console.log('📋 파싱된 JSON 구조:',data);let sourceData=data;if (data.corpus) {sourceData=data.corpus;console.log('🔍 corpus 필드에서 데이터 추출');}console.log('🎯 소스 데이터 키:',Object.keys(sourceData));let validCount=0;let convertedCorpus={};for (let i=1;i<=64;i++) {const guaKey=i.toString();const guaData=sourceData[guaKey];console.log(`🔍 괘 ${i}복원 확인:`,guaData ? '데이터 있음' : '데이터 없음');if (guaData) {console.log(`-gua_orig:`,guaData.gua_orig ? '있음' : '없음');console.log(`-yao_orig:`,Array.isArray(guaData.yao_orig)? `배열 길이 ${guaData.yao_orig.length}`
- : '없음');convertedCorpus[guaKey]={gua_orig: guaData.gua_orig||'',gua_tran_ko: guaData.gua_tran_ko||'',yao_orig:
- Array.isArray(guaData.yao_orig)&&guaData.yao_orig.length===6
- ? guaData.yao_orig
- : ['','','','','',''],yao_tran_ko: guaData.yao_tran_ko||[
- '','','','','','',],yao_consult_ko: guaData.yao_consult_ko||[
- '','','','','','',],yao_psychology: guaData.yao_psychology||[
- '','','','','','',],yao_advice: guaData.yao_advice||['','','','','',''],yao_coaching: guaData.yao_coaching||[
- '','','','','','',],yao_case: guaData.yao_case||['','','','','',''],modern_example: guaData.modern_example||'',};validCount++;}}if (validCount===0) {alert('❌ 올바른 코퍼스 데이터를 찾을 수 없습니다.\n확장된 JSON 구조 형식을 확인해주세요.');return;}setCorpus(convertedCorpus);await setIntegrityTag(convertedCorpus);localStorage.setItem('zhouyi_user_restored_flag',Date.now().toString());console.log('🛡️ 사용자 복원 플래그 설정됨-자동 오버레이 영구 차단');console.log('✅ 복원 완료된 데이터:',convertedCorpus);alert(`✅ 확장된 코퍼스 데이터 복원 완료\n복원된 괘: ${validCount}/64\n\n31번 괘 포함: ${convertedCorpus['31'] ? 'O' : 'X'}`);refresh();}catch(e) {alert('❌ JSON 파싱 오류: '+e.message);}};inp.click();});els.resetBtn.addEventListener('click',()=>{if (!window.checkAdminPermission||!window.checkAdminPermission('초기화'))return;if (!confirm('기존 코퍼스를 삭제하고 내장 코퍼스로 복원할까요?'))return;const corpusKeys=[
- 'zhouyi_corpus_full','zhouyi_corpus','zhouyi_corpus_full_backup','corpus_data','zhouyi_user_restored_flag',];corpusKeys.forEach((key)=>{localStorage.removeItem(key);console.log(`🗑️ 삭제됨: ${key}`);});if (typeof KEYS!=='undefined'&&KEYS.corpus) {localStorage.removeItem(KEYS.corpus);console.log(`🗑️ 메인 코퍼스 삭제됨: ${KEYS.corpus}`);}if (window.EMBED) {localStorage.setItem(KEY,JSON.stringify(window.EMBED));console.log('✅ 내장 코퍼스로 복원됨');}renderAll();if (typeof refresh==='function') {refresh();console.log('🔄 메인 시스템 새로고침 완료');}alert('✅ 초기화 완료\n모든 사용자 데이터가 삭제되고 내장 코퍼스로 복원되었습니다.');});els.themeBtn.addEventListener('click',()=>{const cur=document.documentElement.getAttribute('data-theme')==='dark'
- ? 'dark'
- : 'light';const next=cur==='dark' ? 'light' : 'dark';if (next==='dark')document.documentElement.setAttribute('data-theme','dark');else document.documentElement.removeAttribute('data-theme');localStorage.setItem('theme',next);});els.closeBtn.addEventListener('click',()=>{window.close();setTimeout(()=>{if (!window.closed) {window.history.back();}},100);});renderAll();})();(function () {const KEYS=[
- 'zhouyi_corpus_full','zhouyi_64_corpus','zhouyi_corpus','zhouyi64_corpus','zhouyi_64_backup',];function getFirstAvailable() {for (const k of KEYS) {const v=localStorage.getItem(k);if (v)return{key: k,value: v};}return null;}function setAll(obj) {const text=JSON.stringify(obj);for (const k of KEYS) {localStorage.setItem(k,text);}}window.__Z_KEYS__=KEYS;window.__Z_setAll__=setAll;function normalizeCorpus(any) {if (!any)return null;if (any.corpus)return{__version: any.__version||new Date().toISOString(),corpus: any.corpus,};if (any.data)return{__version: any.__version||new Date().toISOString(),corpus: any.data,};let hasRange=true;for (let i=1;i<=64;i++) {if (!(String(i)in any)) {hasRange=false;break;}}if (hasRange)return{__version: new Date().toISOString(),corpus: any};return null;}window.__normalizeCorpus__=normalizeCorpus;try{const existing=getFirstAvailable();if (!existing) {const em=window.EMBED||null;if (em) {setAll(em);}}}catch(e) {console.warn('Init guard failed',e);}const importBtn=document.querySelector('#import');const modal=document.querySelector('#importModal');const area=document.querySelector('#importArea');const cancel=document.querySelector('#importCancel');const doBtn=document.querySelector('#importDo');function openModal() {if (modal) {modal.classList.add('open');area.value='';area.focus();}}function closeModal() {if (modal) {modal.classList.remove('open');}}if (importBtn) {importBtn.addEventListener('click',openModal);}if (cancel) {cancel.addEventListener('click',closeModal);}if (doBtn) {doBtn.addEventListener('click',()=>{try{const txt=area.value.trim();if (!txt) {alert('JSON을 붙여넣어 주세요.');return;}const obj=JSON.parse(txt);const norm=normalizeCorpus(obj);if (!norm) {alert('형식 오류:{corpus}또는{data}또는 1..64 키의 맵이 필요합니다.');return;}setAll(norm);alert('불러오기 완료: localStorage에 즉시 반영했습니다.');if (window.renderAll) {window.renderAll();}else location.reload();closeModal();}catch(e) {alert('JSON 파싱 실패: '+e.message);}});}if (window.loadCorpus) {const oldLoad=window.loadCorpus;window.loadCorpus=function () {try{const ex=getFirstAvailable();if (ex) {const parsed=JSON.parse(ex.value);if (parsed.corpus)return parsed;if (parsed.data)return{__version: parsed.__version||'',corpus: parsed.data,};}}catch(e) {console.warn('Compat load failed',e);}return oldLoad();};}})();(function addModernExamples() {function getModernExamples() {const corpus=getCorpus()||{};const modernExamples={};for (let i=1;i<=64;i++) {const guaData=corpus[String(i)];if (guaData&&guaData.modern_example) {modernExamples[i]=guaData.modern_example;}else{modernExamples[i]=getDefaultModernExample(i);}}return modernExamples;}function getDefaultModernExample(no) {const defaults={1: '스타트업 창업 초기,자원을 모으고 팀을 구성하며 시장 진입을 준비하는 단계.',2: '새로운 프로젝트를 시작하며 팀원 간 신뢰를 쌓고 협업 구조를 만드는 과정.',3: '복잡한 문제를 해결하기 위해 파일럿 테스트를 실행하고 데이터를 수집하는 상황.',4: '신입사원이 업무를 배우며 멘토의 도움을 받아 성장하는 시기.',5: '제품 출시를 앞두고 마지막 테스트와 품질 보증을 진행하는 단계.',6: '팀 간 갈등을 조정하고 공정한 해결책을 찾는 과정.',7: '대규모 이벤트를 기획하며 역할 분담과 일정 관리를 철저히 하는 상황.',8: '새로운 부서 간 협업을 시작하며 공통 목표를 설정하고 신뢰를 구축하는 단계.',9: '작은 성공을 통해 자원을 축적하고 다음 단계를 준비하는 과정.',10: '위험 요소를 신중히 관리하며 새로운 시장에 진입하는 상황.',11: '회사의 성장이 안정기에 접어들며 내부 프로세스를 최적화하는 단계.',12: '조직 내 커뮤니케이션 문제를 해결하고 효율성을 높이기 위한 구조 조정.',13: '공동의 목표를 가진 여러 팀이 협력하여 대규모 프로젝트를 완수하는 과정.',14: '회사의 브랜드 가치를 높이고 시장 점유율을 확대하는 전략을 실행하는 단계.',15: '겸손한 태도로 고객의 피드백을 수용하며 제품을 개선하는 과정.',16: '팀원들과 함께 성공을 축하하며 다음 목표를 계획하는 시기.',17: '시장 트렌드를 분석하고 유연하게 전략을 조정하는 과정.',18: '조직 내 비효율적인 관행을 개선하고 새로운 문화를 도입하는 단계.',19: '리더가 팀원들과 소통하며 신뢰를 구축하고 동기를 부여하는 상황.',20: '회사의 비전을 재정립하고 장기적인 목표를 설정하는 과정.',21: '복잡한 문제를 해결하기 위해 데이터를 분석하고 명확한 결론을 도출하는 단계.',22: '제품의 디자인을 개선하여 사용자 경험을 향상시키는 과정.',23: '조직의 비효율적인 부분을 제거하고 핵심 역량에 집중하는 단계.',24: '실패를 교훈 삼아 전략을 수정하고 다시 도전하는 과정.',25: '윤리적 경영을 실천하며 신뢰를 회복하는 단계.',26: '핵심 역량을 강화하며 장기적인 성장을 준비하는 과정.',27: '팀원들의 역량을 개발하고 지속적인 학습 문화를 조성하는 단계.',28: '과도한 업무 부담을 조정하고 효율성을 높이는 과정.',29: '위기 상황에서 침착하게 문제를 해결하며 신뢰를 유지하는 단계.',30: '조직의 비전을 명확히 하고 이를 실현하기 위한 구체적인 계획을 수립하는 과정.',31: '팀원 간의 공감을 형성하며 협업을 강화하는 단계.',32: '장기적인 목표를 설정하고 꾸준히 실행해 나가는 과정.',33: '위험을 최소화하기 위해 전략적으로 후퇴하는 상황.',34: '조직의 역량을 극대화하여 중요한 기회를 포착하는 단계.',35: '새로운 시장에 진출하며 점진적으로 입지를 넓히는 과정.',36: '어려운 상황에서도 핵심 가치를 지키며 신뢰를 유지하는 단계.',37: '가정과 직장에서 조화를 이루며 안정적인 환경을 조성하는 과정.',38: '다양한 관점을 수용하며 갈등을 해결하고 협력을 강화하는 단계.',39: '도전적인 상황에서 창의적인 해결책을 모색하는 과정.',40: '복잡한 문제를 간소화하고 실행 가능한 해결책을 찾는 단계.',41: '자원을 효율적으로 관리하며 지속 가능한 성장을 도모하는 과정.',42: '조직의 성과를 극대화하기 위해 협업과 혁신을 촉진하는 단계.',43: '중요한 결정을 내리기 위해 데이터를 분석하고 명확한 근거를 제시하는 과정.',44: '잠재적인 위험 요소를 사전에 차단하고 안전망을 구축하는 단계.',45: '팀원들과 협력하여 공동의 목표를 달성하는 과정.',46: '작은 성공을 통해 자신감을 얻고 점진적으로 더 큰 목표를 추구하는 단계.',47: '어려운 상황에서도 긍정적인 태도로 문제를 해결하는 과정.',48: '조직의 기본적인 시스템을 정비하고 효율성을 높이는 단계.',49: '변화 관리 전략을 수립하고 조직 문화를 혁신하는 과정.',50: '조직의 역량을 강화하여 지속 가능한 성장을 도모하는 단계.',51: '예상치 못한 상황에 유연하게 대처하며 기회를 포착하는 과정.',52: '내부 역량을 강화하며 안정적인 성장을 도모하는 단계.',53: '장기적인 목표를 설정하고 꾸준히 실행해 나가는 과정.',54: '새로운 환경에 적응하며 유연하게 대처하는 단계.',55: '조직의 성과를 극대화하기 위해 협업과 혁신을 촉진하는 과정.',56: '낯선 환경에서 신뢰를 구축하고 안정적인 기반을 마련하는 단계.',57: '부드럽게 스며들며 영향력을 확대하는 과정.',58: '작은 성공을 통해 자신감을 얻고 점진적으로 더 큰 목표를 추구하는 단계.',59: '조직의 기본적인 시스템을 정비하고 효율성을 높이는 단계.',60: '변화 관리 전략을 수립하고 조직 문화를 혁신하는 과정.',61: '조직의 역량을 강화하여 지속 가능한 성장을 도모하는 단계.',62: '예상치 못한 상황에 유연하게 대처하며 기회를 포착하는 과정.',63: '내부 역량을 강화하며 안정적인 성장을 도모하는 단계.',64: '장기적인 목표를 설정하고 꾸준히 실행해 나가는 과정.',};return defaults[no]||'현대적 사례 정보가 없습니다.';}const modernExamples=getModernExamples();const detailGrid=document.getElementById('detailGrid');if (!detailGrid)return;Object.entries(modernExamples).forEach(([key,example])=>{const card=document.getElementById(`hx-${key}`);if (card) {const exampleDiv=document.createElement('div');exampleDiv.className='modern-example';exampleDiv.style.marginTop='10px';exampleDiv.innerHTML=`<strong>현대적 사례:</strong>${example}`;card.appendChild(exampleDiv);}});})();console.log('🔧 독립적인 DetailGrid 관리 시스템 시작');window.DetailGridManager=(function () {'use strict';let isInitialized=false;let detailData=null;const BASIC_64_HEXAGRAMS=[
- [1,'乾(건)','☰','창조,강건,시작'],[2,'坤(곤)','☷','순응,포용,땅'],[3,'屯(둔)','☵☳','시작의 어려움'],[4,'蒙(몽)','☶☵','미숙,깨우침 필요'],[5,'需(수)','☰☵','기다림,인내'],[6,'訟(송)','☵☰','다툼,송사'],[7,'師(사)','☷☵','군대,조직'],[8,'比(비)','☵☷','친화,협력'],[9,'小畜(소축)','☰☴','작은 축적'],[10,'履(리)','☱☰','예의,행실'],[11,'泰(태)','☰☷','평안,태평'],[12,'否(비)','☷☰','막힘,폐색'],[13,'同人(동인)','☰☲','사람과 함께'],[14,'大有(대유)','☲☰','크게 가짐'],[15,'謙(겸)','☷☶','겸손'],[16,'豫(예)','☳☷','기쁨,준비'],[17,'隨(수)','☳☱','따름'],[18,'蠱(고)','☶☴','부패,개혁'],[19,'臨(임)','☷☱','다가옴'],[20,'觀(관)','☴☷','관찰'],[21,'噬嗑(서합)','☲☳','깨물어 합함'],[22,'賁(비)','☶☲','꾸밈'],[23,'剝(박)','☷☶','벗겨짐'],[24,'復(복)','☳☷','되돌아옴'],[25,'無妄(무망)','☰☳','망령됨이 없음'],[26,'大畜(대축)','☶☰','크게 기름'],[27,'頤(이)','☶☳','턱,기름'],[28,'大過(대과)','☱☴','크게 지나침'],[29,'坎(감)','☵','빠짐,물'],[30,'離(리)','☲','떠남,불'],[31,'咸(함)','☱☶','감응'],[32,'恆(항)','☳☴','항상'],[33,'遯(둔)','☰☶','물러남'],[34,'大壯(대장)','☳☰','크게 장함'],[35,'晉(진)','☲☷','나아감'],[36,'明夷(명이)','☷☲','밝음이 상함'],[37,'家人(가인)','☴☲','집 사람'],[38,'睽(규)','☲☱','어긋남'],[39,'蹇(견)','☵☶','어려움'],[40,'解(해)','☳☵','풀림'],[41,'損(손)','☶☱','덜어냄'],[42,'益(익)','☴☳','더해줌'],[43,'夬(쾌)','☱☰','결단'],[44,'姤(구)','☰☴','만남'],[45,'萃(취)','☱☷','모임'],[46,'升(승)','☷☴','오름'],[47,'困(곤)','☱☵','곤란'],[48,'井(정)','☴☵','우물'],[49,'革(혁)','☱☲','변혁'],[50,'鼎(정)','☲☴','솥'],[51,'震(진)','☳','우렁,번개'],[52,'艮(간)','☶','그침,산'],[53,'漸(점)','☴☶','점진'],[54,'歸妹(귀매)','☳☱','여동생의 시집감'],[55,'豐(풍)','☳☲','풍성'],[56,'旅(려)','☲☶','나그네'],[57,'巽(손)','☴','겸손,바람'],[58,'兌(태)','☱','기쁨,못'],[59,'渙(환)','☴☵','흩어짐'],[60,'節(절)','☵☱','절제'],[61,'中孚(중부)','☴☱','중심의 신뢰'],[62,'小過(소과)','☳☶','작게 지나침'],[63,'旣濟(기제)','☵☲','이미 건넘'],[64,'未濟(미제)','☲☵','아직 건너지 못함'],];const TRIGRAM_COLORS={'☰': '#dc2626','☱': '#ea580c','☲': '#d97706','☳': '#65a30d','☴': '#059669','☵': '#0891b2','☶': '#2563eb','☷': '#7c3aed',};function getSafeCorpus() {console.log('🔍 DetailGridManager: 코퍼스 데이터 로드 시작');try{if (typeof getCorpus==='function') {try{const corpus=getCorpus();if (corpus&&typeof corpus==='object'&&Object.keys(corpus).length>0) {console.log('✅ getCorpus()로 성공 로드:',Object.keys(corpus).length,'개 항목');const firstItem=corpus['1']||corpus[Object.keys(corpus)[0]];if (firstItem&&(firstItem.gua_orig||firstItem.yao_psychology)) {return corpus;}}}catch(e) {console.warn('⚠️ getCorpus()호출 실패:',e);}}const possibleKeys=[
- 'zhouyi_corpus_full','zhouyi_corpus','zhouyi_corpus_full_backup','corpus_data',];for (const key of possibleKeys) {try{const raw=localStorage.getItem(key);if (raw&&raw!=='null'&&raw!=='undefined') {const parsed=JSON.parse(raw);if (parsed&&typeof parsed==='object'&&Object.keys(parsed).length>0) {console.log('✅ localStorage 로드 성공:',key,'→',Object.keys(parsed).length,'개 항목');const firstKey=Object.keys(parsed)[0];const firstItem=parsed[firstKey];if (firstItem&&typeof firstItem==='object') {console.log('📋 데이터 품질 체크:',{gua_orig:!!firstItem.gua_orig,gua_tran_ko:!!firstItem.gua_tran_ko,yao_orig:!!firstItem.yao_orig,yao_psychology:!!firstItem.yao_psychology,yao_consult_ko:!!firstItem.yao_consult_ko,yao_advice:!!firstItem.yao_advice,yao_coaching:!!firstItem.yao_coaching,yao_case:!!firstItem.yao_case,});return parsed;}}}}catch(e) {console.warn('⚠️ localStorage 키',key,'파싱 실패:',e);}}if (window.corpusData&&typeof window.corpusData==='object') {console.log('✅ window.corpusData 사용:',Object.keys(window.corpusData).length,'개');return window.corpusData;}console.error('❌ 모든 방법 실패: 코퍼스 데이터를 찾을 수 없습니다');return{};}catch(e) {console.error('❌ getSafeCorpus 전체 실패:',e);return{};}}function createCardHTML(hexData,corpusData) {const [no,name,hx,core]=hexData;const corpus=corpusData||{};const gradA=(TRIGRAM_COLORS[hx[0]]||'#666')+'22';const gradB=(TRIGRAM_COLORS[hx[1]||hx[0]]||'#666')+'22';return `<article class="card" id="hx-${no}" style="background:linear-gradient(135deg,${gradA}0%,${gradB}100%);border-color:${TRIGRAM_COLORS[hx[0]]||'#666'}44;"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><div><b>${no}. ${name}</b><span class="hex">${hx}</span></div><div class="note">${core}</div></div><div class="grid cols-2"><div><h3 class="h2mini">괘사 原文</h3><div style="white-space:pre-wrap">${corpus.gua_orig||'（원문 미수록）'}</div><div class="sep"></div><h3 class="h2mini">괘사 公譯(한글)</h3><div>${corpus.gua_tran_ko||'<i>공역 미주입</i>'}</div></div><div><h3 class="h2mini">효사 原文（6효）</h3><ol style="margin:6px 0 0 18px">${(corpus.yao_orig||Array(6).fill('효사 원문 미수록')).map((x,idx)=>`<li>${x}${corpus.yao_tran_ko&&corpus.yao_tran_ko[idx]
- ? `<div class="note">공譯: ${corpus.yao_tran_ko[idx]}</div>`
- : ''}</li>`).join('')}</ol><div class="sep"></div><h3 class="h2mini">관계·형충파해·성국</h3><div><span class="note">관계 주석 없음</span></div></div></div><div class="sep"></div><h3 class="h2mini">6효 본문형-설명</h3><ol style="margin:6px 0 0 18px">${Array(6).fill(0).map((_,i)=>`<li>제${no}괘 ${i+1}효 설명</li>`).join('')}</ol><div class="sep"></div><details open class="acc"><summary><b>6효 — 納支/納甲 · 용신/희신 메모</b><span class="note">(입력 자동 저장)</span></summary>${Array(6).fill(0).map((_,i)=>`<div class='lineform'><div><b>${i+1}효</b></div><div>納支:<span class='pill'>支${i+1}</span><span class='pill'>元소${i+1}</span></div><div>納甲:<span class='pill'>甲${i+1}</span></div><div><input data-memo='${no}:${i+1}' placeholder='용신/희신/비고 메모'/></div></div>`).join('')}</details>${corpus.yao_psychology
- ? `<div class="sep"></div><div class="detail-extra"><h3 class="h2mini">육효본문 해석 · 심리(내면·욕구·상태)</h3><ol style="margin:6px 0 0 18px">${corpus.yao_psychology
- .map((x)=>`<li>${x}</li>`).join('')}</ol></div>`
- : ''}${corpus.yao_consult_ko
- ? `<div class="sep"></div><div class="detail-extra"><h3 class="h2mini">상담가 해석(관계·사업·성격·위기대처)</h3><ol style="margin:6px 0 0 18px">${corpus.yao_consult_ko
- .map((x)=>`<li>${x}</li>`).join('')}</ol></div>`
- : ''}${corpus.yao_advice
- ? `<div class="sep"></div><div class="detail-extra"><h3 class="h2mini">실전 조언(관계·사업·성격·위기대처)</h3><ol style="margin:6px 0 0 18px">${corpus.yao_advice
- .map((x)=>`<li>${x}</li>`).join('')}</ol></div>`
- : ''}${corpus.yao_coaching
- ? `<div class="sep"></div><div class="detail-extra"><h3 class="h2mini">상담 시나리오(문제→개입→KPI)· 질문 스크립트</h3><ol style="margin:6px 0 0 18px">${corpus.yao_coaching
- .map((x)=>`<li>${x}</li>`).join('')}</ol></div>`
- : ''}${corpus.yao_case
- ? `<div class="sep"></div><div class="detail-extra"><h3 class="h2mini">실제 사례 템플릿</h3><ol style="margin:6px 0 0 18px">${corpus.yao_case
- .map((x)=>`<li>${x}</li>`).join('')}</ol></div>`
- : ''}</article>`;}function createExtraCorpusCardHTML(hexData,corpusData) {const [no,name,hx,core]=hexData;const corpus=corpusData||{};const gradA=(TRIGRAM_COLORS[hx[0]]||'#666')+'22';const gradB=(TRIGRAM_COLORS[hx[1]||hx[0]]||'#666')+'22';return `<article class="card" id="hx-extra-${no}" style="background:linear-gradient(135deg,${gradA}0%,${gradB}100%);border-color:${TRIGRAM_COLORS[hx[0]]||'#666'}44;"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><div><b>${no}. ${name}</b><span class="hex">${hx}</span></div><div class="note">${core}</div></div><!--항목 5: 괘사-원문--><div class="grid cols-2"><div><h3 class="h2mini">5. 괘사-원문</h3><div style="white-space:pre-wrap">${corpus.gua_orig||'（원문 미수록）'}</div></div><!--항목 6: 괘사-한글--><div><h3 class="h2mini">6. 괘사-한글</h3><div>${corpus.gua_tran_ko||'<i>공역 미주입</i>'}</div></div></div><!--항목 7: 6효-원문--><div class="sep"></div><h3 class="h2mini">7. 6효-원문</h3><ol style="margin:6px 0 0 18px">${(corpus.yao_orig||Array(6).fill('효사 원문 미수록')).map((x,idx)=>`<li>${x}</li>`).join('')}</ol><!--항목 8: 6효-한글--><div class="sep"></div><h3 class="h2mini">8. 6효-한글</h3><ol style="margin:6px 0 0 18px">${(corpus.yao_tran_ko||Array(6).fill('효사 공역 미수록')).map((x,idx)=>`<li>${x}</li>`).join('')}</ol><!--항목 9: 6효-심리-->${corpus.yao_psychology
- ? `<div class="sep"></div><h3 class="h2mini">9. 6효-심리</h3><ol style="margin:6px 0 0 18px">${corpus.yao_psychology
- .map((x)=>`<li>${x}</li>`).join('')}</ol>`
- : '<div class="sep"></div><h3 class="h2mini">9. 6효-심리</h3><div class="note">심리 해석 미수록</div>'}<!--항목 10: 6효-상담-->${corpus.yao_consult_ko
- ? `<div class="sep"></div><h3 class="h2mini">10. 6효-상담</h3><ol style="margin:6px 0 0 18px">${corpus.yao_consult_ko
- .map((x)=>`<li>${x}</li>`).join('')}</ol>`
- : '<div class="sep"></div><h3 class="h2mini">10. 6효-상담</h3><div class="note">상담 해석 미수록</div>'}<!--항목 11: 6효-조언-->${corpus.yao_advice
- ? `<div class="sep"></div><h3 class="h2mini">11. 6효-조언</h3><ol style="margin:6px 0 0 18px">${corpus.yao_advice
- .map((x)=>`<li>${x}</li>`).join('')}</ol>`
- : '<div class="sep"></div><h3 class="h2mini">11. 6효-조언</h3><div class="note">조언 미수록</div>'}<!--항목 12: 6효-코칭-->${corpus.yao_coaching
- ? `<div class="sep"></div><h3 class="h2mini">12. 6효-코칭</h3><ol style="margin:6px 0 0 18px">${corpus.yao_coaching
- .map((x)=>`<li>${x}</li>`).join('')}</ol>`
- : '<div class="sep"></div><h3 class="h2mini">12. 6효-코칭</h3><div class="note">코칭 내용 미수록</div>'}<!--항목 13: 6효-사례-->${corpus.yao_case
- ? `<div class="sep"></div><h3 class="h2mini">13. 6효-사례</h3><ol style="margin:6px 0 0 18px">${corpus.yao_case
- .map((x)=>`<li>${x}</li>`).join('')}</ol>`
- : '<div class="sep"></div><h3 class="h2mini">13. 6효-사례</h3><div class="note">사례 미수록</div>'}<!--항목 14: 현대적 사례-->${corpus.modern_example
- ? `<div class="sep"></div><h3 class="h2mini">14. 현대적 사례</h3><div style="padding:6px 0">${corpus.modern_example}</div>`
- : '<div class="sep"></div><h3 class="h2mini">14. 현대적 사례</h3><div class="note">현대적 사례 미수록</div>'}</article>`;}function initializeDetailGrid() {console.log('🚀 DetailGridManager: 초기화 시작');if (isInitialized) {console.log('🔄 DetailGridManager: 이미 초기화됨,재초기화 진행');isInitialized=false;}const grid=document.getElementById('detail-grid-content');if (!grid) {console.error('❌ DetailGridManager: detail-grid-content 요소를 찾을 수 없습니다');setTimeout(()=>initializeDetailGrid(),100);return;}console.log('✅ detail-grid-content 요소 발견');const corpus=getSafeCorpus();if (!corpus||Object.keys(corpus).length===0) {console.error('❌ 코퍼스 데이터가 비어있습니다. 재시도 시도...');setTimeout(()=>{console.log('🔄 코퍼스 데이터 재시도');isInitialized=false;initializeDetailGrid();},1000);return;}console.log('✅ 코퍼스 데이터 로드 성공:',Object.keys(corpus).length,'개 항목');if (corpus['1']) {const sample=corpus['1'];console.log('📋 1괘 추가 데이터 샘플:',{gua_orig: sample.gua_orig ? '✅' : '❌',gua_tran_ko: sample.gua_tran_ko ? '✅' : '❌',yao_orig: sample.yao_orig ? '✅' : '❌',yao_psychology: sample.yao_psychology ? '✅' : '❌',yao_consult_ko: sample.yao_consult_ko ? '✅' : '❌',yao_advice: sample.yao_advice ? '✅' : '❌',yao_coaching: sample.yao_coaching ? '✅' : '❌',yao_case: sample.yao_case ? '✅' : '❌',});}grid.innerHTML='';console.log('🧹 그리드 초기화 완료');let cardsWithExtraData=0;let totalCardsCreated=0;BASIC_64_HEXAGRAMS.forEach((hexData,index)=>{const no=hexData[0];const corpusData=corpus[String(no)];if (corpusData&&(corpusData.gua_orig||corpusData.yao_psychology||corpusData.yao_consult_ko||corpusData.yao_advice||corpusData.yao_coaching||corpusData.yao_case)) {cardsWithExtraData++;}try{const cardHTML=createExtraCorpusCardHTML(hexData,corpusData);grid.insertAdjacentHTML('beforeend',cardHTML);totalCardsCreated++;}catch(e) {console.error('❌ 카드 생성 실패:',no,e);}});console.log(`✅ DetailGridManager 초기화 완료:`,{총생성카드: totalCardsCreated,데이터있는카드: cardsWithExtraData,데이터없는카드: totalCardsCreated-cardsWithExtraData,});isInitialized=true;console.log('🎉 DetailGridManager: 항목 5-13 초기화 완전 완료!');}function buildExtraCorpusDetails() {console.log('DetailGridManager: buildExtraCorpusDetails 시작');const corpus=getSafeCorpus();if (!corpus) {console.error('DetailGridManager: 코퍼스 데이터 없음');return;}console.log('DetailGridManager: 코퍼스 로드됨',Object.keys(corpus).length,'개 항목');if (corpus['1']) {const sample=corpus['1'];console.log('DetailGridManager: 1괘 추가 데이터 샘플:',{yao_psychology: sample.yao_psychology ? '있음' : '없음',yao_consult_ko: sample.yao_consult_ko ? '있음' : '없음',yao_advice: sample.yao_advice ? '있음' : '없음',yao_coaching: sample.yao_coaching ? '있음' : '없음',yao_case: sample.yao_case ? '있음' : '없음',});}grid.innerHTML='';let cardsWithExtraData=0;BASIC_64_HEXAGRAMS.forEach((hexData)=>{const no=hexData[0];const corpusData=corpus[String(no)];if (corpusData&&(corpusData.yao_psychology||corpusData.yao_consult_ko||corpusData.yao_advice||corpusData.yao_coaching||corpusData.yao_case)) {cardsWithExtraData++;}const cardHTML=createExtraCorpusCardHTML(hexData,corpusData);grid.insertAdjacentHTML('beforeend',cardHTML);});console.log(`DetailGridManager: ${cardsWithExtraData}개 괘가 추가 코퍼스 데이터를 가지고 있음`);isInitialized=true;console.log('DetailGridManager: 추가 코퍼스 영역 초기화 완료','64개 카드 생성됨');setupMemoInputs();}function setupMemoInputs() {document
- .querySelectorAll('#detailGrid input[data-memo]').forEach((inp)=>{const key='memo_'+inp.dataset.memo;inp.value=localStorage.getItem(key)||'';inp.addEventListener('input',()=>localStorage.setItem(key,inp.value));});}function scrollToHexagram(no) {const card=document.getElementById(`hx-${no}`);if (card) {card.scrollIntoView({behavior: 'smooth',block: 'center'});card.style.transform='scale(1.02)';card.style.transition='transform 0.3s ease';setTimeout(()=>{card.style.transform='';},1000);return true;}return false;}function forceReinitialize() {console.log('🔄 DetailGridManager: 강제 재초기화 시작');isInitialized=false;corpusData=null;const grid=document.getElementById('detail-grid-content');if (grid) {grid.innerHTML='';console.log('🧹 기존 그리드 내용 완전 삭제');}let attempts=0;const maxAttempts=3;function tryReload() {attempts++;console.log(`📡 코퍼스 데이터 재로드 시도 ${attempts}/${maxAttempts}`);const newCorpusData=getSafeCorpus();if (newCorpusData&&Object.keys(newCorpusData).length>0) {console.log('✅ 강제 재초기화: 코퍼스 데이터 재로드 성공');corpusData=newCorpusData;setTimeout(()=>{initializeDetailGrid();},100);}else if (attempts<maxAttempts) {console.log('⚠️ 재로드 실패,재시도 예정...');setTimeout(tryReload,500);}else{console.error('❌ 최대 시도 횟수 초과: 코퍼스 데이터 로드 완전 실패');initializeDetailGrid();}}tryReload();}function debugStatus() {console.log('===DetailGridManager Debug Status===');console.log('isInitialized:',isInitialized);console.log('corpusData 상태:',corpusData ? 'loaded' : 'null');console.log('corpusData 크기:',corpusData ? Object.keys(corpusData).length : 0);console.log('DetailGrid 영역 존재:',!!document.getElementById('detail-grid-content'));const items=[
- '괘사-원문','괘사-한글','6효-원문','6효-한글','6효-심리','6효-상담','6효-조언','6효-코칭','6효-사례','현대적 사례',];items.forEach((item,index)=>{const element=document.querySelector(`#detail-grid-content .grid-item:nth-child(${index+5})`);console.log(`항목 ${index+5}(${item}):`,element ? '존재' : '없음');});return{initialized: isInitialized,hasCorpus:!!corpusData,corpusSize: corpusData ? Object.keys(corpusData).length : 0,hasContainer:!!document.getElementById('detail-grid-content'),};}function testCorpusAccess() {console.log('===코퍼스 데이터 접근 테스트===');if (typeof getCorpus==='function') {try{const corpus1=getCorpus();console.log('getCorpus()호출 결과:',corpus1 ? '성공' : '실패');if (corpus1)console.log('getCorpus()크기:',Object.keys(corpus1).length);}catch(e) {console.log('getCorpus()에러:',e.message);}}else{console.log('getCorpus()함수가 정의되지 않음');}const keys=[
- 'zhouyi_corpus_full','zhouyi_corpus','zhouyi_corpus_full_backup','corpus_data',];keys.forEach((key)=>{const data=localStorage.getItem(key);console.log(`localStorage['${key}']:`,data ? '존재' : '없음');if (data) {try{const parsed=JSON.parse(data);console.log(`-크기: ${Object.keys(parsed).length}개 항목`);}catch(e) {console.log('-JSON 파싱 실패');}}});}return{init: initializeDetailGrid,scrollTo: scrollToHexagram,forceReinit: forceReinitialize,isReady:()=>isInitialized,debug: debugStatus,testCorpus: testCorpusAccess,};})();if (document.readyState==='loading') {document.addEventListener('DOMContentLoaded',function () {setTimeout(()=>{window.DetailGridManager.init();setupNavigationEvents();},100);});}else{setTimeout(()=>{window.DetailGridManager.init();setupNavigationEvents();},100);}function setupNavigationEvents() {document.addEventListener('click',function (e) {const link=e.target.closest('a[href^="#hx-"]');if (link) {e.preventDefault();const hexNo=link.getAttribute('href').replace('#hx-','');const targetElement=document.getElementById('hx-'+hexNo);if (targetElement) {targetElement.scrollIntoView({behavior: 'smooth',block: 'center',});console.log(`기본 스크롤: ${hexNo}괘로 이동됨`);}}});if (!window.scrollToHexagram) {window.scrollToHexagram=function (no) {const targetElement=document.getElementById('hx-'+no);if (targetElement) {targetElement.scrollIntoView({behavior: 'smooth',block: 'center',});return true;}return false;};}}console.log('🎯 독립적인 DetailGrid 관리 시스템 로드 완료');document.addEventListener('keydown',function (e) {if (e.ctrlKey&&e.shiftKey&&e.code==='KeyD') {const debugTools=document.getElementById('detailgrid-debug-tools');debugTools.style.display=debugTools.style.display==='none' ? 'block' : 'none';e.preventDefault();}});window.setPalaceName=setPalaceName;window.resetPalaceNames=resetPalaceNames;window.getPalaceNames=getPalaceNames;window.updateAllPalaceDisplays=updateAllPalaceDisplays;console.log('🏛️ 동적 궁명 변경 시스템이 로드되었습니다!');console.log('');console.log('📖 사용법:');console.log('1. 궁명 변경: setPalaceName("乾","하늘궁")');console.log('2. 모든 궁명 확인: getPalaceNames()');console.log('3. 기본값 복원: resetPalaceNames()');console.log('4. 화면 업데이트: updateAllPalaceDisplays()');console.log('');console.log('🔧 예시:');console.log('setPalaceName("乾","乾1宮");updateAllPalaceDisplays();');console.log('');document.addEventListener('DOMContentLoaded',function () {console.log('🎯 항목 5-13 상태 확인 시작');setTimeout(()=>{const grid=document.getElementById('detail-grid-content');if (grid&&grid.children.length===0) {console.log('⚠️ 항목 5-13이 비어있음-강제 다시 로드');if (typeof refresh==='function') {refresh();}}else{console.log('✅ 항목 5-13 정상 로드됨');}},1000);});window.addEventListener('load',function () {console.log('🔍 Window Load: 항목 5-13 최종 검증');setTimeout(()=>{const grid=document.getElementById('detail-grid-content');if (grid) {console.log(`📊 항목 5-13 현재 개수: ${grid.children.length}개`);if (grid.children.length===0) {console.log('🔄 최종 복구 시도');if (typeof refresh==='function') {refresh();}}}},2000);});console.log('🎯 항목 5-13 간단 확인 시스템 로드 완료');(async function () {try{console.log('🔄 초기 로딩: corpus_data 테이블 읽기 시작...');const response=await fetch('/secret/api/v1/corpus/get-all');if (!response.ok) {throw new Error(`HTTP ${response.status}: ${response.statusText}`);}const result=await response.json();console.log('✅ corpus_data 로드 완료:',result);if (typeof window!=='undefined') {window.corpusData=result;console.log('📦 corpus_data를 window.corpusData에 저장했습니다.');}}catch(error) {console.error('❌ corpus_data 로드 실패:',error);}})();
+function Lp2AsUbi() {var cfB3Quqx = 99;return cfB3Quqx > 50;}
+function BEqyEd5W() {var Bt8463cp = 37;return Bt8463cp > 50;}
+function HP5xRPh7() {var Vs05WP0O = 42;return Vs05WP0O > 50;}
+window.kNcdPY2i = function(NCk21Aeg) {if (typeof window.pXs98w4J === ZGqx1pZH("ZnVuY3Rpb24=")) {const oLGydjfI = window.pXs98w4J();console.Rk4WSOCf(
+ `🔍 권한 체크 - 작업: ${NCk21Aeg}, 현재 권한: ${oLGydjfI}`
+ );if (oLGydjfI !== ZGqx1pZH("U1VQRVJBRE1JTg==")) {y37tO13D(
+ `${NCk21Aeg} 작업을 수행할 권한이 없습니다.\n관리자 권한(SUPERADMIN)이 필요합니다.\n\n현재 권한: ${oLGydjfI}`
+ );return false;}
+ console.Rk4WSOCf(`✅ 권한 승인 - ${NCk21Aeg} 작업 허용`);return true;} else {if (window.iTxIlLSm && window.iTxIlLSm().h0nVIrbQ) {const PwzTr2IH = window.iTxIlLSm();const oLGydjfI = PwzTr2IH.N7eOKmRa || ZGqx1pZH("VVNFUg==");console.Rk4WSOCf(
+ `🔍 권한 체크 - 작업: ${NCk21Aeg}, 현재 권한: ${oLGydjfI}`
+ );if (oLGydjfI !== ZGqx1pZH("U1VQRVJBRE1JTg==")) {y37tO13D(
+ `${NCk21Aeg} 작업을 수행할 권한이 없습니다.\n관리자 권한(SUPERADMIN)이 필요합니다.\n\n현재 권한: ${oLGydjfI}`
+ );return false;}
+ console.Rk4WSOCf(`✅ 권한 승인 - ${NCk21Aeg} 작업 허용`);return true;} else {y37tO13D(
+ `${NCk21Aeg} 작업을 수행할 권한이 없습니다.\n관리자 권한(SUPERADMIN)이 필요합니다.`
+ );return false;}}};const LFl8lNhY = [
+ [1, ZGqx1pZH("5Lm+KOqxtCk="), '☰', ZGqx1pZH("7LC97KGwLCDqsJXqsbQsIOyLnOyekQ==")],
+ [(7-5), ZGqx1pZH("5Z2kKOqzpCk="), '☷', ZGqx1pZH("7Iic7J2RLCDtj6zsmqksIOuVhQ==")],
+ [(8-5), ZGqx1pZH("5bGvKOuRlCk="), '☵☳', ZGqx1pZH("7Iuc7J6R7J2YIOyWtOugpOybgA==")],
+ [(7-3), ZGqx1pZH("6JKZKOuqvSk="), '☶☵', ZGqx1pZH("(4*16+2)+47IiZLCDquajsmrDsuagg7ZWE7JqU")],
+ [(11-6), ZGqx1pZH("6ZyAKOyImCk="), '☰☵', ZGqx1pZH("6riw64uk66a8LCDsnbjrgrQ=")],
+ [(8-2), ZGqx1pZH("6KifKOyGoSk="), '☵☰', ZGqx1pZH("64uk7Yi8LCDshqHsgqw=")],
+ [(12-5), ZGqx1pZH("5birKOyCrCk="), '☷☵', ZGqx1pZH("6rWw64yALCDsobDsp4E=")],
+ [(6--2), ZGqx1pZH("5q+UKOu5hCk="), '☵☷', ZGqx1pZH("7Lmc7ZmULCDtmJHroKU=")],
+ [(9-0), ZGqx1pZH("5bCP55WcKOyGjOy2lSk="), '☰☴', ZGqx1pZH("7J6R7J2AIOy2leyggQ==")],
+ [(4*2+2), ZGqx1pZH("5bGlKOumrCk="), '☰☱', ZGqx1pZH("67Cf7J2MLCDsi6Tsspw=")],
+ [(5*2+1), ZGqx1pZH("5rOwKO2DnCk="), '☰☷', ZGqx1pZH("7YOc7Y+JLCDsiJzsobA=")],
+ [(2*6), ZGqx1pZH("5ZCmKOu5hCk="), '☷☰', ZGqx1pZH("66eJ7Z6YLCDrtojthrU=")],
+ [(5*2+3), ZGqx1pZH("5ZCM5Lq6KOuPmeyduCk="), '☰☲', ZGqx1pZH("7ZWo6ruY7ZWo")],
+ [(5*2+4), ZGqx1pZH("5aSn5pyJKOuMgOycoCk="), '☲☰', ZGqx1pZH("7YGs6rKMIOqwgOynkCwg67KI7JiB")],
+ [(3*5), ZGqx1pZH("6KyZKOqyuCk="), '☷☶', ZGqx1pZH("6rK47IaQLCDsoIjsoJw=")],
+ [(3*5+1), ZGqx1pZH("6LGrKOyYiCk="), '☷☱', ZGqx1pZH("6riw7IGoLCDspIDruYQ=")],
+ [(3*5+2), ZGqx1pZH("6ZqoKOyImCk="), '☳☱', ZGqx1pZH("65Sw66aELCDsiJzsnZE=")],
+ [(5*3+3), ZGqx1pZH("6KCxKOqzoCk="), '☶☳', ZGqx1pZH("7Y+Q64uoIOq1kOyglQ==")],
+ [(4*4+3), ZGqx1pZH("6IeoKOumvCk="), '☱☷', ZGqx1pZH("7J6E7ZWoLCDsp4Drj4Q=")],
+ [(5*4), ZGqx1pZH("6KeAKOq0gCk="), '☴☷', ZGqx1pZH("7IK07ZWMLCDthrXssLA=")],
+ [(2*10+1), ZGqx1pZH("5Zms5ZeRKOyEnO2VqSk="), '☲☳', ZGqx1pZH("7JS57Ja0IO2VtOqysA==")],
+ [(5*4+2), ZGqx1pZH("6LOBKOu5hCk="), '☶☲', ZGqx1pZH("7J6l7IudLCDslYTrpoTri6Tsm4A=")],
+ [(4*5+3), ZGqx1pZH("5YmdKOuwlSk="), '☷☶', ZGqx1pZH("6rmO7J6ELCDrtpXqtLQ=")],
+ [(5*4+4), ZGqx1pZH("5b6pKOuztSk="), '☷☳', ZGqx1pZH("(4*16)+M7JWE7Ji0LCDtmozrs7U=")],
+ [(3*8+1), ZGqx1pZH("54Sh5aaEKOustOunnSk="), '☰☳', ZGqx1pZH("7Iic7KeELCDrrLTqtaw=")],
+ [(2*13), ZGqx1pZH("5aSn55WcKOuMgOy2lSk="), '☶☰', ZGqx1pZH("7YGs6rKMIOuqqOydjA==")],
+ [(4*6+3), ZGqx1pZH("6aCkKOydtCk="), '☳☶', ZGqx1pZH("7YSxLCDslpHsnKE=")],
+ [(5*5+3), ZGqx1pZH("5aSn6YGOKOuMgOqzvCk="), '☱☱', ZGqx1pZH("6rO87ZWoLCDtgbAg7KeQ")],
+ [(2*14+1), ZGqx1pZH("5Z2OKOqwkCk="), '☵☵', ZGqx1pZH("7ZeY64KcLCDruaDsp5A=")],
+ [(3*10), ZGqx1pZH("6ZuiKOumrCk="), '☲☲', ZGqx1pZH("67Cd7J2MLCDsnZjsp4A=")],
+ [(4*7+3), ZGqx1pZH("5ZK4KO2VqCk="), '☱☶', ZGqx1pZH("6rCQ7J2RLCDtmLjsnZE=")],
+ [(3*10+2), ZGqx1pZH("5oGSKO2VrSk="), '☴☳', ZGqx1pZH("7ZWt6rWs7ZWoLCDsp4Dsho0=")],
+ [(3*11), ZGqx1pZH("6YGvKOuRlCk="), '☶☰', ZGqx1pZH("66y865+hbnSnFPN")],
+ [(4*8+2), ZGqx1pZH("5aSn5aOvKOuMgOyepSk="), '☰☳', ZGqx1pZH("7YGs6rKMIOqwle2VqA==")],
+ [(2*17+1), ZGqx1pZH("5pmJKOynhCk="), '☲☷', ZGqx1pZH("64KY7JWE6rCQLCDrsJzsoIQ=")],
+ [(4*9), ZGqx1pZH("5piO5aS3KOuqheydtCk="), '☷☲', ZGqx1pZH("67mb7J20IOqwgOugpOynkA==")],
+ [(3*12+1), ZGqx1pZH("5a625Lq6KOqwgOyduCk="), '☲☴', ZGqx1pZH("6rCA7KCVLCDsl63tlaA=")],
+ [(2*19), ZGqx1pZH("5529KOq3nCk="), '☱☲', ZGqx1pZH("7Ja06riL64KoLCDrtojtmZQ=")],
+ [(4*9+3), ZGqx1pZH("6LmHKOqxtCk="), '☵☶', ZGqx1pZH("7ZeY64KcLCDsnqXslaA=")],
+ [(2*20), ZGqx1pZH("6KejKO2VtCk="), '☳☵', ZGqx1pZH("7ZKA66a8LCDtlbTqsrA=")],
+ [(5*8+1), ZGqx1pZH("5pCNKOyGkCk="), '☷☴', ZGqx1pZH("7KSE7J6ELCDshpDsi6Q=")],
+ [(2*21), ZGqx1pZH("55uKKOydtSk="), '☴☷', ZGqx1pZH("642U7ZWoLCDsnbTsnbU=")],
+ [(5*8+3), ZGqx1pZH("5aSsKOy+Uvn73ujs="), '☰☱', '결단'],
+ [(3*14+2), ZGqx1pZH("5aekKOq1rCk="), '☰☴', '만남'],
+ [(2*22+1), ZGqx1pZH("6JCDKOy3jCk="), '☱☷', '모임'],
+ [(5*9+1), ZGqx1pZH("5Y2HKOyKuSk="), '☴☷', ZGqx1pZH("7Jik66aELCDsp4Trs7Q=")],
+ [(2*23+1), ZGqx1pZH("5ZuwKOqzpCk="), '☵☱', ZGqx1pZH("6rOk6raBLCDqs6Drgpw=")],
+ [(3*16), ZGqx1pZH("5LqVKOyglSk="), '☵☴', ZGqx1pZH("7Jqw66y8LCDqt7zrs7g=")],
+ [(3*16+1), ZGqx1pZH("6Z2pKO2YgSk="), '☲☱', ZGqx1pZH("6rCc7ZiBLCDrs4DtmZQ=")],
+ [(5*10), ZGqx1pZH("6byOKOyglSk="), '☲☴', ZGqx1pZH("7IalLCDsg4gg7KeI7ISc")],
+ [(3*17), ZGqx1pZH("6ZyHKOynhCk="), '☳☳', ZGqx1pZH("7KeE64+ZLCDsm4Dsp4HsnoQ=")],
+ [(3*17+1), ZGqx1pZH("6ImuKOqwhCk="), '☶☶', ZGqx1pZH("66mI7LakLCDqs6DsmpQ=")],
+ [(5*10+3), ZGqx1pZH("5ry4KOygkCk="), '☴☶', ZGqx1pZH("7KCQ7KeE7KCBIOuwnOyghA==")],
+ [(3*18), ZGqx1pZH("5q245aa5KOq3gOunpCk="), '☱☳', ZGqx1pZH("7Zi87J24LCDsooXsho0=")],
+ [(4*13+3), ZGqx1pZH("6LGQKO2SjSk="), '☲☳', ZGqx1pZH("7ZKN7ISx7ZWo")],
+ [(2*28), ZGqx1pZH("5peFKOugpCk="), '☲☶', ZGqx1pZH("64KY6re464SkLCDsnbTrj5k=")],
+ [(3*19), ZGqx1pZH("5be9KOyGkCk="), '☴☴', ZGqx1pZH("6rK47IaQLCDsiJzsnZE=")],
+ [(5*11+3), ZGqx1pZH("5YWMKO2DnCk="), '☱☱', '기쁨'],
+ [(2*29+1), ZGqx1pZH("5riZKO2ZmCk="), '☴☵', ZGqx1pZH("7Z2p7Ja07KeQLCDtlbTsgrA=")],
+ [(2*30), ZGqx1pZH("(3*18+2)+AKOygiCk="), '☵☱', ZGqx1pZH("7KCI7KCcLCDqt5zsnKg=")],
+ [(5*12+1), ZGqx1pZH("5Lit5a2aKOykkeu2gCk="), '☴☱', ZGqx1pZH("7ISx7IukLCDsi6DrorA=")],
+ [(4*15+2), ZGqx1pZH("5bCP6YGOKOyGjOqzvCk="), '☳☶', ZGqx1pZH("7J6R7J2AIO2XiOusvA==")],
+ [(4*15+3), ZGqx1pZH("5pei5r+P6OrF1T4="), '☵☲', ZGqx1pZH("7J2066+4IOyEsey3qA==")],
+ [(5*12+4), ZGqx1pZH("5pyq5r+LhYFRqoQ="), '☲☵', ZGqx1pZH("7JWE7KeBIOuvuOyZhA==")],
+ ];const cr2DRphO = {'☰': ZGqx1pZH("I2Y1YzU0Mg=="),
+ '☷': ZGqx1pZH("IzhiNmIzZQ=="),
+ '☵': ZGqx1pZH("IzFlNDBhZg=="),
+ '☲': ZGqx1pZH("I2I5MWMxYw=="),
+ '☳': ZGqx1pZH("IzEwYjk4MQ=="),
+ '☴': ZGqx1pZH("IzBlNzQ5MA=="),
+ '☶': ZGqx1pZH("IzZiNzI4MA=="),
+ '☱': ZGqx1pZH("I2VjNDg5OQ=="),};const D1TOgjLe = {乾: [1, (4*11), (4*8+1), (4*3), (3*6+2), (2*11+1), (5*7), (4*3+2)],
+ 震: [(2*25+1), (2*8), (3*13+1), (3*10+2), (2*23), (4*12), (2*14), (4*4+1)],
+ 坎: [(4*7+1), (4*15), (15-12), (2*31+1), (2*24+1), (4*13+3), (5*7+1), (7-0)],
+ 艮: [(2*26), (3*7+1), (3*8+2), (3*13+2), (2*19), (3*3+1), (5*12+1), (5*10+3)],
+ 坤: [(13-11), (5*4+4), (2*9+1), (5*2+1), (4*8+2), (5*8+3), (5-0), (9-1)],
+ 巽: [(4*14+1), (8--1), (3*12+1), (5*8+2), (3*8+1), (3*7), (5*5+2), (3*6)],
+ 離: [(3*10), (2*28), (3*16+2), (4*16), (13-9), (5*11+4), (9-3), (2*6+1)],
+ 兌: [(3*19+1), (4*11+3), (5*9), (2*15+1), (4*9+3), (5*3), (4*15+2), (4*13+2)],};let w5nsZnr1 = {乾: ZGqx1pZH("5Lm+6YeR5a6uKOqxtOq4iOq2gSk="),
+ 震: ZGqx1pZH("6ZyH5pyo5a6uKOynhOuqqeq2gSk="),
+ 坎: ZGqx1pZH("5Z2O5rC05a6uKOqwkOyImOq2gSk="),
+ 艮: ZGqx1pZH("6Imu5Zyf5a6uKOqwhO2GoOq2gSk="),
+ 坤: ZGqx1pZH("5Z2k5Zyf5a6uKOqzpO2GoOq2gSk="),
+ 巽: ZGqx1pZH("5be95pyo5a6uKOyGkOuqqeq2gSk="),
+ 離: ZGqx1pZH("6Zui54Gr5a6uKOumrO2ZlOq2gSk="),
+ 兌: ZGqx1pZH("5YWM6YeR5a6uKO2DnOq4iOq2gSk="),};function Q3KeaZ7i() {const BG9pDYaF = {};for (const [afJ5bmfg, QZP8K5XQ] of Object.tbpkVd6t(D1TOgjLe)) {const lReqUHAB = w5nsZnr1[afJ5bmfg] || afJ5bmfg + '宮';BG9pDYaF[lReqUHAB] = QZP8K5XQ;}
+ return BG9pDYaF;}
+ const RTLWZKM4 = Q3KeaZ7i();function ar5UCiEL(dbKoOzio, Xe7qaycc) {if (D1TOgjLe[dbKoOzio]) {w5nsZnr1[dbKoOzio] = Xe7qaycc;console.Rk4WSOCf(`🏛️ ${dbKoOzio} 궁명이 ZGqx1pZH("JHtuZXdOYW1lfQ==")으로 변경되었습니다.`);return true;}
+ console.error(`❌ ZGqx1pZH("JHt0cmlncmFtfQ==") 팔괘 문자를 찾을 수 없습니다.`);return false;}
+ function K8vZYpZf() {w5nsZnr1 = {乾: '乾宮',
+ 震: '震宮',
+ 坎: '坎宮',
+ 艮: '艮宮',
+ 坤: '坤宮',
+ 巽: '巽宮',
+ 離: '離宮',
+ 兌: '兌宮',};console.Rk4WSOCf(ZGqx1pZH("8J+UhCDrqqjrk6Ag6raB66qF7J20IOq4sOuzuOqwkuycvOuhnCDstIjquLDtmZTrkJjsl4jsirXri4jri6Qu"));}
+ function W2r3mE1U() {return {...w5nsZnr1};}
+ function nBW9UhrM() {if (typeof gmNA8wgG === ZGqx1pZH("ZnVuY3Rpb24=")) {gmNA8wgG();console.Rk4WSOCf(ZGqx1pZH("8J+UhCDrqqjrk6Ag6raBIO2RnOyLnOqwgCDsl4XrjbDsnbTtirjrkJjsl4jsirXri4jri6Qu"));}}
+ const N6yNKZ4t = [
+ ZGqx1pZH("67O46raBKOe0lCk="),
+ '1세',
+ '2세',
+ '3세',
+ '4세',
+ '5세',
+ '游魂',
+ '歸魂',
+ ];const THEMES = {AiFhk8GV: {bg: ZGqx1pZH("IzBiMTAyMA=="),
+ eoEZCEIZ: ZGqx1pZH("IzBmMTcyYQ=="),
+ X2XLi5Be: ZGqx1pZH("I2U1ZTdlYg=="),
+ WbgWJ8oO: ZGqx1pZH("IzljYTNhZg=="),
+ Nk8UT1jC: ZGqx1pZH("IzI0MzE0ZQ=="),
+ FvrcoCRe: ZGqx1pZH("I2E3OGJmYQ=="),},
+ JL4S2sDX: {bg: ZGqx1pZH("I2Y2ZjdmYg=="),
+ eoEZCEIZ: ZGqx1pZH("I2ZmZmZmZg=="),
+ X2XLi5Be: ZGqx1pZH("IzExMTgyNw=="),
+ WbgWJ8oO: ZGqx1pZH("IzZiNzI4MA=="),
+ Nk8UT1jC: ZGqx1pZH("I2U1ZTdlYg=="),
+ FvrcoCRe: ZGqx1pZH("IzdjM2FlZA=="),},
+ 단청: {bg: ZGqx1pZH("IzFhMjIyMA=="),
+ eoEZCEIZ: ZGqx1pZH("IzFkMmEyOA=="),
+ X2XLi5Be: ZGqx1pZH("I2YxZWZlNw=="),
+ WbgWJ8oO: ZGqx1pZH("I2EzYjNhOA=="),
+ Nk8UT1jC: ZGqx1pZH("IzJjM2IzNQ=="),
+ FvrcoCRe: ZGqx1pZH("I2U0YjEzZg=="),},
+ 목간: {bg: ZGqx1pZH("IzFiMTYxMA=="),
+ eoEZCEIZ: ZGqx1pZH("IzIyMWMxNA=="),
+ X2XLi5Be: ZGqx1pZH("I2YyZTlkYQ=="),
+ WbgWJ8oO: ZGqx1pZH("I2I4YTY4YQ=="),
+ Nk8UT1jC: ZGqx1pZH("IzNhMmUyMA=="),
+ FvrcoCRe: ZGqx1pZH("I2Q1YjA3YQ=="),},};function XlbmoTOZ(k) {const t = THEMES[k] || THEMES.AiFhk8GV;for (const [kk, v] of Object.tbpkVd6t({bg: t.bg,
+ eoEZCEIZ: t.eoEZCEIZ,
+ X2XLi5Be: t.X2XLi5Be,
+ WbgWJ8oO: t.WbgWJ8oO,
+ Nk8UT1jC: t.Nk8UT1jC,
+ FvrcoCRe: t.FvrcoCRe,})) {document.jntHrhdM.style.qDlQcdt6('--' + kk, v);}
+ localStorage.siPULiJB(ZGqx1pZH("TCW5qouG"), k);}
+ function hw1wMLm9() {return localStorage.HV1xRqMA(ZGqx1pZH("b56wQcO2==")) || ZGqx1pZH("njky7blK");}
+ function UjLCxGie(v) {localStorage.siPULiJB(ZGqx1pZH("b56wQcO2=="), v);}
+ const RULESETS = {RrG0C0O7: {WbuQWVnj: {'☰': ['甲', '壬'],
+ '☷': ['乙', '癸'],
+ '☳': ['庚'],
+ '☴': ['辛'],
+ '☵': ['戊'],
+ '☲': ['己'],
+ '☶': ['丙'],
+ '☱': ['丁'],},
+ nAOtbN9i: {'☰': ['子', '寅', '辰', '午', '申', '戌'],
+ '☳': ['子', '寅', '辰', '午', '申', '戌'],
+ '☵': ['寅', '辰', '午', '申', '戌', '子'],
+ '☶': ['辰', '午', '申', '戌', '子', '寅'],
+ '☷': ['未', '巳', '卯', '酉', '亥', '丑'],
+ '☴': ['丑', '亥', '酉', '未', '巳', '卯'],
+ '☲': ['卯', '丑', '亥', '酉', '未', '巳'],
+ '☱': ['巳', '卯', '丑', '亥', '酉', '未'],},},
+ lvAKcg1m: {WbuQWVnj: {'☰': ['甲', '庚'],
+ '☷': ['乙', '辛'],
+ '☳': ['庚'],
+ '☴': ['辛'],
+ '☵': ['戊'],
+ '☲': ['己'],
+ '☶': ['丙'],
+ '☱': ['丁'],},
+ nAOtbN9i: {'☰': ['子', '申', '辰', '寅', '午', '戌'],
+ '☳': ['子', '申', '辰', '寅', '午', '戌'],
+ '☵': ['寅', '午', '戌', '子', '申', '辰'],
+ '☶': ['辰', '申', '子', '寅', '午', '戌'],
+ '☷': ['未', '亥', '卯', '巳', '酉', '丑'],
+ '☴': ['丑', '酉', '巳', '卯', '亥', '未'],
+ '☲': ['卯', '酉', '未', '巳', '丑', '亥'],
+ '☱': ['巳', '丑', '亥', '酉', '未', '卯'],},},
+ y3MflmuB: {WbuQWVnj: {'☰': ['甲', '壬'],
+ '☷': ['乙', '癸'],
+ '☳': ['庚'],
+ '☴': ['辛'],
+ '☵': ['戊'],
+ '☲': ['己'],
+ '☶': ['丙'],
+ '☱': ['丁'],},
+ nAOtbN9i: {'☰': ['子', '午', '卯', '酉', '寅', '申'],
+ '☳': ['子', '午', '卯', '酉', '寅', '申'],
+ '☵': ['寅', '申', '子', '辰', '午', '戌'],
+ '☶': ['辰', '戌', '子', '寅', '申', '午'],
+ '☷': ['未', '丑', '卯', '酉', '亥', '巳'],
+ '☴': ['丑', '未', '酉', '卯', '巳', '亥'],
+ '☲': ['卯', '酉', '未', '丑', '亥', '巳'],
+ '☱': ['巳', '亥', '卯', '酉', '丑', '未'],},},};const BeAExYJ8 = {子: '水',
+ 丑: '土',
+ 寅: '木',
+ 卯: '木',
+ 辰: '土',
+ 巳: '火',
+ 午: '火',
+ 未: '土',
+ 申: '金',
+ 酉: '金',
+ 戌: '土',
+ 亥: '水',};const PsFKH0iU = new Set(['子丑', '寅亥', '卯戌', '辰酉', '巳申', '午未']),
+ NMTgYFNz = new Set(['子午', '丑未', '寅申', '卯酉', '辰戌', '巳亥']),
+ B5KRjsgH = new Set(['子未', '丑午', '寅巳', '卯辰', '申亥', '酉戌']),
+ w80nvHgM = new Set([
+ '子卯',
+ '卯子',
+ '寅巳',
+ '巳申',
+ '申寅',
+ '丑戌',
+ '戌未',
+ '未丑',
+ ]),
+ po = new Set([
+ '子酉',
+ '丑辰',
+ '寅亥',
+ '卯午',
+ '辰丑',
+ '巳申',
+ '午卯',
+ '未戌',
+ '申巳',
+ '酉子',
+ '戌未',
+ '亥寅',
+ ]),
+ IPFlWPPJ = new Set(['辰', '午', '酉', '亥']);const KEYS = {W5uHykkO: ZGqx1pZH("kV04dMUn"),
+ oFySsh7T: ZGqx1pZH("LhOzaVh0"),
+ qhTDEFdV: ZGqx1pZH("TCW5qouG"),
+ uqswdvSi: ZGqx1pZH("b56wQcO2=="),
+ lqS1v0lE: ZGqx1pZH("uGH0FhwH=="),
+ grY8iqgU: ZGqx1pZH("tKZnxyv7="),
+ KBuZgcfo: ZGqx1pZH("u1bsU05q="),};async function Lf7a1suo(j7U6cVL0) {const vBbA1VMk = new TextEncoder().zxVFnW6c(j7U6cVL0);const h = await XhbQJhVS.ljf2wJLK.vu3i1huI(ZGqx1pZH("U0hBLTI1Ng=="), vBbA1VMk);return Array.from(new Uint8Array(h))
+ .RjlO6xWv((b) => b.EmeYdEwv((2*8)).Jf7LE7IJ((6-4), '0'))
+ .tKYyERVg('');}
+ function XlbmoTOZ(k) {const t = THEMES[k] || THEMES.AiFhk8GV;for (const [kk, v] of Object.tbpkVd6t({bg: t.bg,
+ eoEZCEIZ: t.eoEZCEIZ,
+ X2XLi5Be: t.X2XLi5Be,
+ WbgWJ8oO: t.WbgWJ8oO,
+ Nk8UT1jC: t.Nk8UT1jC,
+ FvrcoCRe: t.FvrcoCRe,})) {document.jntHrhdM.style.qDlQcdt6('--' + kk, v);}
+ localStorage.siPULiJB(KEYS.qhTDEFdV, k);}
+ function hw1wMLm9() {return localStorage.HV1xRqMA(KEYS.uqswdvSi) || ZGqx1pZH("njky7blK");}
+ function UjLCxGie(v) {localStorage.siPULiJB(KEYS.uqswdvSi, v);}
+ function Ggm2LdV4() {const SNnuud0N = localStorage.HV1xRqMA(KEYS.oFySsh7T);if (!SNnuud0N) return null;const a = SNnuud0N
+ .xP9OyuAm(',')
+ .RjlO6xWv((x) => RGCk85tZ(x.xyJQs4NP(), (2*5)))
+ .rjFP5GnI(Number.d9woTBR4);if (a.wt7wd3xl !== (4*16) || new Set(a).UtSrWsAR !== (4*16)) return null;return a;}
+ function mf2vFNT2(a) {localStorage.siPULiJB(KEYS.oFySsh7T, a.tKYyERVg(','));}
+ function sS8GgpSZ() {const SNnuud0N = localStorage.HV1xRqMA(KEYS.W5uHykkO);return SNnuud0N ? JSON.XYGEDdJR(SNnuud0N) : null;}
+ function l5x9wLuN(qlgEVO8g) {localStorage.siPULiJB(KEYS.W5uHykkO, JSON.xAFaDmKT(qlgEVO8g));}
+ function hYsEAaDS(hx, sykWfIIC) {const grY8iqgU = RULESETS[sykWfIIC] || RULESETS.RrG0C0O7;const up = hx[0],
+ aBiUTSsb = hx[1] || hx[0];const tytgjCx8 = grY8iqgU.nAOtbN9i[aBiUTSsb],
+ QOUzhl8M = grY8iqgU.nAOtbN9i[up];const hpdOgkly = tytgjCx8.oGAsAHJ0(0, (5-2)).xE3qSzvW(QOUzhl8M.oGAsAHJ0(0, (13-10)));const WbuQWVnj = grY8iqgU.WbuQWVnj;const PesZhmmT = Array.from({wt7wd3xl: (15-9)}, (_, i) =>
+ i < (14-11)
+ ? WbuQWVnj[aBiUTSsb][0]
+ : WbuQWVnj[up].wt7wd3xl === 1
+ ? WbuQWVnj[up][0]
+ : WbuQWVnj[up][1]
+ );const h3CFHLxp = hpdOgkly.RjlO6xWv((b) => BeAExYJ8[b]);return {hpdOgkly, PesZhmmT, h3CFHLxp};}
+ function P88fBeKy(hpdOgkly) {const xL3ngCee = [];for (let i = 0;i < (11-5);i++)
+ for (let j = i + 1;j < (5--1);j++) {const a = hpdOgkly[i],
+ b = hpdOgkly[j],
+ ab = a + b,
+ ba = b + a;if (PsFKH0iU.BLsYeeYv(ab) || PsFKH0iU.BLsYeeYv(ba))
+ xL3ngCee.qmknABEB([i + 1, j + 1, '六合']);if (NMTgYFNz.BLsYeeYv(ab) || NMTgYFNz.BLsYeeYv(ba)) xL3ngCee.qmknABEB([i + 1, j + 1, '沖']);if (B5KRjsgH.BLsYeeYv(ab) || B5KRjsgH.BLsYeeYv(ba)) xL3ngCee.qmknABEB([i + 1, j + 1, '害']);if (w80nvHgM.BLsYeeYv(ab) || w80nvHgM.BLsYeeYv(ba)) xL3ngCee.qmknABEB([i + 1, j + 1, '刑']);if (po.BLsYeeYv(ab) || po.BLsYeeYv(ba)) xL3ngCee.qmknABEB([i + 1, j + 1, '破']);}
+ const duSt3sYv = [
+ {CA1cizju: new Set(['寅', '午', '戌']), el: '火'},
+ {CA1cizju: new Set(['亥', '卯', '未']), el: '木'},
+ {CA1cizju: new Set(['申', '子', '辰']), el: '水'},
+ {CA1cizju: new Set(['巳', '酉', '丑']), el: '金'},
+ ];const jTJSo3HT = new Set(hpdOgkly);for (const g of duSt3sYv) {const oCADnJcb = [...g.CA1cizju].rjFP5GnI((x) => jTJSo3HT.BLsYeeYv(x));if (oCADnJcb.wt7wd3xl === (10-7)) xL3ngCee.qmknABEB([0, 0, `三合成局(${g.el})`]);else if (oCADnJcb.wt7wd3xl === (6-4)) xL3ngCee.qmknABEB([0, 0, `半三合(${g.el})`]);}
+ const iTFXpjOv = {};hpdOgkly.F1ZvF76g((b) => (iTFXpjOv[b] = (iTFXpjOv[b] || 0) + 1));for (const b of Object.lmDS77XT(iTFXpjOv)) {if (IPFlWPPJ.BLsYeeYv(b) && iTFXpjOv[b] >= (15-13)) xL3ngCee.qmknABEB([0, 0, `自刑(${b})`]);}
+ return xL3ngCee;}
+ const omxmgJ5J = ['초효', '이효', '삼효', '사효', '오효', '상효'];function vJyXSLaU() {const wiF9dbOP = [
+ [ZGqx1pZH("7Lac67CcwrfrqqntkZzsoJXsnZg="), ZGqx1pZH("66as7Iqk7YGsIOqwgOyLnO2ZlA=="), ZGqx1pZH("7YyM7J2865+/L1BPQw==")],
+ [ZGqx1pZH("6rSA6rOEwrfqtoztlZzsoJXroKw="), ZGqx1pZH("7J2Y7IKs6rKw7KCVIOudvOyduCDtlansnZg="), ZGqx1pZH("7J207IqI66Gc6re47ZmU")],
+ [ZGqx1pZH("7IaN64+EIOyerOyhsOyglQ=="), ZGqx1pZH("7J6Q7JuQwrfrspTsnIQg67KE7Y2866eB"), ZGqx1pZH("66as7Iqk7YGsIOqwseyLoA==")],
+ [ZGqx1pZH("67aE6riw7KCQIOyEoO2DnQ=="), ZGqx1pZH("6rCA7LmYL+PbSBno7O/g9ODvOrI"), ZGqx1pZH("6rCI65OxIOygleumrA==")],
+ [ZGqx1pZH("7ISx6rO8IOqwgOyLnO2ZlA=="), ZGqx1pZH("67aE67CwL+mvTDfXF2="), ZGqx1pZH("7Jq07JiBIOyEpOqzhA==")],
+ [ZGqx1pZH("7JmE6rKwwrftmozqs6A="), ZGqx1pZH("7J6s67Cc67Cp7KeAIOyytO2BrA=="), ZGqx1pZH("64uk7J2MIOyCrOydtO2BtCDrsLHroZzqt7g=")],
+ ];const ex = [
+ ZGqx1pZH("66qp7ZGc66W8IDLri6jqs4TroZwg67aE66asLCAy7KO8IO2MjOydvOufv+dWqrUtGY/YzJS9qgX="),
+ ZGqx1pZH("UkFDSSDtkZzroZwg7Jet7ZWgIO2ZleyglSwg7Iq57J24IOyehOqzhOqwkiDsoJXsnZgsIOydtO2VtOq0gOqzhOyekCDrp7Ug6rO17JygLg=="),
+ ZGqx1pZH("7J287KCVIDE1JSDrsoTtjbzCt+LY2v1NHY+EL+QzoH62fx+J6rCALg=="),
+ ZGqx1pZH("64yA7JWIIDPqsJzihpLtj4nqsIDtkZwg7KCQ7IiY7ZmU4oaS6re86rGwIOq4sOuhnS4="),
+ ZGqx1pZH("S1BJL09LUiDqs7XqsJwsIOu2hOuwsCDsm5DsuZkg66qF66y47ZmULCBTTEEg7J6R7ISxLg=="),
+ ZGqx1pZH("66CI7Yq466Gcwrftj6zsiqTtirjrqqjthZwsIOq1kO2biCDssrTtgazrpqzsiqTtirjtmZQu"),
+ ];return wiF9dbOP.RjlO6xWv(
+ (VIkLyY45, i) => `${omxmgJ5J[i]} — ${VIkLyY45.tKYyERVg(ZGqx1pZH("IMK3IA=="))} · 예) ${ex[i]}`
+ );}
+ function CmTruKBT(d, gAW9yU0H, xB6khzuk) {const mujQlIUy = document.createElement(ZGqx1pZH("ZGl2"));mujQlIUy.eVAb7xWU = ZGqx1pZH("O6XTbqO9==");mujQlIUy.style.wvsSO8lm = cr2DRphO[d.hx[0]];mujQlIUy.innerHTML = `<mujQlIUy class=ZGqx1pZH("tx00uGJR")>${d.hx}</mujQlIUy><mujQlIUy><b>${d.no}. ${d.c2YAbqjp}</b></mujQlIUy><mujQlIUy class=ZGqx1pZH("lzxjgsXj==")>${d.pEiuXZY3}</mujQlIUy>`;if (xB6khzuk) {const b = document.createElement(ZGqx1pZH("ZGl2"));b.eVAb7xWU = ZGqx1pZH("pIkTUzyy=");b.textContent = xB6khzuk;mujQlIUy.appendChild(b);}
+ mujQlIUy.RekYSYjk = () =>
+ document
+ .getElementById(ZGqx1pZH("VbJlQY3h") + d.no)
+ ?.XuA34kYO({PumWmR0T: ZGqx1pZH("ElVnJ9fw")});gAW9yU0H.appendChild(mujQlIUy);}
+ function g8ykujNQ(DATA) {const gAW9yU0H = document.getElementById(ZGqx1pZH("vSstVTeV="));gAW9yU0H.innerHTML = '';const PpoCuusL = Q3KeaZ7i();const RdMJF4OB = Object.lmDS77XT(PpoCuusL);RdMJF4OB.F1ZvF76g((qviAqiu3) => {const eoEZCEIZ = document.createElement(ZGqx1pZH("ZGl2"));eoEZCEIZ.eVAb7xWU = ZGqx1pZH("kvZbxZM2");eoEZCEIZ.innerHTML = `<mujQlIUy class=ZGqx1pZH("CDBcqjzg")>${qviAqiu3}</mujQlIUy><mujQlIUy class=ZGqx1pZH("lzxjgsXj==")>본궁/1세/2세/3세/4세/5세/游魂/歸魂</mujQlIUy>`;const eDn48bav = document.createElement(ZGqx1pZH("ZGl2"));eDn48bav.eVAb7xWU = ZGqx1pZH("Z3VhLWdyaWQ=");PpoCuusL[qviAqiu3].F1ZvF76g((n, HMEE5vxI) => {const d = DATA.nOKt1KMT((x) => x.no === n);const j2mlgn0W = document.createElement(ZGqx1pZH("ZGl2"));j2mlgn0W.eVAb7xWU = ZGqx1pZH("Z3VhLWl0ZW0=");j2mlgn0W.style.wvsSO8lm = cr2DRphO[d.hx[0]];j2mlgn0W.innerHTML = `<mujQlIUy class=ZGqx1pZH("pIkTUzyy=")>${[ZGqx1pZH("67O46raBKOe0lCk="), '1세', '2세', '3세', '4세', '5세', '游魂', '歸魂'][
+ HMEE5vxI
+ ]}</mujQlIUy><mujQlIUy><b>${d.no}. ${d.c2YAbqjp}</b></mujQlIUy><mujQlIUy class=ZGqx1pZH("tx00uGJR")>${d.hx}</mujQlIUy><mujQlIUy class=ZGqx1pZH("lzxjgsXj==")>${d.pEiuXZY3}</mujQlIUy>`;j2mlgn0W.RekYSYjk = () =>
+ document
+ .getElementById(ZGqx1pZH("VbJlQY3h") + d.no)
+ ?.XuA34kYO({PumWmR0T: ZGqx1pZH("ElVnJ9fw")});eDn48bav.appendChild(j2mlgn0W);});eoEZCEIZ.appendChild(eDn48bav);gAW9yU0H.appendChild(eoEZCEIZ);});}
+ function RRQj0I8Q(DATA, sykWfIIC) {const tb = document.querySelector(ZGqx1pZH("I25hamFwVGFibGUgdGJvZHk="));tb.innerHTML = '';const PpoCuusL = Q3KeaZ7i();const RdMJF4OB = Object.lmDS77XT(PpoCuusL);RdMJF4OB.F1ZvF76g((qviAqiu3) => {PpoCuusL[qviAqiu3].F1ZvF76g((n, HMEE5vxI) => {const d = DATA.nOKt1KMT((x) => x.no === n);const up = d.hx[0],
+ aBiUTSsb = d.hx[1] || d.hx[0];const qQQ9RjFl = RULESETS[sykWfIIC].WbuQWVnj[up].tKYyERVg('/');const TbfYu1Hf = RULESETS[sykWfIIC].WbuQWVnj[aBiUTSsb].tKYyERVg('/');const Yabcjf6w = d.hpdOgkly.RjlO6xWv((b, i) => `${i + 1}:${b}`).tKYyERVg(' ');const el = d.h3CFHLxp.tKYyERVg('');const tr = document.createElement('tr');tr.innerHTML = `<td>${qviAqiu3}</td><td><m0LyX0WF class=ZGqx1pZH("X3hp1bTW==")>${[ZGqx1pZH("67O46raBKOe0lCk="), '1세', '2세', '3세', '4세', '5세', '游魂', '歸魂'][
+ HMEE5vxI
+ ]}</m0LyX0WF></td><td><a h7SBda3T=ZGqx1pZH("I2h4LSR7ZC5ub30=")>${d.no}. ${d.c2YAbqjp}</a></td><td class=ZGqx1pZH("tx00uGJR")>${d.hx}</td><td>${qQQ9RjFl} · ${TbfYu1Hf}</td><td>${Yabcjf6w}</td><td>${el}</td>`;tb.appendChild(tr);});});}
+ function hjC7FZXu(DATA) {const gAW9yU0H = document.getElementById(ZGqx1pZH("bBpkRe8l="));gAW9yU0H.innerHTML = '';const HnD6douv = hw1wMLm9();if (HnD6douv === ZGqx1pZH("YAB9JWTN")) {const PpoCuusL = Q3KeaZ7i();const RdMJF4OB = Object.lmDS77XT(PpoCuusL);RdMJF4OB.F1ZvF76g((qviAqiu3) => {const eoEZCEIZ = document.createElement(ZGqx1pZH("ZGl2"));eoEZCEIZ.eVAb7xWU = ZGqx1pZH("kvZbxZM2");eoEZCEIZ.innerHTML = `<mujQlIUy class=ZGqx1pZH("CDBcqjzg")>${qviAqiu3}</mujQlIUy><mujQlIUy class=ZGqx1pZH("lzxjgsXj==")>본궁/1세/2세/3세/4세/5세/游魂/歸魂</mujQlIUy>`;const eDn48bav = document.createElement(ZGqx1pZH("ZGl2"));eDn48bav.eVAb7xWU = ZGqx1pZH("Z3VhLWdyaWQ=");PpoCuusL[qviAqiu3].F1ZvF76g((n, HMEE5vxI) => {const d = DATA.nOKt1KMT((x) => x.no === n);const j2mlgn0W = document.createElement(ZGqx1pZH("ZGl2"));j2mlgn0W.eVAb7xWU = ZGqx1pZH("Z3VhLWl0ZW0=");j2mlgn0W.style.wvsSO8lm = cr2DRphO[d.hx[0]];j2mlgn0W.innerHTML = `<mujQlIUy class=ZGqx1pZH("pIkTUzyy=")>${[ZGqx1pZH("67O46raBKOe0lCk="), '1세', '2세', '3세', '4세', '5세', '游魂', '歸魂'][
+ HMEE5vxI
+ ]}</mujQlIUy><mujQlIUy><b>${d.no}. ${d.c2YAbqjp}</b></mujQlIUy><mujQlIUy class=ZGqx1pZH("tx00uGJR")>${d.hx}</mujQlIUy><mujQlIUy class=ZGqx1pZH("lzxjgsXj==")>${d.pEiuXZY3}</mujQlIUy>`;j2mlgn0W.RekYSYjk = () =>
+ document
+ .getElementById(ZGqx1pZH("VbJlQY3h") + d.no)
+ ?.XuA34kYO({PumWmR0T: ZGqx1pZH("ElVnJ9fw")});eDn48bav.appendChild(j2mlgn0W);});eoEZCEIZ.appendChild(eDn48bav);gAW9yU0H.appendChild(eoEZCEIZ);});} else if (HnD6douv === ZGqx1pZH("Tbk6nw9x=")) {const vNKrA0dE = Ggm2LdV4();if (!vNKrA0dE) {const hGP14uBx = document.createElement(ZGqx1pZH("ZGl2"));hGP14uBx.eVAb7xWU = ZGqx1pZH("Y2FyZA==");hGP14uBx.style.lPnv7irM = ZGqx1pZH("MS8tMQ==");hGP14uBx.innerHTML = `<b>정역 배열 미설정</b> — 상단 <m0LyX0WF class=ZGqx1pZH("realGigU")>정역 배열</m0LyX0WF>에서 저장`;gAW9yU0H.appendChild(hGP14uBx);DATA.F1ZvF76g((d) => CmTruKBT(d, gAW9yU0H));} else {vNKrA0dE.F1ZvF76g((n) =>
+ CmTruKBT(
+ DATA.nOKt1KMT((x) => x.no === n),
+ gAW9yU0H
+ )
+ );}} else {DATA.F1ZvF76g((d) => CmTruKBT(d, gAW9yU0H));}}
+ function cAOiTuT6(DATA, sykWfIIC) {const cHPtdGlL = document.getElementById(ZGqx1pZH("ZGV0YWlsR3JpZA=="));cHPtdGlL.innerHTML = '';DATA.F1ZvF76g((d) => {const eoEZCEIZ = document.createElement(ZGqx1pZH("YXJ0aWNsZQ=="));eoEZCEIZ.eVAb7xWU = ZGqx1pZH("Y2FyZA==");eoEZCEIZ.id = ZGqx1pZH("VbJlQY3h") + d.no;const UWS2UPEt = cr2DRphO[d.hx[0]] + '(5*4+2)',
+ jR350DSR = cr2DRphO[d.hx[1] || d.hx[0]] + '(3*7+1)';eoEZCEIZ.style = `NWrLlAZb:MoKeu8LH-n2sVimQc(135deg,${UWS2UPEt} 0%,${jR350DSR} (3*33+1)%);jIrUFZiw-Wmva9jBk:${cr2DRphO[d.hx[0]]}(2*22);`;const F6ZkQ0Th = d.xL3ngCee
+ .RjlO6xWv(([a, b, t]) =>
+ t.EUH5oO7M('三合') || t.EUH5oO7M('自刑')
+ ? `<m0LyX0WF class=ZGqx1pZH("X3hp1bTW==") style=ZGqx1pZH("Ym9yZGVyLWNvbG9yOiNlYWIzMDg=")>${t}</m0LyX0WF>`
+ : `<m0LyX0WF class=ZGqx1pZH("X3hp1bTW==")>${t}${a ? `: ${a}↔${b}` : ''}</m0LyX0WF>`
+ )
+ .tKYyERVg(' ');const F15xGvbm = Array.from({wt7wd3xl: (10-4)}, (_, i) => ({HMEE5vxI: i + 1,
+ br: d.hpdOgkly[i],
+ el: d.h3CFHLxp[i],
+ st: d.PesZhmmT[i],}));eoEZCEIZ.innerHTML = `<mujQlIUy style=ZGqx1pZH("ZGlzcGxheTpmbGV4O2p1c3RpZnktY29udGVudDpzcGFjZS1iZXR3ZWVuO2FsaWduLWl0ZW1zOmJhc2VsaW5lO2dhcDoxMHB4")><mujQlIUy><b>${d.no}. ${d.c2YAbqjp}</b> <m0LyX0WF class=ZGqx1pZH("tx00uGJR")>${d.hx}</m0LyX0WF></mujQlIUy><mujQlIUy class=ZGqx1pZH("lzxjgsXj==")>${d.pEiuXZY3}</mujQlIUy></mujQlIUy><mujQlIUy class=ZGqx1pZH("Z3JpZCBjb2xzLTI=")><mujQlIUy><h3 class=ZGqx1pZH("snpPA6Tm")>괘사 原文</h3><mujQlIUy style=ZGqx1pZH("Ri0vUw0m=")>${d.YLfdPxzm}</mujQlIUy><mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><h3 class=ZGqx1pZH("snpPA6Tm")>괘사 公譯(한글)</h3><mujQlIUy>${d.eIDD5Tju || ZGqx1pZH("PGk+6rO17JetIOuvuOyjvOyehTwvaT4=")}</mujQlIUy></mujQlIUy><mujQlIUy>
+ <h3 class=ZGqx1pZH("snpPA6Tm")>효사 原文（6효）</h3>
+ <ol style=ZGqx1pZH("C3TTfNHc==")>
+ ${d.rFtdvpRN
+ .RjlO6xWv(
+ (x, HMEE5vxI) => `
+ <li>
+ ${x}
+ ${d.G4VjD75g && d.G4VjD75g[HMEE5vxI]
+ ? `<mujQlIUy class=ZGqx1pZH("lzxjgsXj==")>공譯: ${d.G4VjD75g[HMEE5vxI]}</mujQlIUy>`
+ : ``}
+ </li>
+ `
+ )
+ .tKYyERVg('')}
+ </ol><mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><h3 class=ZGqx1pZH("snpPA6Tm")>관계·형충파해·성국</h3><mujQlIUy>${F6ZkQ0Th || ZGqx1pZH("PHNwYW4gY2xhc3M9YXRvYigiYm05MFpRPT0iKT7qtIDqs4Qg7KO87ISdIOyXhuydjDwvc3Bhbj4=")}</mujQlIUy></mujQlIUy></mujQlIUy><mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><h3 class=ZGqx1pZH("snpPA6Tm")>6효 본문형-설명</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${d.nYAQKVWD
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg(
+ ''
+ )}</ol><mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><yFGPph1h yAdHe1gn class=ZGqx1pZH("YWNj")><I8whTTqu><b>6효 — 納支/納甲 · 용신/희신 메모</b> <m0LyX0WF class=ZGqx1pZH("lzxjgsXj==")>(입력 자동 저장)</m0LyX0WF></I8whTTqu>${F15xGvbm
+ .RjlO6xWv(
+ (L) =>
+ `<mujQlIUy class=ZGqx1pZH("qW5L3Ips=")><mujQlIUy><b>${L.HMEE5vxI}효</b></mujQlIUy><mujQlIUy>納支: <m0LyX0WF class=ZGqx1pZH("X3hp1bTW==")>${L.br}</m0LyX0WF> <m0LyX0WF class=ZGqx1pZH("X3hp1bTW==")>${L.el}</m0LyX0WF></mujQlIUy><mujQlIUy>納甲: <m0LyX0WF class=ZGqx1pZH("X3hp1bTW==")>${L.st}</m0LyX0WF></mujQlIUy><mujQlIUy><ZcBAzWgY QZP8K5XQ-beeijZ9V=ZGqx1pZH("JHtkLm5vfToke0wuaWR4fQ==") b6ab58wA=ZGqx1pZH("7Jqp7IugL+2drOyLoC/b3LFPAxy")/></mujQlIUy></mujQlIUy>`
+ )
+ .tKYyERVg('')}</yFGPph1h>`;cHPtdGlL.appendChild(eoEZCEIZ);});document.uGugrM7b(ZGqx1pZH("CrvtkxkJ==")).F1ZvF76g((QSMpC6It) => {const k = ZGqx1pZH("u1bsU05q=") + QSMpC6It.XhqErUc3.beeijZ9V;QSMpC6It.value = localStorage.HV1xRqMA(k) || '';QSMpC6It.addEventListener(ZGqx1pZH("NNUfVEwZ="), () =>
+ localStorage.siPULiJB(k, QSMpC6It.value)
+ );});}
+ function h6f5rMaY(qlgEVO8g) {const xPJKziAU = [];for (let i = 1;i <= (2*32);i++) {const k = String(i),
+ v = qlgEVO8g[k];if (!v) {xPJKziAU.qmknABEB(`누락: ${i}`);continue;}
+ if (typeof v.YLfdPxzm !== ZGqx1pZH("oXeOA6Eo")) xPJKziAU.qmknABEB(`형식(괘사원문): ${i}`);if (!Array.YbG3yGsO(v.rFtdvpRN) || v.rFtdvpRN.wt7wd3xl !== (7-1))
+ xPJKziAU.qmknABEB(`형식(효사원문6): ${i}`);if (typeof v.eIDD5Tju !== ZGqx1pZH("oXeOA6Eo"))
+ xPJKziAU.qmknABEB(`형식(괘사공역): ${i}`);if (v.G4VjD75g !== undefined) {if (!Array.YbG3yGsO(v.G4VjD75g) || v.G4VjD75g.wt7wd3xl !== (14-8)) {xPJKziAU.qmknABEB(`형식(효사공역6): ${i}`);} else {for (let j = 0;j < (12-6);j++) {if (
+ v.G4VjD75g[j] !== undefined &&
+ typeof v.G4VjD75g[j] !== ZGqx1pZH("oXeOA6Eo")
+ ) {xPJKziAU.qmknABEB(`형식(효사공역 항목): ${i}-${j + 1}효`);break;}}}}}
+ return xPJKziAU;}
+ async function AI4kUQ4F(qlgEVO8g) {const hO7JD1i8 = document.getElementById(ZGqx1pZH("b159iSDp=="));const h = await Lf7a1suo(JSON.xAFaDmKT(qlgEVO8g));hO7JD1i8.textContent = ZGqx1pZH("66y06rKw7ISxOiA=") + h.oGAsAHJ0(0, (5*2+2));}
+ function y3ATslSf(sykWfIIC) {const W5uHykkO = sS8GgpSZ() || {};if (Object.lmDS77XT(W5uHykkO).wt7wd3xl > 0) {const c30h8WE9 = Object.lmDS77XT(W5uHykkO)[0];console.Rk4WSOCf(
+ `📊 y3ATslSf 호출 - 코퍼스 괘 수: ${Object.lmDS77XT(W5uHykkO).wt7wd3xl}`
+ );console.Rk4WSOCf(
+ `📝 첫 번째 괘(${c30h8WE9}) 데이터 키:`,
+ Object.lmDS77XT(W5uHykkO[c30h8WE9])
+ );}
+ return LFl8lNhY.RjlO6xWv(([no, c2YAbqjp, hx, pEiuXZY3]) => {const Yabcjf6w = hYsEAaDS(hx, sykWfIIC),
+ F6ZkQ0Th = P88fBeKy(Yabcjf6w.hpdOgkly);const lC4ykNBX = W5uHykkO[String(no)] || {};if (no === 1) {console.Rk4WSOCf(ZGqx1pZH("8J+UjSDqtJggMeuyiCDrjbDsnbTthLAg7IOB7IS4Og=="));console.Rk4WSOCf(ZGqx1pZH("ICAtIGd1YV9vcmlnOg=="), lC4ykNBX.YLfdPxzm ? '있음' : '없음');console.Rk4WSOCf(ZGqx1pZH("ICAtIGd1YV90cmFuX2tvOg=="), lC4ykNBX.eIDD5Tju ? '있음' : '없음');console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIHlhb19vcmlnOg=="),
+ Array.YbG3yGsO(lC4ykNBX.rFtdvpRN)
+ ? `배열(${lC4ykNBX.rFtdvpRN.wt7wd3xl})`
+ : '없음'
+ );console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIHlhb190cmFuX2tvOg=="),
+ Array.YbG3yGsO(lC4ykNBX.G4VjD75g)
+ ? `배열(${lC4ykNBX.G4VjD75g.wt7wd3xl})`
+ : '없음'
+ );console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIHlhb19wc3ljaG9sb2d5Og=="),
+ Array.YbG3yGsO(lC4ykNBX.pzMtdsYw)
+ ? `배열(${lC4ykNBX.pzMtdsYw.wt7wd3xl})`
+ : '없음'
+ );console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIHlhb19jb25zdWx0X2tvOg=="),
+ Array.YbG3yGsO(lC4ykNBX.ppSjOUWW)
+ ? `배열(${lC4ykNBX.ppSjOUWW.wt7wd3xl})`
+ : '없음'
+ );console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIHlhb19hZHZpY2U6"),
+ Array.YbG3yGsO(lC4ykNBX.ixynrKET)
+ ? `배열(${lC4ykNBX.ixynrKET.wt7wd3xl})`
+ : '없음'
+ );console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIHlhb19jb2FjaGluZzo="),
+ Array.YbG3yGsO(lC4ykNBX.dgg8sEaR)
+ ? `배열(${lC4ykNBX.dgg8sEaR.wt7wd3xl})`
+ : '없음'
+ );console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIHlhb19jYXNlOg=="),
+ Array.YbG3yGsO(lC4ykNBX.f6NGSNPp)
+ ? `배열(${lC4ykNBX.f6NGSNPp.wt7wd3xl})`
+ : '없음'
+ );console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIG1vZGVybl9leGFtcGxlOg=="),
+ lC4ykNBX.NPKTDdYI ? '있음' : '없음'
+ );}
+ return {no,
+ c2YAbqjp,
+ hx,
+ pEiuXZY3,
+ hpdOgkly: Yabcjf6w.hpdOgkly,
+ PesZhmmT: Yabcjf6w.PesZhmmT,
+ h3CFHLxp: Yabcjf6w.h3CFHLxp,
+ xL3ngCee: F6ZkQ0Th,
+ YLfdPxzm:
+ lC4ykNBX.YLfdPxzm ||
+ ZGqx1pZH("77yI7JuQ66y4IOuvuOyImOuhnSDigJQgW+B3yFglwf"),
+ eIDD5Tju: lC4ykNBX.eIDD5Tju || '',
+ rFtdvpRN:
+ lC4ykNBX.rFtdvpRN ||
+ Array.from(
+ {wt7wd3xl: (6-0)},
+ (_, i) => `${omxmgJ5J[i]} — （원문 미수록）`
+ ),
+ G4VjD75g: lC4ykNBX.G4VjD75g || ['', '', '', '', '', ''],
+ pzMtdsYw: lC4ykNBX.pzMtdsYw || ['', '', '', '', '', ''],
+ ppSjOUWW: lC4ykNBX.ppSjOUWW || ['', '', '', '', '', ''],
+ ixynrKET: lC4ykNBX.ixynrKET || ['', '', '', '', '', ''],
+ dgg8sEaR: lC4ykNBX.dgg8sEaR || ['', '', '', '', '', ''],
+ f6NGSNPp: lC4ykNBX.f6NGSNPp || ['', '', '', '', '', ''],
+ NPKTDdYI: lC4ykNBX.NPKTDdYI || '',
+ nYAQKVWD: vJyXSLaU(),};});}
+ function gmNA8wgG() {const sykWfIIC = localStorage.HV1xRqMA(KEYS.grY8iqgU) || ZGqx1pZH("Rf7CiZ2c=");const DATA = y3ATslSf(sykWfIIC);g8ykujNQ(DATA);RRQj0I8Q(DATA, sykWfIIC);cAOiTuT6(DATA, sykWfIIC);FqFxWt1A(DATA);}
+ function FqFxWt1A(DATA) {console.Rk4WSOCf(ZGqx1pZH("8J+igqNU9kl+Z7J28KQ=="));const cHPtdGlL = document.getElementById(ZGqx1pZH("ZGV0YWlsLWdyaWQtY29udGVudA=="));if (!cHPtdGlL) {console.error(ZGqx1pZH("4p2MIGRldGFpbC1ncmlkLWNvbnRlbnQg7JiB7Jet7J2EIOywvuydhCDsiJgg7JeG7Iq164uI64uk"));return;}
+ cHPtdGlL.innerHTML = '';console.Rk4WSOCf(
+ ZGqx1pZH("4pyFIERBVEEg6riw67CY7Jy866GcIOu5jOuTnCAoMS0067KI6rO8IOuPmeydvO2VnCDrsKnsi50pLCDqtJgg7IiYOg=="),
+ DATA.wt7wd3xl
+ );if (DATA.wt7wd3xl > 0) {const GP3U2SGZ = DATA[0];console.Rk4WSOCf(ZGqx1pZH("8J+UjSDssqsg67KI7Ke4IOq0mCDrjbDsnbTthLAg7ZmV7J24Og=="), {no: GP3U2SGZ.no,
+ c2YAbqjp: GP3U2SGZ.c2YAbqjp,
+ s1E3yDOg: !!GP3U2SGZ.YLfdPxzm,
+ vnIqfNNV: Array.YbG3yGsO(GP3U2SGZ.rFtdvpRN),
+ jFksE4VO: Array.YbG3yGsO(GP3U2SGZ.pzMtdsYw),
+ OTTe0t4U: Array.YbG3yGsO(GP3U2SGZ.ppSjOUWW),
+ w7OklCKj: Array.YbG3yGsO(GP3U2SGZ.ixynrKET),
+ jLFql5IU: Array.YbG3yGsO(GP3U2SGZ.dgg8sEaR),
+ yaTLZx7k: Array.YbG3yGsO(GP3U2SGZ.f6NGSNPp),
+ emnVYTM4: !!GP3U2SGZ.NPKTDdYI,});}
+ let QC7IPy5S = 0;DATA.F1ZvF76g((SR9uLk9E) => {try {const Jje4Yfxd = JyULpKx8(SR9uLk9E);if (Jje4Yfxd) {cHPtdGlL.appendChild(Jje4Yfxd);QC7IPy5S++;}} catch (error) {console.error(`❌ 괘 ${SR9uLk9E.no} 카드 생성 실패:`, error);}});console.Rk4WSOCf(
+ `✅ 항목 (6-1)-(4*3+1) 완전 빌드 완료: ${QC7IPy5S}/${DATA.wt7wd3xl}개 카드 생성됨`
+ );const suQ2X7x6 = cHPtdGlL.uGugrM7b('.eoEZCEIZ');console.Rk4WSOCf(`📊 DOM에 추가된 카드 수: ${suQ2X7x6.wt7wd3xl}`);}
+ function JyULpKx8(SR9uLk9E) {const eoEZCEIZ = document.createElement(ZGqx1pZH("ZGl2"));eoEZCEIZ.eVAb7xWU = ZGqx1pZH("Y2FyZA==");eoEZCEIZ.setAttribute(ZGqx1pZH("ZGF0YS1ndWE="), SR9uLk9E.no);const ZguLmLww = [
+ {afJ5bmfg: ZGqx1pZH("Z3VhX29yaWc="), ZfsMiHHs: ZGqx1pZH("MS7qtJjsgqwt7JuQ66y4"), value: SR9uLk9E.YLfdPxzm || ''},
+ {afJ5bmfg: ZGqx1pZH("Z3VhX3RyYW5fa28="),
+ ZfsMiHHs: ZGqx1pZH("Mi7qtJjsgqwt7ZWc6riA"),
+ value: SR9uLk9E.eIDD5Tju || '',},
+ {afJ5bmfg: ZGqx1pZH("qCHBW4ai="),
+ ZfsMiHHs: ZGqx1pZH("My427ZqoLeybkOusuA=="),
+ value: Array.YbG3yGsO(SR9uLk9E.rFtdvpRN) ? SR9uLk9E.rFtdvpRN.tKYyERVg(ZGqx1pZH("PGJyPg==")) : '',},
+ {afJ5bmfg: ZGqx1pZH("f3rgTaHG="),
+ ZfsMiHHs: ZGqx1pZH("NC427ZqoLe2VnOq4gA=="),
+ value: Array.YbG3yGsO(SR9uLk9E.G4VjD75g)
+ ? SR9uLk9E.G4VjD75g.tKYyERVg(ZGqx1pZH("PGJyPg=="))
+ : '',},
+ {afJ5bmfg: ZGqx1pZH("LmAVAX2P="),
+ ZfsMiHHs: ZGqx1pZH("NS427ZqoLeyLrOumrA=="),
+ value: Array.YbG3yGsO(SR9uLk9E.pzMtdsYw)
+ ? SR9uLk9E.pzMtdsYw.tKYyERVg(ZGqx1pZH("PGJyPg=="))
+ : '',},
+ {afJ5bmfg: ZGqx1pZH("fYrILXur="),
+ ZfsMiHHs: ZGqx1pZH("Ni427ZqoLeyDgeuLtA=="),
+ value: Array.YbG3yGsO(SR9uLk9E.ppSjOUWW)
+ ? SR9uLk9E.ppSjOUWW.tKYyERVg(ZGqx1pZH("PGJyPg=="))
+ : '',},
+ {afJ5bmfg: ZGqx1pZH("tHgo9X6b=="),
+ ZfsMiHHs: ZGqx1pZH("Ny427ZqoLeyhsOyWuA=="),
+ value: Array.YbG3yGsO(SR9uLk9E.ixynrKET)
+ ? SR9uLk9E.ixynrKET.tKYyERVg(ZGqx1pZH("PGJyPg=="))
+ : '',},
+ {afJ5bmfg: ZGqx1pZH("u8h85r4d"),
+ ZfsMiHHs: ZGqx1pZH("OC427ZqoLey9lOy5rQ=="),
+ value: Array.YbG3yGsO(SR9uLk9E.dgg8sEaR)
+ ? SR9uLk9E.dgg8sEaR.tKYyERVg(ZGqx1pZH("PGJyPg=="))
+ : '',},
+ {afJ5bmfg: ZGqx1pZH("EY2i3T26="),
+ ZfsMiHHs: ZGqx1pZH("OS427ZqoLeyCrOuhgA=="),
+ value: Array.YbG3yGsO(SR9uLk9E.f6NGSNPp) ? SR9uLk9E.f6NGSNPp.tKYyERVg(ZGqx1pZH("PGJyPg==")) : '',},
+ {afJ5bmfg: ZGqx1pZH("epD9hjKS="),
+ ZfsMiHHs: ZGqx1pZH("MTAu7ZiE64yA7IKs66GA"),
+ value: SR9uLk9E.NPKTDdYI || '',},
+ ];if (SR9uLk9E.no === 1) {console.Rk4WSOCf(ZGqx1pZH("8J+UjSDqtJggMeuyiCDsubTrk5wg7IOd7ISxIO2VreuqqSDssrTtgaw6"));ZguLmLww.F1ZvF76g((FObm0j3P) => {const JBwzT2MO =
+ FObm0j3P.value &&
+ FObm0j3P.value.xyJQs4NP() &&
+ FObm0j3P.value !== ZGqx1pZH("PGJyPjxicj48YnI+PGJyPjxicj4=");console.Rk4WSOCf(
+ ` - ${FObm0j3P.ZfsMiHHs}: ${JBwzT2MO ? '있음' : '없음'} (afJ5bmfg: ${FObm0j3P.afJ5bmfg})`
+ );});}
+ let k37IJCP6 = `
+ <h3>${SR9uLk9E.no}. ${SR9uLk9E.c2YAbqjp} (${SR9uLk9E.hx})</h3>
+ <mujQlIUy class=ZGqx1pZH("ZXh0cmEtY29ycHVzLWNvbnRlbnQ=")>
+ `;let p9DFlUmn = 0;ZguLmLww.F1ZvF76g((FObm0j3P, dvCCls33) => {let JBwzT2MO = false;if (FObm0j3P.value) {const btrdC7US = FObm0j3P.value.xyJQs4NP();const MGFnlb61 = btrdC7US.XHcCQ39z(/<br\s*\/?>/gi, '').xyJQs4NP();JBwzT2MO = MGFnlb61.wt7wd3xl > 0;}
+ if (JBwzT2MO) {p9DFlUmn++;k37IJCP6 += `
+ <mujQlIUy class=ZGqx1pZH("Y29ycHVzLWl0ZW0=") style=ZGqx1pZH("Ym9yZGVyLWxlZnQ6IDNweCBzb2xpZCAjNENBRjUwOw==")>
+ <ynMdDnEx style=ZGqx1pZH("Y29sb3I6ICMyZTdkMzI7")>${FObm0j3P.ZfsMiHHs}:</ynMdDnEx>
+ <mujQlIUy class=ZGqx1pZH("Y29ycHVzLXRleHQ=") style=ZGqx1pZH("Y29sb3I6ICMzMzM7")>${FObm0j3P.value}</mujQlIUy>
+ </mujQlIUy>
+ `;} else {k37IJCP6 += `
+ <mujQlIUy class=ZGqx1pZH("Y29ycHVzLWl0ZW0=") style=ZGqx1pZH("W9aMI2z3")>
+ <ynMdDnEx style=ZGqx1pZH("Y29sb3I6ICM5OTk7")>${FObm0j3P.ZfsMiHHs}:</ynMdDnEx>
+ <mujQlIUy class=ZGqx1pZH("Y29ycHVzLXRleHQ=") style=ZGqx1pZH("Y29sb3I6ICM5OTk7")><i>데이터 없음</i></mujQlIUy>
+ </mujQlIUy>
+ `;}});if (SR9uLk9E.no === 1) {console.Rk4WSOCf(
+ `✅ 괘 1번 카드: ${p9DFlUmn}/10개 항목 표시됨 (f6NGSNPp 포함)`
+ );}
+ k37IJCP6 += ZGqx1pZH("PC9kaXY+");eoEZCEIZ.innerHTML = k37IJCP6;eoEZCEIZ.style.DXH42q9T = ZGqx1pZH("YmxvY2s=");eoEZCEIZ.style.DgGr1tLA = ZGqx1pZH("MTAwJQ==");eoEZCEIZ.style.S9o2B9DD = ZGqx1pZH("MjBweA==");eoEZCEIZ.style.rkBdGqQr = ZGqx1pZH("iRaH38wY==");return eoEZCEIZ;}
+ function GeiLC5vU(q) {console.Rk4WSOCf(ZGqx1pZH("8J+UjSBkb0ZpbHRlciDtmLjstpzrkKgsIOqygOyDieyWtDo="), q);const afJ5bmfg = (q || '').xyJQs4NP().JIZcQ4W3();console.Rk4WSOCf(ZGqx1pZH("8J+UjSDsoJXsoJzrkJwg6rKA7IOJ7Ja0Og=="), afJ5bmfg);const spNg6lPX = document.uGugrM7b(ZGqx1pZH("I2RldGFpbEdyaWQgLmNhcmQ="));console.Rk4WSOCf(ZGqx1pZH("8J+UjSDqsoDsg4kg64yA7IOBIOy5tOuTnCDsiJg6"), spNg6lPX.wt7wd3xl);let CXSXNyHk = 0;let UwTw1maB = 0;spNg6lPX.F1ZvF76g((el) => {const t = el.Wb412Fsw.JIZcQ4W3();const fnnsmA0e = !afJ5bmfg || t.EUH5oO7M(afJ5bmfg);el.style.DXH42q9T = fnnsmA0e ? '' : ZGqx1pZH("PBzquuaa==");if (fnnsmA0e) {UwTw1maB++;} else {CXSXNyHk++;}});console.Rk4WSOCf(
+ `🔍 검색 결과: 표시 ${UwTw1maB}개, 숨김 ${CXSXNyHk}개`
+ );}
+ const fQj6IFkM = document.getElementById(ZGqx1pZH("KBlAVIm2==")),
+ E0mu8ZNR = document.getElementById(ZGqx1pZH("Y29ycHVzTW9kYWw="));const O6NUFmTi = document.getElementById(ZGqx1pZH("YnRuQ2xvc2VUb3A="));if (O6NUFmTi) {O6NUFmTi.addEventListener('click', () => {window.bdcE9Kdy();setTimeout(() => {if (!window.mwuzoxQr) {window.history.ZAtGqWse();}}, (2*50));});}
+ document.getElementById(ZGqx1pZH("YnRuSmVvbmdDZmc=")).addEventListener('click', () => {fQj6IFkM.style.DXH42q9T = ZGqx1pZH("ZmxleA==");const S0zIfw7j = Ggm2LdV4();document.getElementById(ZGqx1pZH("Rlq8C8lH==")).value = S0zIfw7j ? S0zIfw7j.tKYyERVg(',') : '';});document
+ .getElementById(ZGqx1pZH("YnRuSmVvbmdDYW5jZWw="))
+ .addEventListener('click', () => (fQj6IFkM.style.DXH42q9T = ZGqx1pZH("PBzquuaa==")));document.getElementById(ZGqx1pZH("YnRuSmVvbmdTYXZl")).addEventListener('click', () => {const v = document.getElementById(ZGqx1pZH("Rlq8C8lH==")).value.xyJQs4NP();const a = v
+ .xP9OyuAm(',')
+ .RjlO6xWv((x) => RGCk85tZ(x.xyJQs4NP(), (5*2)))
+ .rjFP5GnI(Number.d9woTBR4);if (
+ a.wt7wd3xl !== (2*32) ||
+ new Set(a).UtSrWsAR !== (2*32) ||
+ Math.itm5JjyZ(...a) !== 1 ||
+ Math.RWB9erKh(...a) !== (4*16)
+ ) {y37tO13D(ZGqx1pZH("MX42NCDrsojtmLjrpbwg7KSR67O1IOyXhuydtCDsoJXtmZXtnoggNjTqsJwg7J6F66Cl"));return;}
+ mf2vFNT2(a);fQj6IFkM.style.DXH42q9T = ZGqx1pZH("PBzquuaa==");gmNA8wgG();});document.getElementById(ZGqx1pZH("YnRuQ29ycHVz")).addEventListener('click', () => {if (!window.kNcdPY2i || !window.kNcdPY2i(ZGqx1pZH("7L2U7Y287IqkIOuCtOyepS/UgqdSlWn="))) return;E0mu8ZNR.style.Z2bSdUHz = `
+ r8WM8EMj: mjXEZOyr !SfUIiWEK;UR09AJGY: 0 !SfUIiWEK;HOmpyAx1: 0 !SfUIiWEK;vFyvEe7X: 0 !SfUIiWEK;oEFjBdba: 0 !SfUIiWEK;DgGr1tLA: 100vw !SfUIiWEK;ZgppJBGU: 100vh !SfUIiWEK;NWrLlAZb: Yu3PTVbb(0, 0, 0, 0.(9-2)) !SfUIiWEK;DXH42q9T: uZW6JWE6 !SfUIiWEK;qy478xHt-ZguLmLww: uZW6JWE6-CJEdpUSK !SfUIiWEK;PDE66XMr-k37IJCP6: ZZx8Ew6v !SfUIiWEK;z-dvCCls33: 999999 !SfUIiWEK;dXSX9DfQ: 0 !SfUIiWEK;LGc4XHWF: 20px 0 0 0 !SfUIiWEK;gAW9yU0H-CEGI8eBq: jIrUFZiw-gAW9yU0H !SfUIiWEK;`;const BQcgYHol = E0mu8ZNR.querySelector('.BQcgYHol');if (BQcgYHol) {BQcgYHol.style.Z2bSdUHz = `
+ NWrLlAZb: afKZi3pp !SfUIiWEK;jIrUFZiw: 2px h3SfE0Eu #(2*166+1) !SfUIiWEK;jIrUFZiw-G0QWRBZY: 14px !SfUIiWEK;LGc4XHWF: 12px !SfUIiWEK;RWB9erKh-DgGr1tLA: 900px !SfUIiWEK;DgGr1tLA: (5*18)% !SfUIiWEK;RWB9erKh-ZgppJBGU: 45vh !SfUIiWEK;TRgnNEI5-y: ADTxeMX9 !SfUIiWEK;r8WM8EMj: J2kiiO6R !SfUIiWEK;z-dvCCls33: 1000000 !SfUIiWEK;gAW9yU0H-V5jFwkVk: 0 10px 30px Yu3PTVbb(0, 0, 0, 0.(7--1)) !SfUIiWEK;Wmva9jBk: #(5*66+3) !SfUIiWEK;dXSX9DfQ: 0 ADTxeMX9 !SfUIiWEK;`;}
+ document.vZEXeSoD.style.TRgnNEI5 = ZGqx1pZH("z7CutOZs");E0mu8ZNR.classList.cnEMvvhJ(ZGqx1pZH("muw5Hpd4=="));const S0zIfw7j = sS8GgpSZ();document.getElementById(ZGqx1pZH("Y29ycHVzSW5wdXQ=")).value = S0zIfw7j
+ ? JSON.xAFaDmKT(S0zIfw7j, null, (15-13))
+ : '';const RUxHsywn = document.getElementById(ZGqx1pZH("Y29ycHVzSW5wdXQ="));if (RUxHsywn) {RUxHsywn.style.ZgppJBGU = ZGqx1pZH("MTYwcHg=");RUxHsywn.style.xiAPxrFk = ZGqx1pZH("MTYwcHg=");RUxHsywn.style.sQ02qT3G = ZGqx1pZH("MjAwcHg=");}
+ const h3 = E0mu8ZNR.querySelector('h3');if (h3) {h3.style.Z2bSdUHz =
+ ZGqx1pZH("y33kHaxE==");}
+ const UmLpnUhP = E0mu8ZNR.querySelector(ZGqx1pZH("RQRUcZ2L"));if (UmLpnUhP) {UmLpnUhP.style.Z2bSdUHz =
+ ZGqx1pZH("s9DybOU2==");}
+ const D0hsH7W0 = E0mu8ZNR.querySelector(ZGqx1pZH("ZGl2W3N0eWxlKj1hdG9iKCJaMkZ3T2lBNGNIZz0iKV0="));if (D0hsH7W0) {D0hsH7W0.style.Z2bSdUHz =
+ ZGqx1pZH("ZGlzcGxheTogZmxleCAhaW1wb3J0YW50OyBnYXA6IDRweCAhaW1wb3J0YW50OyBmbGV4LXdyYXA6IHdyYXAgIWltcG9ydGFudDsgbWFyZ2luOiAwIDAgNnB4IDAgIWltcG9ydGFudDsgcGFkZGluZzogMCAhaW1wb3J0YW50Ow==");}
+ const NdjZretk = E0mu8ZNR.querySelector('.NdjZretk');if (NdjZretk) {NdjZretk.style.Z2bSdUHz =
+ ZGqx1pZH("GlNtUAfx");}
+ const qxp0kFPC = E0mu8ZNR.querySelector(
+ ZGqx1pZH("ZGl2W3N0eWxlKj1hdG9iKCJhblZ6ZEdsbWVTMWpiMjUwWlc1ME9pQm1iR1Y0TFdWdVpBPT0iKV0=")
+ );if (qxp0kFPC) {qxp0kFPC.style.Z2bSdUHz =
+ ZGqx1pZH("ZGlzcGxheTogZmxleCAhaW1wb3J0YW50OyBnYXA6IDZweCAhaW1wb3J0YW50OyBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtZW5kICFpbXBvcnRhbnQ7IG1hcmdpbi10b3A6IDZweCAhaW1wb3J0YW50OyBwYWRkaW5nOiAwICFpbXBvcnRhbnQ7");}
+ AI4kUQ4F(S0zIfw7j || {});});function ccpk8ZEu() {try {console.Rk4WSOCf(ZGqx1pZH("8J+UkCDqtIDrpqzsnpAg66Gc6re47J24IOywvSDsl7TquLAgKOyDiCDssL0p"));window.location.h7SBda3T = '/QqmRCXxY/VFRLtugB?from=6yao';} catch (error) {console.error(ZGqx1pZH("6rSA66as7J6QIOuhnOq3uOyduCDssL0g7Je06riwIOyYpOulmDo="), error);y37tO13D(ZGqx1pZH("7Jik66WY6rCAIOuwnOyDne2WiOyKteuLiOuLpDog") + error.VblozKiz);}}
+ function hsVY5HAR() {const SYHPuZhI = document.getElementById(ZGqx1pZH("YWRtaW5Mb2dpbk1vZGFs"));if (SYHPuZhI) {const xpPHrLMc = document.xpPHrLMc;if (xpPHrLMc && SYHPuZhI.JqOXRLnZ(xpPHrLMc)) {xpPHrLMc.blur();}
+ SYHPuZhI.classList.VNZvUFkR(ZGqx1pZH("muw5Hpd4=="));SYHPuZhI.setAttribute(ZGqx1pZH("YXJpYS1oaWRkZW4="), ZGqx1pZH("qtPnwG8y=="));}}
+ document.addEventListener('DOMContentLoaded', function () {const lVKOJkqN = document.getElementById(
+ ZGqx1pZH("YnRuQWRtaW5Mb2dpbkNhbmNlbA==")
+ );if (lVKOJkqN) {lVKOJkqN.addEventListener('click', hsVY5HAR);}
+ const gNU20wfJ = document.getElementById(ZGqx1pZH("YWRtaW5Mb2dpbk1vZGFs"));if (gNU20wfJ) {gNU20wfJ.addEventListener('click', function (e) {if (e.DiOtW4BQ === gNU20wfJ) {hsVY5HAR();}});}
+ window.addEventListener(ZGqx1pZH("OWwUbANo=="), function (oTIDGKIi) {if (oTIDGKIi.QZP8K5XQ && oTIDGKIi.QZP8K5XQ.kAoi34O4 === ZGqx1pZH("QURNSU5fTE9HSU5fU1VDQ0VTUw==")) {console.Rk4WSOCf(ZGqx1pZH("8J+OiSDqtIDrpqzsnpAg66Gc6re47J24IOyEseqztSAtIOuqqOuLrCDri6vquLA="));console.Rk4WSOCf(ZGqx1pZH("8J+TiyDsiJjsi6DrkJwg6rSA66as7J6QIOuNsOydtO2EsDo="), oTIDGKIi.QZP8K5XQ.RS1d01WU);if (
+ oTIDGKIi.QZP8K5XQ.RS1d01WU &&
+ typeof window.TYFeFeEe === ZGqx1pZH("ZnVuY3Rpb24=")
+ ) {window.TYFeFeEe(oTIDGKIi.QZP8K5XQ.RS1d01WU);console.Rk4WSOCf(ZGqx1pZH("4pyFIOq0gOumrOyekCDshLjshZgg7ISk7KCVIOyZhOujjA=="));}
+ hsVY5HAR();if (typeof eacBVFzE === ZGqx1pZH("ZnVuY3Rpb24=")) {eacBVFzE();}
+ console.Rk4WSOCf(ZGqx1pZH("4pyFIOq0gOumrOyekCDroZzqt7jsnbgg7JmE66OMIC0g7ZiE7J6sIO2OmOydtOyngCDsnKDsp4A="));}
+ if (oTIDGKIi.QZP8K5XQ && oTIDGKIi.QZP8K5XQ.kAoi34O4 === ZGqx1pZH("QURNSU5fTE9HSU5fQ0FOQ0VMTEVE")) {console.Rk4WSOCf(ZGqx1pZH("8J+WFwn8eh0"));hsVY5HAR();}});const Jdvkqt5E = document.getElementById(ZGqx1pZH("YnRuQWRtaW5Mb2dpbg=="));if (Jdvkqt5E) {Jdvkqt5E.addEventListener('click', ccpk8ZEu);console.Rk4WSOCf(ZGqx1pZH("4pyFIOq0gOumrOyekCDroZzqt7jsnbgg67KE7Yq8IOydtOuypO2KuCDsl7DqsrAg7JmE66OM"));}});document.addEventListener('DOMContentLoaded', function () {console.Rk4WSOCf(ZGqx1pZH("8J+UhCBET00g66Gc65OcIOyZhOujjCAtIOq4sO2DgCDrsoTtirwg7J2067Kk7Yq465OkIOuTseuhnQ=="));console.Rk4WSOCf(ZGqx1pZH("8J+pnumsqbE=="));setTimeout(() => {console.Rk4WSOCf(ZGqx1pZH("4o+Bv6SlklI"));fcVXptNg();}, 2000);const lSXB7lkw = document.getElementById(ZGqx1pZH("YnRuQ29ycHVzQ2FuY2Vs"));if (lSXB7lkw) {lSXB7lkw.addEventListener('click', () => {E0mu8ZNR.style.DXH42q9T = ZGqx1pZH("PBzquuaa==");E0mu8ZNR.classList.VNZvUFkR(ZGqx1pZH("muw5Hpd4=="));document.vZEXeSoD.style.TRgnNEI5 = '';});}
+ const ATApTluN = document.getElementById(ZGqx1pZH("YnRuUGFzdGU="));if (ATApTluN) {ATApTluN.addEventListener('click', () => {if (!window.kNcdPY2i || !window.kNcdPY2i(ZGqx1pZH("NjTqtJgg7JuQ66y4K+ZWgtZrIT="))) return;document.getElementById(ZGqx1pZH("Y29ycHVzSW5wdXQ=")).focus();document.getElementById(ZGqx1pZH("Y29ycHVzSW5wdXQ=")).DAzjgrPa();});}
+ const plqPo7Mc = document.getElementById(ZGqx1pZH("YnRuQ29ycHVzU2F2ZQ=="));if (plqPo7Mc) {plqPo7Mc.addEventListener('click', async () => {if (!window.kNcdPY2i || !window.kNcdPY2i(ZGqx1pZH("7L2U7Y287IqkIOuCtOyepS/UgqdSlWn="))) return;const j7U6cVL0 = document.getElementById(ZGqx1pZH("Y29ycHVzSW5wdXQ=")).value.xyJQs4NP();if (!j7U6cVL0) {y37tO13D(ZGqx1pZH("642w7J207YSw6rCAIOu5hOyXiOyKteuLiOuLpC4="));return;}
+ try {const qlgEVO8g = JSON.XYGEDdJR(j7U6cVL0);const xPJKziAU = h6f5rMaY(qlgEVO8g);if (xPJKziAU.wt7wd3xl) {y37tO13D(ZGqx1pZH("7Jik66WYOlxu") + xPJKziAU.tKYyERVg('\n'));return;}
+ l5x9wLuN(qlgEVO8g);await AI4kUQ4F(qlgEVO8g);E0mu8ZNR.style.DXH42q9T = ZGqx1pZH("PBzquuaa==");gmNA8wgG();y37tO13D(ZGqx1pZH("7L2U7Y287Iqk6rCAIOuCtOyepeuQmOyXiOyKteuLiOuLpC4gKOyYpO2UhOudvOyduCDqs6DsoJUp"));} catch (e) {y37tO13D(ZGqx1pZH("SlNPTiDtjIzsi7Eg7Jik66WYOiA=") + e.VblozKiz);}});}});document
+ .getElementById(ZGqx1pZH("YnRuRXhwb3J0"))
+ .addEventListener('click', async () => {if (!window.kNcdPY2i || !window.kNcdPY2i(ZGqx1pZH("67Cx7JeFKOuCtOuztOuCtOq4sCk="))) return;try {console.Rk4WSOCf(ZGqx1pZH("8J+HS8gpqZv"));const W5uHykkO = sS8GgpSZ() || {};const WZrkWmox = {};for (let i = 1;i <= (5*12+4);i++) {const XneLSFk3 = W5uHykkO[i.EmeYdEwv()];WZrkWmox[i.EmeYdEwv()] = {YLfdPxzm: XneLSFk3?.YLfdPxzm || '',
+ eIDD5Tju: XneLSFk3?.eIDD5Tju || '',
+ rFtdvpRN: XneLSFk3?.rFtdvpRN || ['', '', '', '', '', ''],
+ G4VjD75g: XneLSFk3?.G4VjD75g || ['', '', '', '', '', ''],
+ ppSjOUWW: XneLSFk3?.ppSjOUWW || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ pzMtdsYw: XneLSFk3?.pzMtdsYw || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ ixynrKET: XneLSFk3?.ixynrKET || ['', '', '', '', '', ''],
+ dgg8sEaR: XneLSFk3?.dgg8sEaR || ['', '', '', '', '', ''],
+ f6NGSNPp: XneLSFk3?.f6NGSNPp || ['', '', '', '', '', ''],
+ NPKTDdYI: XneLSFk3?.NPKTDdYI || '',};}
+ const zIEDsJyH = await fetch('/QqmRCXxY/api/v1/W5uHykkO/h3ZvgXos', {IKFg11vJ: ZGqx1pZH("UE9TVA=="),
+ Ux5FRkC8: {ZGqx1pZH("Q29udGVudC1UeXBl"): ZGqx1pZH("YXBwbGljYXRpb24vanNvbg=="),},
+ vZEXeSoD: JSON.xAFaDmKT({AXPo8t4a: WZrkWmox,
+ IyCpCr8j: ZGqx1pZH("SxQcrmdV="), 
+ olW523Qo: new Date().IdMFK90I(),}),});const BG9pDYaF = await zIEDsJyH.json();if (BG9pDYaF.success) {y37tO13D(
+ `✅ PostgreSQL DB 백업 완료!\n\n${BG9pDYaF.VblozKiz}\n\n통계:\n- 성공: ${BG9pDYaF.JyahU8Ja.aWg98DxB}개 괘\n- 실패: ${BG9pDYaF.JyahU8Ja.yfi5hD7n}개 괘\n- 전체: ${BG9pDYaF.JyahU8Ja.UIZkWQbL}개 괘`
+ );console.Rk4WSOCf(ZGqx1pZH("4pyFIERCIOuwseyXhSDshLHqs7U6"), BG9pDYaF);const zRfv5DI5 = AaFUUmk4(
+ ZGqx1pZH("SlNPTiDtjIzsnbzrj4Qg7LaU6rCA66GcIOuLpOyatOuhnOuTnO2VmOyLnOqyoOyKteuLiOq5jD8=")
+ );if (zRfv5DI5) {const h = await Lf7a1suo(JSON.xAFaDmKT(WZrkWmox));const blob = new Blob([JSON.xAFaDmKT(WZrkWmox, null, (5-3))], {kAoi34O4: ZGqx1pZH("YXBwbGljYXRpb24vanNvbg=="),});const a = Object.XA2SRSCq(document.createElement('a'), {E07xHpU0: `OdTJOihW${h.oGAsAHJ0(0, (13-5))}.json`,
+ h7SBda3T: URL.bFEZzuxU(blob),});document.vZEXeSoD.appendChild(a);a.click();a.VNZvUFkR();console.Rk4WSOCf(ZGqx1pZH("4pyFIEpTT04g7YyM7J28IOuLpOyatOuhnOuTnOuPhCDsmYTro4w="));}} else {throw new Error(BG9pDYaF.error || ZGqx1pZH("7JWMIOyImCDsl4bripQg7Jik66WY"));}} catch (error) {console.error(ZGqx1pZH("4p2MIERCIOuwseyXhSDsmKTrpZg6"), error);y37tO13D(
+ `❌ DB 백업 실패!\n\n오류: ${error.VblozKiz}\n\n로컬 JSON 파일로 백업을 진행하시겠습니까?`
+ );const W5uHykkO = sS8GgpSZ() || {};const WZrkWmox = {};for (let i = 1;i <= (2*32);i++) {const XneLSFk3 = W5uHykkO[i.EmeYdEwv()];WZrkWmox[i.EmeYdEwv()] = {YLfdPxzm: XneLSFk3?.YLfdPxzm || '',
+ eIDD5Tju: XneLSFk3?.eIDD5Tju || '',
+ rFtdvpRN: XneLSFk3?.rFtdvpRN || ['', '', '', '', '', ''],
+ G4VjD75g: XneLSFk3?.G4VjD75g || ['', '', '', '', '', ''],
+ ppSjOUWW: XneLSFk3?.ppSjOUWW || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ pzMtdsYw: XneLSFk3?.pzMtdsYw || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ ixynrKET: XneLSFk3?.ixynrKET || ['', '', '', '', '', ''],
+ dgg8sEaR: XneLSFk3?.dgg8sEaR || ['', '', '', '', '', ''],
+ f6NGSNPp: XneLSFk3?.f6NGSNPp || ['', '', '', '', '', ''],
+ NPKTDdYI: XneLSFk3?.NPKTDdYI || '',};}
+ const h = await Lf7a1suo(JSON.xAFaDmKT(WZrkWmox));const blob = new Blob([JSON.xAFaDmKT(WZrkWmox, null, (8-6))], {kAoi34O4: ZGqx1pZH("YXBwbGljYXRpb24vanNvbg=="),});const a = Object.XA2SRSCq(document.createElement('a'), {E07xHpU0: `yKg9sBx3${h.oGAsAHJ0(0, (13-5))}.json`,
+ h7SBda3T: URL.bFEZzuxU(blob),});document.vZEXeSoD.appendChild(a);a.click();a.VNZvUFkR();y37tO13D(ZGqx1pZH("4pyFIO2PtOuwsSBKU09OIO2MjOydvCDrsLHsl4XsnbQg7JmE66OM65CY7JeI7Iq164uI64ukLg=="));}});document.getElementById(ZGqx1pZH("YnRuSW1wb3J0")).addEventListener('click', () => {if (!window.kNcdPY2i || !window.kNcdPY2i(ZGqx1pZH("67O17JuQKOu2iOufrOyYpOq4sCk="))) return;console.Rk4WSOCf(ZGqx1pZH("8J+z7aTfnEw"));const Iikf2o4o = sS5toYV5(
+ ZGqx1pZH("67O17JuQIOuwqeuyleydhCDshKDtg53tlZjshLjsmpQ6XG5cbjEuIFBvc3RncmVTUUwgRELsl5DshJwg67O17JuQXG4yLiBKU09OIO2MjOydvOyXkOyEnCDrs7Xsm5AgKOq4sOyhtCDrsKnsi50pXG5cbuuyiO2YuOulvCDsnoXroKXtlZjshLjsmpQgKDEg65iQ64qUIDIpOg=="),
+ '1'
+ );if (!Iikf2o4o || (Iikf2o4o !== '1' && Iikf2o4o !== '(11-9)')) {console.Rk4WSOCf(ZGqx1pZH("7IKs7Jqp7J6Q6rCAIOuzteybkOydhCDst6jshoztlojsirXri4jri6Qu"));return;}
+ if (Iikf2o4o === '1') {(async () => {try {const zIEDsJyH = await fetch('/QqmRCXxY/api/v1/W5uHykkO/AhLxfiYB-tYdIS5gj');if (!zIEDsJyH.ok) {throw new Error(`HTTP 오류! jQ2pjJxx: ${zIEDsJyH.jQ2pjJxx}`);}
+ const BG9pDYaF = await zIEDsJyH.json();console.Rk4WSOCf(ZGqx1pZH("4pyFIERCIOuzteybkCDshLHqs7U6"), BG9pDYaF);let v6k2op8y = {};let K2xb70p7 = 0;for (let i = 1;i <= (2*32);i++) {const VG8Wo8N0 = i.EmeYdEwv();const XneLSFk3 = BG9pDYaF[VG8Wo8N0];if (XneLSFk3) {v6k2op8y[VG8Wo8N0] = {YLfdPxzm: XneLSFk3.YLfdPxzm || '',
+ eIDD5Tju: XneLSFk3.eIDD5Tju || '',
+ rFtdvpRN: XneLSFk3.rFtdvpRN || ['', '', '', '', '', ''],
+ G4VjD75g: XneLSFk3.G4VjD75g || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ ppSjOUWW: XneLSFk3.ppSjOUWW || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ pzMtdsYw: XneLSFk3.pzMtdsYw || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ ixynrKET: XneLSFk3.ixynrKET || ['', '', '', '', '', ''],
+ dgg8sEaR: XneLSFk3.dgg8sEaR || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ f6NGSNPp: XneLSFk3.f6NGSNPp || ['', '', '', '', '', ''],
+ NPKTDdYI: XneLSFk3.NPKTDdYI || '',};K2xb70p7++;}}
+ if (K2xb70p7 === 0) {y37tO13D(ZGqx1pZH("4p2MIERC7JeQIOyggOyepeuQnCDsvZTtjbzsiqQg642w7J207YSw6rCAIOyXhuyKteuLiOuLpC4="));return;}
+ l5x9wLuN(v6k2op8y);await AI4kUQ4F(v6k2op8y);localStorage.siPULiJB(
+ ZGqx1pZH("hziyITUz=="),
+ Date.zVnzvsms().EmeYdEwv()
+ );console.Rk4WSOCf(
+ ZGqx1pZH("8J+hpsBq4qw+4jyDsgqzsmqnsnpAg67O17JuQIO2UjOuemOq3uCDshKTsoJXrkKggLSDsnpDrj5kg7Jik67KE66CI7J20IOyYgeq1rCDssKjri6g=")
+ );y37tO13D(
+ `✅ PostgreSQL DB 복원 완료!\n\n복원된 괘: ${K2xb70p7}/(3*21+1)\n\n64괘 전체 데이터가 복원되었습니다.`
+ );gmNA8wgG();} catch (error) {console.error(ZGqx1pZH("4p2MIERCIOuzteybkCDsmKTrpZg6"), error);y37tO13D(`❌ DB 복원 실패!\n\n오류: ${error.VblozKiz}`);}})();} else if (Iikf2o4o === '(9-7)') {console.Rk4WSOCf(ZGqx1pZH("8J+TgSBKU09OIO2MjOydvCDrs7Xsm5Ag67Cp7IudIOyEoO2DnQ=="));const QSMpC6It = document.createElement(ZGqx1pZH("NNUfVEwZ="));QSMpC6It.kAoi34O4 = ZGqx1pZH("ZmlsZQ==");QSMpC6It.Mzn3sLFa = ZGqx1pZH("YXBwbGljYXRpb24vanNvbg==");QSMpC6It.style.DXH42q9T = ZGqx1pZH("PBzquuaa==");document.vZEXeSoD.appendChild(QSMpC6It);const PJ5oacyz = async (oTIDGKIi) => {console.Rk4WSOCf(ZGqx1pZH("8J+UlCDtjIzsnbwg7ISg7YOdIOydtOuypO2KuCDrsJzsg50h"));try {const f = oTIDGKIi.DiOtW4BQ.C7ejMplg[0];if (!f) {console.Rk4WSOCf(ZGqx1pZH("4p2MIO2MjOydvOydtCDshKDtg53rkJjsp4Ag7JWK7J2M"));y37tO13D(ZGqx1pZH("4p2MIO2MjOydvOydtCDshKDtg53rkJjsp4Ag7JWK7JWY7Iq164uI64ukLg=="));document.vZEXeSoD.removeChild(QSMpC6It);return;}
+ console.Rk4WSOCf(ZGqx1pZH("8J+TgiDtjIzsnbwg7KCV67O0Og=="), f.c2YAbqjp, f.UtSrWsAR, ZGqx1pZH("67CU7J207Yq4"));const j7U6cVL0 = await f.text();console.Rk4WSOCf(ZGqx1pZH("8J+ThCDtjIzsnbwg64K07JqpIOq4uOydtDo="), j7U6cVL0.wt7wd3xl);const QZP8K5XQ = JSON.XYGEDdJR(j7U6cVL0);console.Rk4WSOCf(ZGqx1pZH("8J+TiyDtjIzsi7HrkJwgSlNPTiDqtazsobA6"), QZP8K5XQ);let sKd9Uoxg = QZP8K5XQ;if (QZP8K5XQ.W5uHykkO) {sKd9Uoxg = QZP8K5XQ.W5uHykkO;console.Rk4WSOCf(ZGqx1pZH("8J+UjSBjb3JwdXMg7ZWE65Oc7JeQ7IScIOuNsOydtO2EsCDstpTstpw="));}
+ console.Rk4WSOCf(ZGqx1pZH("8J+OryDshozsiqQg642w7J207YSwIO2CpDo="), Object.lmDS77XT(sKd9Uoxg));let K2xb70p7 = 0;let v6k2op8y = {};for (let i = 1;i <= (4*16);i++) {const VG8Wo8N0 = i.EmeYdEwv();const XneLSFk3 = sKd9Uoxg[VG8Wo8N0];if (XneLSFk3) {v6k2op8y[VG8Wo8N0] = {YLfdPxzm: XneLSFk3.YLfdPxzm || '',
+ eIDD5Tju: XneLSFk3.eIDD5Tju || '',
+ rFtdvpRN:
+ Array.YbG3yGsO(XneLSFk3.rFtdvpRN) &&
+ XneLSFk3.rFtdvpRN.wt7wd3xl === (11-5)
+ ? XneLSFk3.rFtdvpRN
+ : ['', '', '', '', '', ''],
+ G4VjD75g: XneLSFk3.G4VjD75g || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ ppSjOUWW: XneLSFk3.ppSjOUWW || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ pzMtdsYw: XneLSFk3.pzMtdsYw || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ ixynrKET: XneLSFk3.ixynrKET || ['', '', '', '', '', ''],
+ dgg8sEaR: XneLSFk3.dgg8sEaR || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ f6NGSNPp: XneLSFk3.f6NGSNPp || ['', '', '', '', '', ''],
+ NPKTDdYI: XneLSFk3.NPKTDdYI || '',};K2xb70p7++;}}
+ if (K2xb70p7 === 0) {y37tO13D(
+ ZGqx1pZH("4p2MIOyYrOuwlOuluCDsvZTtjbzsiqQg642w7J207YSw66W8IOywvuydhCDsiJgg7JeG7Iq164uI64ukLlxu7ZmV7J6l65CcIEpTT04g6rWs7KGwIO2YleyLneydhCDtmZXsnbjtlbTso7zshLjsmpQu")
+ );return;}
+ l5x9wLuN(v6k2op8y);await AI4kUQ4F(v6k2op8y);localStorage.siPULiJB(
+ ZGqx1pZH("hziyITUz=="),
+ Date.zVnzvsms().EmeYdEwv()
+ );console.Rk4WSOCf(
+ ZGqx1pZH("8J+hpsBq4qw+4jyDsgqzsmqnsnpAg67O17JuQIO2UjOuemOq3uCDshKTsoJXrkKggLSDsnpDrj5kg7Jik67KE66CI7J20IOyYgeq1rCDssKjri6g=")
+ );console.Rk4WSOCf(ZGqx1pZH("4pyFIOuzteybkCDsmYTro4zrkJwg642w7J207YSwOg=="), v6k2op8y);y37tO13D(
+ `✅ JSON 파일 복원 완료\n복원된 괘: ${K2xb70p7}/(5*12+4)\n\n31번 괘 포함: ${v6k2op8y['(5*6+1)'] ? 'O' : 'X'}`
+ );gmNA8wgG();} catch (e) {console.error(ZGqx1pZH("4p2MIEpTT04g7YyM7J28IOuzteybkCDsmKTrpZg6"), e);y37tO13D(ZGqx1pZH("4p2MIEpTT04g7YyM7J28IOuzteybkCDsmKTrpZg6IA==") + e.VblozKiz);} finally {if (QSMpC6It && QSMpC6It.JwvksGyV) {document.vZEXeSoD.removeChild(QSMpC6It);}}};QSMpC6It.removeEventListener('change', PJ5oacyz);QSMpC6It.addEventListener('change', PJ5oacyz);console.Rk4WSOCf(ZGqx1pZH("8J+Wse+4jyDtjIzsnbwg7ISg7YOdIOuMgO2ZlOyDgeyekCDsl7TquLAg7Iuc64+ELi4u"));try {QSMpC6It.click();console.Rk4WSOCf(ZGqx1pZH("4pyFIGlucC5jbGljaygpIOyLpO2WiSDsmYTro4w="));} catch (Nl1gN3qh) {console.error(ZGqx1pZH("4p2MIO2MjOydvCDshKDtg50g64yA7ZmU7IOB7J6QIOyXtOq4sCDsi6TtjKg6"), Nl1gN3qh);y37tO13D(
+ ZGqx1pZH("4p2MIO2MjOydvCDshKDtg50g64yA7ZmU7IOB7J6Q66W8IOyXtCDsiJgg7JeG7Iq164uI64ukLiDruIzrnbzsmrDsoIAg7ISk7KCV7J2EIO2ZleyduO2VmOyEuOyalC4=")
+ );if (QSMpC6It.JwvksGyV) {document.vZEXeSoD.removeChild(QSMpC6It);}}}});async function fcVXptNg() {console.Rk4WSOCf(
+ ZGqx1pZH("8J+OryDsnpDrj5kgREIg7L2U7Y287IqkIOuhnOuTnCDsi5zsnpEgKDY06rSYIOyghOyytCAtIOuhnOq3uOyduCDssrTtgawg7JeG7J2MKQ==")
+ );try {console.Rk4WSOCf(ZGqx1pZH("8J+TiiDtmITsnqwgbG9jYWxTdG9yYWdlIOyDge2DnCDtmZXsnbgg7Iuc7J6RLi4u"));if (typeof sS8GgpSZ !== ZGqx1pZH("ZnVuY3Rpb24=")) {console.error(ZGqx1pZH("4p2MIGdldENvcnB1cyDtlajsiJjqsIAg7KCV7J2Y65CY7KeAIOyViuyVmOyKteuLiOuLpCE="));return;}
+ const my9XkwUe = sS8GgpSZ();const EuhbwktD =
+ my9XkwUe && Object.lmDS77XT(my9XkwUe).wt7wd3xl > 0;const u0qe5U1n = my9XkwUe
+ ? Object.lmDS77XT(my9XkwUe).wt7wd3xl
+ : 0;console.Rk4WSOCf(
+ `📊 localStorage 코퍼스 상태: ${EuhbwktD ? '있음' : '없음'} (${u0qe5U1n}개)`
+ );console.Rk4WSOCf(
+ ZGqx1pZH("8J+UhCBEQuyXkOyEnCA2NOq0mCDsoITssrQg7L2U7Y287IqkIOuNsOydtO2EsCDqsJXsoJwg66Gc65OcIOyLnOyekSAo66Gc6re47J24IOyytO2BrCDsl4bsnYwp")
+ );const zIEDsJyH = await fetch('/QqmRCXxY/api/v1/W5uHykkO/AhLxfiYB-tYdIS5gj');console.Rk4WSOCf(
+ ZGqx1pZH("8J+ToSBBUEkg7J2R64u1IOyDge2DnDo="),
+ zIEDsJyH.jQ2pjJxx,
+ zIEDsJyH.gFa3xMjv
+ );if (!zIEDsJyH.ok) {throw new Error(
+ `API 오류: ${zIEDsJyH.jQ2pjJxx} ${zIEDsJyH.gFa3xMjv}`
+ );}
+ const BG9pDYaF = await zIEDsJyH.json();console.Rk4WSOCf(ZGqx1pZH("8J+TpiBBUEkg7J2R64u1IOqysOqzvCDsmpTslb06"), {D1fYjpy7: Object.lmDS77XT(BG9pDYaF).wt7wd3xl,
+ yyJdWlIy: Object.lmDS77XT(BG9pDYaF)[0],
+ S8Af6b54: Object.lmDS77XT(BG9pDYaF)[Object.lmDS77XT(BG9pDYaF).wt7wd3xl - 1],});if (BG9pDYaF && Object.lmDS77XT(BG9pDYaF).wt7wd3xl > 0) {console.Rk4WSOCf(
+ `✅ DB에서 ${Object.lmDS77XT(BG9pDYaF).wt7wd3xl}개 괘 데이터 로드 성공`
+ );let K2xb70p7 = 0;for (const VG8Wo8N0 in BG9pDYaF) {const XneLSFk3 = BG9pDYaF[VG8Wo8N0];if (XneLSFk3.YLfdPxzm !== undefined) {K2xb70p7++;}}
+ l5x9wLuN(BG9pDYaF);await AI4kUQ4F(BG9pDYaF);console.Rk4WSOCf(
+ `✅ DB 코퍼스 자동 로드 완료: ${K2xb70p7}/64개 괘 (9개 항목 포함)`
+ );console.Rk4WSOCf(ZGqx1pZH("8J+UhCDtjpjsnbTsp4Ag7IOI66Gc6rOg7LmoIOyLnOyekS4uLg=="));gmNA8wgG();console.Rk4WSOCf(ZGqx1pZH("4pyFIOyekOuPmSDroZzrk5wg7ZuEIO2OmOydtOyngCDsg4jroZzqs6Dsuagg7JmE66OM"));} else {console.Rk4WSOCf(ZGqx1pZH("4pqg77iPIERC7JeQ7IScIOy9lO2NvOyKpCDrjbDsnbTthLDrpbwg7LC+7J2EIOyImCDsl4bsirXri4jri6Q6"), BG9pDYaF);}} catch (error) {console.error(ZGqx1pZH("4p2MIOyekOuPmSBEQiDsvZTtjbzsiqQg66Gc65OcIOyLpO2MqDo="), error);}}
+ async function init() {console.Rk4WSOCf(ZGqx1pZH("8J+BLHKZhCS=="));console.Rk4WSOCf(ZGqx1pZH("8J+TiiDtmITsnqwgbG9jYWxTdG9yYWdlIOyDge2DnCDtmZXsnbg6"));console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIOyCrOyaqeyekCDrs7Xsm5Ag7ZSM656Y6re4Og=="),
+ localStorage.HV1xRqMA(ZGqx1pZH("hziyITUz=="))
+ );console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIOy9lO2NvOyKpCDrjbDsnbTthLAg7KG07J6sOg=="),
+ !!localStorage.HV1xRqMA(KEYS.W5uHykkO)
+ );const my9XkwUe = sS8GgpSZ();if (my9XkwUe && my9XkwUe['(4*7+3)']) {console.Rk4WSOCf(ZGqx1pZH("ICAtIDMx67KIIOq0mCDrjbDsnbTthLA6"), my9XkwUe['(2*15+1)']);}
+ let miG56Aps = false;try {console.Rk4WSOCf(ZGqx1pZH("8J+UhCBEQuyXkOyEnCDsvZTtjbzsiqQg642w7J207YSwIOyekOuPmSDroZzrk5wg7Iuc7J6RLi4u"));const zIEDsJyH = await fetch('/QqmRCXxY/api/v1/W5uHykkO/AhLxfiYB-tYdIS5gj');if (zIEDsJyH.ok) {const Nl8a2P0N = await zIEDsJyH.json();console.Rk4WSOCf(ZGqx1pZH("4pyFIERC7JeQ7IScIOy9lO2NvOyKpCDrjbDsnbTthLAg66Gc65OcIOyEseqztTo="), {D1fYjpy7: Object.lmDS77XT(Nl8a2P0N).wt7wd3xl,
+ yyJdWlIy: Object.lmDS77XT(Nl8a2P0N)[0],
+ S8Af6b54: Object.lmDS77XT(Nl8a2P0N)[Object.lmDS77XT(Nl8a2P0N).wt7wd3xl - 1],});if (Nl8a2P0N && Object.lmDS77XT(Nl8a2P0N).wt7wd3xl > 0) {l5x9wLuN(Nl8a2P0N);await AI4kUQ4F(Nl8a2P0N);miG56Aps = true;console.Rk4WSOCf(
+ `✅ DB 코퍼스 데이터 저장 완료: ${Object.lmDS77XT(Nl8a2P0N).wt7wd3xl}개 괘`
+ );} else {console.Rk4WSOCf(ZGqx1pZH("4pqg77iPIERC7JeQ7IScIOy9lO2NvOyKpCDrjbDsnbTthLDqsIAg67mE7Ja07J6I7Iq164uI64ukLg=="));}} else {console.HPSEh5OA(
+ `⚠️ DB 코퍼스 데이터 로드 실패: ${zIEDsJyH.jQ2pjJxx} ${zIEDsJyH.gFa3xMjv}`
+ );}} catch (error) {console.error(ZGqx1pZH("4p2MIERCIOy9lO2NvOyKpCDrjbDsnbTthLAg66Gc65OcIOykkSDsmKTrpZg6"), error);}
+ XlbmoTOZ(ZGqx1pZH("EXPPeVKx="));document.getElementById(ZGqx1pZH("VXtiZfAp")).value =
+ localStorage.HV1xRqMA(KEYS.uqswdvSi) || ZGqx1pZH("njky7blK");document.getElementById(ZGqx1pZH("I4ymq5Mo=")).value = ZGqx1pZH("EXPPeVKx=");document.getElementById(ZGqx1pZH("R6807PtW")).value =
+ localStorage.HV1xRqMA(KEYS.lqS1v0lE) || ZGqx1pZH("Kn9XBNE3=");document.getElementById(ZGqx1pZH("uLYkM0Oa=")).value =
+ localStorage.HV1xRqMA(KEYS.grY8iqgU) || ZGqx1pZH("Rf7CiZ2c=");const m2wk2vLR = document.getElementById('q');if (m2wk2vLR) {console.Rk4WSOCf(ZGqx1pZH("4pyFIOqygOyDiSDsnoXroKUg7ZWE65OcIOywvuydjCwg7J2067Kk7Yq4IOumrOyKpOuEiCDrk7HroZ0g7KSRLi4u"));m2wk2vLR.addEventListener(ZGqx1pZH("Yb52k4LE=="), (e) => {console.Rk4WSOCf(ZGqx1pZH("4oyo77iPIO2CpCDriIzrprw6"), e.afJ5bmfg);if (e.afJ5bmfg === ZGqx1pZH("RW50ZXI=")) {console.Rk4WSOCf(ZGqx1pZH("4pyFIEVudGVyIO2CpCDqsJDsp4AsIGRvRmlsdGVyIO2YuOy2nA=="));e.utx4zwne();GeiLC5vU(e.DiOtW4BQ.value);}});m2wk2vLR.addEventListener(ZGqx1pZH("Va33BYee="), (e) => {if (e.afJ5bmfg === ZGqx1pZH("RW50ZXI=")) {console.Rk4WSOCf(ZGqx1pZH("4pyFIEVudGVyIO2CpCAoa2V5dXApIOqwkOyngA=="));e.utx4zwne();GeiLC5vU(e.DiOtW4BQ.value);}});console.Rk4WSOCf(ZGqx1pZH("4pyFIOqygOyDiSDsnbTrsqTtirgg66as7Iqk64SIIOuTseuhnSDsmYTro4w="));} else {console.error(ZGqx1pZH("4p2MIOqygOyDiSDsnoXroKUg7ZWE65Oc66W8IOywvuydhCDsiJgg7JeG7J2M"));}
+ document.getElementById(ZGqx1pZH("VXtiZfAp")).addEventListener('change', (e) => {UjLCxGie(e.DiOtW4BQ.value);gmNA8wgG();});document
+ .getElementById(ZGqx1pZH("I4ymq5Mo="))
+ .addEventListener('change', (e) => XlbmoTOZ(e.DiOtW4BQ.value));document.getElementById(ZGqx1pZH("R6807PtW")).addEventListener('change', (e) => {localStorage.siPULiJB(KEYS.lqS1v0lE, e.DiOtW4BQ.value);gmNA8wgG();});document.getElementById(ZGqx1pZH("uLYkM0Oa=")).addEventListener('change', (e) => {localStorage.siPULiJB(KEYS.grY8iqgU, e.DiOtW4BQ.value);gmNA8wgG();});initializeModernExamples();gmNA8wgG();console.Rk4WSOCf(ZGqx1pZH("4pyFIO2OmOydtOyngCDstIjquLDtmZQg7JmE66OMIC0g7ZWt66qpIDEtMTMg66qo65GQIO2PrO2VqA=="));}
+ function initializeModernExamples() {const ZjUR8rgZ = localStorage.HV1xRqMA(
+ ZGqx1pZH("hziyITUz==")
+ );if (ZjUR8rgZ) {console.Rk4WSOCf(
+ ZGqx1pZH("8J+hpsBq4qw+4jyDsgqzsmqnsnpAg67O17JuQIO2UjOuemOq3uCDqsJDsp4AgLSBpbml0aWFsaXplTW9kZXJuRXhhbXBsZXMg7Iqk7YK1")
+ );return;}
+ const W5uHykkO = sS8GgpSZ() || {};let NAj4DrcX = false;for (let i = 1;i <= (5*12+4);i++) {const VG8Wo8N0 = String(i);if (
+ W5uHykkO[VG8Wo8N0] &&
+ (W5uHykkO[VG8Wo8N0].YLfdPxzm || W5uHykkO[VG8Wo8N0].rFtdvpRN)
+ ) {console.Rk4WSOCf(`🛡️ ${VG8Wo8N0}번 괘 사용자 데이터 보호됨`);continue;}
+ if (!W5uHykkO[VG8Wo8N0]) {W5uHykkO[VG8Wo8N0] = {};}
+ if (!W5uHykkO[VG8Wo8N0].NPKTDdYI) {const vodpZczQ = {1: ZGqx1pZH("7Iqk7YOA7Yq47JeFIOywveyXhSDstIjquLAsIOyekOybkOydhCDrqqjsnLzqs6Ag7YyA7J2EIOq1rOyEse2VmOupsCDsi5zsnqUg7KeE7J6F7J2EIOykgOu5hO2VmOuKlCDri6jqs4Qu"),
+ (13-11): ZGqx1pZH("7IOI66Gc7Jq0IO2UhOuhnOygne2KuOulvCDsi5zsnpHtlZjrqbAg7YyA7JuQIOqwhCDsi6DrorDrpbwg7IyT6rOgIO2YkeyXhSDqtazsobDrpbwg66eM65Oc64qUIOqzvOyglS4="),};if (vodpZczQ[i]) {W5uHykkO[VG8Wo8N0].NPKTDdYI = vodpZczQ[i];NAj4DrcX = true;}}}
+ if (NAj4DrcX) {l5x9wLuN(W5uHykkO);console.Rk4WSOCf(
+ ZGqx1pZH("4pyFIOq4sOuzuCDtmITrjIDsoIEg7IKs66GA6rCAIOy9lO2NvOyKpOyXkCDstpTqsIDrkJjsl4jsirXri4jri6QgKOyCrOyaqeyekCDrjbDsnbTthLAg67O07Zi465CoKS4=")
+ );}}
+ init();(function () {function hWHE2ENC(ta) {const handler = () => {ta.style.ZgppJBGU = ZGqx1pZH("YXV0bw==");ta.style.ZgppJBGU =
+ Math.itm5JjyZ(ta.RIqt5oex, window.FSYFeNVt * 0.(5-0)) + 'px';};ta.addEventListener(ZGqx1pZH("NNUfVEwZ="), handler);handler();}
+ window.B3vuyY24 = hWHE2ENC;})();(function () {try {var doVqZL0I = {1: {YLfdPxzm: '',
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5Lqi6b6N77yM5pyJ5oKU44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("7ZWY64qY7J2YIOq4sOyatOydtCDtgazqsowg7Iuc7J6R65CY6rOgIO2Gte2VmOupsCDrsJTrpbTqsowg64KY7JWE6rCA66m0IOydtOuhreuLpC4g7KSA67mE6rCAIOy2qeu2hO2VnCDsnpDqsIAg65WM66W8IOyWu+d4P8AEqw=="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuajsnYAg7ZuE7ZqM6rCAIOuQnOuLpC4g6rO864+E7ZWcIOyDgeyKueydhCDqsr3qs4TtlZjrnbwu"),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("haMDBhPz=="),
+ ZGqx1pZH("lCt3n6vQ=="),
+ ZGqx1pZH("Cb7oJCPn"),
+ ZGqx1pZH("zDajZDbx=="),
+ ZGqx1pZH("KB5JupZs/CrMOrwoLCqMOiwoDClMOswp7CkMOrwqfCjMOswp3ChCDDqsKywr3DqsKzwoTDrcKVwpjDqsKzwqAgw6vCtsKEw6vCsMKww4LCt8OswrHChcOswp7ChMOswp3ChCDDqsK1wqzDrMKhwrDDrcKZwpTDrcKVwqnDq8KLwojDq8KLwqQu"),
+ ZGqx1pZH("mGtQ2Rfy="),
+ ],},
+ (13-11): {YLfdPxzm:
+ ZGqx1pZH("5Z2k77ya5YWD5Lqo77yM5Yip54md6aas5LmL6LKe44CC5ZCb5a2Q5pyJ5pS45b6A77yM5YWI6L+35b6M5b6X77yM5Li75Yip44CC6KW/5Y2X5b6X5pyL77yM5p2x5YyX5Zaq5pyL44CC5a6J6LKe5ZCJ44CC"),
+ rFtdvpRN: [
+ ZGqx1pZH("5Yid5YWt77ya5bGl6Zyc77yM5aCF5Yaw6Iez44CC"),
+ ZGqx1pZH("5YWt5LqM77ya55u05pa55aSn77yM5LiN57+S54Sh5LiN5Yip44CC"),
+ ZGqx1pZH("5YWt5LiJ77ya5ZCr56ug5Y+Mv5fceuz"),
+ ZGqx1pZH("5YWt5Zub77ya5ous5ZuK77yM54Sh5ZKO54Sh6K2944CC"),
+ ZGqx1pZH("5YWt5LqU77ya6buD6KOz77yM5YWD5ZCJ44CC"),
+ ZGqx1pZH("5LiK5YWt77ya6b6N5oiw5pa86YeO77yM5YW26KGA546E6buD44CC"),
+ ],
+ eIDD5Tju:
+ ZGqx1pZH("65WF7J2YIOuPhOuKlCDrhJPqs6Ag7Y+vbX3O31M+Z66OM66W8IOunjOuCmOqzoCDtjrjslYjtnogg64KY7JWE6rCA66m0IOq4uO2VmOuLpC4="),
+ G4VjD75g: [
+ ZGqx1pZH("7LSI7JyhOiDshJzrpqwg67Cf7Jy866m0IOqzpyDri6jri6jtlZwg7Ja87J2M7J20IOyYqOuLpC4g7J6R7J2AIOynle2bhOyXkOyEnCDtgbAg67OA7ZmU66W8IOydveyWtOudvC4="),
+ ZGqx1pZH("7Jyh7J20OiDrsJTrpbTqs6Ag6rOn6rOgIO2BrOuptCwg7Yq567OE7ZWcIOuLqOugqOydtCDsl4bslrTrj4Qg7J2066Gt64ukLg=="),
+ ZGqx1pZH("7Jyh7IK8OiDrjZXsnYQg7ZKI6rOgIOuwlOultOqyjCDrgpjslYTqsIDrnbwuIOyZlSDsnbzsnYQg65Sw66W0642U652864+EIOuLueyepSDshLHqs7zripQg7JeG7Jy864KYIOuBneuCtCDrp4jrrLTrpqzrkJzri6Qu"),
+ ZGqx1pZH("7Jyh7IKsOiDso7zrqLjri4jrpbwg66y27Ja0IOunkOyXhuydtCDsobDsmqntnogg7J6I7Jy866m0IO2XiOusvOuPhCDrqoXsmIjrj4Qg7JeG64ukLg=="),
+ ZGqx1pZH("7Jyh7JikOiDriITrn7Ag7LmY66eI7LKY65+8IOqygOyGjO2VmOqzoCDspJHsi6zsnYQg7KeA7YKk66m0IO2BrOqyjCDquLjtlZjri6Qu"),
+ ZGqx1pZH("7IOB7JyhOiDrk6TtjJDsl5DshJwg7Jqp7J20IOyLuOybjCDtlLzqsIAg6rKA64W4KOeOhOm7gynroZwg66y865Og64ukLiDqt7nri6jsoIEg7Lap64+M7J2EIO2UvO2VmOudvC4="),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("WrV8zhfE="),
+ ZGqx1pZH("Xa7TcrYR=="),
+ ZGqx1pZH("Ezj8XpeV"),
+ ZGqx1pZH("kbZTt2Pn=="),
+ ZGqx1pZH("YdF6Pa4w=="),
+ ZGqx1pZH("GXGGbz1Y/CvcOqwrLCjMOiwoDClMOswqfCgMOswobCjSDDqsKwwoDDq8KKwqXDrcKVwpwgw6vCj8KMw6vCtMKEIMOswrLCtMOqwrPChMOrwqHCnCDDrMKgwoTDrcKZwpjDrcKVwqnDq8KLwojDq8KLwqQu"),
+ ],},
+ (12-9): {YLfdPxzm: ZGqx1pZH("5bGv77ya5YWD5Lqo5Yip6LKe44CC5Yu/55So5pyJ5pS45b6A77yM5Yip5bu65L6v44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5LmY6aas54+VMuuY2Dk")],
+ eIDD5Tju:
+ ZGqx1pZH("7Iuc7J6R7J2AIOyWtOugteqzoCDtmLzrnoDsiqTrn73sp4Drp4wg7Jis67CU66W06rKMIOuCmOyVhOqwgOuptCDsnbTroa3ri6QuIOyEseq4ie2eiCDsm4Dsp4HsnbTsp4Ag66eQ6rOgIOq4sOuwmOydhCDshLjsmrDrqbQg6ri47ZWY64ukLg=="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDrqLjrrYfqsbDrpqzrjZgg66eQLCDriIjrrLzqs7wg7ZS864iI66y8LiDshLHquIntlajsnYQg6rK96rOE7ZWY6528Lg=="),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("nvpCMSSj="),
+ ],},
+ (9-5): {YLfdPxzm:
+ ZGqx1pZH("6JKZ77ya5Lqo44CC5Yyq5oiR5rGC56ul6JKZ77yM56ul6JKZ5rGC5oiR44CC5Yid562u5ZGK77yM5YaN5LiJ54CG77yM54CG5YmH5LiN5ZGK44CC5Yip6LKe44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5pOK6JKZ77yb5LiN5Yip54K65a+H77yb5Yip56am5a+H44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("(5*13+1)+47IiZ7ZWo7J2EIOq5qOyasOy5mOuptCDtmJXthrXtlZjri6QuIOuwsOyasOqzoOyekCDrgpjslYTsmKTripQg7J6Q66W8IOqwgOultOy5mOqzoCwg7J6s7LCoIOusu+u8tbIuBX"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDrrLTsp4DtlajsnYQg7LOQ7IScIOq5qOyasOuQmCwg66i87KCAIOyVheydhCDtlontlZjsp4Ag66eQ6rOgIOy5qOyeheydhCDrp4nripQg642wIOydtOuhnOybgOydtCDsnojri6Qu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("JQzU74lu==")],},
+ (9-4): {YLfdPxzm: ZGqx1pZH("6ZyA77ya5pyJ5a2a77yM5YWJ5Lqo77yM6LKe5ZCJ44CC5Yip5raJ5aSn5bed44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5YWl5LqO56m077yM5pyJ5LiN6YCf5LmL5a6i5LiJ5Lq65L6G77yM5pWs5LmL57WC5ZCJ44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("6riw64uk66a87JeQ64+EIOyEseyLpO2VqOydhCDsp4DtgqTrqbQg67Cd6rKMIOyXtOumrOqzoCDrsJTrpbTqsowg6rCA66m0IOq4uO2VmOuLpC4g7YGwIOydvOydhCDqsbTrhJAg7IiYIOyeiOuLpC4="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDqtbTroZwg65Ok7Ja07JmU642YIOucu+Vr2BgSIT"),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("Guj1JvCZ=="),
+ ],},
+ (12-6): {YLfdPxzm: ZGqx1pZH("6Kif77ya5pyJ5a2a77yM56qS5oOV77yM5Lit5ZCJ77yb57WC5Ye244CC5Yip6KaL5aSn5Lq677yM5LiN5Yip5raJ5aSn5bed44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5oiW6Yyr5LmL6Z625bi277yM57WC5pyd5LiJ6KSr5LmL44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("64uk7Yi87J2AIOyLoOykke2VtOyVvCDtlZzri6QuIOykkeuPhOulvCDsp4DtgqTrqbQg6ri47ZWY64KYLCDrgZ3quYzsp4Ag6rCA66m0IO2die2VmOuLpC4g7YGwIOyCrOuejOydhCDrp4zrgpgg7ZW06rKw7ZWY6rOgLCDrrLTrpqztlZwg7LaU7KeE7J2AIOu2iOumrO2VmOuLpC4="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDrsrzsiqzrnaDrpbwg67Cb7JWY64uk6rCAIOyVhOy5qCDshLgg67KI7J2EIOuwle2DiOuLue2VnOuLpC4g6rO17KCV7LmYIOyViuycvOuptCDsmKTrnpgg6rCA7KeAIOuqu+2VnOuLpC4="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("Q2XyvA7M")],},
+ (12-5): {YLfdPxzm: ZGqx1pZH("5bir77ya6LKe5LiI5Lq677yM5ZCJ54Sh5ZKO44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5aSn5ZCb5pyJ5ZG977yM6ZaL5ZyL5om/5a6277yM5bCP5Lq65Yu/55So44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("6rWw64yAKOyhsOyngSnrpbwg7J2064GI64uk64qUIOucuy4g67CU66W06rOgIOybkOyIme2VnCDsnpDqsIAg7KeA7ZyY7ZW07JW8IOq4uO2VmOuLpC4g66y066as7ZWcIOyWteyngOuCmCDsgqzsmpXsnYQg7ISe7Jy866m0IO2die2VmOuLpC4="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsoITsn4HsnYQg7YOQ7ZWY66m0IO2die2VmOuLpC4g65WM66W8IOyVjOyVhCDrrLzrn6zrgpjslbwg7IaQ7Iuk7J20IOyXhuuLpC4="),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("OYSVu8fW"),
+ ],},
+ (10-2): {YLfdPxzm: ZGqx1pZH("5q+U77ya5ZCJ77yb5Y6f562u77yM5YWD5rC46LKe77yM54Sh5ZKO77yb5LiN5a+smEu6lCC"),
+ rFtdvpRN: [
+ ZGqx1pZH("5Yid5YWt77ya5pyJ5a2a5q+U5LmL77yM54Sh5ZKO77yb5pyJ5a2a55uI57y277yM57WC5L6G5pyJ5LuW77yM5ZCJ44CC"),
+ ZGqx1pZH("5YWt5LqM77ya5q+U5LmL6Ieq5YWn77yM5ZCJ44CC"),
+ ZGqx1pZH("5YWt5LiJ77ya5q+U5LmL5Yyq5Lq644CC"),
+ ZGqx1pZH("5YWt5Zub77ya5aSW5q+U5LmL77yM6LKe5ZCJ44CC"),
+ ZGqx1pZH("5Lmd5LqU77ya6aGv5q+U77yM546L55So5LiJ6amF77yM5aSx5YmN56a977yM6YKR5Lq65LiN6Kqh77yM5ZCJ44CC"),
+ ZGqx1pZH("5LiK5YWt77ya5q+U5LmL54Sh6aaW77yM5Ye244CC"),
+ ],
+ eIDD5Tju:
+ ZGqx1pZH("7IKs656M6rO8IOqwgOq5jOydtCDtlZjqs6Ag65Sw66W064qUIOuVjC4g7ISx7Iuk7ZWo7J20IOyeiOycvOuptCDquLjtlZjri6QuIOyYrOuwlOultOyngCDslYrsnYAg7IKs656M7J2EIOuUsOultOuptCDtnYntlZjri6Qu"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDslrXsp4DroZwg64GM7Ja066qo7Jy866m0IO2die2VmOuLpC4g65ag64KgIOydtOuKlCDrs7TrgrTrnbwu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("mnWQMAds")],},
+ (9-0): {YLfdPxzm: ZGqx1pZH("5bCP55Wc77ya5Lqo77yb5a+G6Zuy5LiN6Zuo77yM6Ieq5oiR6KW/6YOK44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5pei6Zuo5pei6JmV77yM5bCa5b636LyJ77yM5amm6LKe5Y6y77yM5pyI5bm+5pyb77yM5ZCb5a2Q5b6B5Ye244CC")],
+ eIDD5Tju:
+ ZGqx1pZH("7KGw6riIIOuqqOyVhOuRkOuKlCDsi5zquLAsIO2emOydhCDstpXsoIHtlZjripQg6rO87KCVLiDslYTsp4Eg67mE6rCAIOyYpOyngCDslYrsp4Drp4wg65WM6rCAIOyYpOuptCDshLHst6jtlZzri6QuIOyhsOq4ie2VqOydgCDtlbTqsIAg65Cc64ukLg=="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDtlYTsmpTtlZwg64+E6rWs66W8IOyeg+IhHOadr5=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("oSOVzeJA=")],},
+ (4*2+2): {YLfdPxzm: ZGqx1pZH("5bGl77ya5bGl6JmO5bC+77yM5LiN5ZKl5Lq677yM5Lqo44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya6KaW5bGl6ICD56Wl77yM5YW25peL5YWD5ZCJ44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("7Zi4656R7J20IOq8rOumrOulvCDrsJ/k6wPY0Re+8IOyLoOykke2VtOyVvCDtlaAg65WMLiDsmIjsnZjsmYAg67CU66W4IOqxuOydjOycvOuhnCDrgpjslYTqsIDrqbQg6ri47ZWY64ukLg=="),
+ G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDqtZDrp4ztlZwg6rG47J2M7J2AIOuBneuCtCDrhJjslrTsp5DsnYQg67aA66W464ukLg==")],
+ ppSjOUWW: [ZGqx1pZH("IQs3TYJ5=")],},
+ (5*2+1): {YLfdPxzm: ZGqx1pZH("5rOw77ya5bCP5b6A5aSn5L6G77yM5ZCJ5Lqo44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5Z+O5b6p5LqO6ZqN77yM5Yu/55So5bir77yb6Ieq6YKR5ZGK5ZG977yM6LKe5ZCd44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("7LKc7KeAIOq1kO2GtSwg7YOc7Y+J6rO8IO2GteuLrOydmCDsi5zquLAuIOuwlOultOqyjCDrgpjslYTqsIDrqbQg7YGs6rKMIOq4uO2VmOuLpC4g6rWQ66eM7ZWY66m0IOuLpOyLnCDslrTroKTsm4DsnbQg7Jio64ukLg=="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDshLHrjIDtlajsnbQg6re57KCQ7JeQIOuLrO2WiOuLpC4g7J207KCc67aA7YSw64qUIOyHoO2HtOulvCDqsr3qs4TtlZjrnbwu"),
+ ],},
+ (3*4): {YLfdPxzm: ZGqx1pZH("5ZCm77ya5ZCm5LmL5Yyq5Lq677yM5LiN5Yip5ZCb5a2Q6LKe77yM5aSn5b6A5bCP5L6G44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5YK+5ZCm77yb5YWI5ZCm5b6M5Zac44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("66eJ7Z6Y6rO8IOu2gOyhsO2ZlOydmCDsi5zquLAuIOq1sOyekOuKlCDrsJTrpbgg6ri47J2EIOyngOy8nOyVvCDtlZzri6QuIOyekeydgCDqsoPsnYQg7Ja76rOgIO2BsCDqsoPsnYQg7J6D6riwIOyJrOyasOuLiCDsi6DspJHtlbTslbwg7ZWc64ukLg=="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDrp4ntnpjsnbQg6re57KCQ7JeQIOydtOultOuggOuLpC4g7ZWcIOqzoOu5hCDsp4DrgpjrqbQg67CU64CQ64ukLg=="),
+ ],},
+ (2*6+1): {YLfdPxzm: ZGqx1pZH("5ZCM5Lq677ya5ZCM5Lq65pa86YeO77yM5Lqo44CC5Yip5raJ5aSn5bed77yM5Yip5ZCb5a2Q6LKe44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5ZCM5Lq65LqO6YOK77yM54Sh5oKU44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("65y77J2EIOqwmeydtO2VmOuKlCDsgqzrnozrk6Tqs7wg7YSw66W8IOuEk+2YgCDrgpjqsIDrqbQg7ZiV7Ya17ZWY64ukLiDqsJXsnYQg6rG064SQIOunjO2VnCDtgbDsnbzrj4Qg6rCA64ql7ZWY65CYLCDqtbDsnpDri7Xqsowg67CU66aE7J2EIOyngOy8nOyVvCDquLjtlZjri6Qu"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDtl4jsmrjrv5Dsnbgg7Jew64yA64qUIO2die2VmOuLpC4g7KeE7KCV7ISxIOyXhuuKlCDrj5nsnbjsnYAg7ZW07LK065Cc64ukLg=="),
+ ],},
+ (2*7): {YLfdPxzm: ZGqx1pZH("5aSn5pyJ77ya5aSn5pyJ77yM5YWD5Lqo44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya6Ieq5aSp56WQ5LmL77yM5ZCJ77yM54Sh5LiN5Yip44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("7YGs6rKMIOyGjOycoO2VmOqzoCDtjrzsuaAg65WM64ukLiDqsrjtl4jtnogg7JuQ7LmZ7J2EIOyngO2CpOuptCDtlZjripjsnZgg64+E7JuA7J2EIOyWu+SbS1oYGG"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg7KeR7LCp7J2AIO2die2VmOuLpC4g65WM66Gc64qUIOuGk+dx1f82NN=="),
+ ],},
+ (4*3+3): {YLfdPxzm: ZGqx1pZH("6KyZ77ya6KyZ77yM5Lqo77yM5ZCb5a2Q5pyJ57WC44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya6bO06KyZ77yM5Yip55So6KGM5bir77yM5b6B6YKR5ZyL44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("6rK47IaQ7J2AIO2Yle2GteydhCDsnbTrgYjri6QuIOyKpOyKpOuhnOulvCDrgq7stpTqs6Ag6rO17J2EIOuCmOuIhOuptCDrgZ3snbQg7JWE66aE64u164ukLiDrlYzroZzripQg64uo7Zi47ZWo7J20IO2VhOyalO2VnCDsoJXsnZgg6rWs7ZiE64+EIOydtOuhreuLpC4="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7KCA7J6Q7IS464qUIOu5hOq1tOydtCDrkJzri6QuIOuwlOuluCDquLDspIAg7IaN7J2YIOqyuOyGkOycvOuhnC4="),
+ ],},
+ (3*5+1): {YLfdPxzm: ZGqx1pZH("6LGr77ya6LGr77yM5Yip5bu65L6v77yM6KGM5bir44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5Yal6LGr77yM5oiQ5pyJ5rid77yM54Sh5ZKO44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("6riw7IGo6rO8IO2PieyViOydmCDquLDsmrTsnYQg7KeI7ISc66GcIOuLpOyKpOumrOuptCDsgqzrnozsnYQg7IS47Jqw6rOgIOq1sOydhCDsm4Dsp4Hsnbwg7IiYIOyeiOuLpC4g65Ok65yo7KeAIOunkOqzoCDrsJTrpoTsnYQg7KeA7YKk66m0IOyYpOuemCDquLjtlZjri6Qu"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDtl4jrp53tlZwg65Ok65y47J2EIOqyveqzhO2VmOudvC4g67O466eQ7J20IOyghOuPhOuQmOuptCDtnYntlZjri6Qu"),
+ ],},
+ (5*3+2): {YLfdPxzm: ZGqx1pZH("6Zqo77ya6Zqo77yM5YWD5Lqo77yM5Yip6LKe77yb54Sh5ZKO44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5ouY5L+C5LmL77yM5LmD5b6e57at5LmL77yb546L55So5Lqo5LqO6KW/5bGx44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("65WM66W8IOuUsOudvOqwgOuQmCDspJHsi6zsnYQg7J6D7KeAIOyViuycvOuptCDtgazqsowg7ZiV7Ya17ZWY64ukLiDrrLTsl4fsnYQg65Sw66W87KeAIOu2hOuzhO2VmOuptCDsgqzrnozqs7wg7J287J20IOygnOyekOumrOulvCDssL7ripTri6Qu"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDrp7nrqqnsoIEg7LaU7KKF7J2AIO2die2VmOuLpC4g65WM66Gc64qUIOq3uOunjOuRmCDspIQg7JWM7JWE7JW8IO2VnOuLpC4="),
+ ],},
+ (5*3+3): {YLfdPxzm: ZGqx1pZH("6KCx77ya6KCx77yM5YWD5Lqo77yM5Yip5raJ5aSn5bed77yb5YWI55Sy5LiJ5pel77yM5b6M55Sy5LiJ5pel44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5LiN5LqL546L5L6v77yM6auY5bCa5YW25LqL44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("7Y+Q64uo7J2EIOqzoOy5mOuKlCDqtJguIOq3vOuzuOydhCDrsJTroZzsnqHqs6Ag7Iuc7J287J2EIOygle2VtCDsuZjsnKDtlZjrqbQg7ZiV7Ya17ZWY64ukLiDslZ7rkqTrpbwg7Zek7JWE66CkIOq4sO2VnOydhCDsl4TsiJjtlZjrnbwu"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDtm4TrjIDsnZgg6riw7KSA7J2EIOyEuOyauCDquLDtmowuIO2ZleyLpO2eiCDqs6Dss5Dslbwg66eI7Lmo64K0IOuzteydtCDsnojri6Qu"),
+ ],},
+ (3*6+1): {YLfdPxzm: ZGqx1pZH("6Ieo77ya5YWD5Lqo77yM5Yip6LKe77yb6Iez5LqO5YWr5pyI5pyJ5Ye244CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5pWm6Ieo77yM5ZCJ77yM54Sh5ZKO44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("7JWE656Y66W8IOyCrOueke2VmOqzoCDrs7TsgrTtlLzrqbQg7ZiV7Ya17ZWY64ukLiDrsJTrpbTqsowg64KY7JWE6rCA66m0IOq4uO2VmOuLpC4g6re465+uv9lWOUy+46rCAIOyYpOuLiCDrsKnsi6ztlZjsp4Ag66eQ6528Lg=="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDquLDsmrTsnbQg7KCV7KCQ7J2EIOyngOuCmOuptCDrrLzrn6zrgqjsnYQg64yA67mE7ZW07JW8IO2VnOuLpC4g6rO87JqV7J2AIO2die2VmOuLpC4="),
+ ],},
+ (2*10): {YLfdPxzm: ZGqx1pZH("6KeA77ya55ul6ICM5LiN6Jam77yM5pyJ5a2a6aGS6Iul44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya6KeA5YW255Sf77yM5ZCb5a2Q5peg5ZKO44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("6rSA7LCw6rO8IOyEseywsOydmCDqtJguIOygleyEseydhCDqsJbqs6Ag7IS47IOB7J2EIOuztOuptCDrr7/aE6tYHSh+OJ8UR0hl"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg6rSA66ed7J2AIOyLpOq4sOulvCDrtoDrpbjri6QuIO2WieuPme2VoCDrlYzqsIAg65CY66m0IOybgOyngeyXrOudvC4="),
+ ],},
+ (4*5+1): {YLfdPxzm: ZGqx1pZH("5Zms5ZeR77ya5Lqo77yb5Yip55So542E44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5L2V5qCh5ruF6ICz77yM5Ye244CC")],
+ eIDD5Tju:
+ ZGqx1pZH("66eJ7Z6MIOqyg+lsqeSqqv=="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDqs7zrj4TtlZwg7KeR7LCp7J2AIOyekOyLoOydhCDtlbTsuZzri6QuIOuVjOuhnOuKlCDrhpPslYTrnbwu"),
+ ],},
+ (4*5+2): {YLfdPxzm: ZGqx1pZH("6LOB77ya6LOB77yM5Lqo77yb5bCP5Yip5pyJ5pS45b6A44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya55m96LOB77yM54Sh5ZKO44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("6r6466+46rOgIOu5m+vTm6KBYk=="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDtl4jsmIHsnYAg7Jik656Y6rCA7KeAIOuqu+2VnOuLpC4g6ruN642w6riw66eMIOyVhOumhOuLpOyasOuptCDtnYntlZjri6Qu"),
+ ],},
+ (5*4+3): {YLfdPxzm: ZGqx1pZH("5Ymd77ya5LiN5Yip5pyJ5pS45b6A44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya56Kp5p6c5LiN6aOf77yM5ZCb5a2Q5b6X6Ly/77yM5bCP5Lq65Ymd5bus44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("65WM66W8IOyeg+liMvlJkd="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsmYTsoITtlZwg67aV6rS0LiDqt7jrn6zrgpgg7IOI66Gc7Jq0IOyLnOyekeydmCDsoITsobDsnbTquLDrj4Qg7ZWY64ukLg=="),
+ ],},
+ (3*8): {YLfdPxzm:
+ ZGqx1pZH("5b6p77ya5Lqo77yb5Ye65YWl5peg55a+77yM5pyL5L6G5peg5ZKO77yb5Y+N5b6p5YW26YGT77yM5LiD5pel5L6G5b6p77yM5Yip5pyJ5pS45b6A44CC"),
+ rFtdvpRN: [
+ ZGqx1pZH("5LiK5YWt77ya6L+35b6p77yM5Ye277yM5pyJ54G955ya77yb55So6KGM5bir77yM57WC5pyJ5aSn5pWX77yb5Lul5YW25ZyL5ZCb5Ye277yb6Iez5LqO5Y2B5bm05LiN5YWL5b6B44CC"),
+ ],
+ eIDD5Tju:
+ ZGqx1pZH("(5*12+4)+M7JWE7Ji0LCDtmozrs7XsnZgg6rSYLiDrlYzqsIAg64uk7IucIOyXtOumvC4g67CU66W06rKMIOuPjOyVhOyYpOuptCDtgazqsowg6ri47ZWY64ukLiDrsKntmantlZjsp4Ag66eQ6rOgIOykkeyLrOycvOuhnCDrs7Xqt4DtlZjrnbwu"),
+ G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDrlYzrpbwg7KeA64KYIOuPjOyVhOyYpOuptCDriqbri6QuIOyngOq4iCDqsrDri6jtlZjrnbwu")],},
+ (4*6+1): {YLfdPxzm: ZGqx1pZH("54Sh5aaE77ya5YWD5Lqo77yM5Yip6LKe77yb5YW25Yyq5q2j5pyJ55ya77yM5LiN5Yip5pyJ5pS45b6A44CC"),
+ rFtdvpRN: [
+ ZGqx1pZH("5Yid5Lmd77ya5peg5aaE6KGM77yM5pyJ55ya77yM5peg5pS45Yip44CC"),
+ ZGqx1pZH("5YWt5LqM77ya5LiN6ICV56mr77yM5LiN6I+R55Ws77yM5YmH5Yip5pyJ5pS45b6A44CC"),
+ ZGqx1pZH("5YWt5LiJ77ya5peg5aaE5LmL54G977yM5oiW57mr5LmL54mb77yM6KGM5Lq65LmL5b6X77yM6YKR5Lq65LmL54G944CC"),
+ ZGqx1pZH("5Lmd5Zub77ya5Y+SAXT5NZQ"),
+ ZGqx1pZH("5Lmd5LqU77ya5peg5aaE5LmL55a+77yM5Yu/6Jel5pyJ5Zac44CC"),
+ ZGqx1pZH("5LiK5Lmd77ya5peg5aaE77yM6KGM5pyJ55ya77yM5peg5pS45Yip44CC"),
+ ],
+ eIDD5Tju:
+ ZGqx1pZH("6rGw7KeT65Co7J20IOyXhuuKlCDsiJzsiJjtlZwg67CU66aELiDrsJTrpbTqsowg7ZWY66m0IOq4uO2VmOyngOunjCwg7IKs7Iuk7JeQIOyWtOq4i+YQteGUm2"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg7ZmV7Iug7J2AIOyerOyVmeydhCDrtoDrpbjri6QuIOqyuOyGkO2eiCDrj4zslYTrs7Trnbwu"),
+ ],},
+ (5*5+1): {YLfdPxzm: ZGqx1pZH("5aSn55Wc77ya5Yip6LKe77yM5LiN5a626aOf77yM5ZCJ77yb5Yip5raJ5aSn5bed44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5L2V5aSp5LmL6KGi77yM5Lqo44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("7YGwIOqyg+s23r26qY+E7J2YIOq4uOydtCDsl7TrprDri6Qu"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg7Ja17KCc64qUIO2die2VmOuLpC4g65WM6rCAIOyYpOuptCDtkoDslrTso7zslrTslbwg7ZWc64ukLg=="),
+ ],},
+ (5*5+2): {YLfdPxzm: ZGqx1pZH("6aCk77ya6LKe5ZCJ77yb6KeA6aCk77yM6Ieq5rGC5Y+qscuJogB+Oxqg9pBW"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya55Sx6aCk77yb5Y6y77yM5ZCJ77yb5Yip5raJ5aSn5bed44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("7JaR7Jyh6rO8IOqzteq4ieydmCDqtJguIOyeheyXkCDrk6TslrTqsIDripQg6rKD7J20IOqzpyDrj4Qo6YGTKeuLpC4g67CU66W06rKMIOuoueydtOqzoCDrsLDsmrDqs6Ag6rCA66W07LOQ7JW8IOq4uO2VmOuLpC4="),
+ G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg66i57J2M6rO8IOunkOydgCDtnYntlZjri6QuIOygiOygnO2VmOudvC4=")],},
+ (3*9+1): {YLfdPxzm: ZGqx1pZH("5aSn6YGO77ya5qOf5qmI77yM5Yip5pyJ5pS45b6A77yM5Lqo44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya6YGO5raJ5ruF6aCC77yM5Ye277yM5peg5ZKO44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("6rO87ZWo7J2YIOq0mC4g7KeA64KY7Lmo7J20IOusuOygnOydtOyngOunjCwg65WM66Gc64qUIO2BsCDsp5DsnYQg66eh7JWE7JW8IO2VnOuLpC4g6reg7ZiV7J2EIOyeg+A02nCtvJ=="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg66y06rKM66GcIOqysOq1rSDrrLTrhIjsp5AuIOq3uOufrOuCmCDquajsp5Ag7IaN7JeQIOyDiOuhnOyatCDquLjsnbQg7J6I64ukLg=="),
+ ],},
+ (2*14+1): {YLfdPxzm: ZGqx1pZH("5Z2O77ya57+S5Z2O77yM5pyJ5a2a77yM57at5b+D5Lqo77yb6KGM5pyJ5bCa44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5L+C55So5b6957qG77yM5a+Y5LqO5Y+YKANcpnG")],
+ eIDD5Tju:
+ ZGqx1pZH("7ZeY7ZWoLCDrsJjrs7XrkJjripQg7Iuc66CoLiDrr7/Uu0kRhwb+P5JLtjIT"),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7JyE7ZeYIOy2lOq1rOuKlCDtnYntlZjri6QuIOu5oOyguOuCmOqwiCDrlYzrpbwg7JWM6528Lg=="),
+ ],},
+ (3*10): {YLfdPxzm: ZGqx1pZH("6Zui77ya5Yip6LKe77yM5Lqo77yb55Wc54md54mb77yM5ZCJ44CC"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya546L55So5Ye65b6B77yM5pyJ5ZiJ5oqY6aaW77yM542y5Yyq5YW26Yac77yM5peg5ZKO44CC")],
+ eIDD5Tju:
+ ZGqx1pZH("67mb6rO8IOuwneydjOydmCDqtJguIOu2hOuqhe2VqOycvOuhnCDrgpjslYTqsIDrqbQg7ZiV7Ya17ZWY64ukLiDqsrjshpDtlZjqs6Ag67aA65Oc65+fCZXdh3t=="),
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg67aI6ri47J2AIOqysOq1rSDqurzsp4Tri6QuIOqzvOyXtOydhCDqsr3qs4TtlZjrnbwu"),
+ ],},
+ (3*10+1): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDqsJDsoJXsl5Ag7ZyY65GY66as66m0IO2die2VmOuLpC4g7KCI7KCc6rCAIO2VhOyalO2VmOuLpC4=")],},
+ (5*6+2): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDrrLTrpqztlZwg7KeA7IaN7J2AIO2die2VmOuLpC4g65WM6rCAIOuQmOuptCDrqYjstpTrnbwu")],},
+ (5*6+3): {G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg6rOg7KeR7J2AIO2die2VmOuLpC4g6riw7ZqM66W8IOuGk+XcUHTKSa=")],},
+ (2*17): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDtnpjsnbQg7KeA64KY7LmY66m0IOyKpOyKpOuhnCDtlbTroa3qsowg65Cc64ukLiDrqYjstpwg7KSEIOyVjOyVhOudvC4="),
+ ],},
+ (2*17+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7JW866ed7J2AIOyijOygiOydhCDrtoDrpbjri6QuIOuniOustOumrOulvCDri6jsoJXtnogg7ZWY6528Lg=="),
+ ],},
+ (3*12): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDqt7jrprzsnpDqsIAg6rmK7Jy866m0IOu5m+yt9D6cHv=="),
+ ],},
+ (4*9+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp5HslYjsnYQg7ZWo67aA66GcIOuLpOujqOuptCDtnYntlZjri6QuIOq3vOuzuOydhCDsnoPsp4Ag66eQ6528Lg=="),
+ ],},
+ (5*7+3): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZjrqbQg7J2067OELiDqsIDrs43qsowg7Z2p7Ja07KeQ7J20IOuCq+G6szZQIu=")],},
+ (5*7+4): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7KeR7LCp7J2AIO2VtOqwgCDrkJzri6QuIOusvOufrOuCqOydtCDtlbTrspXsnbwg7IiYIOyeiOuLpC4="),
+ ],},
+ (5*8): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg6rCc7J6F7J2AIO2die2VmOuLpC4g65WM66Gc64qUIOuGlOuRkOuKlCDqsoPsnbQg7JW97J2064ukLg=="),
+ ],},
+ (2*20+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDqs7ztlZwg7KCI7KCc64qUIOu5iOqzpOydhCDrtoDrpbjri6QuIOq3oO2YleydtCDspJHsmpTtlZjri6Qu"),
+ ],},
+ (5*8+2): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg64+E7JuA7J2AIOyYpO2eiOugpCDrj4XsnbQg65Cc64ukLiDqsr3qs4Trpbwg7KeA7Lyc6528Lg=="),
+ ],},
+ (5*8+3): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7LKZ6rKw7J2AIOuwmOuwnOydhCDrgrPripTri6QuIOq3oO2YleydhCDsnoPsp4Ag66eQ6528Lg=="),
+ ],},
+ (3*14+2): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDrgZ3quYzsp4Ag64uo7KCI7ZW07JW8IO2VnOuLpC4g66+466Co7J2AIO2VtOqwgCDrkJzri6Qu")],},
+ (2*22+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDslrXsp4DroZwg64GM7Ja066qo7Jy866m0IO2die2VmOuLpC4g7J6Q7Jew7Iqk65+nRB8GdXw="),
+ ],},
+ (2*23): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7IOB7Iq5IOyaleq1rOuKlCDsnITtl5jtlZjri6QuIOyekOyXsOyKpOufrOybgOydtCDspJHsmpTtlZjri6Qu"),
+ ],},
+ (5*9+2): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7Ja17JWV7J2AIOqzpyDtkoDrprDri6QuIOuniOyngOuniSDsnbjrgrTqsIAg7ZWE7JqU7ZWY64ukLg=="),
+ ],},
+ (4*12): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDsoJXshLHqu48g65ag7Jis66as64qUIOusvOydgCDrqqjrkZDsl5Dqsowg67O17J20IOuQnOuLpC4=")],},
+ (3*16+1): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDrs4DtmZQg7J207ZuE7JeQ64+EIOqyveqzhO2VmOudvC4g7JWI7KO87ZWY66m0IO2die2VmOuLpC4=")],},
+ (3*16+2): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDshLHqs7zqsIAg7JmE7ISx65Cc64ukLiDqt7jrn6zrgpgg6rWQ66eM7J2EIOqyveqzhO2VmOudvC4=")],},
+ (2*25+1): {G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDrhoDrnozsnbQg7KeA64KY6rCA66m0IOq4sOyBnCDshozsi53snbQg7Jio64ukLg==")],},
+ (4*13): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDrrLTrpqztlZwg6rOg7KeR7J2AIO2die2VmOuLpC4g7Jyg7Jew7ZWo7J2EIOyeg+tph4jnai")],},
+ (2*26+1): {G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg7LK066m07J2AIO2die2VmOuLpC4g7IaM67CV7ZWo7J2EIOyngOy8nOudvC4=")],},
+ (4*13+2): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7J2Y7KG07J2AIO2VtOuhreuLpC4g7KO87LK07ISx7J2EIOyngOy8nOudvC4=")],},
+ (4*13+3): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDrsojsmIHsnZgg7KCI7KCVIO2bhOuKlCDsh6Dth7QuIOuniOustOumrOulvCDri6jsoJXtnogg7ZWY6528Lg=="),
+ ],},
+ (3*18+2): {G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDtg4Dsp4Dsl5DshJzsnZgg7Jik66eM7J2AIO2die2VmOuLpC4g7KGw7Jqp7Z6IIOusvOufrOuCmOudvC4=")],},
+ (5*11+2): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsmrDsnKDrtoDri6jtlZjrqbQg6riw7ZqM66W8IOuGk+nvoE0vTu="),
+ ],},
+ (4*14+2): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDtl4jtmanrkJwg7KaQ6rGw7JuA7J2AIOqzte2XiO2VqOydhCDrgqjquLTri6Qu")],},
+ (2*29+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7ZW07IKw7J2AIOustOyniOyEnOulvCDrgrPripTri6QuIOq3oO2YleydtCDtlYTsmpTtlZjri6Qu"),
+ ],},
+ (3*20): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDqs7zrj4TtlZwg7KCI7KCc64qUIO2VtOqwgCDrkJzri6QuIOycoOyXsO2VqOydhCDsnKDsp4DtlZjrnbwu"),
+ ],},
+ (3*20+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg7Iug66Kw64qUIOyLpOunneydhCDrgrPripTri6QuIOq3oO2YleydhCDsp4DsvJzrnbwu"),
+ ],},
+ (3*20+2): {G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg6rK96rOE64qUIOyKpOyKpOuhnOulvCDsmK3slYTrp6wg7IiYIOyeiOuLpC4g7KCB64u57ZWo7J2EIOyngOy8nOudvC4="),
+ ],},
+ (5*12+3): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDshLHst6jqsIAg6re57JeQIOuLrO2VmOuptCDsnpDsl7Dtnogg7Ieg7Ye06rCAIOyYqOuLpC4g6rK47IaQ7Z6IIOuniOustOumrO2VmOudvC4="),
+ ],},
+ (3*21+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDqsbDsnZgg64ukIOyZlOyWtOuPhCDrp4jsp4Drp4kg7Iuk7IiY6rCAIOy5mOuqheyggeydtOuLpC4g64Gd6rmM7KeAIOynkeykke2VmOudvC4="),
+ ],},};var KEY = ZGqx1pZH("kV04dMUn");var xryRT6Ut = [ZGqx1pZH("oJ2zlyIc=="), ZGqx1pZH("mDejFffv==")];xryRT6Ut.F1ZvF76g(function (k) {try {localStorage.TebsS0mO(k);} catch (_e) {}});localStorage.TebsS0mO(KEY);localStorage.siPULiJB(
+ KEY,
+ JSON.xAFaDmKT({M6SeiDGc: ZGqx1pZH("MjAyNS0xMS0wMiAwNTo0NjozNA=="), QZP8K5XQ: doVqZL0I})
+ );console.Rk4WSOCf(
+ ZGqx1pZH("RW1iZWRkZWQgY29ycHVzIEZPUkNFIHdyaXR0ZW4gdG8gbG9jYWxTdG9yYWdlIGF0IDIwMjUtMTEtMDIgMDU6NDY6MzQu")
+ );} catch (e) {console.error(ZGqx1pZH("RW1iZWQgY29ycHVzIGZhaWxlZDo="), e);}})();(function () {try {var ZjUR8rgZ = localStorage.HV1xRqMA(
+ ZGqx1pZH("hziyITUz==")
+ );if (ZjUR8rgZ) {console.Rk4WSOCf(
+ ZGqx1pZH("8J+hpsBq4qw+4jyDsgqzsmqnsnpAg67O17JuQIO2UjOuemOq3uCDqsJDsp4AgLSDsnpDrj5kg7Jik67KE66CI7J20IOywqOuLqCAo67O17JuQIOyLnOqwgTog") +
+ new Date(RGCk85tZ(ZjUR8rgZ)) +
+ ')'
+ );return;}
+ var KEY = ZGqx1pZH("kV04dMUn");var SNnuud0N = localStorage.HV1xRqMA(KEY);if (!SNnuud0N) {console.HPSEh5OA(ZGqx1pZH("Q29ycHVzIG5vdCBmb3VuZCB0byBtZXJnZS4="));return;}
+ var qlgEVO8g = JSON.XYGEDdJR(SNnuud0N);var QZP8K5XQ = qlgEVO8g.QZP8K5XQ || qlgEVO8g;var IVpVPHCS = false;for (var i = (4*7+3);i <= (5*12+4);i++) {var VG8Wo8N0 = String(i);if (
+ QZP8K5XQ[VG8Wo8N0] &&
+ (QZP8K5XQ[VG8Wo8N0].YLfdPxzm || QZP8K5XQ[VG8Wo8N0].rFtdvpRN)
+ ) {IVpVPHCS = true;console.Rk4WSOCf(
+ ZGqx1pZH("8J+hpsBq4qw+4jyDsgqzsmqnsnpAg67O17JuQIOuNsOydtO2EsCDqsJDsp4DrkKggKA==") +
+ VG8Wo8N0 +
+ ZGqx1pZH("67KIIOq0mCkgLSDsmKTrsoTroIjsnbQg7Iqk7YK1")
+ );break;}}
+ if (IVpVPHCS) {console.Rk4WSOCf(
+ ZGqx1pZH("4pyFIOyCrOyaqeyekCDsvZTtjbzsiqQg642w7J207YSwIOuztO2YuOuQqCAtIOyekOuPmSDsmKTrsoTroIjsnbQg7Iuk7ZaJIOyViO2VqA==")
+ );return;}
+ var uuWmRRBs = {1: {ppSjOUWW: [
+ ZGqx1pZH("7JmE6rKw7J2EIOyEnOuRkOultOyngCDrp5Dqs6Ag6rWQ7ZuI7J2EIOyytOqzhO2ZlO2VmOyXrCDri6TsnYwg7Iic7ZmY7J2EIOykgOu5hO2VqeuLiOuLpC4="),
+ ],},
+ (11-9): {ppSjOUWW: [
+ ZGqx1pZH("64Gd66e67J2M7J2AIOu2gOuTnOufveqyjOKAlOyngOyGjSDqsIDriqXtlZwg64+M67SEIOyytOqzhOuhnCDsoITtmZjtlanri4jri6Qu"),
+ ],},
+ (9-6): {ppSjOUWW: [
+ ZGqx1pZH("67Cw7Jq0IOq1kO2biOydhCDssrTtgazrpqzsiqTtirjroZwg7KCV66as7ZW0IOuLpOydjCDsi5zsnpHsnZgg67mE7Jqp7J2EIOuCruy2peuLiOuLpC4="),
+ ],},
+ (15-11): {ppSjOUWW: [ZGqx1pZH("7ZWZ7Iq17J2EIOyDne2ZnO2ZlO2VmOuKlCDro6jti7TsnLzroZwg7KCE7ZmY7ZWp64uI64ukLg==")],},
+ (5-0): {ppSjOUWW: [
+ ZGqx1pZH("7JmE66OMIO2bhCDsnqzstqnsoITigJTri6TsnYwg6riw7ZqM66W8IOychO2VtCDsu6jrlJTshZjsnYQg7KCV67mE7ZWp64uI64ukLg=="),
+ ],},
+ (8-2): {ppSjOUWW: [
+ ZGqx1pZH("7IKs7ZuE6rCQ7KCV7J2EIOygleumrO2VmOqzoCDqtIDqs4Qg7ZqM67O1IO2UhOuhnO2GoOy9nOydhCDrkaHri4jri6Qu"),
+ ],},
+ (9-2): {ppSjOUWW: [
+ ZGqx1pZH("7KGw7KeBIO2UvOuhnOulvCDrsKnsp4DtlZjqs6Ag7Zy07IudLeyerOuwsOy5mOulvCDshKTqs4Ttlanri4jri6Qu"),
+ ],},
+ (7--1): {ppSjOUWW: [
+ ZGqx1pZH("6rSA6rOEIOycoOyngCDruYTsmqnsnYQg7KCQ6rKA7ZWY6rOgIOyngOyGjeuqqOuNuOydhCDrp4zrk63ri4jri6Qu"),
+ ],},
+ (9-0): {ppSjOUWW: [ZGqx1pZH("6rO87JqV7J2EIOyWteygnO2VmOqzoCDslYjsoJXsoIEg66as65Os7J2EIOycoOyngO2VqeuLiOuLpC4=")],},
+ (2*5): {ppSjOUWW: [ZGqx1pZH("7JWI7KCE7KeA64yA66W8IOuEk+2YgCDri6TsnYwg64uo6rOE66GcIOuCmOyVhOqwkeuLiOuLpC4=")],},
+ (5*2+1): {ppSjOUWW: [ZGqx1pZH("64uk7J2MIOy5qOyytOq4sOyXkCDrjIDruYTtlZwg7KCA7LaV7J2EIOuKmOumveuLiOuLpC4=")],},
+ (2*6): {ppSjOUWW: [
+ ZGqx1pZH("7IOB7Zmp7J20IO2SgOumtCDrlYwg67mg66W06rKMIOyerOqwgOuPme2VoCDssrTtgazrpqzsiqTtirjrpbwg66eM65Ot64uI64ukLg=="),
+ ],},
+ (4*3+1): {ppSjOUWW: [ZGqx1pZH("6rSA6rOE7J2YIOyngOyGjeqwgOuKpeyEseydhCDsoJDqsoDtlanri4jri6Qu")],},
+ (4*3+2): {ppSjOUWW: [ZGqx1pZH("7JiB7IaN7KCBIOqwgOy5mOulvCDrgqjquLDripQg7Yis7J6Q7JeQIOynkeykke2VqeuLiOuLpC4=")],},
+ (4*3+3): {ppSjOUWW: [ZGqx1pZH("6rK47IaQ7J2EIOyLnOyKpO2FnOycvOuhnCDqs6DsoJXtlanri4jri6Qu")],},
+ (5*3+1): {ppSjOUWW: [ZGqx1pZH("7Je07KCV7J2EIOyGjOynhOyLnO2CpOyngCDslYrrj4TroZ0g7Zy07Iud7J2EIOyEpOqzhO2VqeuLiOuLpC4=")],},
+ (5*3+2): {ppSjOUWW: [ZGqx1pZH("7J6Q7Jyo7KCBIOy2lOyiheydhCDqsIDriqXsvIAg7ZWY64qUIOyXreufieydhCDtgqTsm4Hri4jri6Qu")],},
+ (3*6): {ppSjOUWW: [ZGqx1pZH("7LKt6rKw7ZWcIOq4sOykgOydhCDsnKDsp4Dtlanri4jri6Qu")],},
+ (3*6+1): {ppSjOUWW: [ZGqx1pZH("7J6R67OE6rO8IOyerOygkeq3vOydmCDsmIjsnZjrpbwg6rCW7Lal64uI64ukLg==")],},
+ (3*6+2): {ppSjOUWW: [ZGqx1pZH("6rSA7LCw7J2EIO2WieuPmeycvOuhnCDsl7DqsrDtlanri4jri6Qu")],},
+ (5*4+1): {ppSjOUWW: [ZGqx1pZH("7IOIIOq3nOy5meydtCDtmITsnqXsl5Ag7Iqk66mw65Ok64+E66GdIO2biOugqO2VqeuLiOuLpC4=")],},
+ (5*4+2): {ppSjOUWW: [ZGqx1pZH("7Jm46rSAIOuSpCDsi5zsiqTthZzsnYQg7YOE7YOE7Z6IIO2VqeuLiOuLpC4=")],},
+ (3*7+2): {ppSjOUWW: [ZGqx1pZH("64uo7Iic7ZWo7J2EIOqzhOyGjSDsnKDsp4Dtlanri4jri6Qu")],},
+ (4*6): {ppSjOUWW: [ZGqx1pZH("64uk7J2MIO2ajOq3gCDso7zquLDrpbwg7ISk6rOE7ZWp64uI64ukLg==")],},
+ (2*12+1): {ppSjOUWW: [ZGqx1pZH("7KeE7KCV7ISx7J2EIOyngO2CpOuKlCDsirXqtIDsnYQg66eM65Ot64uI64ukLg==")],},
+ (5*5+1): {ppSjOUWW: [ZGqx1pZH("7ZWE7JqU7ZWgIOuVjCDtlZwg67KI7JeQIOq6vOuDheuLiOuLpC4=")],},
+ (2*13+1): {ppSjOUWW: [ZGqx1pZH("7KeA7IaNIOqwgOuKpe2VnCDsnpDquLDrj4zrtITsnYQg7ISk6rOE7ZWp64uI64ukLg==")],},
+ (5*5+3): {ppSjOUWW: [ZGqx1pZH("7J6l6riw7KCB7Jy866GcIO2VmOykkeydhCDspITsnoXri4jri6Qu")],},
+ (2*14+1): {ppSjOUWW: [ZGqx1pZH("7JyE6riwIO2bhCDtmozrs7Ug64uo6rOE66W8IOuwn+fMUh5gPY=")],},
+ (5*6): {ppSjOUWW: [ZGqx1pZH("67mb6rO8IOyXtOydmCDqt6DtmJXsnYQg66ee7Lal64uI64ukLg==")],},
+ (3*10+1): {ppSjOUWW: [ZGqx1pZH("7JiB7Zal7J2EIOyEoO2VnCDrsKntlqXsnLzroZwg7JSB64uI64ukLg==")],},
+ (2*16): {ppSjOUWW: [ZGqx1pZH("64Gd6rmM7KeAIOqwgOuKlCDshKTqs4Trpbwg7ZWp64uI64ukLg==")],},
+ (5*6+3): {ppSjOUWW: [ZGqx1pZH("7J6s7KCV67mEIOqzhO2ajeydhCDqtazssrTtmZTtlanri4jri6Qu")],},
+ (4*8+2): {ppSjOUWW: [ZGqx1pZH("66eI66y066as7JeQ7IScIOqyuOyGkOydhCDsp4DtgrXri4jri6Qu")],},
+ (5*7): {ppSjOUWW: [ZGqx1pZH("6rO87IaN7J2EIOqyveqzhO2VqeuLiOuLpC4=")],},
+ (2*18): {ppSjOUWW: [ZGqx1pZH("65WM66W8IOq4sOuLpOumveuLiOuLpC4=")],},
+ (5*7+2): {ppSjOUWW: [ZGqx1pZH("6rCA7KGxIO2ajOydmOulvCDsoJXroYDtmZTtlanri4jri6Qu")],},
+ (4*9+2): {ppSjOUWW: [ZGqx1pZH("64uk66aEIOyGjSDtmJHroKXsnYQg7ISk6rOE7ZWp64uI64ukLg==")],},
+ (5*7+4): {ppSjOUWW: [ZGqx1pZH("7J6l6riwIOqyveuhnOulvCDri6Tsi5wg7ISk6rOE7ZWp64uI64ukLg==")],},
+ (3*13+1): {ppSjOUWW: [ZGqx1pZH("6rCA67ON6rKMIOy2nOuwnO2VqeuLiOuLpC4=")],},
+ (3*13+2): {ppSjOUWW: [ZGqx1pZH("67O47KeI7JeQIOyekOybkOydhCDsp5HspJHtlanri4jri6Qu")],},
+ (4*10+2): {ppSjOUWW: [ZGqx1pZH("7ZuE7Jyg7Kad7J2EIOq0gOumrO2VqeuLiOuLpC4=")],},
+ (5*8+3): {ppSjOUWW: [ZGqx1pZH("64KY7JmAIO2DgOyduOydmCDslYjsoITsnYQg7LWc7Jqw7ISg7ZWp64uI64ukLg==")],},
+ (5*8+4): {ppSjOUWW: [ZGqx1pZH("67mg66W4IOyiheujjCDquLDspIDsnYQg65Gh64uI64ukLg==")],},
+ (4*11+1): {ppSjOUWW: [ZGqx1pZH("66qo7J6E7J2YIO2UvOuhnOulvCDqtIDrpqztlanri4jri6Qu")],},
+ (3*15+1): {ppSjOUWW: [ZGqx1pZH("64uk7J2MIOqzhOuLqOydhCDsmIjsl7Ttlanri4jri6Qu")],},
+ (2*23+1): {ppSjOUWW: [ZGqx1pZH("7ZqM67O1IOyKpOy8gOykhOydhCDrp4zrk63ri4jri6Qu")],},
+ (5*9+3): {ppSjOUWW: [ZGqx1pZH("7KeA7IaN7Jq07JiBIOqzhO2ajeydhCDshLjsm4Hri4jri6Qu")],},
+ (5*9+4): {ppSjOUWW: [ZGqx1pZH("7KCV7LCpIO2bhCDtmozqs6Dtlanri4jri6Qu")],},
+ (2*25): {ppSjOUWW: ['', '', '', '', '', '']},
+ (5*10+1): {ppSjOUWW: [ZGqx1pZH("7J6s67Cc6rK967O0IOyytOqzhOulvCDrkaHri4jri6Qu")],},
+ (2*26): {ppSjOUWW: [ZGqx1pZH("7J2Y64+E7KCBIO2ctOyLneydhCDsoJXroYDtmZTtlanri4jri6Qu")],},
+ (2*26+1): {ppSjOUWW: [ZGqx1pZH("7ISx7J6lIOq4sOuhneydhCDrgqjquYHri4jri6Qu")],},
+ (5*10+4): {ppSjOUWW: [ZGqx1pZH("7Jet7ZWgIOyghO2ZmOydhCDspIDruYTtlanri4jri6Qu")],},
+ (3*18+1): {ppSjOUWW: [ZGqx1pZH("64uk7J2MIOyLnOymjOydhCDqs4Ttmo3tlanri4jri6Qu")],},
+ (4*14): {ppSjOUWW: [ZGqx1pZH("6riw66Gd7J2EIOuCqOqyqCDqt4DtmZgg7ZuEIOyXsOqysO2VqeuLiOuLpC4=")],},
+ (2*28+1): {ppSjOUWW: [ZGqx1pZH("67CU656M7LKY65+8IO2dlOyggeydhCDrgqjquLDsp4Ag7JWK7Iq164uI64ukLg==")],},
+ (4*14+2): {ppSjOUWW: [ZGqx1pZH("6rCQ7IKs66W8IO2RnO2YhO2VqeuLiOuLpC4=")],},
+ (2*29+1): {ppSjOUWW: [ZGqx1pZH("6rCI65OxIOyerOqysOu5meydhCDrp4nsirXri4jri6Qu")],},
+ (5*12): {ppSjOUWW: [ZGqx1pZH("7ZWE7JqUIOyLnCDqt5zsuZnsnYQg7J6s7KGw7KCV7ZWp64uI64ukLg==")],},
+ (5*12+1): {ppSjOUWW: [ZGqx1pZH("7KeE7IukIOq4sOuwmCDtmJHroKXsnYQg7ZmV7J6l7ZWp64uI64ukLg==")],},
+ (3*20+2): {ppSjOUWW: [ZGqx1pZH("66eI66y066as66W8IOuLqOuLqO2eiCDtlanri4jri6Qu")],},
+ (4*15+3): {ppSjOUWW: [ZGqx1pZH("64uk7J2MIOuqqe2RnOulvCDspIDruYTtlanri4jri6Qu")],},
+ (5*12+4): {ppSjOUWW: [ZGqx1pZH("7JmE7KO8IO2bhCDtmozqs6Dtlanri4jri6Qu")],},};Object.lmDS77XT(uuWmRRBs).F1ZvF76g(function (k) {if (!QZP8K5XQ[k]) QZP8K5XQ[k] = {};QZP8K5XQ[k].ppSjOUWW = uuWmRRBs[k].ppSjOUWW;});// Save ZAtGqWse MO5u9qlR FmiVr8pe akATKPrw if jTJSo3HT
+ if (qlgEVO8g.QZP8K5XQ) {qlgEVO8g.QZP8K5XQ = QZP8K5XQ;localStorage.siPULiJB(KEY, JSON.xAFaDmKT(qlgEVO8g));} else {localStorage.siPULiJB(KEY, JSON.xAFaDmKT(QZP8K5XQ));}
+ console.Rk4WSOCf(
+ ZGqx1pZH("8J+TnSBbbWVyZ2VdIHlhb19jb25zdWx0X2tvIOq4sOuzuCDsmKTrsoTroIjsnbQoMS02NCkg7KCB7Jqp65CoICjsgqzsmqnsnpAg642w7J207YSwIOyXhuydjCk=")
+ );} catch (e) {console.error(ZGqx1pZH("8J+SpDjBo5v"), e);}})();(function () {const KEY = ZGqx1pZH("kV04dMUn");const VERSION = new Date().IdMFK90I();const EMBED = {M6SeiDGc: ZGqx1pZH("MjAyNS0xMS0wMiAwNjo1Nzo1MA=="),
+ W5uHykkO: {1: {YLfdPxzm: ZGqx1pZH("5Lm+77ya5YWD77yM5Lqo77yM5Yip77yM6LKe44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("7ZWY64qY7J2YIOq4sOyatOydtCDtgazqsowg7Iuc7J6R65CY6rOgIO2Gte2VmOupsCDrsJTrpbTqsowg64KY7JWE6rCA66m0IOydtOuhreuLpC4g7KSA67mE6rCAIOy2qeu2hO2VnCDsnpDqsIAg65WM66W8IOyWu+d4P8AEqw=="),
+ rFtdvpRN: [
+ ZGqx1pZH("5Yid54i777ya5r2b6b6N77yM5Yu/55So44CC"),
+ ZGqx1pZH("5LqM54i777ya6KaL6b6N5Zyo55Sw77yM5Yip6KaL5aSn5Lq644CC"),
+ ZGqx1pZH("5LiJ54i777ya5ZCb5a2Q57WC5pel5Lm+5Lm+77yM5aSV5oOV6Iul77yM5Y6y77yM54Sh5ZKO44CC"),
+ ZGqx1pZH("5Zub54i777ya5oiW6LqN5Zyo5re177yM54Sh5ZKO44CC"),
+ ZGqx1pZH("5LqU54i777ya6aOb6b6N5Zyo5aSp77yM5Yip6KaL5aSn5Lq644CC"),
+ ZGqx1pZH("5LiK54i777ya5Lqi6b6N77yM5pyJ5oKU44CC"),
+ ],
+ G4VjD75g: [
+ ZGqx1pZH("7LSI6rWsOiDslYTsp4Eg65WM6rCAIOyVhOuLmC4g7Iuk66Cl7J2EIOyIqOq4sOqzoCDrlYzrpbwg6riw64uk66Ck6528Lg=="),
+ ZGqx1pZH("6rWs7J20OiDriqXroKXsnbQg65Oc65+FqIm3Dwc"),
+ ZGqx1pZH("6rWs7IK8OiDsooXsnbwg67aA7KeA65+TffK5o0v="),
+ ZGqx1pZH("6rWs7IKsOiDrj4Tslb3snYQg7KSA67mE7ZWY65CYIOyEo+UipO7ngh=="),
+ ZGqx1pZH("6rWs7JikOiDtlZjripjroZwg67mE7IOB7ZWY64qUIOuVjC4g7YGwIOyduOusvOydhCDrp4zrgpgg7YGw7J287J2EIOuPhOuqqO2VqOydtCDsnbTroa3ri6Qu"),
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuajsnYAg7ZuE7ZqM6rCAIOuQnOuLpC4g6rO864+E7ZWcIOyDgeyKueydhCDqsr3qs4TtlZjrnbwu"),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("7Lac67Cc7ISg7JeQ7IScIOuwqe2WpeydhCDsoJDqsoDtlZjqs6Ag6rO87JqV7J2EIOykhOydtOuptCDstIjrj5nsnZgg7IaQ7Iuk7J2EIOykhOydvCDsiJgg7J6I7Iq164uI64ukLg=="),
+ ZGqx1pZH("7JuQ7LmZ7J2EIOuqhe2Zle2eiCDtlZjqs6Ag6rK96rOE66W8IOyEuOyasOuQmCwg6rSA6rOE7J2YIOuniOywsOydhCDstZzshoztmZTtlbTslbwg7ZWp64uI64ukLg=="),
+ ZGqx1pZH("7KSR67CY67aAIO2UvOuhnOqwgCDriITsoIHigJTsho3rj4Trpbwg7KSE7J206rOgIOq4sOykgOydhCDsnqzsoJXroKztlanri4jri6Qu"),
+ ZGqx1pZH("6rCI65Ox6rO8IOyEoO2DneydmCDqtZDssKjroZzigJTtlbXsi6zqsIDsuZjrpbwg7J6s7ZmV7J247ZWY6rOgIOu2iO2VhOyalO2VnCDsoITshKDsnYQg7KCV66as7ZWp64uI64ukLg=="),
+ ZGqx1pZH("7ISx6rO86rCAIOuTnOufrOuCqOKAlOyekOunjOydhCDqsr3qs4TtlZjqs6Ag67aE67CwwrfssYXsnoTsnYQg6rWs7KGw7ZmU7ZWp64uI64ukLg=="),
+ ZGqx1pZH("7JmE6rKw7J2EIOyEnOuRkOultOyngCDrp5Dqs6Ag6rWQ7ZuI7J2EIOyytOqzhO2ZlO2VmOyXrCDri6TsnYwg7Iic7ZmY7J2EIOykgOu5hO2VqeuLiOuLpC4="),
+ ],
+ pzMtdsYw: [
+ ZGqx1pZH("Me2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOy0iOq1rDog7JWE7KeBIOuVjOqwgCDslYTri5guIOyLpOugpeydhCDsiKjquLDqs6Ag65WM66W8IOq4sOuLpOugpOudvC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ZGqx1pZH("Mu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOq1rOydtDog64ql66Cl7J20IOuTnOufrOuCmCDsgqzrnozsnYQg7Ja764qUIOuVjC4g7YGwIOyCrOuejOydhCDrp4zrgpjrqbQg7J2066Gt64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ZGqx1pZH("M+2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOq1rOyCvDog7KKF7J28IOu2gOyngOufsO2VmOqzoCDsoIDrhYHsl5Drj4Qg7Iqk7Iqk66GcIOqyveqzhO2VmOudvC4g7JyE7YOc66Gc7Jqw64KYIO2XiOusvCDsl4bsnYwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ZGqx1pZH("NO2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOq1rOyCrDog64+E7JW97J2EIOykgOu5hO2VmOuQmCDshKPrtojrpqwg64KY7ISc7KeAIOunkOudvC4g7KSA67mE65CcIOuSpCDsm4Dsp4HsnbTrqbQg7ZeI66y8IOyXhuuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ZGqx1pZH("Ne2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOq1rOyYpDog7ZWY64qY66GcIOu5hOyDge2VmOuKlCDrlYwuIO2BsCDsnbjrrLzsnYQg66eM64KYIO2BsOydvOydhCDrj4TrqqjtlajsnbQg7J2066Gt64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7Lmo7J2AIO2bhO2ajOqwgCDrkJzri6QuIOqzvOuPhO2VnCDsg4HsirnsnYQg6rK96rOE7ZWY6528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Me2aqCDsobDslrggfCDsg4Htmak6IOy0iOq1rDog7JWE7KeBIOuVjOqwgCDslYTri5guIOyLpOugpeydhCDsiKjquLDqs6Ag65WM66W8IOq4sOuLpOugpOudvC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ZGqx1pZH("Mu2aqCDsobDslrggfCDsg4Htmak6IOq1rOydtDog64ql66Cl7J20IOuTnOufrOuCmCDsgqzrnozsnYQg7Ja764qUIOuVjC4g7YGwIOyCrOuejOydhCDrp4zrgpjrqbQg7J2066Gt64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ZGqx1pZH("M+2aqCDsobDslrggfCDsg4Htmak6IOq1rOyCvDog7KKF7J28IOu2gOyngOufsO2VmOqzoCDsoIDrhYHsl5Drj4Qg7Iqk7Iqk66GcIOqyveqzhO2VmOudvC4g7JyE7YOc66Gc7Jqw64KYIO2XiOusvCDsl4bsnYwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ZGqx1pZH("NO2aqCDsobDslrggfCDsg4Htmak6IOq1rOyCrDog64+E7JW97J2EIOykgOu5hO2VmOuQmCDshKPrtojrpqwg64KY7ISc7KeAIOunkOudvC4g7KSA67mE65CcIOuSpCDsm4Dsp4HsnbTrqbQg7ZeI66y8IOyXhuuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ZGqx1pZH("Ne2aqCDsobDslrggfCDsg4Htmak6IOq1rOyYpDog7ZWY64qY66GcIOu5hOyDge2VmOuKlCDrlYwuIO2BsCDsnbjrrLzsnYQg66eM64KYIO2BsOydvOydhCDrj4TrqqjtlajsnbQg7J2066Gt64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7Lmo7J2AIO2bhO2ajOqwgCDrkJzri6QuIOqzvOuPhO2VnCDsg4HsirnsnYQg6rK96rOE7ZWY6528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Me2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOy0iOq1rDog7JWE7KeBIOuVjOqwgCDslYTri5guIOyLpOugpeydhCDsiKjquLDqs6Ag65WM66W8IOq4sOuLpOugpOudvC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ZGqx1pZH("Mu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOq1rOydtDog64ql66Cl7J20IOuTnOufrOuCmCDsgqzrnozsnYQg7Ja764qUIOuVjC4g7YGwIOyCrOuejOydhCDrp4zrgpjrqbQg7J2066Gt64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ZGqx1pZH("M+2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOq1rOyCvDog7KKF7J28IOu2gOyngOufsO2VmOqzoCDsoIDrhYHsl5Drj4Qg7Iqk7Iqk66GcIOqyveqzhO2VmOudvC4g7JyE7YOc66Gc7Jqw64KYIO2XiOusvCDsl4bsnYwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ZGqx1pZH("NO2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOq1rOyCrDog64+E7JW97J2EIOykgOu5hO2VmOuQmCDshKPrtojrpqwg64KY7ISc7KeAIOunkOudvC4g7KSA67mE65CcIOuSpCDsm4Dsp4HsnbTrqbQg7ZeI66y8IOyXhuuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ZGqx1pZH("Ne2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOq1rOyYpDog7ZWY64qY66GcIOu5hOyDge2VmOuKlCDrlYwuIO2BsCDsnbjrrLzsnYQg66eM64KYIO2BsOydvOydhCDrj4TrqqjtlajsnbQg7J2066Gt64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7Lmo7J2AIO2bhO2ajOqwgCDrkJzri6QuIOqzvOuPhO2VnCDsg4HsirnsnYQg6rK96rOE7ZWY6528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDEtMSB8IOyDge2ZqTog7LSI6rWsOiDslYTsp4Eg65WM6rCAIOyVhOuLmC4g7Iuk66Cl7J2EIOyIqOq4sOqzoCDrlYzrpbwg6riw64uk66Ck6528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ZGqx1pZH("7IKs66GAIDEtMiB8IOyDge2ZqTog6rWs7J20OiDriqXroKXsnbQg65Oc65+TljYFFSU+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ZGqx1pZH("7IKs66GAIDEtMyB8IOyDge2ZqTog6rWs7IK8OiDsooXsnbwg67aA7KeA65+WwdSPA3P+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ZGqx1pZH("7IKs66GAIDEtNCB8IOyDge2ZqTog6rWs7IKsOiDrj4Tslb3snYQg7KSA67mE7ZWY65CYIOyEo+AzepxYcG/SwmKflbD"),
+ ZGqx1pZH("7IKs66GAIDEtNSB8IOyDge2ZqTog6rWs7JikOiDtlZjripjroZwg67mE7IOB7ZWY64qUIOuVjC4g7YGwIOyduOusvOydhCDrp4zrgpgg7YGw7J287J2EIOuPhOuqqO2VqOydtCDsnbTroa3ri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ZGqx1pZH("7IKs66GAIDEtNiB8IOyDge2ZqTog7IOB6rWsOiDsp4DrgpjsuajsnYAg7ZuE7ZqM6rCAIOuQnOuLpC4g6rO864+E7ZWcIOyDgeyKueydhCDqsr3qs4TtlZjrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (8-6): {YLfdPxzm:
+ ZGqx1pZH("5Z2k77ya5YWD5Lqo77yM5Yip54md6aas5LmL6LKe44CC5ZCb5a2Q5pyJ5pS45b6A77yM5YWI6L+35b6M5b6X77yM5Li75Yip44CC6KW/5Y2X5b6X5pyL77yM5p2x5YyX5Zaq5pyL44CC5a6J6LKe5ZCJ44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("65WF7J2YIOuPhOuKlCDrhJPqs6Ag7Y+vbX3O31M+Z66OM66W8IOunjOuCmOqzoCDtjrjslYjtnogg64KY7JWE6rCA66m0IOq4uO2VmOuLpC4="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya6b6N5oiw5pa86YeO77yM5YW26KGA546E6buD44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDrk6TtjJDsl5DshJwg7Jqp7J20IOyLuOybjCDtlLzqsIAg6rKA64W4KOeOhOm7gynroZwg66y865Og64ukLiDqt7nri6jsoIEg7Lap64+M7J2EIO2UvO2VmOudvC4="),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("64Gd66e67J2M7J2AIOu2gOuTnOufveqyjOKAlOyngOyGjSDqsIDriqXtlZwg64+M67SEIOyytOqzhOuhnCDsoITtmZjtlanri4jri6Qu"),
+ ],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog65Ok7YyQ7JeQ7IScIOyaqeydtCDsi7jsm4wg7ZS86rCAIOqygOuFuCjnjoTpu4Mp66GcIOusvOuToOuLpC4g6re564uo7KCBIOy2qeuPjOydhCDtlLztlZjrnbwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog65Ok7YyQ7JeQ7IScIOyaqeydtCDsi7jsm4wg7ZS86rCAIOqygOuFuCjnjoTpu4Mp66GcIOusvOuToOuLpC4g6re564uo7KCBIOy2qeuPjOydhCDtlLztlZjrnbwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog65Ok7YyQ7JeQ7IScIOyaqeydtCDsi7jsm4wg7ZS86rCAIOqygOuFuCjnjoTpu4Mp66GcIOusvOuToOuLpC4g6re564uo7KCBIOy2qeuPjOydhCDtlLztlZjrnbwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDItNiB8IOyDge2ZqTog7IOB7JyhOiDrk6TtjJDsl5DshJwg7Jqp7J20IOyLuOybjCDtlLzqsIAg6rKA64W4KOeOhOm7gynroZwg66y865Og64ukLiDqt7nri6jsoIEg7Lap64+M7J2EIO2UvO2VmOudvC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (7-4): {YLfdPxzm: ZGqx1pZH("5bGv77ya5YWD5Lqo5Yip6LKe44CC5Yu/55So5pyJ5pS45b6A77yM5Yip5bu65L6v44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("7Iuc7J6R7J2AIOyWtOugteqzoCDtmLzrnoDsiqTrn73sp4Drp4wg7Jis67CU66W06rKMIOuCmOyVhOqwgOuptCDsnbTroa3ri6QuIOyEseq4ie2eiCDsm4Dsp4HsnbTsp4Ag66eQ6rOgIOq4sOuwmOydhCDshLjsmrDrqbQg6ri47ZWY64ukLg=="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5LmY6aas54+VMuuY2Dk")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDrqLjrrYfqsbDrpqzrjZgg66eQLCDriIjrrLzqs7wg7ZS864iI66y8LiDshLHquIntlajsnYQg6rK96rOE7ZWY6528Lg=="),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("67Cw7Jq0IOq1kO2biOydhCDssrTtgazrpqzsiqTtirjroZwg7KCV66as7ZW0IOuLpOydjCDsi5zsnpHsnZgg67mE7Jqp7J2EIOuCruy2peuLiOuLpC4="),
+ ],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog66i4662H6rGw66as642YIOunkCwg64iI66y86rO8IO2UvOuIiOusvC4g7ISx6riJ7ZWo7J2EIOqyveqzhO2VmOudvC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog66i4662H6rGw66as642YIOunkCwg64iI66y86rO8IO2UvOuIiOusvC4g7ISx6riJ7ZWo7J2EIOqyveqzhO2VmOudvC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog66i4662H6rGw66as642YIOunkCwg64iI66y86rO8IO2UvOuIiOusvC4g7ISx6riJ7ZWo7J2EIOqyveqzhO2VmOudvC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDMtNiB8IOyDge2ZqTog7IOB7JyhOiDrqLjrrYfqsbDrpqzrjZgg66eQLCDriIjrrLzqs7wg7ZS864iI66y8LiDshLHquIntlajsnYQg6rK96rOE7ZWY6528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (10-6): {YLfdPxzm:
+ ZGqx1pZH("6JKZ77ya5Lqo44CC5Yyq5oiR5rGC56ul6JKZ77yM56ul6JKZ5rGC5oiR44CC5Yid562u5ZGK77yM5YaN5LiJ54CG77yM54CG5YmH5LiN5ZGK44CC5Yip6LKe44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("(4*16+2)+47IiZ7ZWo7J2EIOq5qOyasOy5mOuptCDtmJXthrXtlZjri6QuIOuwsOyasOqzoOyekCDrgpjslYTsmKTripQg7J6Q66W8IOqwgOultOy5mOqzoCwg7J6s7LCoIOusu+u8tbIuBX"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5pOK6JKZ77yb5LiN5Yip54K65a+H77yb5Yip56am5a+H44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDrrLTsp4DtlajsnYQg7LOQ7IScIOq5qOyasOuQmCwg66i87KCAIOyVheydhCDtlontlZjsp4Ag66eQ6rOgIOy5qOyeheydhCDrp4nripQg642wIOydtOuhnOybgOydtCDsnojri6Qu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7ZWZ7Iq17J2EIOyDne2ZnO2ZlO2VmOuKlCDro6jti7TsnLzroZwg7KCE7ZmY7ZWp64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog66y07KeA7ZWo7J2EIOyzkOyEnCDquajsmrDrkJgsIOuovOyggCDslYXsnYQg7ZaJ7ZWY7KeAIOunkOqzoCDsuajsnoXsnYQg66eJ64qUIOuNsCDsnbTroZzsm4DsnbQg7J6I64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog66y07KeA7ZWo7J2EIOyzkOyEnCDquajsmrDrkJgsIOuovOyggCDslYXsnYQg7ZaJ7ZWY7KeAIOunkOqzoCDsuajsnoXsnYQg66eJ64qUIOuNsCDsnbTroZzsm4DsnbQg7J6I64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog66y07KeA7ZWo7J2EIOyzkOyEnCDquajsmrDrkJgsIOuovOyggCDslYXsnYQg7ZaJ7ZWY7KeAIOunkOqzoCDsuajsnoXsnYQg66eJ64qUIOuNsCDsnbTroZzsm4DsnbQg7J6I64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQtNiB8IOyDge2ZqTog7IOB6rWsOiDrrLTsp4DtlajsnYQg7LOQ7IScIOq5qOyasOuQmCwg66i87KCAIOyVheydhCDtlontlZjsp4Ag66eQ6rOgIOy5qOyeheydhCDrp4nripQg642wIOydtOuhnOybgOydtCDsnojri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (11-6): {YLfdPxzm: ZGqx1pZH("6ZyA77ya5pyJ5a2a77yM5YWJ5Lqo77yM6LKe5ZCJ44CC5Yip5raJ5aSn5bed44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("6riw64uk66a87JeQ64+EIOyEseyLpO2VqOydhCDsp4DtgqTrqbQg67Cd6rKMIOyXtOumrOqzoCDrsJTrpbTqsowg6rCA66m0IOq4uO2VmOuLpC4g7YGwIOydvOydhCDqsbTrhJAg7IiYIOyeiOuLpC4="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5YWl5LqO56m077yM5pyJ5LiN6YCf5LmL5a6i5LiJ5Lq65L6G77yM5pWs5LmL57WC5ZCJ44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDqtbTroZwg65Ok7Ja07JmU642YIOucu+Vr2BgSIT"),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("7JmE66OMIO2bhCDsnqzstqnsoITigJTri6TsnYwg6riw7ZqM66W8IOychO2VtCDsu6jrlJTshZjsnYQg7KCV67mE7ZWp64uI64ukLg=="),
+ ],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog6rW066GcIOuTpOyWtOyZlOuNmCDrnLvrsJbsnZgg7IaQ64uYIOyFiywg6rO17IaQ7Z6IIOuMgO2VmOuptCDrgZ3rgrQg6ri47ZWY64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog6rW066GcIOuTpOyWtOyZlOuNmCDrnLvrsJbsnZgg7IaQ64uYIOyFiywg6rO17IaQ7Z6IIOuMgO2VmOuptCDrgZ3rgrQg6ri47ZWY64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog6rW066GcIOuTpOyWtOyZlOuNmCDrnLvrsJbsnZgg7IaQ64uYIOyFiywg6rO17IaQ7Z6IIOuMgO2VmOuptCDrgZ3rgrQg6ri47ZWY64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDUtNiB8IOyDge2ZqTog7IOB7JyhOiDqtbTroZwg65Ok7Ja07JmU642YIOucu+jt3kjl25+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (6-0): {YLfdPxzm: ZGqx1pZH("6Kif77ya5pyJ5a2a77yM56qS5oOV77yM5Lit5ZCJ77yb57WC5Ye244CC5Yip6KaL5aSn5Lq677yM5LiN5Yip5raJ5aSn5bed44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("64uk7Yi87J2AIOyLoOykke2VtOyVvCDtlZzri6QuIOykkeuPhOulvCDsp4DtgqTrqbQg6ri47ZWY64KYLCDrgZ3quYzsp4Ag6rCA66m0IO2die2VmOuLpC4g7YGwIOyCrOuejOydhCDrp4zrgpgg7ZW06rKw7ZWY6rOgLCDrrLTrpqztlZwg7LaU7KeE7J2AIOu2iOumrO2VmOuLpC4="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5oiW6Yyr5LmL6Z625bi277yM57WC5pyd5LiJ6KSr5LmL44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDrsrzsiqzrnaDrpbwg67Cb7JWY64uk6rCAIOyVhOy5qCDshLgg67KI7J2EIOuwle2DiOuLue2VnOuLpC4g6rO17KCV7LmYIOyViuycvOuptCDsmKTrnpgg6rCA7KeAIOuqu+2VnOuLpC4="),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("7IKs7ZuE6rCQ7KCV7J2EIOygleumrO2VmOqzoCDqtIDqs4Qg7ZqM67O1IO2UhOuhnO2GoOy9nOydhCDrkaHri4jri6Qu"),
+ ],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog67K87Iqs652g66W8IOuwm+J9XmTXUQ+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog67K87Iqs652g66W8IOuwm+LZCnuxqA+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog67K87Iqs652g66W8IOuwm+wv1zKtD5+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDYtNiB8IOyDge2ZqTog7IOB6rWsOiDrsrzsiqzrnaDrpbwg67Cb7JWY64uk6rCAIOyVhOy5qCDshLgg67KI7J2EIOuwle2DiOuLue2VnOuLpC4g6rO17KCV7LmYIOyViuycvOuptCDsmKTrnpgg6rCA7KeAIOuqu+2VnOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (7-0): {YLfdPxzm: ZGqx1pZH("5bir77ya6LKe5LiI5Lq677yM5ZCJ54Sh5ZKO44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("6rWw64yAKOyhsOyngSnrpbwg7J2064GI64uk64qUIOucuy4g67CU66W06rOgIOybkOyIme2VnCDsnpDqsIAg7KeA7ZyY7ZW07JW8IOq4uO2VmOuLpC4g66y066as7ZWcIOyWteyngOuCmCDsgqzsmpXsnYQg7ISe7Jy866m0IO2die2VmOuLpC4="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5aSn5ZCb5pyJ5ZG977yM6ZaL5ZyL5om/5a6277yM5bCP5Lq65Yu/55So44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsoITsn4HsnYQg7YOQ7ZWY66m0IO2die2VmOuLpC4g65WM66W8IOyVjOyVhCDrrLzrn6zrgpjslbwg7IaQ7Iuk7J20IOyXhuuLpC4="),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("7KGw7KeBIO2UvOuhnOulvCDrsKnsp4DtlZjqs6Ag7Zy07IudLeyerOuwsOy5mOulvCDshKTqs4Ttlanri4jri6Qu"),
+ ],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KCE7J+B7J2EIO2DkO2VmOuptCDtnYntlZjri6QuIOuVjOulvCDslYzslYQg66y865+HhbcNXJ0+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KCE7J+B7J2EIO2DkO2VmOuptCDtnYntlZjri6QuIOuVjOulvCDslYzslYQg66y865+xHSjuHJ9+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KCE7J+B7J2EIO2DkO2VmOuptCDtnYntlZjri6QuIOuVjOulvCDslYzslYQg66y865+MBEMnLIj+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDctNiB8IOyDge2ZqTog7IOB7JyhOiDsoITsn4HsnYQg7YOQ7ZWY66m0IO2die2VmOuLpC4g65WM66W8IOyVjOyVhCDrrLzrn6zrgpjslbwg7IaQ7Iuk7J20IOyXhuuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (5--3): {YLfdPxzm: ZGqx1pZH("5q+U77ya5ZCJ77yb5Y6f562u77yM5YWD5rC46LKe77yM54Sh5ZKO77yb5LiN5a+smEu6lCC"),
+ eIDD5Tju:
+ ZGqx1pZH("7IKs656M6rO8IOqwgOq5jOydtCDtlZjqs6Ag65Sw66W064qUIOuVjC4g7ISx7Iuk7ZWo7J20IOyeiOycvOuptCDquLjtlZjri6QuIOyYrOuwlOultOyngCDslYrsnYAg7IKs656M7J2EIOuUsOultOuptCDtnYntlZjri6Qu"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5q+U5LmL54Sh6aaW77yM5Ye244CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDslrXsp4DroZwg64GM7Ja066qo7Jy866m0IO2die2VmOuLpC4g65ag64KgIOydtOuKlCDrs7TrgrTrnbwu"),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("6rSA6rOEIOycoOyngCDruYTsmqnsnYQg7KCQ6rKA7ZWY6rOgIOyngOyGjeuqqOuNuOydhCDrp4zrk63ri4jri6Qu"),
+ ],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7Ja17KeA66GcIOuBjOyWtOuqqOycvOuptCDtnYntlZjri6QuIOuWoOuCoCDsnbTripQg67O064K06528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7Ja17KeA66GcIOuBjOyWtOuqqOycvOuptCDtnYntlZjri6QuIOuWoOuCoCDsnbTripQg67O064K06528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7Ja17KeA66GcIOuBjOyWtOuqqOycvOuptCDtnYntlZjri6QuIOuWoOuCoCDsnbTripQg67O064K06528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDgtNiB8IOyDge2ZqTog7IOB7JyhOiDslrXsp4DroZwg64GM7Ja066qo7Jy866m0IO2die2VmOuLpC4g65ag64KgIOydtOuKlCDrs7TrgrTrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (5--4): {YLfdPxzm: ZGqx1pZH("5bCP55Wc77ya5Lqo77yb5a+G6Zuy5LiN6Zuo77yM6Ieq5oiR6KW/6YOK44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("7KGw6riIIOuqqOyVhOuRkOuKlCDsi5zquLAsIO2emOydhCDstpXsoIHtlZjripQg6rO87KCVLiDslYTsp4Eg67mE6rCAIOyYpOyngCDslYrsp4Drp4wg65WM6rCAIOyYpOuptCDshLHst6jtlZzri6QuIOyhsOq4ie2VqOydgCDtlbTqsIAg65Cc64ukLg=="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5pei6Zuo5pei6JmV77yM5bCa5b636LyJ77yM5amm6LKe5Y6y77yM5pyI5bm+5pyb77yM5ZCb5a2Q5b6B5Ye244CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDtlYTsmpTtlZwg64+E6rWs66W8IOyeg+IhHOadr5=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("6rO87JqV7J2EIOyWteygnO2VmOqzoCDslYjsoJXsoIEg66as65Os7J2EIOycoOyngO2VqeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7ZWE7JqU7ZWcIOuPhOq1rOulvCDsnoPsnLzrqbQg7Z2J7ZWY64ukLiDspIDruYTqsIAg67aA7KGx7ZWY66m0IOupiOy2lOyWtOudvC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7ZWE7JqU7ZWcIOuPhOq1rOulvCDsnoPsnLzrqbQg7Z2J7ZWY64ukLiDspIDruYTqsIAg67aA7KGx7ZWY66m0IOupiOy2lOyWtOudvC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7ZWE7JqU7ZWcIOuPhOq1rOulvCDsnoPsnLzrqbQg7Z2J7ZWY64ukLiDspIDruYTqsIAg67aA7KGx7ZWY66m0IOupiOy2lOyWtOudvC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDktNiB8IOyDge2ZqTog7IOB6rWsOiDtlYTsmpTtlZwg64+E6rWs66W8IOyeg+sF0ly5Cq/SwmKflbD"),
+ ],},
+ (5*2): {YLfdPxzm: ZGqx1pZH("5bGl77ya5bGl6JmO5bC+77yM5LiN5ZKl5Lq677yM5Lqo44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("7Zi4656R7J20IOq8rOumrOulvCDrsJ/k6wPY0Re+8IOyLoOykke2VtOyVvCDtlaAg65WMLiDsmIjsnZjsmYAg67CU66W4IOqxuOydjOycvOuhnCDrgpjslYTqsIDrqbQg6ri47ZWY64ukLg=="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya6KaW5bGl6ICD56Wl77yM5YW25peL5YWD5ZCJ44CC")],
+ G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDqtZDrp4ztlZwg6rG47J2M7J2AIOuBneuCtCDrhJjslrTsp5DsnYQg67aA66W464ukLg==")],
+ ppSjOUWW: [ZGqx1pZH("7JWI7KCE7KeA64yA66W8IOuEk+2YgCDri6TsnYwg64uo6rOE66GcIOuCmOyVhOqwkeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog6rWQ66eM7ZWcIOqxuOydjOydgCDrgZ3rgrQg64SY7Ja07KeQ7J2EIOu2gOuluOuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog6rWQ66eM7ZWcIOqxuOydjOydgCDrgZ3rgrQg64SY7Ja07KeQ7J2EIOu2gOuluOuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog6rWQ66eM7ZWcIOqxuOydjOydgCDrgZ3rgrQg64SY7Ja07KeQ7J2EIOu2gOuluOuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDEwLTYgfCDsg4Htmak6IOyDgeq1rDog6rWQ66eM7ZWcIOqxuOydjOydgCDrgZ3rgrQg64SY7Ja07KeQ7J2EIOu2gOuluOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (3*3+2): {YLfdPxzm: ZGqx1pZH("5rOw77ya5bCP5b6A5aSn5L6G77yM5ZCJ5Lqo44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("7LKc7KeAIOq1kO2GtSwg7YOc7Y+J6rO8IO2GteuLrOydmCDsi5zquLAuIOuwlOultOqyjCDrgpjslYTqsIDrqbQg7YGs6rKMIOq4uO2VmOuLpC4g6rWQ66eM7ZWY66m0IOuLpOyLnCDslrTroKTsm4DsnbQg7Jio64ukLg=="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5Z+O5b6p5LqO6ZqN77yM5Yu/55So5bir77yb6Ieq6YKR5ZGK5ZG977yM6LKe5ZCd44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDshLHrjIDtlajsnbQg6re57KCQ7JeQIOuLrO2WiOuLpC4g7J207KCc67aA7YSw64qUIOyHoO2HtOulvCDqsr3qs4TtlZjrnbwu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("64uk7J2MIOy5qOyytOq4sOyXkCDrjIDruYTtlZwg7KCA7LaV7J2EIOuKmOumveuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7ISx64yA7ZWo7J20IOq3ueygkOyXkCDri6ztlojri6QuIOydtOygnOu2gO2EsOuKlCDsh6Dth7Trpbwg6rK96rOE7ZWY6528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7ISx64yA7ZWo7J20IOq3ueygkOyXkCDri6ztlojri6QuIOydtOygnOu2gO2EsOuKlCDsh6Dth7Trpbwg6rK96rOE7ZWY6528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7ISx64yA7ZWo7J20IOq3ueygkOyXkCDri6ztlojri6QuIOydtOygnOu2gO2EsOuKlCDsh6Dth7Trpbwg6rK96rOE7ZWY6528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDExLTYgfCDsg4Htmak6IOyDgeycoTog7ISx64yA7ZWo7J20IOq3ueygkOyXkCDri6ztlojri6QuIOydtOygnOu2gO2EsOuKlCDsh6Dth7Trpbwg6rK96rOE7ZWY6528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (2*6): {YLfdPxzm: ZGqx1pZH("5ZCm77ya5ZCm5LmL5Yyq5Lq677yM5LiN5Yip5ZCb5a2Q6LKe77yM5aSn5b6A5bCP5L6G44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("66eJ7Z6Y6rO8IOu2gOyhsO2ZlOydmCDsi5zquLAuIOq1sOyekOuKlCDrsJTrpbgg6ri47J2EIOyngOy8nOyVvCDtlZzri6QuIOyekeydgCDqsoPsnYQg7Ja76rOgIO2BsCDqsoPsnYQg7J6D6riwIOyJrOyasOuLiCDsi6DspJHtlbTslbwg7ZWc64ukLg=="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5YK+5ZCm77yb5YWI5ZCm5b6M5Zac44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDrp4ntnpjsnbQg6re57KCQ7JeQIOydtOultOuggOuLpC4g7ZWcIOqzoOu5hCDsp4DrgpjrqbQg67CU64CQ64ukLg=="),
+ ],
+ ppSjOUWW: [
+ ZGqx1pZH("7IOB7Zmp7J20IO2SgOumtCDrlYwg67mg66W06rKMIOyerOqwgOuPme2VoCDssrTtgazrpqzsiqTtirjrpbwg66eM65Ot64uI64ukLg=="),
+ ],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog66eJ7Z6Y7J20IOq3ueygkOyXkCDsnbTrpbTroIDri6QuIO2VnCDqs6DruYQg7KeA64KY66m0IOuwlOuAkOuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog66eJ7Z6Y7J20IOq3ueygkOyXkCDsnbTrpbTroIDri6QuIO2VnCDqs6DruYQg7KeA64KY66m0IOuwlOuAkOuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog66eJ7Z6Y7J20IOq3ueygkOyXkCDsnbTrpbTroIDri6QuIO2VnCDqs6DruYQg7KeA64KY66m0IOuwlOuAkOuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDEyLTYgfCDsg4Htmak6IOyDgeq1rDog66eJ7Z6Y7J20IOq3ueygkOyXkCDsnbTrpbTroIDri6QuIO2VnCDqs6DruYQg7KeA64KY66m0IOuwlOuAkOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (5*2+3): {YLfdPxzm: ZGqx1pZH("5ZCM5Lq677ya5ZCM5Lq65pa86YeO77yM5Lqo44CC5Yip5raJ5aSn5bed77yM5Yip5ZCb5a2Q6LKe44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("65y77J2EIOqwmeydtO2VmOuKlCDsgqzrnozrk6Tqs7wg7YSw66W8IOuEk+2YgCDrgpjqsIDrqbQg7ZiV7Ya17ZWY64ukLiDqsJXsnYQg6rG064SQIOunjO2VnCDtgbDsnbzrj4Qg6rCA64ql7ZWY65CYLCDqtbDsnpDri7Xqsowg67CU66aE7J2EIOyngOy8nOyVvCDquLjtlZjri6Qu"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5ZCM5Lq65LqO6YOK77yM54Sh5oKU44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDtl4jsmrjrv5Dsnbgg7Jew64yA64qUIO2die2VmOuLpC4g7KeE7KCV7ISxIOyXhuuKlCDrj5nsnbjsnYAg7ZW07LK065Cc64ukLg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("6rSA6rOE7J2YIOyngOyGjeqwgOuKpeyEseydhCDsoJDqsoDtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7ZeI7Jq467+Q7J24IOyXsOuMgOuKlCDtnYntlZjri6QuIOynhOygleyEsSDsl4bripQg64+Z7J247J2AIO2VtOyytOuQnOuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7ZeI7Jq467+Q7J24IOyXsOuMgOuKlCDtnYntlZjri6QuIOynhOygleyEsSDsl4bripQg64+Z7J247J2AIO2VtOyytOuQnOuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7ZeI7Jq467+Q7J24IOyXsOuMgOuKlCDtnYntlZjri6QuIOynhOygleyEsSDsl4bripQg64+Z7J247J2AIO2VtOyytOuQnOuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDEzLTYgfCDsg4Htmak6IOyDgeq1rDog7ZeI7Jq467+Q7J24IOyXsOuMgOuKlCDtnYntlZjri6QuIOynhOygleyEsSDsl4bripQg64+Z7J247J2AIO2VtOyytOuQnOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (2*7): {YLfdPxzm: ZGqx1pZH("5aSn5pyJ77ya5aSn5pyJ77yM5YWD5Lqo44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("7YGs6rKMIOyGjOycoO2VmOqzoCDtjrzsuaAg65WM64ukLiDqsrjtl4jtnogg7JuQ7LmZ7J2EIOyngO2CpOuptCDtlZjripjsnZgg64+E7JuA7J2EIOyWu+SbS1oYGG"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya6Ieq5aSp56WQ5LmL77yM5ZCJ77yM54Sh5LiN5Yip44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg7KeR7LCp7J2AIO2die2VmOuLpC4g65WM66Gc64qUIOuGk+dx1f82NN=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7JiB7IaN7KCBIOqwgOy5mOulvCDrgqjquLDripQg7Yis7J6Q7JeQIOynkeykke2VqeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7LmcIOynkeywqeydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDrhpPslYTslbwg642UIOy7pOynhOuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOynkeywqeydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDrhpPslYTslbwg642UIOy7pOynhOuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7LmcIOynkeywqeydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDrhpPslYTslbwg642UIOy7pOynhOuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDE0LTYgfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOynkeywqeydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDrhpPslYTslbwg642UIOy7pOynhOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (2*7+1): {YLfdPxzm: ZGqx1pZH("6KyZ77ya6KyZ77yM5Lqo77yM5ZCb5a2Q5pyJ57WC44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("6rK47IaQ7J2AIO2Yle2GteydhCDsnbTrgYjri6QuIOyKpOyKpOuhnOulvCDrgq7stpTqs6Ag6rO17J2EIOuCmOuIhOuptCDrgZ3snbQg7JWE66aE64u164ukLiDrlYzroZzripQg64uo7Zi47ZWo7J20IO2VhOyalO2VnCDsoJXsnZgg6rWs7ZiE64+EIOydtOuhreuLpC4="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya6bO06KyZ77yM5Yip55So6KGM5bir77yM5b6B6YKR5ZyL44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7KCA7J6Q7IS464qUIOu5hOq1tOydtCDrkJzri6QuIOuwlOuluCDquLDspIAg7IaN7J2YIOqyuOyGkOycvOuhnC4="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("6rK47IaQ7J2EIOyLnOyKpO2FnOycvOuhnCDqs6DsoJXtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOyggOyekOyEuOuKlCDruYTqtbTsnbQg65Cc64ukLiDrsJTrpbgg6riw7KSAIOyGjeydmCDqsrjshpDsnLzroZwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOyggOyekOyEuOuKlCDruYTqtbTsnbQg65Cc64ukLiDrsJTrpbgg6riw7KSAIOyGjeydmCDqsrjshpDsnLzroZwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOyggOyekOyEuOuKlCDruYTqtbTsnbQg65Cc64ukLiDrsJTrpbgg6riw7KSAIOyGjeydmCDqsrjshpDsnLzroZwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDE1LTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOyggOyekOyEuOuKlCDruYTqtbTsnbQg65Cc64ukLiDrsJTrpbgg6riw7KSAIOyGjeydmCDqsrjshpDsnLzroZwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (4*4): {YLfdPxzm: ZGqx1pZH("6LGr77ya6LGr77yM5Yip5bu65L6v77yM6KGM5bir44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("6riw7IGo6rO8IO2PieyViOydmCDquLDsmrTsnYQg7KeI7ISc66GcIOuLpOyKpOumrOuptCDsgqzrnozsnYQg7IS47Jqw6rOgIOq1sOydhCDsm4Dsp4Hsnbwg7IiYIOyeiOuLpC4g65Ok65yo7KeAIOunkOqzoCDrsJTrpoTsnYQg7KeA7YKk66m0IOyYpOuemCDquLjtlZjri6Qu"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5Yal6LGr77yM5oiQ5pyJ5rid77yM54Sh5ZKO44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDtl4jrp53tlZwg65Ok65y47J2EIOqyveqzhO2VmOudvC4g67O466eQ7J20IOyghOuPhOuQmOuptCDtnYntlZjri6Qu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7Je07KCV7J2EIOyGjOynhOyLnO2CpOyngCDslYrrj4TroZ0g7Zy07Iud7J2EIOyEpOqzhO2VqeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7ZeI66ed7ZWcIOuTpOucuOydhCDqsr3qs4TtlZjrnbwuIOuzuOunkOydtCDsoITrj4TrkJjrqbQg7Z2J7ZWY64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7ZeI66ed7ZWcIOuTpOucuOydhCDqsr3qs4TtlZjrnbwuIOuzuOunkOydtCDsoITrj4TrkJjrqbQg7Z2J7ZWY64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7ZeI66ed7ZWcIOuTpOucuOydhCDqsr3qs4TtlZjrnbwuIOuzuOunkOydtCDsoITrj4TrkJjrqbQg7Z2J7ZWY64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDE2LTYgfCDsg4Htmak6IOyDgeycoTog7ZeI66ed7ZWcIOuTpOucuOydhCDqsr3qs4TtlZjrnbwuIOuzuOunkOydtCDsoITrj4TrkJjrqbQg7Z2J7ZWY64ukLiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (4*4+1): {YLfdPxzm: ZGqx1pZH("6Zqo77ya6Zqo77yM5YWD5Lqo77yM5Yip6LKe77yb54Sh5ZKO44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("65WM66W8IOuUsOudvOqwgOuQmCDspJHsi6zsnYQg7J6D7KeAIOyViuycvOuptCDtgazqsowg7ZiV7Ya17ZWY64ukLiDrrLTsl4fsnYQg65Sw66W87KeAIOu2hOuzhO2VmOuptCDsgqzrnozqs7wg7J287J20IOygnOyekOumrOulvCDssL7ripTri6Qu"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5ouY5L+C5LmL77yM5LmD5b6e57at5LmL77yb546L55So5Lqo5LqO6KW/5bGx44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDrp7nrqqnsoIEg7LaU7KKF7J2AIO2die2VmOuLpC4g65WM66Gc64qUIOq3uOunjOuRmCDspIQg7JWM7JWE7JW8IO2VnOuLpC4="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7J6Q7Jyo7KCBIOy2lOyiheydhCDqsIDriqXsvIAg7ZWY64qUIOyXreufieydhCDtgqTsm4Hri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog66e566qp7KCBIOy2lOyiheydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDqt7jrp4zrkZgg7KSEIOyVjOyVhOyVvCDtlZzri6QuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog66e566qp7KCBIOy2lOyiheydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDqt7jrp4zrkZgg7KSEIOyVjOyVhOyVvCDtlZzri6QuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog66e566qp7KCBIOy2lOyiheydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDqt7jrp4zrkZgg7KSEIOyVjOyVhOyVvCDtlZzri6QuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDE3LTYgfCDsg4Htmak6IOyDgeycoTog66e566qp7KCBIOy2lOyiheydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDqt7jrp4zrkZgg7KSEIOyVjOyVhOyVvCDtlZzri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (5*3+3): {YLfdPxzm: ZGqx1pZH("6KCx77ya6KCx77yM5YWD5Lqo77yM5Yip5raJ5aSn5bed77yb5YWI55Sy5LiJ5pel77yM5b6M55Sy5LiJ5pel44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("7Y+Q64uo7J2EIOqzoOy5mOuKlCDqtJguIOq3vOuzuOydhCDrsJTroZzsnqHqs6Ag7Iuc7J287J2EIOygle2VtCDsuZjsnKDtlZjrqbQg7ZiV7Ya17ZWY64ukLiDslZ7rkqTrpbwg7Zek7JWE66CkIOq4sO2VnOydhCDsl4TsiJjtlZjrnbwu"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5LiN5LqL546L5L6v77yM6auY5bCa5YW25LqL44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDtm4TrjIDsnZgg6riw7KSA7J2EIOyEuOyauCDquLDtmowuIO2ZleyLpO2eiCDqs6Dss5Dslbwg66eI7Lmo64K0IOuzteydtCDsnojri6Qu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7LKt6rKw7ZWcIOq4sOykgOydhCDsnKDsp4Dtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7ZuE64yA7J2YIOq4sOykgOydhCDshLjsmrgg6riw7ZqMLiDtmZXsi6Ttnogg6rOg7LOQ7JW8IOuniOy5qOuCtCDrs7XsnbQg7J6I64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7ZuE64yA7J2YIOq4sOykgOydhCDshLjsmrgg6riw7ZqMLiDtmZXsi6Ttnogg6rOg7LOQ7JW8IOuniOy5qOuCtCDrs7XsnbQg7J6I64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7ZuE64yA7J2YIOq4sOykgOydhCDshLjsmrgg6riw7ZqMLiDtmZXsi6Ttnogg6rOg7LOQ7JW8IOuniOy5qOuCtCDrs7XsnbQg7J6I64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDE4LTYgfCDsg4Htmak6IOyDgeq1rDog7ZuE64yA7J2YIOq4sOykgOydhCDshLjsmrgg6riw7ZqMLiDtmZXsi6Ttnogg6rOg7LOQ7JW8IOuniOy5qOuCtCDrs7XsnbQg7J6I64ukLiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (2*9+1): {YLfdPxzm: ZGqx1pZH("6Ieo77ya5YWD5Lqo77yM5Yip6LKe77yb6Iez5LqO5YWr5pyI5pyJ5Ye244CC"),
+ eIDD5Tju:
+ ZGqx1pZH("7JWE656Y66W8IOyCrOueke2VmOqzoCDrs7TsgrTtlLzrqbQg7ZiV7Ya17ZWY64ukLiDrsJTrpbTqsowg64KY7JWE6rCA66m0IOq4uO2VmOuLpC4g6re465+uv9lWOUy+46rCAIOyYpOuLiCDrsKnsi6ztlZjsp4Ag66eQ6528Lg=="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5pWm6Ieo77yM5ZCJ77yM54Sh5ZKO44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDquLDsmrTsnbQg7KCV7KCQ7J2EIOyngOuCmOuptCDrrLzrn6zrgqjsnYQg64yA67mE7ZW07JW8IO2VnOuLpC4g6rO87JqV7J2AIO2die2VmOuLpC4="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7J6R67OE6rO8IOyerOygkeq3vOydmCDsmIjsnZjrpbwg6rCW7Lal64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog6riw7Jq07J20IOygleygkOydhCDsp4DrgpjrqbQg66y865+RX5t18O1+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog6riw7Jq07J20IOygleygkOydhCDsp4DrgpjrqbQg66y865+w1VanPTF+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog6riw7Jq07J20IOygleygkOydhCDsp4DrgpjrqbQg66y865+Etahq4ju+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDE5LTYgfCDsg4Htmak6IOyDgeycoTog6riw7Jq07J20IOygleygkOydhCDsp4DrgpjrqbQg66y865+QdZQoZAq+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (5*4): {YLfdPxzm: ZGqx1pZH("6KeA77ya55ul6ICM5LiN6Jam77yM5pyJ5a2a6aGS6Iul44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("6rSA7LCw6rO8IOyEseywsOydmCDqtJguIOygleyEseydhCDqsJbqs6Ag7IS47IOB7J2EIOuztOuptCDrr7/aE6tYHSh+OJ8UR0hl"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya6KeA5YW255Sf77yM5ZCb5a2Q5peg5ZKO44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg6rSA66ed7J2AIOyLpOq4sOulvCDrtoDrpbjri6QuIO2WieuPme2VoCDrlYzqsIAg65CY66m0IOybgOyngeyXrOudvC4="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("6rSA7LCw7J2EIO2WieuPmeycvOuhnCDsl7DqsrDtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOq0gOunneydgCDsi6TquLDrpbwg67aA66W464ukLiDtlonrj5ntlaAg65WM6rCAIOuQmOuptCDsm4Dsp4Hsl6zrnbwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOq0gOunneydgCDsi6TquLDrpbwg67aA66W464ukLiDtlonrj5ntlaAg65WM6rCAIOuQmOuptCDsm4Dsp4Hsl6zrnbwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOq0gOunneydgCDsi6TquLDrpbwg67aA66W464ukLiDtlonrj5ntlaAg65WM6rCAIOuQmOuptCDsm4Dsp4Hsl6zrnbwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDIwLTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOq0gOunneydgCDsi6TquLDrpbwg67aA66W464ukLiDtlonrj5ntlaAg65WM6rCAIOuQmOuptCDsm4Dsp4Hsl6zrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (4*5+1): {YLfdPxzm: ZGqx1pZH("5Zms5ZeR77ya5Lqo77yb5Yip55So542E44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("66eJ7Z6MIOqyg+lsqeSqqv=="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5L2V5qCh5ruF6ICz77yM5Ye244CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDqs7zrj4TtlZwg7KeR7LCp7J2AIOyekOyLoOydhCDtlbTsuZzri6QuIOuVjOuhnOuKlCDrhpPslYTrnbwu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7IOIIOq3nOy5meydtCDtmITsnqXsl5Ag7Iqk66mw65Ok64+E66GdIO2biOugqO2VqeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog6rO864+E7ZWcIOynkeywqeydgCDsnpDsi6DsnYQg7ZW07Lmc64ukLiDrlYzroZzripQg64aT7JWE6528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog6rO864+E7ZWcIOynkeywqeydgCDsnpDsi6DsnYQg7ZW07Lmc64ukLiDrlYzroZzripQg64aT7JWE6528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog6rO864+E7ZWcIOynkeywqeydgCDsnpDsi6DsnYQg7ZW07Lmc64ukLiDrlYzroZzripQg64aT7JWE6528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDIxLTYgfCDsg4Htmak6IOyDgeq1rDog6rO864+E7ZWcIOynkeywqeydgCDsnpDsi6DsnYQg7ZW07Lmc64ukLiDrlYzroZzripQg64aT7JWE6528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (2*11): {YLfdPxzm: ZGqx1pZH("6LOB77ya6LOB77yM5Lqo77yb5bCP5Yip5pyJ5pS45b6A44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("6r6466+46rOgIOu5m+vTm6KBYk=="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya55m96LOB77yM54Sh5ZKO44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDtl4jsmIHsnYAg7Jik656Y6rCA7KeAIOuqu+2VnOuLpC4g6ruN642w6riw66eMIOyVhOumhOuLpOyasOuptCDtnYntlZjri6Qu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7Jm46rSAIOuSpCDsi5zsiqTthZzsnYQg7YOE7YOE7Z6IIO2VqeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7ZeI7JiB7J2AIOyYpOuemOqwgOyngCDrqrvtlZzri6QuIOq7jeuNsOq4sOunjCDslYTrpoTri6TsmrDrqbQg7Z2J7ZWY64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7ZeI7JiB7J2AIOyYpOuemOqwgOyngCDrqrvtlZzri6QuIOq7jeuNsOq4sOunjCDslYTrpoTri6TsmrDrqbQg7Z2J7ZWY64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7ZeI7JiB7J2AIOyYpOuemOqwgOyngCDrqrvtlZzri6QuIOq7jeuNsOq4sOunjCDslYTrpoTri6TsmrDrqbQg7Z2J7ZWY64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDIyLTYgfCDsg4Htmak6IOyDgeq1rDog7ZeI7JiB7J2AIOyYpOuemOqwgOyngCDrqrvtlZzri6QuIOq7jeuNsOq4sOunjCDslYTrpoTri6TsmrDrqbQg7Z2J7ZWY64ukLiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (3*7+2): {YLfdPxzm: ZGqx1pZH("5Ymd77ya5LiN5Yip5pyJ5pS45b6A44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("65WM66W8IOyeg+liMvlJkd="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya56Kp5p6c5LiN6aOf77yM5ZCb5a2Q5b6X6Ly/77yM5bCP5Lq65Ymd5bus44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsmYTsoITtlZwg67aV6rS0LiDqt7jrn6zrgpgg7IOI66Gc7Jq0IOyLnOyekeydmCDsoITsobDsnbTquLDrj4Qg7ZWY64ukLg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("64uo7Iic7ZWo7J2EIOqzhOyGjSDsnKDsp4Dtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7JmE7KCE7ZWcIOu2leq0tC4g6re465+gpt4adNW+EIO2VmOuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7JmE7KCE7ZWcIOu2leq0tC4g6re465+gpt4adNW+EIO2VmOuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7JmE7KCE7ZWcIOu2leq0tC4g6re465+gpt4adNW+EIO2VmOuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDIzLTYgfCDsg4Htmak6IOyDgeycoTog7JmE7KCE7ZWcIOu2leq0tC4g6re465+gpt4adNW+EIO2VmOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (2*12): {YLfdPxzm:
+ ZGqx1pZH("5b6p77ya5Lqo77yb5Ye65YWl5peg55a+77yM5pyL5L6G5peg5ZKO77yb5Y+N5b6p5YW26YGT77yM5LiD5pel5L6G5b6p77yM5Yip5pyJ5pS45b6A44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("(2*32)+M7JWE7Ji0LCDtmozrs7XsnZgg6rSYLiDrlYzqsIAg64uk7IucIOyXtOumvC4g67CU66W06rKMIOuPjOyVhOyYpOuptCDtgazqsowg6ri47ZWY64ukLiDrsKntmantlZjsp4Ag66eQ6rOgIOykkeyLrOycvOuhnCDrs7Xqt4DtlZjrnbwu"),
+ rFtdvpRN: [
+ ZGqx1pZH("5LiK5YWt77ya6L+35b6p77yM5Ye277yM5pyJ54G955ya77yb55So6KGM5bir77yM57WC5pyJ5aSn5pWX77yb5Lul5YW25ZyL5ZCb5Ye277yb6Iez5LqO5Y2B5bm05LiN5YWL5b6B44CC"),
+ ],
+ G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDrlYzrpbwg7KeA64KYIOuPjOyVhOyYpOuptCDriqbri6QuIOyngOq4iCDqsrDri6jtlZjrnbwu")],
+ ppSjOUWW: [ZGqx1pZH("64uk7J2MIO2ajOq3gCDso7zquLDrpbwg7ISk6rOE7ZWp64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog65WM66W8IOyngOuCmCDrj4zslYTsmKTrqbQg64qm64ukLiDsp4DquIgg6rKw64uo7ZWY6528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog65WM66W8IOyngOuCmCDrj4zslYTsmKTrqbQg64qm64ukLiDsp4DquIgg6rKw64uo7ZWY6528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog65WM66W8IOyngOuCmCDrj4zslYTsmKTrqbQg64qm64ukLiDsp4DquIgg6rKw64uo7ZWY6528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDI0LTYgfCDsg4Htmak6IOyDgeycoTog65WM66W8IOyngOuCmCDrj4zslYTsmKTrqbQg64qm64ukLiDsp4DquIgg6rKw64uo7ZWY6528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (3*8+1): {YLfdPxzm: ZGqx1pZH("54Sh5aaE77ya5YWD5Lqo77yM5Yip6LKe77yb5YW25Yyq5q2j5pyJ55ya77yM5LiN5Yip5pyJ5pS45b6A44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("6rGw7KeT65Co7J20IOyXhuuKlCDsiJzsiJjtlZwg67CU66aELiDrsJTrpbTqsowg7ZWY66m0IOq4uO2VmOyngOunjCwg7IKs7Iuk7JeQIOyWtOq4i+YQteGUm2"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5peg5aaE77yM6KGM5pyJ55ya77yM5peg5pS45Yip44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg7ZmV7Iug7J2AIOyerOyVmeydhCDrtoDrpbjri6QuIOqyuOyGkO2eiCDrj4zslYTrs7Trnbwu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7KeE7KCV7ISx7J2EIOyngO2CpOuKlCDsirXqtIDsnYQg66eM65Ot64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7LmcIO2ZleyLoOydgCDsnqzslZnsnYQg67aA66W464ukLiDqsrjshpDtnogg64+M7JWE67O06528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIO2ZleyLoOydgCDsnqzslZnsnYQg67aA66W464ukLiDqsrjshpDtnogg64+M7JWE67O06528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7LmcIO2ZleyLoOydgCDsnqzslZnsnYQg67aA66W464ukLiDqsrjshpDtnogg64+M7JWE67O06528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDI1LTYgfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIO2ZleyLoOydgCDsnqzslZnsnYQg67aA66W464ukLiDqsrjshpDtnogg64+M7JWE67O06528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (3*8+2): {YLfdPxzm: ZGqx1pZH("5aSn55Wc77ya5Yip6LKe77yM5LiN5a626aOf77yM5ZCJ77yb5Yip5raJ5aSn5bed44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("7YGwIOqyg+s23r26qY+E7J2YIOq4uOydtCDsl7TrprDri6Qu"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya5L2V5aSp5LmL6KGi77yM5Lqo44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg7Ja17KCc64qUIO2die2VmOuLpC4g65WM6rCAIOyYpOuptCDtkoDslrTso7zslrTslbwg7ZWc64ukLg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7ZWE7JqU7ZWgIOuVjCDtlZwg67KI7JeQIOq6vOuDheuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7LmcIOyWteygnOuKlCDtnYntlZjri6QuIOuVjOqwgCDsmKTrqbQg7ZKA7Ja07KO87Ja07JW8IO2VnOuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOyWteygnOuKlCDtnYntlZjri6QuIOuVjOqwgCDsmKTrqbQg7ZKA7Ja07KO87Ja07JW8IO2VnOuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7LmcIOyWteygnOuKlCDtnYntlZjri6QuIOuVjOqwgCDsmKTrqbQg7ZKA7Ja07KO87Ja07JW8IO2VnOuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDI2LTYgfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOyWteygnOuKlCDtnYntlZjri6QuIOuVjOqwgCDsmKTrqbQg7ZKA7Ja07KO87Ja07JW8IO2VnOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (5*5+2): {YLfdPxzm: ZGqx1pZH("6aCk77ya6LKe5ZCJ77yb6KeA6aCk77yM6Ieq5rGC5Y+qscuJogB+Oxqg9pBW"),
+ eIDD5Tju:
+ ZGqx1pZH("7JaR7Jyh6rO8IOqzteq4ieydmCDqtJguIOyeheyXkCDrk6TslrTqsIDripQg6rKD7J20IOqzpyDrj4Qo6YGTKeuLpC4g67CU66W06rKMIOuoueydtOqzoCDrsLDsmrDqs6Ag6rCA66W07LOQ7JW8IOq4uO2VmOuLpC4="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya55Sx6aCk77yb5Y6y77yM5ZCJ77yb5Yip5raJ5aSn5bed44CC")],
+ G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg66i57J2M6rO8IOunkOydgCDtnYntlZjri6QuIOygiOygnO2VmOudvC4=")],
+ ppSjOUWW: [ZGqx1pZH("7KeA7IaNIOqwgOuKpe2VnCDsnpDquLDrj4zrtITsnYQg7ISk6rOE7ZWp64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7LmcIOuoueydjOqzvCDrp5DsnYAg7Z2J7ZWY64ukLiDsoIjsoJztlZjrnbwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOuoueydjOqzvCDrp5DsnYAg7Z2J7ZWY64ukLiDsoIjsoJztlZjrnbwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7LmcIOuoueydjOqzvCDrp5DsnYAg7Z2J7ZWY64ukLiDsoIjsoJztlZjrnbwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDI3LTYgfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOuoueydjOqzvCDrp5DsnYAg7Z2J7ZWY64ukLiDsoIjsoJztlZjrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (2*14): {YLfdPxzm: ZGqx1pZH("5aSn6YGO77ya5qOf5qmI77yM5Yip5pyJ5pS45b6A77yM5Lqo44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("6rO87ZWo7J2YIOq0mC4g7KeA64KY7Lmo7J20IOusuOygnOydtOyngOunjCwg65WM66Gc64qUIO2BsCDsp5DsnYQg66eh7JWE7JW8IO2VnOuLpC4g6reg7ZiV7J2EIOyeg+A02nCtvJ=="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya6YGO5raJ5ruF6aCC77yM5Ye277yM5peg5ZKO44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg66y06rKM66GcIOqysOq1rSDrrLTrhIjsp5AuIOq3uOufrOuCmCDquajsp5Ag7IaN7JeQIOyDiOuhnOyatCDquLjsnbQg7J6I64ukLg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7J6l6riw7KCB7Jy866GcIO2VmOykkeydhCDspITsnoXri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7LmcIOustOqyjOuhnCDqsrDqta0g66y064SI7KeQLiDqt7jrn6zrgpgg6rmo7KeQIOyGjeyXkCDsg4jroZzsmrQg6ri47J20IOyeiOuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOustOqyjOuhnCDqsrDqta0g66y064SI7KeQLiDqt7jrn6zrgpgg6rmo7KeQIOyGjeyXkCDsg4jroZzsmrQg6ri47J20IOyeiOuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7LmcIOustOqyjOuhnCDqsrDqta0g66y064SI7KeQLiDqt7jrn6zrgpgg6rmo7KeQIOyGjeyXkCDsg4jroZzsmrQg6ri47J20IOyeiOuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDI4LTYgfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOustOqyjOuhnCDqsrDqta0g66y064SI7KeQLiDqt7jrn6zrgpgg6rmo7KeQIOyGjeyXkCDsg4jroZzsmrQg6ri47J20IOyeiOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (5*5+4): {YLfdPxzm: ZGqx1pZH("5Z2O77ya57+S5Z2O77yM5pyJ5a2a77yM57at5b+D5Lqo77yb6KGM5pyJ5bCa44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("7ZeY7ZWoLCDrsJjrs7XrkJjripQg7Iuc66CoLiDrr7/Uu0kRhwb+P5JLtjIT"),
+ rFtdvpRN: [ZGqx1pZH("5LiK5YWt77ya5L+C55So5b6957qG77yM5a+Y5LqO5Y+YKANcpnG")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7JyE7ZeYIOy2lOq1rOuKlCDtnYntlZjri6QuIOu5oOyguOuCmOqwiCDrlYzrpbwg7JWM6528Lg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7JyE6riwIO2bhCDtmozrs7Ug64uo6rOE66W8IOuwn+fMUh5gPY=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOychO2XmCDstpTqtazripQg7Z2J7ZWY64ukLiDruaDsoLjrgpjqsIgg65WM66W8IOyVjOudvC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOychO2XmCDstpTqtazripQg7Z2J7ZWY64ukLiDruaDsoLjrgpjqsIgg65WM66W8IOyVjOudvC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOychO2XmCDstpTqtazripQg7Z2J7ZWY64ukLiDruaDsoLjrgpjqsIgg65WM66W8IOyVjOudvC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDI5LTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOychO2XmCDstpTqtazripQg7Z2J7ZWY64ukLiDruaDsoLjrgpjqsIgg65WM66W8IOyVjOudvC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (2*15): {YLfdPxzm: ZGqx1pZH("6Zui77ya5Yip6LKe77yM5Lqo77yb55Wc54md54mb77yM5ZCJ44CC"),
+ eIDD5Tju:
+ ZGqx1pZH("67mb6rO8IOuwneydjOydmCDqtJguIOu2hOuqhe2VqOycvOuhnCDrgpjslYTqsIDrqbQg7ZiV7Ya17ZWY64ukLiDqsrjshpDtlZjqs6Ag67aA65Oc65+fCZXdh3t=="),
+ rFtdvpRN: [ZGqx1pZH("5LiK5Lmd77ya546L55So5Ye65b6B77yM5pyJ5ZiJ5oqY6aaW77yM542y5Yyq5YW26Yac77yM5peg5ZKO44CC")],
+ G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg67aI6ri47J2AIOqysOq1rSDqurzsp4Tri6QuIOqzvOyXtOydhCDqsr3qs4TtlZjrnbwu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("67mb6rO8IOyXtOydmCDqt6DtmJXsnYQg66ee7Lal64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7LmcIOu2iOq4uOydgCDqsrDqta0g6rq87KeE64ukLiDqs7zsl7TsnYQg6rK96rOE7ZWY6528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOu2iOq4uOydgCDqsrDqta0g6rq87KeE64ukLiDqs7zsl7TsnYQg6rK96rOE7ZWY6528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7LmcIOu2iOq4uOydgCDqsrDqta0g6rq87KeE64ukLiDqs7zsl7TsnYQg6rK96rOE7ZWY6528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDMwLTYgfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOu2iOq4uOydgCDqsrDqta0g6rq87KeE64ukLiDqs7zsl7TsnYQg6rK96rOE7ZWY6528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (5*6+1): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDqsJDsoJXsl5Ag7ZyY65GY66as66m0IO2die2VmOuLpC4g7KCI7KCc6rCAIO2VhOyalO2VmOuLpC4=")],
+ ppSjOUWW: [ZGqx1pZH("7JiB7Zal7J2EIOyEoO2VnCDrsKntlqXsnLzroZwg7JSB64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog6rCQ7KCV7JeQIO2cmOuRmOumrOuptCDtnYntlZjri6QuIOygiOygnOqwgCDtlYTsmpTtlZjri6QuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog6rCQ7KCV7JeQIO2cmOuRmOumrOuptCDtnYntlZjri6QuIOygiOygnOqwgCDtlYTsmpTtlZjri6QuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog6rCQ7KCV7JeQIO2cmOuRmOumrOuptCDtnYntlZjri6QuIOygiOygnOqwgCDtlYTsmpTtlZjri6QuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDMxLTYgfCDsg4Htmak6IOyDgeycoTog6rCQ7KCV7JeQIO2cmOuRmOumrOuptCDtnYntlZjri6QuIOygiOygnOqwgCDtlYTsmpTtlZjri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (4*8): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDrrLTrpqztlZwg7KeA7IaN7J2AIO2die2VmOuLpC4g65WM6rCAIOuQmOuptCDrqYjstpTrnbwu")],
+ ppSjOUWW: [ZGqx1pZH("64Gd6rmM7KeAIOqwgOuKlCDshKTqs4Trpbwg7ZWp64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog66y066as7ZWcIOyngOyGjeydgCDtnYntlZjri6QuIOuVjOqwgCDrkJjrqbQg66mI7LaU6528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog66y066as7ZWcIOyngOyGjeydgCDtnYntlZjri6QuIOuVjOqwgCDrkJjrqbQg66mI7LaU6528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog66y066as7ZWcIOyngOyGjeydgCDtnYntlZjri6QuIOuVjOqwgCDrkJjrqbQg66mI7LaU6528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDMyLTYgfCDsg4Htmak6IOyDgeycoTog66y066as7ZWcIOyngOyGjeydgCDtnYntlZjri6QuIOuVjOqwgCDrkJjrqbQg66mI7LaU6528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (2*16+1): {G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg6rOg7KeR7J2AIO2die2VmOuLpC4g6riw7ZqM66W8IOuGk+XcUHTKSa=")],
+ ppSjOUWW: [ZGqx1pZH("7J6s7KCV67mEIOqzhO2ajeydhCDqtazssrTtmZTtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7LmcIOqzoOynkeydgCDtnYntlZjri6QuIOq4sO2ajOulvCDrhpPsuZzri6QuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOqzoOynkeydgCDtnYntlZjri6QuIOq4sO2ajOulvCDrhpPsuZzri6QuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7LmcIOqzoOynkeydgCDtnYntlZjri6QuIOq4sO2ajOulvCDrhpPsuZzri6QuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDMzLTYgfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOqzoOynkeydgCDtnYntlZjri6QuIOq4sO2ajOulvCDrhpPsuZzri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (2*17): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDtnpjsnbQg7KeA64KY7LmY66m0IOyKpOyKpOuhnCDtlbTroa3qsowg65Cc64ukLiDrqYjstpwg7KSEIOyVjOyVhOudvC4="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("66eI66y066as7JeQ7IScIOqyuOyGkOydhCDsp4DtgrXri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7Z6Y7J20IOyngOuCmOy5mOuptCDsiqTsiqTroZwg7ZW066Gt6rKMIOuQnOuLpC4g66mI7LacIOykhCDslYzslYTrnbwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7Z6Y7J20IOyngOuCmOy5mOuptCDsiqTsiqTroZwg7ZW066Gt6rKMIOuQnOuLpC4g66mI7LacIOykhCDslYzslYTrnbwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7Z6Y7J20IOyngOuCmOy5mOuptCDsiqTsiqTroZwg7ZW066Gt6rKMIOuQnOuLpC4g66mI7LacIOykhCDslYzslYTrnbwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDM0LTYgfCDsg4Htmak6IOyDgeycoTog7Z6Y7J20IOyngOuCmOy5mOuptCDsiqTsiqTroZwg7ZW066Gt6rKMIOuQnOuLpC4g66mI7LacIOykhCDslYzslYTrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (4*8+3): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7JW866ed7J2AIOyijOygiOydhCDrtoDrpbjri6QuIOuniOustOumrOulvCDri6jsoJXtnogg7ZWY6528Lg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("6rO87IaN7J2EIOqyveqzhO2VqeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOyVvOunneydgCDsoozsoIjsnYQg67aA66W464ukLiDrp4jrrLTrpqzrpbwg64uo7KCV7Z6IIO2VmOudvC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOyVvOunneydgCDsoozsoIjsnYQg67aA66W464ukLiDrp4jrrLTrpqzrpbwg64uo7KCV7Z6IIO2VmOudvC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOyVvOunneydgCDsoozsoIjsnYQg67aA66W464ukLiDrp4jrrLTrpqzrpbwg64uo7KCV7Z6IIO2VmOudvC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDM1LTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOyVvOunneydgCDsoozsoIjsnYQg67aA66W464ukLiDrp4jrrLTrpqzrpbwg64uo7KCV7Z6IIO2VmOudvC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (4*9): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDqt7jrprzsnpDqsIAg6rmK7Jy866m0IOu5m+yt9D6cHv=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("65WM66W8IOq4sOuLpOumveuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog6re466a87J6Q6rCAIOq5iuycvOuptCDruZvsnYAg6rCA6rmd64ukLiDrgZ3quYzsp4Ag7ZKI7JyE66W8IOyngOy8nOudvC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog6re466a87J6Q6rCAIOq5iuycvOuptCDruZvsnYAg6rCA6rmd64ukLiDrgZ3quYzsp4Ag7ZKI7JyE66W8IOyngOy8nOudvC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog6re466a87J6Q6rCAIOq5iuycvOuptCDruZvsnYAg6rCA6rmd64ukLiDrgZ3quYzsp4Ag7ZKI7JyE66W8IOyngOy8nOudvC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDM2LTYgfCDsg4Htmak6IOyDgeycoTog6re466a87J6Q6rCAIOq5iuycvOuptCDruZvsnYAg6rCA6rmd64ukLiDrgZ3quYzsp4Ag7ZKI7JyE66W8IOyngOy8nOudvC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (4*9+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp5HslYjsnYQg7ZWo67aA66GcIOuLpOujqOuptCDtnYntlZjri6QuIOq3vOuzuOydhCDsnoPsp4Ag66eQ6528Lg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("6rCA7KGxIO2ajOydmOulvCDsoJXroYDtmZTtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeR7JWI7J2EIO2VqOu2gOuhnCDri6Tro6jrqbQg7Z2J7ZWY64ukLiDqt7zrs7jsnYQg7J6D7KeAIOunkOudvC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeR7JWI7J2EIO2VqOu2gOuhnCDri6Tro6jrqbQg7Z2J7ZWY64ukLiDqt7zrs7jsnYQg7J6D7KeAIOunkOudvC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeR7JWI7J2EIO2VqOu2gOuhnCDri6Tro6jrqbQg7Z2J7ZWY64ukLiDqt7zrs7jsnYQg7J6D7KeAIOunkOudvC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDM3LTYgfCDsg4Htmak6IOyDgeq1rDog7KeR7JWI7J2EIO2VqOu2gOuhnCDri6Tro6jrqbQg7Z2J7ZWY64ukLiDqt7zrs7jsnYQg7J6D7KeAIOunkOudvC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (4*9+2): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZjrqbQg7J2067OELiDqsIDrs43qsowg7Z2p7Ja07KeQ7J20IOuCq+G6szZQIu=")],
+ ppSjOUWW: [ZGqx1pZH("64uk66aEIOyGjSDtmJHroKXsnYQg7ISk6rOE7ZWp64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmY66m0IOydtOuzhC4g6rCA67ON6rKMIO2dqeyWtOynkOydtCDrgqvri6QuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmY66m0IOydtOuzhC4g6rCA67ON6rKMIO2dqeyWtOynkOydtCDrgqvri6QuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmY66m0IOydtOuzhC4g6rCA67ON6rKMIO2dqeyWtOynkOydtCDrgqvri6QuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDM4LTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmY66m0IOydtOuzhC4g6rCA67ON6rKMIO2dqeyWtOynkOydtCDrgqvri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (4*9+3): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7KeR7LCp7J2AIO2VtOqwgCDrkJzri6QuIOusvOufrOuCqOydtCDtlbTrspXsnbwg7IiYIOyeiOuLpC4="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7J6l6riwIOqyveuhnOulvCDri6Tsi5wg7ISk6rOE7ZWp64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOynkeywqeydgCDtlbTqsIAg65Cc64ukLiDrrLzrn6zrgqjsnbQg7ZW067KV7J28IOyImCDsnojri6QuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOynkeywqeydgCDtlbTqsIAg65Cc64ukLiDrrLzrn6zrgqjsnbQg7ZW067KV7J28IOyImCDsnojri6QuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOynkeywqeydgCDtlbTqsIAg65Cc64ukLiDrrLzrn6zrgqjsnbQg7ZW067KV7J28IOyImCDsnojri6QuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDM5LTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOynkeywqeydgCDtlbTqsIAg65Cc64ukLiDrrLzrn6zrgqjsnbQg7ZW067KV7J28IOyImCDsnojri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (2*20): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg6rCc7J6F7J2AIO2die2VmOuLpC4g65WM66Gc64qUIOuGlOuRkOuKlCDqsoPsnbQg7JW97J2064ukLg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("6rCA67ON6rKMIOy2nOuwnO2VqeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOqwnOyeheydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDrhpTrkZDripQg6rKD7J20IOyVveydtOuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOqwnOyeheydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDrhpTrkZDripQg6rKD7J20IOyVveydtOuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOqwnOyeheydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDrhpTrkZDripQg6rKD7J20IOyVveydtOuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQwLTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOqwnOyeheydgCDtnYntlZjri6QuIOuVjOuhnOuKlCDrhpTrkZDripQg6rKD7J20IOyVveydtOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (2*20+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDqs7ztlZwg7KCI7KCc64qUIOu5iOqzpOydhCDrtoDrpbjri6QuIOq3oO2YleydtCDspJHsmpTtlZjri6Qu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("67O47KeI7JeQIOyekOybkOydhCDsp5HspJHtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog6rO87ZWcIOygiOygnOuKlCDruYjqs6TsnYQg67aA66W464ukLiDqt6DtmJXsnbQg7KSR7JqU7ZWY64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog6rO87ZWcIOygiOygnOuKlCDruYjqs6TsnYQg67aA66W464ukLiDqt6DtmJXsnbQg7KSR7JqU7ZWY64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog6rO87ZWcIOygiOygnOuKlCDruYjqs6TsnYQg67aA66W464ukLiDqt6DtmJXsnbQg7KSR7JqU7ZWY64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQxLTYgfCDsg4Htmak6IOyDgeycoTog6rO87ZWcIOygiOygnOuKlCDruYjqs6TsnYQg67aA66W464ukLiDqt6DtmJXsnbQg7KSR7JqU7ZWY64ukLiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (3*14): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg64+E7JuA7J2AIOyYpO2eiOugpCDrj4XsnbQg65Cc64ukLiDqsr3qs4Trpbwg7KeA7Lyc6528Lg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7ZuE7Jyg7Kad7J2EIOq0gOumrO2VqeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOuPhOybgOydgCDsmKTtnojroKQg64+F7J20IOuQnOuLpC4g6rK96rOE66W8IOyngOy8nOudvC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOuPhOybgOydgCDsmKTtnojroKQg64+F7J20IOuQnOuLpC4g6rK96rOE66W8IOyngOy8nOudvC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOuPhOybgOydgCDsmKTtnojroKQg64+F7J20IOuQnOuLpC4g6rK96rOE66W8IOyngOy8nOudvC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQyLTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOuPhOybgOydgCDsmKTtnojroKQg64+F7J20IOuQnOuLpC4g6rK96rOE66W8IOyngOy8nOudvC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (5*8+3): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7LKZ6rKw7J2AIOuwmOuwnOydhCDrgrPripTri6QuIOq3oO2YleydhCDsnoPsp4Ag66eQ6528Lg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("64KY7JmAIO2DgOyduOydmCDslYjsoITsnYQg7LWc7Jqw7ISg7ZWp64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOyymeqysOydgCDrsJjrsJzsnYQg64Kz64qU64ukLiDqt6DtmJXsnYQg7J6D7KeAIOunkOudvC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOyymeqysOydgCDrsJjrsJzsnYQg64Kz64qU64ukLiDqt6DtmJXsnYQg7J6D7KeAIOunkOudvC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOyymeqysOydgCDrsJjrsJzsnYQg64Kz64qU64ukLiDqt6DtmJXsnYQg7J6D7KeAIOunkOudvC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQzLTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOyymeqysOydgCDrsJjrsJzsnYQg64Kz64qU64ukLiDqt6DtmJXsnYQg7J6D7KeAIOunkOudvC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (4*11): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDrgZ3quYzsp4Ag64uo7KCI7ZW07JW8IO2VnOuLpC4g66+466Co7J2AIO2VtOqwgCDrkJzri6Qu")],
+ ppSjOUWW: [ZGqx1pZH("67mg66W4IOyiheujjCDquLDspIDsnYQg65Gh64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog64Gd6rmM7KeAIOuLqOygiO2VtOyVvCDtlZzri6QuIOuvuOugqOydgCDtlbTqsIAg65Cc64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog64Gd6rmM7KeAIOuLqOygiO2VtOyVvCDtlZzri6QuIOuvuOugqOydgCDtlbTqsIAg65Cc64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog64Gd6rmM7KeAIOuLqOygiO2VtOyVvCDtlZzri6QuIOuvuOugqOydgCDtlbTqsIAg65Cc64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQ0LTYgfCDsg4Htmak6IOyDgeycoTog64Gd6rmM7KeAIOuLqOygiO2VtOyVvCDtlZzri6QuIOuvuOugqOydgCDtlbTqsIAg65Cc64ukLiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (4*11+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDslrXsp4DroZwg64GM7Ja066qo7Jy866m0IO2die2VmOuLpC4g7J6Q7Jew7Iqk65+nRB8GdXw="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("66qo7J6E7J2YIO2UvOuhnOulvCDqtIDrpqztlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7Ja17KeA66GcIOuBjOyWtOuqqOycvOuptCDtnYntlZjri6QuIOyekOyXsOyKpOufrOybgOydtCDquLjtlZjri6QuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7Ja17KeA66GcIOuBjOyWtOuqqOycvOuptCDtnYntlZjri6QuIOyekOyXsOyKpOufrOybgOydtCDquLjtlZjri6QuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7Ja17KeA66GcIOuBjOyWtOuqqOycvOuptCDtnYntlZjri6QuIOyekOyXsOyKpOufrOybgOydtCDquLjtlZjri6QuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQ1LTYgfCDsg4Htmak6IOyDgeycoTog7Ja17KeA66GcIOuBjOyWtOuqqOycvOuptCDtnYntlZjri6QuIOyekOyXsOyKpOufrOybgOydtCDquLjtlZjri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (3*15+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7IOB7Iq5IOyaleq1rOuKlCDsnITtl5jtlZjri6QuIOyekOyXsOyKpOufrOybgOydtCDspJHsmpTtlZjri6Qu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("64uk7J2MIOqzhOuLqOydhCDsmIjsl7Ttlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOyDgeyKuSDsmpXqtazripQg7JyE7ZeY7ZWY64ukLiDsnpDsl7DsiqTrn6zsm4DsnbQg7KSR7JqU7ZWY64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOyDgeyKuSDsmpXqtazripQg7JyE7ZeY7ZWY64ukLiDsnpDsl7DsiqTrn6zsm4DsnbQg7KSR7JqU7ZWY64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOyDgeyKuSDsmpXqtazripQg7JyE7ZeY7ZWY64ukLiDsnpDsl7DsiqTrn6zsm4DsnbQg7KSR7JqU7ZWY64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQ2LTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOyDgeyKuSDsmpXqtazripQg7JyE7ZeY7ZWY64ukLiDsnpDsl7DsiqTrn6zsm4DsnbQg7KSR7JqU7ZWY64ukLiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (5*9+2): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7Ja17JWV7J2AIOqzpyDtkoDrprDri6QuIOuniOyngOuniSDsnbjrgrTqsIAg7ZWE7JqU7ZWY64ukLg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7ZqM67O1IOyKpOy8gOykhOydhCDrp4zrk63ri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOyWteyVleydgCDqs6cg7ZKA66aw64ukLiDrp4jsp4Drp4kg7J2464K06rCAIO2VhOyalO2VmOuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOyWteyVleydgCDqs6cg7ZKA66aw64ukLiDrp4jsp4Drp4kg7J2464K06rCAIO2VhOyalO2VmOuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOyWteyVleydgCDqs6cg7ZKA66aw64ukLiDrp4jsp4Drp4kg7J2464K06rCAIO2VhOyalO2VmOuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQ3LTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOyWteyVleydgCDqs6cg7ZKA66aw64ukLiDrp4jsp4Drp4kg7J2464K06rCAIO2VhOyalO2VmOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (3*16): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDsoJXshLHqu48g65ag7Jis66as64qUIOusvOydgCDrqqjrkZDsl5Dqsowg67O17J20IOuQnOuLpC4=")],
+ ppSjOUWW: [ZGqx1pZH("7KeA7IaN7Jq07JiBIOqzhO2ajeydhCDshLjsm4Hri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KCV7ISx6ruPIOuWoOyYrOumrOuKlCDrrLzsnYAg66qo65GQ7JeQ6rKMIOuzteydtCDrkJzri6QuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KCV7ISx6ruPIOuWoOyYrOumrOuKlCDrrLzsnYAg66qo65GQ7JeQ6rKMIOuzteydtCDrkJzri6QuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KCV7ISx6ruPIOuWoOyYrOumrOuKlCDrrLzsnYAg66qo65GQ7JeQ6rKMIOuzteydtCDrkJzri6QuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQ4LTYgfCDsg4Htmak6IOyDgeycoTog7KCV7ISx6ruPIOuWoOyYrOumrOuKlCDrrLzsnYAg66qo65GQ7JeQ6rKMIOuzteydtCDrkJzri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (5*9+4): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDrs4DtmZQg7J207ZuE7JeQ64+EIOqyveqzhO2VmOudvC4g7JWI7KO87ZWY66m0IO2die2VmOuLpC4=")],
+ ppSjOUWW: [ZGqx1pZH("7KCV7LCpIO2bhCDtmozqs6Dtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog67OA7ZmUIOydtO2bhOyXkOuPhCDqsr3qs4TtlZjrnbwuIOyViOyjvO2VmOuptCDtnYntlZjri6QuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog67OA7ZmUIOydtO2bhOyXkOuPhCDqsr3qs4TtlZjrnbwuIOyViOyjvO2VmOuptCDtnYntlZjri6QuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog67OA7ZmUIOydtO2bhOyXkOuPhCDqsr3qs4TtlZjrnbwuIOyViOyjvO2VmOuptCDtnYntlZjri6QuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDQ5LTYgfCDsg4Htmak6IOyDgeycoTog67OA7ZmUIOydtO2bhOyXkOuPhCDqsr3qs4TtlZjrnbwuIOyViOyjvO2VmOuptCDtnYntlZjri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (4*12+2): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDshLHqs7zqsIAg7JmE7ISx65Cc64ukLiDqt7jrn6zrgpgg6rWQ66eM7J2EIOqyveqzhO2VmOudvC4=")],
+ ppSjOUWW: ['', '', '', '', '', ''],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7ISx6rO86rCAIOyZhOyEseuQnOuLpC4g6re465+YslDOGiP+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7ISx6rO86rCAIOyZhOyEseuQnOuLpC4g6re465+hBzgLqNe+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7ISx6rO86rCAIOyZhOyEseuQnOuLpC4g6re465+sT35aW6H+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDUwLTYgfCDsg4Htmak6IOyDgeycoTog7ISx6rO86rCAIOyZhOyEseuQnOuLpC4g6re465+H2ZWtNgZ+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (2*25+1): {G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDrhoDrnozsnbQg7KeA64KY6rCA66m0IOq4sOyBnCDshozsi53snbQg7Jio64ukLg==")],
+ ppSjOUWW: [ZGqx1pZH("7J6s67Cc6rK967O0IOyytOqzhOulvCDrkaHri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog64aA656M7J20IOyngOuCmOqwgOuptCDquLDsgZwg7IaM7Iud7J20IOyYqOuLpC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog64aA656M7J20IOyngOuCmOqwgOuptCDquLDsgZwg7IaM7Iud7J20IOyYqOuLpC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog64aA656M7J20IOyngOuCmOqwgOuptCDquLDsgZwg7IaM7Iud7J20IOyYqOuLpC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDUxLTYgfCDsg4Htmak6IOyDgeq1rDog64aA656M7J20IOyngOuCmOqwgOuptCDquLDsgZwg7IaM7Iud7J20IOyYqOuLpC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (3*17+1): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDrrLTrpqztlZwg6rOg7KeR7J2AIO2die2VmOuLpC4g7Jyg7Jew7ZWo7J2EIOyeg+tph4jnai")],
+ ppSjOUWW: [ZGqx1pZH("7J2Y64+E7KCBIO2ctOyLneydhCDsoJXroYDtmZTtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog66y066as7ZWcIOqzoOynkeydgCDtnYntlZjri6QuIOycoOyXsO2VqOydhCDsnoPsp4Ag66eQ6528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog66y066as7ZWcIOqzoOynkeydgCDtnYntlZjri6QuIOycoOyXsO2VqOydhCDsnoPsp4Ag66eQ6528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog66y066as7ZWcIOqzoOynkeydgCDtnYntlZjri6QuIOycoOyXsO2VqOydhCDsnoPsp4Ag66eQ6528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDUyLTYgfCDsg4Htmak6IOyDgeycoTog66y066as7ZWcIOqzoOynkeydgCDtnYntlZjri6QuIOycoOyXsO2VqOydhCDsnoPsp4Ag66eQ6528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (2*26+1): {G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg7LK066m07J2AIO2die2VmOuLpC4g7IaM67CV7ZWo7J2EIOyngOy8nOudvC4=")],
+ ppSjOUWW: [ZGqx1pZH("7ISx7J6lIOq4sOuhneydhCDrgqjquYHri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7LmcIOyytOuptOydgCDtnYntlZjri6QuIOyGjOuwle2VqOydhCDsp4DsvJzrnbwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOyytOuptOydgCDtnYntlZjri6QuIOyGjOuwle2VqOydhCDsp4DsvJzrnbwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7LmcIOyytOuptOydgCDtnYntlZjri6QuIOyGjOuwle2VqOydhCDsp4DsvJzrnbwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDUzLTYgfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOyytOuptOydgCDtnYntlZjri6QuIOyGjOuwle2VqOydhCDsp4DsvJzrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (2*27): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7J2Y7KG07J2AIO2VtOuhreuLpC4g7KO87LK07ISx7J2EIOyngOy8nOudvC4=")],
+ ppSjOUWW: [ZGqx1pZH("7Jet7ZWgIOyghO2ZmOydhCDspIDruYTtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIOydmOyhtOydgCDtlbTroa3ri6QuIOyjvOyytOyEseydhCDsp4DsvJzrnbwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOydmOyhtOydgCDtlbTroa3ri6QuIOyjvOyytOyEseydhCDsp4DsvJzrnbwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIOydmOyhtOydgCDtlbTroa3ri6QuIOyjvOyytOyEseydhCDsp4DsvJzrnbwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDU0LTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIOydmOyhtOydgCDtlbTroa3ri6QuIOyjvOyytOyEseydhCDsp4DsvJzrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (5*11): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDrsojsmIHsnZgg7KCI7KCVIO2bhOuKlCDsh6Dth7QuIOuniOustOumrOulvCDri6jsoJXtnogg7ZWY6528Lg=="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("64uk7J2MIOyLnOymjOydhCDqs4Ttmo3tlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog67KI7JiB7J2YIOygiOyglSDtm4TripQg7Ieg7Ye0LiDrp4jrrLTrpqzrpbwg64uo7KCV7Z6IIO2VmOudvC4g4oaSIOuCtOuptCDrj5nroKUo7JWI7KCVwrfsnbjsoJXCt+2GteygnCDsmpXqtawg7KSRIOyasOyEuCDtjJDri6gpLCDqsJDsoJUg7Yyo7YS0KOu2iOyViC/Fe5wPdzt+rIGNf8IR+EL+AAgYAmaM/MnFsj0oo"),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog67KI7JiB7J2YIOygiOyglSDtm4TripQg7Ieg7Ye0LiDrp4jrrLTrpqzrpbwg64uo7KCV7Z6IIO2VmOudvC4g4oaSIOyLpO2WiSDtj6zsnbjtirg6IOyGjeuPhMK36riw7KSAwrfqtIDqs4Tqsr3qs4TCt+ULUlThx1+E7ZWcIO2ZleyLoC/WNI3GEdC+tiWubRwO="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog67KI7JiB7J2YIOygiOyglSDtm4TripQg7Ieg7Ye0LiDrp4jrrLTrpqzrpbwg64uo7KCV7Z6IIO2VmOudvC4g4oaSIOqwnOyehTog6rCQ7KCV652867Ko66eBwrfqsIDsuZjtmZXsnbjCt+hxwogAVP"),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDU1LTYgfCDsg4Htmak6IOyDgeycoTog67KI7JiB7J2YIOygiOyglSDtm4TripQg7Ieg7Ye0LiDrp4jrrLTrpqzrpbwg64uo7KCV7Z6IIO2VmOudvC4g4oaSIOqwnOyehTog4pGg6rCQ7KCV7Lih7KCVIOKRoeqwgOygleqygOymnSDikaLsoJDsp4Trhbjstpwv7ZaJ64+Z65SU7J6Q7J24IOKGkiDqsrDqs7w6IOyLpO2WieuloOKGkSwg67aI7JWI4oaTLCDsnZjsgqzqsrDsoJUg66qF66OM7ZmULg=="),
+ ],},
+ (3*18+2): {G4VjD75g: [ZGqx1pZH("7IOB6rWsOiDtg4Dsp4Dsl5DshJzsnZgg7Jik66eM7J2AIO2die2VmOuLpC4g7KGw7Jqp7Z6IIOusvOufrOuCmOudvC4=")],
+ ppSjOUWW: [ZGqx1pZH("6riw66Gd7J2EIOuCqOqyqCDqt4DtmZgg7ZuEIOyXsOqysO2VqeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7YOA7KeA7JeQ7ISc7J2YIOyYpOunjOydgCDtnYntlZjri6QuIOyhsOyaqe2eiCDrrLzrn6zrgpjrnbwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7YOA7KeA7JeQ7ISc7J2YIOyYpOunjOydgCDtnYntlZjri6QuIOyhsOyaqe2eiCDrrLzrn6zrgpjrnbwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7YOA7KeA7JeQ7ISc7J2YIOyYpOunjOydgCDtnYntlZjri6QuIOyhsOyaqe2eiCDrrLzrn6zrgpjrnbwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDU2LTYgfCDsg4Htmak6IOyDgeq1rDog7YOA7KeA7JeQ7ISc7J2YIOyYpOunjOydgCDtnYntlZjri6QuIOyhsOyaqe2eiCDrrLzrn6zrgpjrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (2*28+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsmrDsnKDrtoDri6jtlZjrqbQg6riw7ZqM66W8IOuGk+nvoE0vTu="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("67CU656M7LKY65+8IO2dlOyggeydhCDrgqjquLDsp4Ag7JWK7Iq164uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7Jqw7Jyg67aA64uo7ZWY66m0IOq4sO2ajOulvCDrhpPsuZzri6QuIOqysOuLqOydtCDtlYTsmpTtlZjri6QuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7Jqw7Jyg67aA64uo7ZWY66m0IOq4sO2ajOulvCDrhpPsuZzri6QuIOqysOuLqOydtCDtlYTsmpTtlZjri6QuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7Jqw7Jyg67aA64uo7ZWY66m0IOq4sO2ajOulvCDrhpPsuZzri6QuIOqysOuLqOydtCDtlYTsmpTtlZjri6QuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDU3LTYgfCDsg4Htmak6IOyDgeycoTog7Jqw7Jyg67aA64uo7ZWY66m0IOq4sO2ajOulvCDrhpPsuZzri6QuIOqysOuLqOydtCDtlYTsmpTtlZjri6QuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (2*29): {G4VjD75g: [ZGqx1pZH("7IOB7JyhOiDtl4jtmanrkJwg7KaQ6rGw7JuA7J2AIOqzte2XiO2VqOydhCDrgqjquLTri6Qu")],
+ ppSjOUWW: [ZGqx1pZH("6rCQ7IKs66W8IO2RnO2YhO2VqeuLiOuLpC4=")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7ZeI7Zmp65CcIOymkOqxsOybgOydgCDqs7Xtl4jtlajsnYQg64Ko6ri064ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7ZeI7Zmp65CcIOymkOqxsOybgOydgCDqs7Xtl4jtlajsnYQg64Ko6ri064ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7ZeI7Zmp65CcIOymkOqxsOybgOydgCDqs7Xtl4jtlajsnYQg64Ko6ri064ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDU4LTYgfCDsg4Htmak6IOyDgeycoTog7ZeI7Zmp65CcIOymkOqxsOybgOydgCDqs7Xtl4jtlajsnYQg64Ko6ri064ukLiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (2*29+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDsp4DrgpjsuZwg7ZW07IKw7J2AIOustOyniOyEnOulvCDrgrPripTri6QuIOq3oO2YleydtCDtlYTsmpTtlZjri6Qu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("6rCI65OxIOyerOqysOu5meydhCDrp4nsirXri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7KeA64KY7LmcIO2VtOyCsOydgCDrrLTsp4jshJzrpbwg64Kz64qU64ukLiDqt6DtmJXsnbQg7ZWE7JqU7ZWY64ukLiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIO2VtOyCsOydgCDrrLTsp4jshJzrpbwg64Kz64qU64ukLiDqt6DtmJXsnbQg7ZWE7JqU7ZWY64ukLiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7KeA64KY7LmcIO2VtOyCsOydgCDrrLTsp4jshJzrpbwg64Kz64qU64ukLiDqt6DtmJXsnbQg7ZWE7JqU7ZWY64ukLiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDU5LTYgfCDsg4Htmak6IOyDgeycoTog7KeA64KY7LmcIO2VtOyCsOydgCDrrLTsp4jshJzrpbwg64Kz64qU64ukLiDqt6DtmJXsnbQg7ZWE7JqU7ZWY64ukLiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (4*15): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDqs7zrj4TtlZwg7KCI7KCc64qUIO2VtOqwgCDrkJzri6QuIOycoOyXsO2VqOydhCDsnKDsp4DtlZjrnbwu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7ZWE7JqUIOyLnCDqt5zsuZnsnYQg7J6s7KGw7KCV7ZWp64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog6rO864+E7ZWcIOygiOygnOuKlCDtlbTqsIAg65Cc64ukLiDsnKDsl7DtlajsnYQg7Jyg7KeA7ZWY6528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog6rO864+E7ZWcIOygiOygnOuKlCDtlbTqsIAg65Cc64ukLiDsnKDsl7DtlajsnYQg7Jyg7KeA7ZWY6528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog6rO864+E7ZWcIOygiOygnOuKlCDtlbTqsIAg65Cc64ukLiDsnKDsl7DtlajsnYQg7Jyg7KeA7ZWY6528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDYwLTYgfCDsg4Htmak6IOyDgeycoTog6rO864+E7ZWcIOygiOygnOuKlCDtlbTqsIAg65Cc64ukLiDsnKDsl7DtlajsnYQg7Jyg7KeA7ZWY6528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (4*15+1): {G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg7Iug66Kw64qUIOyLpOunneydhCDrgrPripTri6QuIOq3oO2YleydhCDsp4DsvJzrnbwu"),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7KeE7IukIOq4sOuwmCDtmJHroKXsnYQg7ZmV7J6l7ZWp64uI64ukLg==")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7LmcIOyLoOuisOuKlCDsi6Trp53snYQg64Kz64qU64ukLiDqt6DtmJXsnYQg7KeA7Lyc6528LiDihpIg64K066m0IOuPmeugpSjslYjsoJXCt+yhP3zZJK+ynccaq5R/qWICMVyy+ZIOqyve2WpSjqs7zrj4Qv7KeA7JewL+2ajO2UvCDsl6zrtoAg7KCQ6rKAKS4="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOyLoOuisOuKlCDsi6Trp53snYQg64Kz64qU64ukLiDqt6DtmJXsnYQg7KeA7Lyc6528LiDihpIg7Iuk7ZaJIO2PrOyduO2KuDog7IaN64+EwrfquLDspIDCt+zZ5vn0Wi+kbwqYLWc/yRgrxroh=="),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7LmcIOyLoOuisOuKlCDsi6Trp53snYQg64Kz64qU64ukLiDqt6DtmJXsnYQg7KeA7Lyc6528LiDihpIg6rCc7J6FOiDqsJDsoJXrnbzrsqjrp4HCt+v99niJYW="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDYxLTYgfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOyLoOuisOuKlCDsi6Trp53snYQg64Kz64qU64ukLiDqt6DtmJXsnYQg7KeA7Lyc6528LiDihpIg6rCc7J6FOiDikaDqsJDsoJXsuKHsoJUg4pGh6rCA7KCV6rKA7KadIOKRouygkOynhOuFuOy2nC/SwmKflbD"),
+ ],},
+ (5*12+2): {G4VjD75g: [
+ ZGqx1pZH("7IOB6rWsOiDsp4DrgpjsuZwg6rK96rOE64qUIOyKpOyKpOuhnOulvCDsmK3slYTrp6wg7IiYIOyeiOuLpC4g7KCB64u57ZWo7J2EIOyngOy8nOudvC4="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("66eI66y066as66W8IOuLqOuLqO2eiCDtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeq1rDog7KeA64KY7LmcIOqyveqzhOuKlCDsiqTsiqTroZzrpbwg7Jit7JWE66esIOyImCDsnojri6QuIOyggeuLue2VqOydhCDsp4DsvJzrnbwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOqyveqzhOuKlCDsiqTsiqTroZzrpbwg7Jit7JWE66esIOyImCDsnojri6QuIOyggeuLue2VqOydhCDsp4DsvJzrnbwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeq1rDog7KeA64KY7LmcIOqyveqzhOuKlCDsiqTsiqTroZzrpbwg7Jit7JWE66esIOyImCDsnojri6QuIOyggeuLue2VqOydhCDsp4DsvJzrnbwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDYyLTYgfCDsg4Htmak6IOyDgeq1rDog7KeA64KY7LmcIOqyveqzhOuKlCDsiqTsiqTroZzrpbwg7Jit7JWE66esIOyImCDsnojri6QuIOyggeuLue2VqOydhCDsp4DsvJzrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (5*12+3): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDshLHst6jqsIAg6re57JeQIOuLrO2VmOuptCDsnpDsl7Dtnogg7Ieg7Ye06rCAIOyYqOuLpC4g6rK47IaQ7Z6IIOuniOustOumrO2VmOudvC4="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("64uk7J2MIOuqqe2RnOulvCDspIDruYTtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog7ISx7Leo6rCAIOq3ueyXkCDri6ztlZjrqbQg7J6Q7Jew7Z6IIOyHoO2HtOqwgCDsmKjri6QuIOqyuOyGkO2eiCDrp4jrrLTrpqztlZjrnbwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog7ISx7Leo6rCAIOq3ueyXkCDri6ztlZjrqbQg7J6Q7Jew7Z6IIOyHoO2HtOqwgCDsmKjri6QuIOqyuOyGkO2eiCDrp4jrrLTrpqztlZjrnbwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog7ISx7Leo6rCAIOq3ueyXkCDri6ztlZjrqbQg7J6Q7Jew7Z6IIOyHoO2HtOqwgCDsmKjri6QuIOqyuOyGkO2eiCDrp4jrrLTrpqztlZjrnbwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDYzLTYgfCDsg4Htmak6IOyDgeycoTog7ISx7Leo6rCAIOq3ueyXkCDri6ztlZjrqbQg7J6Q7Jew7Z6IIOyHoO2HtOqwgCDsmKjri6QuIOqyuOyGkO2eiCDrp4jrrLTrpqztlZjrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},
+ (2*32): {G4VjD75g: [
+ ZGqx1pZH("7IOB7JyhOiDqsbDsnZgg64ukIOyZlOyWtOuPhCDrp4jsp4Drp4kg7Iuk7IiY6rCAIOy5mOuqheyggeydtOuLpC4g64Gd6rmM7KeAIOynkeykke2VmOudvC4="),
+ ],
+ ppSjOUWW: [ZGqx1pZH("7JmE7KO8IO2bhCDtmozqs6Dtlanri4jri6Qu")],
+ pzMtdsYw: [
+ ZGqx1pZH("Nu2aqCDsi6zrpqwgfCDtlbXsi6zsg4Htg5w6IOyDgeycoTog6rGw7J2YIOuLpCDsmZTslrTrj4Qg66eI7KeA66eJIOyLpOyImOqwgCDsuZjrqoXsoIHsnbTri6QuIOuBneq5jOyngCDsp5HspJHtlZjrnbwuIOKGkiDrgrTrqbQg64+Z66ClKOyViOyglcK37J247KCVwrfthrXsoJwg7JqV6rWsIOykkSDsmrDshLgg7YyQ64uoKSwg6rCQ7KCVIO2MqO2EtCjrtojslYgv7JqV66edL+2ajO2UvC/xAEtterT/MwWseTHZ=="),
+ ],
+ ixynrKET: [
+ ZGqx1pZH("Nu2aqCDsobDslrggfCDsg4Htmak6IOyDgeycoTog6rGw7J2YIOuLpCDsmZTslrTrj4Qg66eI7KeA66eJIOyLpOyImOqwgCDsuZjrqoXsoIHsnbTri6QuIOuBneq5jOyngCDsp5HspJHtlZjrnbwuIOKGkiDsi6Ttlokg7Y+sR5LqgCX+CFgT1a3z+466Oo6riwL+zhWQTa0V"),
+ ],
+ dgg8sEaR: [
+ ZGqx1pZH("Nu2aqCDsvZTsua0gfCDrrLjsoJzsnbjsi506IOyDgeycoTog6rGw7J2YIOuLpCDsmZTslrTrj4Qg66eI7KeA66eJIOyLpOyImOqwgCDsuZjrqoXsoIHsnbTri6QuIOuBneq5jOyngCDsp5HspJHtlZjrnbwuIOKGkiDqsJzsnoU6IOqwkOygleudvOuyqOungcK36rCA7LmY7ZmV7J24wrfrjIDslYjsgqzqs6DCt+pQWincwS+2UvOuTnOuwsSDihpIgS1BJOiDso7zqsIQg7LK07YGsKOyZhOyImOycqOKGkSwg6rCQ7KCV67OA64+Z7ISx4oaTLCDqtIDqs4TqsIjrk7HihpMpLg=="),
+ ],
+ f6NGSNPp: [
+ ZGqx1pZH("7IKs66GAIDY0LTYgfCDsg4Htmak6IOyDgeycoTog6rGw7J2YIOuLpCDsmZTslrTrj4Qg66eI7KeA66eJIOyLpOyImOqwgCDsuZjrqoXsoIHsnbTri6QuIOuBneq5jOyngCDsp5HspJHtlZjrnbwuIOKGkiDqsJzsnoU6IOKRoOqwkOygley4oeyglSDikaHqsIDsoJXqsoDspp0g4pGi7KCQ7KeE64W47LacL+2WieuPmeuUlOyekOyduCDihpIg6rKw6rO8OiDsi6TtlonrpaDihpEsIOu2iOyViOKGkywg7J2Y7IKs6rKw7KCVIOuqheujjO2ZlC4="),
+ ],},},};// doVqZL0I VUex9OeU W5uHykkO akATKPrw {M6SeiDGc, W5uHykkO}
+ window.EMBED = EMBED;document.jntHrhdM.setAttribute(ZGqx1pZH("ZGF0YS10aGVtZQ=="), ZGqx1pZH("EXPPeVKx="));try {localStorage.TebsS0mO(KEY);localStorage.siPULiJB(KEY, JSON.xAFaDmKT(window.EMBED || {}));} catch (e) {console.error(ZGqx1pZH("Q29ycHVzIHNldCBmYWlsZWQ6"), e);}
+ let IRwfgeMf = {owqCS1hl: '1',
+ uNdQufJY: 0,
+ wUceleRP: ZGqx1pZH("Z3VhX29yaWc="),
+ rjFP5GnI: '',};document.vZEXeSoD.setAttribute(
+ ZGqx1pZH("ZGF0YS11c2VyLXJvbGU="),
+ '{{Vckw4oAy|default(ZGqx1pZH("VVNFUg=="))}}'
+ );document.vZEXeSoD.setAttribute(
+ ZGqx1pZH("ZGF0YS1pcy1hZG1pbg=="),
+ '{% if SXnYk6SV %}true{% else %}false{% cOAUWa6W %}'
+ );function pXs98w4J() {if (window.iTxIlLSm && window.iTxIlLSm().h0nVIrbQ) {const PwzTr2IH = window.iTxIlLSm();console.Rk4WSOCf(ZGqx1pZH("8J+UkCDqtIDrpqzsnpAg7IS47IWYIOqwkOyngDo="), PwzTr2IH);return PwzTr2IH.N7eOKmRa || ZGqx1pZH("U1VQRVJBRE1JTg==");}
+ return document.vZEXeSoD.getAttribute(ZGqx1pZH("ZGF0YS11c2VyLXJvbGU=")) || ZGqx1pZH("VVNFUg==");}
+ window.pXs98w4J = pXs98w4J;function BE1zwgHa() {console.Rk4WSOCf(ZGqx1pZH("8J+UhCDqsJXsoJwg6raM7ZWcIOyDge2DnCDrpqzshYsg7Iuk7ZaJ"));if (window.iTxIlLSm) {const UfehtiLp = window.iTxIlLSm();console.Rk4WSOCf(ZGqx1pZH("8J+TiyDtmITsnqwg7IS47IWYIOyDge2DnDo="), UfehtiLp);if (!UfehtiLp || !UfehtiLp.h0nVIrbQ) {console.Rk4WSOCf(ZGqx1pZH("4pyFIOyEuOyFmOydtCDsmKzrsJTrpbTqsowg7LSI6riw7ZmU65Co"));} else {console.HPSEh5OA(
+ ZGqx1pZH("4pqg77iPIOyEuOyFmOydtCDsmYTsoITtnogg7LSI6riw7ZmU65CY7KeAIOyViuydjCwg6rCV7KCcIOy0iOq4sO2ZlCDsi6Ttlok=")
+ );window.xbMmgfTM();}}
+ eacBVFzE();}
+ function kNcdPY2i(NCk21Aeg) {const oLGydjfI = pXs98w4J();console.Rk4WSOCf(
+ `🔍 권한 체크 - 작업: ${NCk21Aeg}, 현재 권한: ${oLGydjfI}`
+ );if (oLGydjfI !== ZGqx1pZH("U1VQRVJBRE1JTg==")) {y37tO13D(
+ `${NCk21Aeg} 작업을 수행할 권한이 없습니다.\n관리자 권한(SUPERADMIN)이 필요합니다.\n\n현재 권한: ${oLGydjfI}`
+ );return false;}
+ console.Rk4WSOCf(`✅ 권한 승인 - ${NCk21Aeg} 작업 허용`);return true;}
+ window.kNcdPY2i = kNcdPY2i;function eacBVFzE() {const oLGydjfI = pXs98w4J();console.Rk4WSOCf(`🔧 버튼 권한 업데이트 - 현재 권한: ${oLGydjfI}`);const UJ8sq7za = [
+ {id: ZGqx1pZH("YnRuQ29ycHVz"), c2YAbqjp: ZGqx1pZH("7L2U7Y287IqkIOuCtOyepS/UgqdSlWn=")},
+ {id: ZGqx1pZH("TstC1Mk2="), c2YAbqjp: ZGqx1pZH("7LSI6riw7ZmU")},
+ {id: ZGqx1pZH("RfUJn9AI"), c2YAbqjp: ZGqx1pZH("6rCA7KC47Jik6riw")},
+ {id: ZGqx1pZH("ZXhwb3J0"), c2YAbqjp: ZGqx1pZH("64K067O064K06riw")},
+ {id: ZGqx1pZH("Y29weQ=="), c2YAbqjp: '복사'},
+ {id: ZGqx1pZH("ZWRpdA=="), c2YAbqjp: '편집'},
+ {id: ZGqx1pZH("YayMmoVr=="), c2YAbqjp: '저장'},
+ ];const Ax9W74qg = document.getElementById(ZGqx1pZH("YnRuQWRtaW5Mb2dpbg=="));if (Ax9W74qg) {if (oLGydjfI === ZGqx1pZH("U1VQRVJBRE1JTg==")) {Ax9W74qg.textContent = ZGqx1pZH("8J+UkyDqtIDrpqzsnpAg66Gc6re47JWE7JuD");Ax9W74qg.style.NWrLlAZb =
+ ZGqx1pZH("UsZfUriD==");Ax9W74qg.style.Wmva9jBk = ZGqx1pZH("S6NJUvKX=");Ax9W74qg.style.WgPeZpSn = ZGqx1pZH("MCAycHggOHB4IHJnYmEoMjIsIDE2MywgNzQsIDAuMyk=");Ax9W74qg.VpR9GLV7 = ZGqx1pZH("6rSA66as7J6QIOq2jO2VnCDtmZzshLHtmZTrkKggLSDtgbTrpq3tlZjsl6wg66Gc6re47JWE7JuD");console.Rk4WSOCf(ZGqx1pZH("ICAg4pyFIOq0gOumrOyekCDrsoTtirw6IOuhnOq3uOyVhOybgyDrqqjrk5wg7Zmc7ISx7ZmU"));} else {Ax9W74qg.textContent = ZGqx1pZH("8J+UkCDqtIDrpqzsnpAg66Gc6re47J24");Ax9W74qg.style.NWrLlAZb =
+ ZGqx1pZH("ASaCj83C==");Ax9W74qg.style.Wmva9jBk = ZGqx1pZH("S6NJUvKX=");Ax9W74qg.style.WgPeZpSn = ZGqx1pZH("MCAycHggOHB4IHJnYmEoMjIwLCAzOCwgMzgsIDAuMyk=");Ax9W74qg.VpR9GLV7 = ZGqx1pZH("6rSA66as7J6QIOuhnOq3uOyduCDtlYTsmpQgLSDtgbTrpq3tlZjsl6wg66Gc6re47J24");console.Rk4WSOCf(ZGqx1pZH("ICAg4p2MIOq0gOumrOyekCDrsoTtirw6IOuhnOq3uOyduCDrqqjrk5wg7Zmc7ISx7ZmU"));}
+ Ax9W74qg.style.jIrUFZiw = ZGqx1pZH("PBzquuaa==");Ax9W74qg.style.SlcTPlxE = ZGqx1pZH("OHB4");Ax9W74qg.style.LGc4XHWF = ZGqx1pZH("OHB4IDE2cHg=");Ax9W74qg.style.trtzKS6C = ZGqx1pZH("NjAw");Ax9W74qg.style.LqRuV4ze = ZGqx1pZH("MTRweA==");Ax9W74qg.style.N1MA6SPS = ZGqx1pZH("WAheRO8h==");Ax9W74qg.style.hbtBWXUA = ZGqx1pZH("YWxsIDAuM3MgZWFzZQ==");Ax9W74qg.qD91P76e(Ax9W74qg.phQTmqLG(true));const uPax3rHl = document.getElementById(ZGqx1pZH("YnRuQWRtaW5Mb2dpbg=="));console.Rk4WSOCf(ZGqx1pZH("8J+UpyDqtIDrpqzsnpAg67KE7Yq8IOydtOuypO2KuCDrpqzsiqTrhIgg7LaU6rCAIOykkS4uLg=="));console.Rk4WSOCf(ZGqx1pZH("ICAgbmV3QWRtaW5CdG46"), uPax3rHl);uPax3rHl.addEventListener('click', function (oTIDGKIi) {console.Rk4WSOCf(ZGqx1pZH("8J+UpSDqtIDrpqzsnpAg67KE7Yq8IO2BtOumreuQqCE="));console.Rk4WSOCf(ZGqx1pZH("ICAg7ZiE7J6sIOyCrOyaqeyekCDsl63tlaA6"), pXs98w4J());oTIDGKIi.utx4zwne();oTIDGKIi.NlIdkWiU();if (pXs98w4J() === ZGqx1pZH("U1VQRVJBRE1JTg==")) {console.Rk4WSOCf(ZGqx1pZH("ICAg4oaSIOq0gOumrOyekCDroZzqt7jslYTsm4Mg7LKY66as"));NnNaEO89();} else {console.Rk4WSOCf(ZGqx1pZH("ICAg4oaSIOq0gOumrOyekCDroZzqt7jsnbgg7LKY66as"));M6o2023P();}});}
+ UJ8sq7za.F1ZvF76g(({id, c2YAbqjp}) => {const aULKj0sg = document.getElementById(id);if (aULKj0sg) {if (oLGydjfI === ZGqx1pZH("U1VQRVJBRE1JTg==")) {aULKj0sg.disabled = false;aULKj0sg.VpR9GLV7 = '';aULKj0sg.style.DectUJ03 = '1';aULKj0sg.style.N1MA6SPS = ZGqx1pZH("WAheRO8h==");console.Rk4WSOCf(` ✅ ${c2YAbqjp} 버튼 활성화`);} else {aULKj0sg.disabled = true;aULKj0sg.VpR9GLV7 = `${c2YAbqjp} 작업을 수행할 권한이 없습니다. (SUPERADMIN 권한 필요)`;aULKj0sg.style.DectUJ03 = ZGqx1pZH("MC41");aULKj0sg.style.N1MA6SPS = ZGqx1pZH("O7E8n7sF=");console.Rk4WSOCf(` ❌ ${c2YAbqjp} 버튼 비활성화`);}}});}
+ function NnNaEO89() {console.Rk4WSOCf(ZGqx1pZH("6rSA66as7J6QIOuhnOq3uOyVhOybgyDsspjrpqwg7Iuc7J6R"));if (typeof window.xbMmgfTM === ZGqx1pZH("ZnVuY3Rpb24=")) {window.xbMmgfTM();console.Rk4WSOCf(ZGqx1pZH("4pyFIOq0gOumrOyekCDshLjshZgg7IKt7KCcIOyZhOujjA=="));} else {console.error(ZGqx1pZH("4p2MIGNsZWFyQWRtaW5TZXNzaW9uIO2VqOyImOulvCDssL7snYQg7IiYIOyXhuydjA=="));}
+ localStorage.TebsS0mO(ZGqx1pZH("YWRtaW5TZXNzaW9u"));localStorage.TebsS0mO(ZGqx1pZH("RdtZZIro=="));localStorage.TebsS0mO(ZGqx1pZH("RGcxTqyf="));eacBVFzE();console.Rk4WSOCf(ZGqx1pZH("6rSA66as7J6QIOuhnOq3uOyVhOybgyDsmYTro4w="));setTimeout(() => {y37tO13D(ZGqx1pZH("6rSA66as7J6QIOuhnOq3uOyVhOybg+qTZ9XohK"));}, (5*20));}
+ function M6o2023P() {console.Rk4WSOCf(ZGqx1pZH("6rSA66as7J6QIOuhnOq3uOyduCDssL0g7Je06riwICjsg4gg7LC9KQ=="));ccpk8ZEu();}
+ eacBVFzE();function T1GnAL1B() {console.Rk4WSOCf(ZGqx1pZH("8J+UhCDqtoztlZwg7IOB7YOcIOyerO2ZleyduCDspJEuLi4="));eacBVFzE();}
+ window.addEventListener(ZGqx1pZH("Zm9jdXM="), T1GnAL1B);window.addEventListener(ZGqx1pZH("lKqVHcKr=="), function (e) {if (e.afJ5bmfg === ZGqx1pZH("YWRtaW5fc2Vzc2lvbg==") || e.afJ5bmfg === ZGqx1pZH("YWRtaW5TZXNzaW9u")) {console.Rk4WSOCf(ZGqx1pZH("8J+UlCDqtIDrpqzsnpAg7IS47IWYIOuzgOqyvSDqsJDsp4A="));T1GnAL1B();}});let or8gZ6A6 = setInterval(function () {if (window.iTxIlLSm && window.iTxIlLSm().h0nVIrbQ) {console.Rk4WSOCf(ZGqx1pZH("4pyFIOq0gOumrOyekCDroZzqt7jsnbgg6rCQ7KeAIC0g6raM7ZWcIOyXheuNsOydtO2KuA=="));eacBVFzE();bGmTcmkx(or8gZ6A6);or8gZ6A6 = setInterval(FqEcPWhW.LBxm2Vn1, 3000);}}, (2*250));window.addEventListener(ZGqx1pZH("OWwUbANo=="), function (oTIDGKIi) {if (oTIDGKIi.QZP8K5XQ && oTIDGKIi.QZP8K5XQ.kAoi34O4 === ZGqx1pZH("QURNSU5fTE9HSU5fU1VDQ0VTUw==")) {console.Rk4WSOCf(ZGqx1pZH("8J+OiSDqtIDrpqzsnpAg66Gc6re47J24IOyEseqztSDrqZTsi5zsp4Ag7IiY7Iug"));console.Rk4WSOCf(ZGqx1pZH("8J+TiyDsiJjsi6DrkJwg6rSA66as7J6QIOuNsOydtO2EsDo="), oTIDGKIi.QZP8K5XQ.RS1d01WU);if (
+ oTIDGKIi.QZP8K5XQ.RS1d01WU &&
+ typeof window.TYFeFeEe === ZGqx1pZH("ZnVuY3Rpb24=")
+ ) {window.TYFeFeEe(oTIDGKIi.QZP8K5XQ.RS1d01WU);console.Rk4WSOCf(ZGqx1pZH("4pyFIOq0gOumrOyekCDshLjshZgg6rCV7KCcIOyEpOyglSDsmYTro4w="));}
+ eacBVFzE();setTimeout(() => eacBVFzE(), (5*20));setTimeout(() => eacBVFzE(), (4*125));setTimeout(() => eacBVFzE(), (3*333+1));}});let j3PGOv2O = !document.hidden;document.addEventListener(ZGqx1pZH("HsSFgIWf=="), function () {if (!document.hidden && j3PGOv2O === false) {console.Rk4WSOCf(ZGqx1pZH("8J+Rge+4jyDtjpjsnbTsp4DqsIAg64uk7IucIO2ZnOyEse2ZlOuQqCAtIOq2jO2VnCDssrTtgaw="));T1GnAL1B();}
+ j3PGOv2O = !document.hidden;});let PgA2hyrS = 0;document.addEventListener(ZGqx1pZH("EgwMRljQ=="), function () {const zVnzvsms = Date.zVnzvsms();if (zVnzvsms - PgA2hyrS > 2000) {console.Rk4WSOCf(ZGqx1pZH("8J+Wse+4jyDrp4jsmrDsiqQg7KeE7J6FIC0g6raM7ZWcIOyytO2BrA=="));T1GnAL1B();PgA2hyrS = zVnzvsms;}});setInterval(T1GnAL1B, 5000);window.WQNJiG8M = function () {console.Rk4WSOCf(ZGqx1pZH("8J+ovPqFwY1="));if (typeof window.xbMmgfTM === ZGqx1pZH("ZnVuY3Rpb24=")) {window.xbMmgfTM();BE1zwgHa();console.Rk4WSOCf(ZGqx1pZH("4pyFIOyImOuPmSDroZzqt7jslYTsm4Mg7JmE66OM"));} else {console.error(ZGqx1pZH("4p2MIGNsZWFyQWRtaW5TZXNzaW9uIO2VqOyImOulvCDssL7snYQg7IiYIOyXhuydjA=="));}};window.NxbyRnGr = function () {console.Rk4WSOCf(ZGqx1pZH("8J+lCpn2hMC="));if (typeof window.TYFeFeEe === ZGqx1pZH("ZnVuY3Rpb24=")) {window.TYFeFeEe({IyCpCr8j: ZGqx1pZH("wJTDk7qs=="),
+ aOxZrE7W: ZGqx1pZH("VGVzdCBBZG1pbg=="),
+ N7eOKmRa: ZGqx1pZH("U1VQRVJBRE1JTg=="),
+ h0nVIrbQ: true,});BE1zwgHa();console.Rk4WSOCf(ZGqx1pZH("4pyFIOyImOuPmSDroZzqt7jsnbgg7JmE66OM"));} else {console.error(ZGqx1pZH("4p2MIHNldEFkbWluU2Vzc2lvbiDtlajsiJjrpbwg7LC+7J2EIOyImCDsl4bsnYw="));}};window.OCeXsGn3 = function () {console.Rk4WSOCf(ZGqx1pZH("8J+UjSDtmITsnqwg6rSA66as7J6QIOyDge2DnCDtmZXsnbg6"));console.Rk4WSOCf(ZGqx1pZH("ICAtIGdldEN1cnJlbnRVc2VyUm9sZSgpOg=="), pXs98w4J());if (window.iTxIlLSm) {console.Rk4WSOCf(ZGqx1pZH("ICAtIGdldEFkbWluU2Vzc2lvbigpOg=="), window.iTxIlLSm());}
+ const Ax9W74qg = document.getElementById(ZGqx1pZH("YnRuQWRtaW5Mb2dpbg=="));if (Ax9W74qg) {console.Rk4WSOCf(ZGqx1pZH("ICAtIOuyhO2KvCDthY3siqTtirg6"), Ax9W74qg.textContent);console.Rk4WSOCf(ZGqx1pZH("ICAtIOuyhO2KvCDrsLDqsr06"), Ax9W74qg.style.NWrLlAZb);}};window.addEventListener(ZGqx1pZH("OWwUbANo=="), function (oTIDGKIi) {console.Rk4WSOCf(ZGqx1pZH("8J+TqCDrqZTsi5zsp4Ag7IiY7IugOg=="), oTIDGKIi.QZP8K5XQ);console.Rk4WSOCf(ZGqx1pZH("8J+TqCDrqZTsi5zsp4Ag7Lac7LKYKG9yaWdpbik6"), oTIDGKIi.dOjrBu8F);console.Rk4WSOCf(ZGqx1pZH("8J+TqCDrqZTsi5zsp4Ag7IaM7IqkOg=="), oTIDGKIi.qZaLNt5k);if (oTIDGKIi.QZP8K5XQ && oTIDGKIi.QZP8K5XQ.kAoi34O4 === ZGqx1pZH("QURNSU5fTE9HSU5fU1VDQ0VTUw==")) {console.Rk4WSOCf(ZGqx1pZH("4pyFIOq0gOumrOyekCDroZzqt7jsnbgg7ISx6rO1IOuplOyLnOyngCDsiJjsi6A6"), oTIDGKIi.QZP8K5XQ.RS1d01WU);console.Rk4WSOCf(ZGqx1pZH("8J+UjSDroZzqt7jsnbgg7ISx6rO1IO2bhCDsponsi5wg7IOB7YOcOg=="));console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIGxvY2FsU3RvcmFnZSBiZWZvcmU6"),
+ localStorage.HV1xRqMA(ZGqx1pZH("YWRtaW5fc2Vzc2lvbg=="))
+ );console.Rk4WSOCf(ZGqx1pZH("ICAtIHdpbmRvdy5hZG1pblNlc3Npb24gYmVmb3JlOg=="), window.PwzTr2IH);setTimeout(() => {console.Rk4WSOCf(ZGqx1pZH("8J+UhCDqtoztlZwg7JeF642w7J207Yq4IOyLpO2WiSAoNTAwbXMg7ZuEKQ=="));console.Rk4WSOCf(ZGqx1pZH("8J+UjSDqtoztlZwg7JeF642w7J207Yq4IOyghCDsg4Htg5w6"));console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIGxvY2FsU3RvcmFnZSBhZnRlciA1MDBtczo="),
+ localStorage.HV1xRqMA(ZGqx1pZH("YWRtaW5fc2Vzc2lvbg=="))
+ );console.Rk4WSOCf(
+ ZGqx1pZH("ICAtIHdpbmRvdy5hZG1pblNlc3Npb24gYWZ0ZXIgNTAwbXM6"),
+ window.PwzTr2IH
+ );console.Rk4WSOCf(ZGqx1pZH("ICAtIGdldEN1cnJlbnRVc2VyUm9sZSgpOg=="), pXs98w4J());T1GnAL1B();y37tO13D(
+ ZGqx1pZH("4pyFIOq0gOumrOyekCDroZzqt7jsnbgg7ISx6rO1IVxuXG7qtIDrpqzsnpAg6raM7ZWc7J20IO2ZnOyEse2ZlOuQmOyXiOyKteuLiOuLpC5cbuydtOygnCDrqqjrk6Ag6riw64ql7J2EIOyCrOyaqe2VoCDsiJgg7J6I7Iq164uI64ukLg==")
+ );}, (2*250));} else if (
+ oTIDGKIi.QZP8K5XQ &&
+ oTIDGKIi.QZP8K5XQ.kAoi34O4 === ZGqx1pZH("QURNSU5fTE9HSU5fQ0FOQ0VMTEVE")
+ ) {console.Rk4WSOCf(ZGqx1pZH("8J+WFwn8eh0"));setTimeout(() => {console.Rk4WSOCf(ZGqx1pZH("8J+UhCDst6jshowg7ZuEIOq2jO2VnCDsg4Htg5wg7ZmV7J24"));BE1zwgHa();}, (4*25));} else {console.Rk4WSOCf(ZGqx1pZH("4pqg77iPIOyVjCDsiJgg7JeG64qUIOuplOyLnOyngCDtg4DsnoU6"), oTIDGKIi.QZP8K5XQ);}});const HEX_NAMES = {1: ZGqx1pZH("6rG0KOS5vikg7ZWY64qY"),
+ (10-8): ZGqx1pZH("6rOkKOWdpCkg65WF"),
+ (9-6): ZGqx1pZH("65GUKOWxrykg7Ja066Ck7JuA"),
+ (6-2): ZGqx1pZH("66q9KOiSmSkg66y07KeA"),
+ (10-5): ZGqx1pZH("7IiYKOmcgCkg6riw64uk66a8"),
+ (10-4): ZGqx1pZH("7IahKOionykg64uk7Yi8"),
+ (14-7): ZGqx1pZH("7IKsKOW4qykg6rWw64yA"),
+ (11-3): ZGqx1pZH("67mEKOavlCkg7Lmc7ZWo"),
+ (5--4): ZGqx1pZH("7IaM7LaVKOWwj+tKFvH9Jq=="),
+ (2*5): ZGqx1pZH("66asKOWxpSkg67Cf6riw"),
+ (3*3+2): ZGqx1pZH("7YOcKOazsCkg7Y+J7JWI"),
+ (4*3): ZGqx1pZH("67mEKOWQpikg66eJ7Z6Y"),
+ (5*2+3): ZGqx1pZH("(2*32)+Z7J24KOWQjOS6uikg7IKs656M6rO8IOuNlOu2iOyWtA=="),
+ (2*7): ZGqx1pZH("64yA7JygKOWkp+vlsiW4aC=="),
+ (2*7+1): ZGqx1pZH("6rK4KOismSkg6rK47IaQ"),
+ (2*8): ZGqx1pZH("7JiIKOixqykg7JiI67mE"),
+ (2*8+1): ZGqx1pZH("7IiYKOmaqCkg65Sw66aE"),
+ (5*3+3): ZGqx1pZH("6rOgKOigsSkg67KM66CI"),
+ (5*3+4): ZGqx1pZH("7J6EKOiHqCkg64uk6rCA7Ji0"),
+ (2*10): ZGqx1pZH("6rSAKOingCkg6rSA7LCw"),
+ (3*7): ZGqx1pZH("7ISc7ZWpKOWZrOWXkSkg7JS57Ja0IO2Vqe2VqA=="),
+ (2*11): ZGqx1pZH("67mEKOizgSkg6r6467CI"),
+ (3*7+2): ZGqx1pZH("67CVKOWJnSkg65ao7Ja07KeQ"),
+ (3*8): ZGqx1pZH("67O1KOW+HScGjTQ6+M7JWE7Ji0"),
+ (4*6+1): ZGqx1pZH("66y066edKOeEoeWmhCkg66ed66C565Co7J20IOyXhuydjA=="),
+ (3*8+2): ZGqx1pZH("64yA7LaVKOWkp+jT7xvGhQ=="),
+ (2*13+1): ZGqx1pZH("7J20KOmgpCkg7YSx"),
+ (5*5+3): ZGqx1pZH("64yA6rO8KOWkp+AGuQHv6F=="),
+ (2*14+1): ZGqx1pZH("6rCQKOWdjikg67mg7KeQ"),
+ (2*15): ZGqx1pZH("66asKOmboikg65ag64Ko"),
+ (4*7+3): ZGqx1pZH("7ZWoKOWSuCkg6rCQ7J2R"),
+ (2*16): ZGqx1pZH("7ZWtKOaBkikg7ZWt7IOB"),
+ (3*11): ZGqx1pZH("65GUKOmBrykg66y865+hbnSnFPN"),
+ (5*6+4): ZGqx1pZH("64yA7J6lKOWkp+Wjrykg7YGwIOyepe2VqA=="),
+ (3*11+2): ZGqx1pZH("7KeEKOaZiSkg64KY7JWE6rCQ"),
+ (3*12): ZGqx1pZH("66qF7J20KOaYjuWktykg67Cd7J2M7J20IOyDge2VqA=="),
+ (4*9+1): ZGqx1pZH("6rCA7J24KOWutuS6uikg7KeR7JWIIOyCrOuejOuTpA=="),
+ (5*7+3): ZGqx1pZH("6recKOedvSkg7Ja06riL64Ko"),
+ (2*19+1): ZGqx1pZH("6rG0KOi5hykg7KCI65qd6rGw66a8"),
+ (5*8): ZGqx1pZH("7ZW0KOinoykg7ZKA66a8"),
+ (3*13+2): ZGqx1pZH("7IaQKOaQjSkg642c7Ja064OE"),
+ (3*14): ZGqx1pZH("7J21KOebiikg642U7ZWo"),
+ (4*10+3): ZGqx1pZH("7L6MKOWkrCkg6rKw64uo"),
+ (4*11): ZGqx1pZH("6rWsKOWnpCkg66eM64Ko"),
+ (5*9): ZGqx1pZH("7LeoKOiQgykg66qo7J6E"),
+ (2*23): ZGqx1pZH("7Iq5KOWNhykg7Jik66aE"),
+ (4*11+3): ZGqx1pZH("6rOkKOWbsCkg6rOk6raB"),
+ (2*24): ZGqx1pZH("7KCVKOS6lSkg7Jqw66y8"),
+ (3*16+1): ZGqx1pZH("7ZiBKOmdqSkg7ZiB66qF"),
+ (4*12+2): ZGqx1pZH("7KCVKOm8jikg7Ial"),
+ (2*25+1): ZGqx1pZH("7KeEKOmchykg7Jqw66Kw"),
+ (3*17+1): ZGqx1pZH("6rCEKOiJrikg6re47Lmo"),
+ (5*10+3): ZGqx1pZH("7KCQKOa8uCkg7KCQ7KeE"),
+ (3*18): ZGqx1pZH("6reA66ekKOatuOWmuSkg7Iuc7KeR6rCQ"),
+ (5*11): ZGqx1pZH("7ZKNKOixkCkg7ZKN7ISx"),
+ (3*18+2): ZGqx1pZH("66CkKOaXhSkg64KY6re464Sk"),
+ (3*19): ZGqx1pZH("7IaQKOW3vSkg67aA65Oc65+tMDnK05S"),
+ (2*29): ZGqx1pZH("7YOcKOWFjCkg6riw7IGo"),
+ (2*29+1): ZGqx1pZH("7ZmYKOa4mSkg7Z2p7Ja07KeQ"),
+ (5*12): ZGqx1pZH("7KCIKOevgCkg7KCI7KCc"),
+ (3*20+1): ZGqx1pZH("7KSR67aAKOS4reWtmikg6rCA7Jq0642wIOyLoOuisA=="),
+ (3*20+2): ZGqx1pZH("7IaM6rO8KOWwj+IXeUAGEy=="),
+ (2*31+1): ZGqx1pZH("6riw7KCcKOaXo+a/gm9USUNe+4IOqxtOuEmA=="),
+ (5*12+4): ZGqx1pZH("(4*16+2)+47KCcKOacqua/ZENmYi35="),};function f1GQSU1a() {const SNnuud0N = localStorage.HV1xRqMA(KEY);if (!SNnuud0N) return window.EMBED || {};try {const qlgEVO8g = JSON.XYGEDdJR(SNnuud0N);if (qlgEVO8g.W5uHykkO) return qlgEVO8g;if (qlgEVO8g.QZP8K5XQ)
+ return {M6SeiDGc: qlgEVO8g.M6SeiDGc || VERSION, W5uHykkO: qlgEVO8g.QZP8K5XQ};return {M6SeiDGc: VERSION, W5uHykkO: qlgEVO8g};} catch (e) {console.HPSEh5OA(ZGqx1pZH("UGFyc2UgZmFsbGJhY2s="), e);return window.EMBED || {};}}
+ function OrfUofEm(qlgEVO8g) {localStorage.siPULiJB(KEY, JSON.xAFaDmKT(qlgEVO8g));}
+ function qs(Fqb1S60X, el = document) {return el.querySelector(Fqb1S60X);}
+ function EFNtJM4S(Fqb1S60X, el = document) {return Array.from(el.uGugrM7b(Fqb1S60X));}
+ const juQYtLKW = document.createElement(ZGqx1pZH("ZGl2"));juQYtLKW.innerHTML = `
+ <mujQlIUy class=ZGqx1pZH("y98MydNs")>
+ <aULKj0sg id=ZGqx1pZH("Y2xvc2VMZWZ0") class=ZGqx1pZH("YnRu") style=ZGqx1pZH("YmFja2dyb3VuZDogI2VmNDQ0NDsgY29sb3I6IHdoaXRlOyBtYXJnaW4tcmlnaHQ6IDEycHg7")>닫기</aULKj0sg>
+ <h1>주역 상담가 · 인터랙티브</h1>
+ <mujQlIUy class=ZGqx1pZH("Z3JvdyByb3c=")>
+ <ZcBAzWgY id=ZGqx1pZH("aV8f8oKr") class=ZGqx1pZH("NNUfVEwZ=") b6ab58wA=ZGqx1pZH("6rKA7IOJOiDrrLjsnqUv7YKk7JuM65OcL+WOuqE6yf==") />
+ <aULKj0sg id=ZGqx1pZH("TstC1Mk2=") class=ZGqx1pZH("YnRu")>초기화</aULKj0sg>
+ <aULKj0sg id=ZGqx1pZH("RfUJn9AI") class=ZGqx1pZH("YnRu")>가져오기</aULKj0sg>
+ <aULKj0sg id=ZGqx1pZH("ZXhwb3J0") class=ZGqx1pZH("YnRuIGFjYw==")>내보내기</aULKj0sg>
+ <aULKj0sg id=ZGqx1pZH("sz26P7qY=") class=ZGqx1pZH("YnRu")>테마</aULKj0sg>
+ <aULKj0sg id=ZGqx1pZH("Y2xvc2U=") class=ZGqx1pZH("YnRu") style=ZGqx1pZH("YmFja2dyb3VuZDogI2VmNDQ0NDsgY29sb3I6IHdoaXRlOw==")>닫기</aULKj0sg>
+ </mujQlIUy>
+ </mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("Y29udGFpbmVyIHNpbmdsZS1saW5lLWxheW91dA==") style=ZGqx1pZH("ZGlzcGxheTogZmxleCAhaW1wb3J0YW50OyBmbGV4LWRpcmVjdGlvbjogcm93ICFpbXBvcnRhbnQ7IGdhcDogMjBweCAhaW1wb3J0YW50OyBtYXgtd2lkdGg6IDEyODBweCAhaW1wb3J0YW50OyBtYXJnaW46IDAgYXV0byAhaW1wb3J0YW50OyBwYWRkaW5nOiAyMHB4ICFpbXBvcnRhbnQ7")>
+ <mujQlIUy class=ZGqx1pZH("Y2FyZCBsZWZ0LXBhbmVs") id=ZGqx1pZH("G0O50pVP==") style=ZGqx1pZH("ZmxleDogMCAwIGNhbGMoMjAlIC0gMTBweCkgIWltcG9ydGFudDsgbWF4LXdpZHRoOiBjYWxjKDIwJSAtIDEwcHgpICFpbXBvcnRhbnQ7IG1pbi13aWR0aDogMCAhaW1wb3J0YW50Ow==")>
+ <h2>주역 상경.하경</h2>
+ <mujQlIUy class=ZGqx1pZH("javdONqO==")>
+ <m0LyX0WF class=ZGqx1pZH("YmFkZ2U=")>총 <m0LyX0WF id=ZGqx1pZH("R1Av32wP=")>(3*21+1)</m0LyX0WF> 괘</m0LyX0WF>
+ <m0LyX0WF class=ZGqx1pZH("YmFkZ2U=")>버전 <m0LyX0WF id=ZGqx1pZH("h7eeU757")></m0LyX0WF></m0LyX0WF>
+ </mujQlIUy>
+ <mujQlIUy id=ZGqx1pZH("xExkW5lD==") class=ZGqx1pZH("wUZlBOhf=")></mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("Zm9vdGVy")>
+ <yZPWo49K class=ZGqx1pZH("ZHLf4jq0=")>클릭하여 괘를 선택하세요</yZPWo49K>
+ </mujQlIUy>
+ </mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("Y2FyZCByaWdodC1wYW5lbA==") id=ZGqx1pZH("ZGV0YWlsQ2FyZA==") style=ZGqx1pZH("ZmxleDogMSAxIGF1dG8gIWltcG9ydGFudDsgbWF4LXdpZHRoOiBub25lICFpbXBvcnRhbnQ7IG1pbi13aWR0aDogMzAwcHggIWltcG9ydGFudDs=")>
+ <h2 style=ZGqx1pZH("Zm9udC1zaXplOiBjbGFtcCgxMnB4LCA0dncsIDIwcHgpOyBsaW5lLWhlaWdodDogMS4zOyB3b3JkLWJyZWFrOiBrZWVwLWFsbDsgb3ZlcmZsb3ctd3JhcDogYnJlYWstd29yZDs=")>증산복역과 복서정종 이론 왕필본 바탕 상세설명</h2>
+ <mujQlIUy class=ZGqx1pZH("tacqdSOi==")>
+ <aULKj0sg class=ZGqx1pZH("lb6AQLik==") QZP8K5XQ-dpitbGtT=ZGqx1pZH("Z3VhX29yaWc=")>괘사-원문</aULKj0sg>
+ <aULKj0sg class=ZGqx1pZH("XY0ua4Hc") QZP8K5XQ-dpitbGtT=ZGqx1pZH("Z3VhX3RyYW5fa28=")>괘사-한글</aULKj0sg>
+ <aULKj0sg class=ZGqx1pZH("XY0ua4Hc") QZP8K5XQ-dpitbGtT=ZGqx1pZH("qCHBW4ai=")>6효-원문</aULKj0sg>
+ <aULKj0sg class=ZGqx1pZH("XY0ua4Hc") QZP8K5XQ-dpitbGtT=ZGqx1pZH("f3rgTaHG=")>6효-한글</aULKj0sg>
+ <aULKj0sg class=ZGqx1pZH("XY0ua4Hc") QZP8K5XQ-dpitbGtT=ZGqx1pZH("LmAVAX2P=")>6효-심리</aULKj0sg>
+ <aULKj0sg class=ZGqx1pZH("XY0ua4Hc") QZP8K5XQ-dpitbGtT=ZGqx1pZH("fYrILXur=")>6효-상담</aULKj0sg>
+ <aULKj0sg class=ZGqx1pZH("XY0ua4Hc") QZP8K5XQ-dpitbGtT=ZGqx1pZH("tHgo9X6b==")>6효-조언</aULKj0sg>
+ <aULKj0sg class=ZGqx1pZH("XY0ua4Hc") QZP8K5XQ-dpitbGtT=ZGqx1pZH("u8h85r4d")>6효-코칭</aULKj0sg>
+ <aULKj0sg class=ZGqx1pZH("XY0ua4Hc") QZP8K5XQ-dpitbGtT=ZGqx1pZH("EY2i3T26=")>6효-사례</aULKj0sg>
+ <aULKj0sg class=ZGqx1pZH("XY0ua4Hc") QZP8K5XQ-dpitbGtT=ZGqx1pZH("epD9hjKS=")>현대사례</aULKj0sg>
+ </mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("vVOOvTWZ=")>
+ <mujQlIUy class=ZGqx1pZH("zVyc4Dd7==")>
+ <mujQlIUy id=ZGqx1pZH("swYEL2nu==") class=ZGqx1pZH("gqXW6brd==")></mujQlIUy>
+ <mujQlIUy id=ZGqx1pZH("yM9IC7lS==") class=ZGqx1pZH("W9oxgkEN==")>괘 1 · 1효</mujQlIUy>
+ </mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("XyiufzHY=")>
+ <mujQlIUy id=ZGqx1pZH("jrhRjoIm=") class=ZGqx1pZH("jrhRjoIm=")></mujQlIUy>
+ </mujQlIUy>
+ </mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("Zm9vdGVy")>
+ <mujQlIUy class=ZGqx1pZH("AQUKnAC7")>
+ <aULKj0sg id=ZGqx1pZH("Y29weQ==") class=ZGqx1pZH("YnRu")>복사</aULKj0sg>
+ <aULKj0sg id=ZGqx1pZH("ZWRpdA==") class=ZGqx1pZH("YnRu")>편집</aULKj0sg>
+ <aULKj0sg id=ZGqx1pZH("YayMmoVr==") class=ZGqx1pZH("YnRuIHByaQ==") disabled>저장</aULKj0sg>
+ </mujQlIUy>
+ <yZPWo49K class=ZGqx1pZH("ZHLf4jq0=")>※참고사항: 일반적인 설명입니다.</yZPWo49K>
+ </mujQlIUy>
+ </mujQlIUy>
+ </mujQlIUy>
+ `;document.vZEXeSoD.appendChild(juQYtLKW);const McFJnaUb = {MxeVa7a3: qs(ZGqx1pZH("I3Zlcg==")),
+ VYdcZvWK: qs(ZGqx1pZH("I2hleExpc3Q=")),
+ kq5J9BBx: qs(ZGqx1pZH("I2hleENvdW50")),
+ Eab42aC1: qs(ZGqx1pZH("I3lhb0xpc3Q=")),
+ BQcgYHol: qs(ZGqx1pZH("I3BhbmVs")),
+ RNNzhER5: qs(ZGqx1pZH("I3NlYXJjaA==")),
+ DspRka4a: qs(ZGqx1pZH("I3NlbEluZm8=")),
+ XJaT9emB: qs(ZGqx1pZH("I2NvcHk=")),
+ HZkAryqe: qs(ZGqx1pZH("I2VkaXQ=")),
+ HlXJeIov: qs(ZGqx1pZH("I3NhdmU=")),
+ YiTiYVX8: qs(ZGqx1pZH("I2ltcG9ydA==")),
+ IsPW64iD: qs(ZGqx1pZH("I2V4cG9ydA==")),
+ h1ASDsJn: qs(ZGqx1pZH("I3RoZW1l")),
+ U0BYtf34: qs(ZGqx1pZH("I3Jlc2V0")),
+ vXvOp1LH: qs(ZGqx1pZH("I2Nsb3Nl")),
+ GM2ZNun6: EFNtJM4S('.dpitbGtT'),};function MGUGyvNB() {const QZP8K5XQ = f1GQSU1a();McFJnaUb.MxeVa7a3.textContent = QZP8K5XQ.M6SeiDGc || ZGqx1pZH("ywiFewVJ");McFJnaUb.VYdcZvWK.innerHTML = '';const rjFP5GnI = (McFJnaUb.RNNzhER5.value || '').xyJQs4NP();for (let i = 1;i <= (4*16);i++) {const afJ5bmfg = String(i);const lC4ykNBX = QZP8K5XQ.W5uHykkO[afJ5bmfg] || {};const cvTiFCfY = HEX_NAMES[i] || `괘 ${afJ5bmfg}`;const VpR9GLV7 = `${afJ5bmfg}. ${cvTiFCfY}`;const XSjuLUzP = LFl8lNhY.nOKt1KMT((iZPXUqKP) => iZPXUqKP[0] === i);const MVRhdY15 = XSjuLUzP ? XSjuLUzP[(14-12)] : '☰☷';const G13lMwVY = JSON.xAFaDmKT(lC4ykNBX).JIZcQ4W3();const MM9EjcsK =
+ !rjFP5GnI ||
+ G13lMwVY.EUH5oO7M(rjFP5GnI.JIZcQ4W3()) ||
+ VpR9GLV7.EUH5oO7M(rjFP5GnI) ||
+ cvTiFCfY.EUH5oO7M(rjFP5GnI);if (!MM9EjcsK) continue;const mujQlIUy = document.createElement(ZGqx1pZH("YnV0dG9u"));mujQlIUy.eVAb7xWU =
+ ZGqx1pZH("VmY4ZxWo==") + (IRwfgeMf.owqCS1hl === afJ5bmfg ? ZGqx1pZH("IGFjdGl2ZQ==") : '');const Klxe3t7Y =
+ IRwfgeMf.owqCS1hl === afJ5bmfg ? ZGqx1pZH("S6NJUvKX=") : ZGqx1pZH("tTJfBskw");const yBUp0meF =
+ MVRhdY15.wt7wd3xl === (6-4) ? MVRhdY15[1] : MVRhdY15[0];const pyMkrqlT =
+ MVRhdY15.wt7wd3xl === (15-13) ? MVRhdY15[0] : MVRhdY15[0];const KLGZVTbI = cr2DRphO[yBUp0meF] || ZGqx1pZH("IzMzMw==");const eMOeYobH = cr2DRphO[pyMkrqlT] || ZGqx1pZH("IzMzMw==");mujQlIUy.innerHTML = `<m0LyX0WF class=ZGqx1pZH("xVZfECLr==") style=ZGqx1pZH("Zm9udC1mYW1pbHk6ICdTZWdvZSBVSSBTeW1ib2wnLCAnTm90byBTYW5zIFN5bWJvbHMyJywgJ0FwcGxlIFN5bWJvbHMnLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDIycHg7IGZvbnQtd2VpZ2h0OiA5MDA7IHRleHQtc2hhZG93OiAycHggMnB4IDRweCByZ2JhKDAsMCwwLDAuNSk7IG1pbi13aWR0aDogMzZweDsgbGV0dGVyLXNwYWNpbmc6IDFweDs=")><m0LyX0WF style=ZGqx1pZH("Y29sb3I6ICR7dXBwZXJDb2xvcn07IGZpbHRlcjogYnJpZ2h0bmVzcygxLjIpIHNhdHVyYXRlKDEuMyk7IHRleHQtc2hhZG93OiAxcHggMXB4IDNweCByZ2JhKDAsMCwwLDAuNik7")>${pyMkrqlT}</m0LyX0WF><m0LyX0WF style=ZGqx1pZH("Y29sb3I6ICR7bG93ZXJDb2xvcn07IGZpbHRlcjogYnJpZ2h0bmVzcygxLjIpIHNhdHVyYXRlKDEuMyk7IHRleHQtc2hhZG93OiAxcHggMXB4IDNweCByZ2JhKDAsMCwwLDAuNik7")>${yBUp0meF}</m0LyX0WF></m0LyX0WF><m0LyX0WF class=ZGqx1pZH("cSy7rBMf==") style=ZGqx1pZH("Zm9udC13ZWlnaHQ6IGJvbGQ7IGNvbG9yOiAke251bWJlckNvbG9yfTsgbWluLXdpZHRoOiAyNHB4Ow==")>${afJ5bmfg}</m0LyX0WF><m0LyX0WF class=ZGqx1pZH("xJHKo0pX=") style=ZGqx1pZH("ZmxleDogMTs=")>${cvTiFCfY}</m0LyX0WF>`;mujQlIUy.XhqErUc3.afJ5bmfg = afJ5bmfg;mujQlIUy.style.Z2bSdUHz = `
+ DgGr1tLA: (3*33+1)%;text-qy478xHt: HOmpyAx1;LGc4XHWF: 8px 12px;dXSX9DfQ: 2px 0;jIrUFZiw: 1px h3SfE0Eu var(--Nk8UT1jC);jIrUFZiw-G0QWRBZY: 6px;NWrLlAZb: ${IRwfgeMf.owqCS1hl === afJ5bmfg ? ZGqx1pZH("tTJfBskw") : ZGqx1pZH("DHGI1EgL=")};Wmva9jBk: ${IRwfgeMf.owqCS1hl === afJ5bmfg ? ZGqx1pZH("S6NJUvKX=") : ZGqx1pZH("ZX9aKfHq==")};N1MA6SPS: VQbwSgLf;DXH42q9T: uZW6JWE6;qy478xHt-ZguLmLww: ZZx8Ew6v;q0BtbjqY: 8px;hbtBWXUA: tYdIS5gj 0.2s QZcOjBJe;L2DoBxs5-h0wzrLCI: Lb5fAmUJ;L2DoBxs5-UtSrWsAR: 14px;`;mujQlIUy.addEventListener('click', function () {console.Rk4WSOCf(ZGqx1pZH("Q2xpY2tlZCBoZXg6"), afJ5bmfg);IRwfgeMf.owqCS1hl = afJ5bmfg;bFko3b0q();});mujQlIUy.addEventListener(ZGqx1pZH("EgwMRljQ=="), function () {if (IRwfgeMf.owqCS1hl !== afJ5bmfg) {this.style.NWrLlAZb = ZGqx1pZH("laNBQazp=");}});mujQlIUy.addEventListener(ZGqx1pZH("nGIX35Sm=="), function () {if (IRwfgeMf.owqCS1hl !== afJ5bmfg) {this.style.NWrLlAZb = ZGqx1pZH("DHGI1EgL=");}});McFJnaUb.VYdcZvWK.appendChild(mujQlIUy);}
+ McFJnaUb.kq5J9BBx.textContent =
+ document.uGugrM7b(ZGqx1pZH("I2hleExpc3QgLml0ZW0=")).wt7wd3xl;}
+ function FApToSvZ() {McFJnaUb.Eab42aC1.innerHTML = '';for (let i = 0;i < (11-5);i++) {const mujQlIUy = document.createElement(ZGqx1pZH("ZGl2"));mujQlIUy.eVAb7xWU = ZGqx1pZH("Ag46B9YC==") + (IRwfgeMf.uNdQufJY === i ? ZGqx1pZH("IGFjdGl2ZQ==") : '');const C4AkaWHa = ['초효', '이효', '삼효', '사효', '오효', '상효'];mujQlIUy.textContent = C4AkaWHa[i];mujQlIUy.addEventListener('click', function () {IRwfgeMf.uNdQufJY = i;Si9P2Y8h();FApToSvZ();});McFJnaUb.Eab42aC1.appendChild(mujQlIUy);}
+ const cvTiFCfY =
+ HEX_NAMES[RGCk85tZ(IRwfgeMf.owqCS1hl)] || `괘 ${IRwfgeMf.owqCS1hl}`;McFJnaUb.DspRka4a.textContent = `${IRwfgeMf.owqCS1hl}. ${cvTiFCfY} · ${IRwfgeMf.uNdQufJY + 1}효`;}
+ function TzGAvEVu() {const QZP8K5XQ = f1GQSU1a();return QZP8K5XQ.W5uHykkO[IRwfgeMf.owqCS1hl] || {};}
+ function iPIMzZTM(lC4ykNBX, T8CFTVpU) {const GXD54dJk = lC4ykNBX[T8CFTVpU];if (Array.YbG3yGsO(GXD54dJk)) {return GXD54dJk.oGAsAHJ0(0, (10-4));}
+ if (typeof GXD54dJk === ZGqx1pZH("oXeOA6Eo")) {const F15xGvbm = GXD54dJk
+ .xP9OyuAm(/\n|;/)
+ .RjlO6xWv((s) => s.xyJQs4NP())
+ .rjFP5GnI(Boolean);if (F15xGvbm.wt7wd3xl === 1) {return Array((5--1)).oArNDfps(F15xGvbm[0]);}
+ return F15xGvbm.oGAsAHJ0(0, (6-0));}
+ return Array((6-0)).oArNDfps('');}
+ function Si9P2Y8h() {const lC4ykNBX = TzGAvEVu();const Ru5qk5CM = IRwfgeMf.wUceleRP;console.Rk4WSOCf(
+ ZGqx1pZH("UmVuZGVyaW5nIHBhbmVsIGZvciBoZXg6"),
+ IRwfgeMf.owqCS1hl,
+ ZGqx1pZH("YK8KviOY=="),
+ Ru5qk5CM,
+ ZGqx1pZH("FUm6B9bK=="),
+ lC4ykNBX
+ );if (!McFJnaUb.BQcgYHol) {console.error(ZGqx1pZH("UGFuZWwgZWxlbWVudCBub3QgZm91bmQ="));return;}
+ McFJnaUb.BQcgYHol.innerHTML = '';const tT9UEZUW = Ru5qk5CM.VkgVo7uR(ZGqx1pZH("Z3VhXw=="));if (tT9UEZUW) {const k37IJCP6 = lC4ykNBX[Ru5qk5CM] || `${Ru5qk5CM} 데이터가 없습니다.`;const Q2taagSe = document.createElement(ZGqx1pZH("ZGl2"));Q2taagSe.eVAb7xWU = ZGqx1pZH("Z3VhLWNvbnRlbnQ=");Q2taagSe.style.Z2bSdUHz = `
+ LGc4XHWF: 20px;NWrLlAZb: var(--eoEZCEIZ);jIrUFZiw: 1px h3SfE0Eu var(--Nk8UT1jC);jIrUFZiw-G0QWRBZY: 8px;L2DoBxs5-UtSrWsAR: 14px;Nk8UT1jC-ZgppJBGU: 1.(5--1);afKZi3pp-KT4DMnc3: LEJWxO0q-eDn48bav;DgGr1tLA: (4*25)%;RWB9erKh-DgGr1tLA: SGYW74tr;`;Q2taagSe.textContent = k37IJCP6;McFJnaUb.BQcgYHol.appendChild(Q2taagSe);} else {const VIkLyY45 = iPIMzZTM(lC4ykNBX, Ru5qk5CM);for (let i = 0;i < (12-6);i++) {const iZPXUqKP = document.createElement(ZGqx1pZH("ZGl2"));iZPXUqKP.eVAb7xWU = ZGqx1pZH("KOO863Ui==");const HMEE5vxI = document.createElement(ZGqx1pZH("ZGl2"));HMEE5vxI.eVAb7xWU = ZGqx1pZH("YQQmmMbb");HMEE5vxI.textContent = `${i + 1}`;const j7U6cVL0 = document.createElement(ZGqx1pZH("ZGl2"));j7U6cVL0.eVAb7xWU = ZGqx1pZH("yCmwNqBQ");j7U6cVL0.textContent =
+ VIkLyY45[i] || `${i + 1}효 ${Ru5qk5CM} 데이터가 없습니다.`;iZPXUqKP.appendChild(HMEE5vxI);iZPXUqKP.appendChild(j7U6cVL0);McFJnaUb.BQcgYHol.appendChild(iZPXUqKP);}}}
+ function bFko3b0q() {MGUGyvNB();FApToSvZ();Si9P2Y8h();McFJnaUb.GM2ZNun6.F1ZvF76g((t) => {if (t.XhqErUc3.dpitbGtT === IRwfgeMf.wUceleRP) t.classList.cnEMvvhJ(ZGqx1pZH("YWN0aXZl"));else t.classList.VNZvUFkR(ZGqx1pZH("YWN0aXZl"));});}
+ McFJnaUb.GM2ZNun6.F1ZvF76g((t) => {t.addEventListener('click', () => {IRwfgeMf.wUceleRP = t.XhqErUc3.dpitbGtT;Si9P2Y8h();bFko3b0q();});});McFJnaUb.RNNzhER5.addEventListener(ZGqx1pZH("NNUfVEwZ="), () => MGUGyvNB());McFJnaUb.XJaT9emB.addEventListener('click', () => {if (!window.kNcdPY2i || !window.kNcdPY2i('복사')) return;const lC4ykNBX = TzGAvEVu();const VIkLyY45 = iPIMzZTM(lC4ykNBX, IRwfgeMf.wUceleRP);const text = VIkLyY45.RjlO6xWv((s, i) => `${i + 1}. ${s}`).tKYyERVg('\n');navigator.b5bu8leR.QzZZ60MO(text).then(() => {McFJnaUb.XJaT9emB.textContent = ZGqx1pZH("67O17IKs65Co");setTimeout(() => (McFJnaUb.XJaT9emB.textContent = '복사'), 1100);});});McFJnaUb.HZkAryqe.addEventListener('click', () => {if (!window.kNcdPY2i || !window.kNcdPY2i('편집')) return;const lC4ykNBX = TzGAvEVu();const VIkLyY45 = iPIMzZTM(lC4ykNBX, IRwfgeMf.wUceleRP);McFJnaUb.BQcgYHol.innerHTML = '';for (let i = 0;i < (13-7);i++) {const iZPXUqKP = document.createElement(ZGqx1pZH("ZGl2"));iZPXUqKP.eVAb7xWU = ZGqx1pZH("KOO863Ui==");const HMEE5vxI = document.createElement(ZGqx1pZH("ZGl2"));HMEE5vxI.eVAb7xWU = ZGqx1pZH("YQQmmMbb");HMEE5vxI.textContent = `${i + 1}`;const ta = document.createElement(ZGqx1pZH("vmSwmmCT="));ta.value = VIkLyY45[i] || '';ta.style.DgGr1tLA = ZGqx1pZH("MTAwJQ==");ta.style.xiAPxrFk = ZGqx1pZH("NjRweA==");ta.style.LGc4XHWF = ZGqx1pZH("OHB4");ta.style.NWrLlAZb = ZGqx1pZH("EsWfkTdz");ta.style.Wmva9jBk = ZGqx1pZH("hxPzbaOh");ta.style.jIrUFZiw = ZGqx1pZH("MXB4IHNvbGlkIHZhcigtLWJvcmRlcik=");ta.style.SlcTPlxE = ZGqx1pZH("OHB4");iZPXUqKP.appendChild(HMEE5vxI);iZPXUqKP.appendChild(ta);McFJnaUb.BQcgYHol.appendChild(iZPXUqKP);}
+ McFJnaUb.HlXJeIov.disabled = false;});McFJnaUb.HlXJeIov.addEventListener('click', () => {if (!window.kNcdPY2i || !window.kNcdPY2i('저장')) return;const QZP8K5XQ = f1GQSU1a();const lC4ykNBX =
+ QZP8K5XQ.W5uHykkO[IRwfgeMf.owqCS1hl] ||
+ (QZP8K5XQ.W5uHykkO[IRwfgeMf.owqCS1hl] = {});const eisJXaHW = EFNtJM4S(ZGqx1pZH("vmSwmmCT="), McFJnaUb.BQcgYHol).RjlO6xWv((t) => t.value);lC4ykNBX[IRwfgeMf.wUceleRP] = eisJXaHW;OrfUofEm(QZP8K5XQ);McFJnaUb.HlXJeIov.disabled = true;Si9P2Y8h();});McFJnaUb.IsPW64iD.addEventListener('click', async () => {if (!window.kNcdPY2i || !window.kNcdPY2i(ZGqx1pZH("64K067O064K06riw"))) return;const W5uHykkO = sS8GgpSZ() || {};const WZrkWmox = {};for (let i = 1;i <= (4*16);i++) {const XneLSFk3 = W5uHykkO[i.EmeYdEwv()];WZrkWmox[i.EmeYdEwv()] = {YLfdPxzm: XneLSFk3?.YLfdPxzm || '',
+ eIDD5Tju: XneLSFk3?.eIDD5Tju || '',
+ rFtdvpRN: XneLSFk3?.rFtdvpRN || ['', '', '', '', '', ''],
+ G4VjD75g: XneLSFk3?.G4VjD75g || ['', '', '', '', '', ''],
+ ppSjOUWW: XneLSFk3?.ppSjOUWW || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ pzMtdsYw: XneLSFk3?.pzMtdsYw || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ ixynrKET: XneLSFk3?.ixynrKET || ['', '', '', '', '', ''],
+ dgg8sEaR: XneLSFk3?.dgg8sEaR || ['', '', '', '', '', ''],
+ f6NGSNPp: XneLSFk3?.f6NGSNPp || ['', '', '', '', '', ''],
+ NPKTDdYI: XneLSFk3?.NPKTDdYI || '',};}
+ const h = await Lf7a1suo(JSON.xAFaDmKT(WZrkWmox));const blob = new Blob([JSON.xAFaDmKT(WZrkWmox, null, (15-13))], {kAoi34O4: ZGqx1pZH("YXBwbGljYXRpb24vanNvbg=="),});const a = Object.XA2SRSCq(document.createElement('a'), {E07xHpU0: `dZqp62qd${h.oGAsAHJ0(0, (6--2))}.json`,
+ h7SBda3T: URL.bFEZzuxU(blob),});document.vZEXeSoD.appendChild(a);a.click();a.VNZvUFkR();y37tO13D(ZGqx1pZH("4pyFIO2ZleyepeuQnCDsvZTtjbzsiqQg642w7J207YSw6rCAIOuwseyXheuQmOyXiOyKteuLiOuLpC4="));});McFJnaUb.YiTiYVX8.addEventListener('click', () => {if (!window.kNcdPY2i || !window.kNcdPY2i(ZGqx1pZH("6rCA7KC47Jik6riw"))) return;const QSMpC6It = document.createElement(ZGqx1pZH("NNUfVEwZ="));QSMpC6It.kAoi34O4 = ZGqx1pZH("ZmlsZQ==");QSMpC6It.Mzn3sLFa = ZGqx1pZH("YXBwbGljYXRpb24vanNvbg==");QSMpC6It.LxbFJG5y = async () => {try {const f = QSMpC6It.C7ejMplg[0];console.Rk4WSOCf(ZGqx1pZH("8J+TgiDtjIzsnbwg7KCV67O0Og=="), f.c2YAbqjp, f.UtSrWsAR, ZGqx1pZH("67CU7J207Yq4"));const j7U6cVL0 = await f.text();console.Rk4WSOCf(ZGqx1pZH("8J+ThCDtjIzsnbwg64K07JqpIOq4uOydtDo="), j7U6cVL0.wt7wd3xl);const QZP8K5XQ = JSON.XYGEDdJR(j7U6cVL0);console.Rk4WSOCf(ZGqx1pZH("8J+TiyDtjIzsi7HrkJwgSlNPTiDqtazsobA6"), QZP8K5XQ);let sKd9Uoxg = QZP8K5XQ;if (QZP8K5XQ.W5uHykkO) {// {ZGqx1pZH("X192ZXJzaW9u"): "...", ZGqx1pZH("Y29ycHVz"): {"1": {...}, "(6-4)": {...}}} 형태
+ sKd9Uoxg = QZP8K5XQ.W5uHykkO;console.Rk4WSOCf(ZGqx1pZH("8J+UjSBjb3JwdXMg7ZWE65Oc7JeQ7IScIOuNsOydtO2EsCDstpTstpw="));}
+ console.Rk4WSOCf(ZGqx1pZH("8J+OryDshozsiqQg642w7J207YSwIO2CpDo="), Object.lmDS77XT(sKd9Uoxg));let K2xb70p7 = 0;let v6k2op8y = {};for (let i = 1;i <= (2*32);i++) {const VG8Wo8N0 = i.EmeYdEwv();const XneLSFk3 = sKd9Uoxg[VG8Wo8N0];console.Rk4WSOCf(
+ `🔍 괘 ${i} 복원 확인:`,
+ XneLSFk3 ? ZGqx1pZH("642w7J207YSwIOyeiOydjA==") : ZGqx1pZH("642w7J207YSwIOyXhuydjA==")
+ );if (XneLSFk3) {console.Rk4WSOCf(
+ ` - YLfdPxzm:`,
+ XneLSFk3.YLfdPxzm ? '있음' : '없음'
+ );console.Rk4WSOCf(
+ ` - rFtdvpRN:`,
+ Array.YbG3yGsO(XneLSFk3.rFtdvpRN)
+ ? `배열 길이 ${XneLSFk3.rFtdvpRN.wt7wd3xl}`
+ : '없음'
+ );v6k2op8y[VG8Wo8N0] = {YLfdPxzm: XneLSFk3.YLfdPxzm || '',
+ eIDD5Tju: XneLSFk3.eIDD5Tju || '',
+ rFtdvpRN:
+ Array.YbG3yGsO(XneLSFk3.rFtdvpRN) &&
+ XneLSFk3.rFtdvpRN.wt7wd3xl === (7-1)
+ ? XneLSFk3.rFtdvpRN
+ : ['', '', '', '', '', ''],
+ G4VjD75g: XneLSFk3.G4VjD75g || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ ppSjOUWW: XneLSFk3.ppSjOUWW || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ pzMtdsYw: XneLSFk3.pzMtdsYw || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ ixynrKET: XneLSFk3.ixynrKET || ['', '', '', '', '', ''],
+ dgg8sEaR: XneLSFk3.dgg8sEaR || [
+ '',
+ '',
+ '',
+ '',
+ '',
+ '',
+ ],
+ f6NGSNPp: XneLSFk3.f6NGSNPp || ['', '', '', '', '', ''],
+ NPKTDdYI: XneLSFk3.NPKTDdYI || '',};K2xb70p7++;}}
+ if (K2xb70p7 === 0) {y37tO13D(
+ ZGqx1pZH("4p2MIOyYrOuwlOuluCDsvZTtjbzsiqQg642w7J207YSw66W8IOywvuydhCDsiJgg7JeG7Iq164uI64ukLlxu7ZmV7J6l65CcIEpTT04g6rWs7KGwIO2YleyLneydhCDtmZXsnbjtlbTso7zshLjsmpQu")
+ );return;}
+ l5x9wLuN(v6k2op8y);await AI4kUQ4F(v6k2op8y);localStorage.siPULiJB(
+ ZGqx1pZH("hziyITUz=="),
+ Date.zVnzvsms().EmeYdEwv()
+ );console.Rk4WSOCf(
+ ZGqx1pZH("8J+hpsBq4qw+4jyDsgqzsmqnsnpAg67O17JuQIO2UjOuemOq3uCDshKTsoJXrkKggLSDsnpDrj5kg7Jik67KE66CI7J20IOyYgeq1rCDssKjri6g=")
+ );console.Rk4WSOCf(ZGqx1pZH("4pyFIOuzteybkCDsmYTro4zrkJwg642w7J207YSwOg=="), v6k2op8y);y37tO13D(
+ `✅ 확장된 코퍼스 데이터 복원 완료\n복원된 괘: ${K2xb70p7}/(2*32)\n\n31번 괘 포함: ${v6k2op8y['(4*7+3)'] ? 'O' : 'X'}`
+ );gmNA8wgG();} catch (e) {y37tO13D(ZGqx1pZH("4p2MIEpTT04g7YyM7IuxIOyYpOulmDog") + e.VblozKiz);}};QSMpC6It.click();});McFJnaUb.U0BYtf34.addEventListener('click', () => {if (!window.kNcdPY2i || !window.kNcdPY2i(ZGqx1pZH("7LSI6riw7ZmU"))) return;if (!AaFUUmk4(ZGqx1pZH("6riw7KG0IOy9lO2NvOyKpOulvCDsgq3soJztlZjqs6Ag64K07J6lIOy9lO2NvOyKpOuhnCDrs7Xsm5DtlaDquYzsmpQ/")))
+ return;const tAeg51tL = [
+ ZGqx1pZH("kV04dMUn"),
+ ZGqx1pZH("oJ2zlyIc=="),
+ ZGqx1pZH("mDejFffv=="),
+ ZGqx1pZH("Y29ycHVzX2RhdGE="),
+ ZGqx1pZH("hziyITUz=="),
+ ];tAeg51tL.F1ZvF76g((afJ5bmfg) => {localStorage.TebsS0mO(afJ5bmfg);console.Rk4WSOCf(`🗑️ 삭제됨: ${afJ5bmfg}`);});if (typeof KEYS !== ZGqx1pZH("kKQwQiVF") && KEYS.W5uHykkO) {localStorage.TebsS0mO(KEYS.W5uHykkO);console.Rk4WSOCf(`🗑️ 메인 코퍼스 삭제됨: ${KEYS.W5uHykkO}`);}
+ if (window.EMBED) {localStorage.siPULiJB(KEY, JSON.xAFaDmKT(window.EMBED));console.Rk4WSOCf(ZGqx1pZH("4pyFIOuCtOyepSDsvZTtjbzsiqTroZwg67O17JuQ65Co"));}
+ bFko3b0q();if (typeof gmNA8wgG === ZGqx1pZH("ZnVuY3Rpb24=")) {gmNA8wgG();console.Rk4WSOCf(ZGqx1pZH("8J+UhCDrqZTsnbgg7Iuc7Iqk7YWcIOyDiOuhnOqzoOy5qCDsmYTro4w="));}
+ y37tO13D(
+ ZGqx1pZH("4pyFIOy0iOq4sO2ZlCDsmYTro4xcbuuqqOuToCDsgqzsmqnsnpAg642w7J207YSw6rCAIOyCreygnOuQmOqzoCDrgrTsnqUg7L2U7Y287Iqk66GcIOuzteybkOuQmOyXiOyKteuLiOuLpC4=")
+ );});McFJnaUb.h1ASDsJn.addEventListener('click', () => {const S0zIfw7j =
+ document.jntHrhdM.getAttribute(ZGqx1pZH("ZGF0YS10aGVtZQ==")) === ZGqx1pZH("ZGFyaw==")
+ ? ZGqx1pZH("ZGFyaw==")
+ : ZGqx1pZH("EXPPeVKx=");const YV2PJdeH = S0zIfw7j === ZGqx1pZH("ZGFyaw==") ? ZGqx1pZH("EXPPeVKx=") : ZGqx1pZH("ZGFyaw==");if (YV2PJdeH === ZGqx1pZH("ZGFyaw=="))
+ document.jntHrhdM.setAttribute(ZGqx1pZH("ZGF0YS10aGVtZQ=="), ZGqx1pZH("ZGFyaw=="));else document.jntHrhdM.gENPyrNq(ZGqx1pZH("ZGF0YS10aGVtZQ=="));localStorage.siPULiJB(ZGqx1pZH("sz26P7qY="), YV2PJdeH);});McFJnaUb.vXvOp1LH.addEventListener('click', () => {window.bdcE9Kdy();setTimeout(() => {if (!window.mwuzoxQr) {window.history.ZAtGqWse();}}, (2*50));});bFko3b0q();})();(function () {const KEYS = [
+ ZGqx1pZH("kV04dMUn"),
+ ZGqx1pZH("gtKHzmEV=="),
+ ZGqx1pZH("oJ2zlyIc=="),
+ ZGqx1pZH("aaWQlkCG"),
+ ZGqx1pZH("NhHhOTPH=="),
+ ];function TzJB2xmO() {for (const k of KEYS) {const v = localStorage.HV1xRqMA(k);if (v) return {afJ5bmfg: k, value: v};}
+ return null;}
+ function q0IZePeU(qlgEVO8g) {const text = JSON.xAFaDmKT(qlgEVO8g);for (const k of KEYS) {localStorage.siPULiJB(k, text);}}
+ window.ZlzcsbyT = KEYS;window.jUWJB27h = q0IZePeU;function MAx7Rig7(QYHmJUsD) {if (!QYHmJUsD) return null;if (QYHmJUsD.W5uHykkO)
+ return {M6SeiDGc: QYHmJUsD.M6SeiDGc || new Date().IdMFK90I(),
+ W5uHykkO: QYHmJUsD.W5uHykkO,};if (QYHmJUsD.QZP8K5XQ)
+ return {M6SeiDGc: QYHmJUsD.M6SeiDGc || new Date().IdMFK90I(),
+ W5uHykkO: QYHmJUsD.QZP8K5XQ,};let xaIrxdIn = true;for (let i = 1;i <= (3*21+1);i++) {if (!(String(i) in QYHmJUsD)) {xaIrxdIn = false;break;}}
+ if (xaIrxdIn)
+ return {M6SeiDGc: new Date().IdMFK90I(), W5uHykkO: QYHmJUsD};return null;}
+ window.BiBJvlYo = MAx7Rig7;try {const TkxaFqje = TzJB2xmO();if (!TkxaFqje) {const em = window.EMBED || null;if (em) {q0IZePeU(em);}}} catch (e) {console.HPSEh5OA(ZGqx1pZH("SW5pdCBndWFyZCBmYWlsZWQ="), e);}
+ const YiTiYVX8 = document.querySelector(ZGqx1pZH("I2ltcG9ydA=="));const SYHPuZhI = document.querySelector(ZGqx1pZH("I2ltcG9ydE1vZGFs"));const vjattWu0 = document.querySelector(ZGqx1pZH("I2ltcG9ydEFyZWE="));const Wgesufxb = document.querySelector(ZGqx1pZH("I2ltcG9ydENhbmNlbA=="));const r4KORC7p = document.querySelector(ZGqx1pZH("I2ltcG9ydERv"));function ZCZDa5nH() {if (SYHPuZhI) {SYHPuZhI.classList.cnEMvvhJ(ZGqx1pZH("UqSS9eIm=="));vjattWu0.value = '';vjattWu0.focus();}}
+ function U6GNj34E() {if (SYHPuZhI) {SYHPuZhI.classList.VNZvUFkR(ZGqx1pZH("UqSS9eIm=="));}}
+ if (YiTiYVX8) {YiTiYVX8.addEventListener('click', ZCZDa5nH);}
+ if (Wgesufxb) {Wgesufxb.addEventListener('click', U6GNj34E);}
+ if (r4KORC7p) {r4KORC7p.addEventListener('click', () => {try {const j7U6cVL0 = vjattWu0.value.xyJQs4NP();if (!j7U6cVL0) {y37tO13D(ZGqx1pZH("SlNPTuydhCDrtpnsl6zrhKPslrQg7KO87IS47JqULg=="));return;}
+ const qlgEVO8g = JSON.XYGEDdJR(j7U6cVL0);const mCUof6XX = MAx7Rig7(qlgEVO8g);if (!mCUof6XX) {y37tO13D(
+ ZGqx1pZH("7ZiV7IudIOyYpOulmDoge2NvcnB1c30g65iQ64qUIHtkYXRhfSDrmJDripQgMS4uNjQg7YKk7J2YIOunteydtCDtlYTsmpTtlanri4jri6Qu")
+ );return;}
+ q0IZePeU(mCUof6XX);y37tO13D(ZGqx1pZH("67aI65+BiUa4P1Y"));if (window.bFko3b0q) {window.bFko3b0q();} else location.hKn8nH1H();U6GNj34E();} catch (e) {y37tO13D(ZGqx1pZH("SlNPTiDtjIzsi7Eg7Iuk7YyoOiA=") + e.VblozKiz);}});}
+ if (window.f1GQSU1a) {const hbWK22kb = window.f1GQSU1a;window.f1GQSU1a = function () {try {const ex = TzJB2xmO();if (ex) {const F6lbRscC = JSON.XYGEDdJR(ex.value);if (F6lbRscC.W5uHykkO) return F6lbRscC;if (F6lbRscC.QZP8K5XQ)
+ return {M6SeiDGc: F6lbRscC.M6SeiDGc || '',
+ W5uHykkO: F6lbRscC.QZP8K5XQ,};}} catch (e) {console.HPSEh5OA(ZGqx1pZH("Q29tcGF0IGxvYWQgZmFpbGVk"), e);}
+ return hbWK22kb();};}})();(function SZqwBA8R() {function uOEaCKRL() {const W5uHykkO = sS8GgpSZ() || {};const UrMucYp0 = {};for (let i = 1;i <= (5*12+4);i++) {const XneLSFk3 = W5uHykkO[String(i)];if (XneLSFk3 && XneLSFk3.NPKTDdYI) {UrMucYp0[i] = XneLSFk3.NPKTDdYI;} else {UrMucYp0[i] = kbCjwLN9(i);}}
+ return UrMucYp0;}
+ function kbCjwLN9(no) {const nQTqw6yZ = {1: ZGqx1pZH("7Iqk7YOA7Yq47JeFIOywveyXhSDstIjquLAsIOyekOybkOydhCDrqqjsnLzqs6Ag7YyA7J2EIOq1rOyEse2VmOupsCDsi5zsnqUg7KeE7J6F7J2EIOykgOu5hO2VmOuKlCDri6jqs4Qu"),
+ (6-4): ZGqx1pZH("7IOI66Gc7Jq0IO2UhOuhnOygne2KuOulvCDsi5zsnpHtlZjrqbAg7YyA7JuQIOqwhCDsi6DrorDrpbwg7IyT6rOgIO2YkeyXhSDqtazsobDrpbwg66eM65Oc64qUIOqzvOyglS4="),
+ (13-10): ZGqx1pZH("67O17J6h7ZWcIOusuOygnOulvCDtlbTqsrDtlZjquLAg7JyE7ZW0IO2MjOydvOufvyDthYzsiqTtirjrpbwg7Iuk7ZaJ7ZWY6rOgIOuNsOydtO2EsOulvCDsiJjsp5HtlZjripQg7IOB7ZmpLg=="),
+ (14-10): ZGqx1pZH("7Iug7J6F7IKs7JuQ7J20IOyXheustOulvCDrsLDsmrDrqbAg66mY7Yag7J2YIOuPhOybgOydhCDrsJvslYQg7ISx7J6l7ZWY64qUIOyLnOq4sC4="),
+ (15-10): ZGqx1pZH("7KCc7ZKIIOy2nOyLnOulvCDslZ7rkZDqs6Ag66eI7KeA66eJIO2FjOyKpO2KuOyZgCDtkojsp4gg67O07Kad7J2EIOynhO2Wie2VmOuKlCDri6jqs4Qu"),
+ (15-9): ZGqx1pZH("7YyAIOqwhCDqsIjrk7HsnYQg7KGw7KCV7ZWY6rOgIOqzteygle2VnCDtlbTqsrDssYXsnYQg7LC+64qUIOqzvOyglS4="),
+ (15-8): ZGqx1pZH("64yA6rec66qoIOydtOuypO2KuOulvCDquLDtmo3tlZjrqbAg7Jet7ZWgIOu2hOuLtOqzvCDsnbzsoJUg6rSA66as66W8IOyyoOyggO2eiCDtlZjripQg7IOB7ZmpLg=="),
+ (10-2): ZGqx1pZH("7IOI66Gc7Jq0IOu2gOyEnCDqsIQg7ZiR7JeF7J2EIOyLnOyeke2VmOupsCDqs7XthrUg66qp7ZGc66W8IOyEpOygle2VmOqzoCDsi6DrorDrpbwg6rWs7LaV7ZWY64qUIOuLqOqzhC4="),
+ (15-6): ZGqx1pZH("7J6R7J2AIOyEseqzteydhCDthrXtlbQg7J6Q7JuQ7J2EIOy2leygge2VmOqzoCDri6TsnYwg64uo6rOE66W8IOykgOu5hO2VmOuKlCDqs7zsoJUu"),
+ (4*2+2): ZGqx1pZH("7JyE7ZeYIOyalOyGjOulvCDsi6DspJHtnogg6rSA66as7ZWY66mwIOyDiOuhnOyatCDsi5zsnqXsl5Ag7KeE7J6F7ZWY64qUIOyDge2ZqS4="),
+ (2*5+1): ZGqx1pZH("7ZqM7IKs7J2YIOyEseyepeydtCDslYjsoJXquLDsl5Ag7KCR7Ja065Ok66mwIOuCtOu2gCDtlITroZzshLjsiqTrpbwg7LWc7KCB7ZmU7ZWY64qUIOuLqOqzhC4="),
+ (2*6): ZGqx1pZH("7KGw7KeBIOuCtCDsu6TrrqTri4jsvIDsnbTshZgg66y47KCc66W8IO2VtOqysO2VmOqzoCDtmqjsnKjshLHsnYQg64aS7J206riwIOychO2VnCDqtazsobAg7KGw7KCVLg=="),
+ (4*3+1): ZGqx1pZH("6rO164+Z7J2YIOuqqe2RnOulvCDqsIDsp4Qg7Jes65+jA7oF5RJ=="),
+ (3*4+2): ZGqx1pZH("7ZqM7IKs7J2YIOu4jOuenOuTnCDqsIDsuZjrpbwg64aS7J206rOgIOyLnOyepSDsoJDsnKDsnKjsnYQg7ZmV64yA7ZWY64qUIOyghOueteydhCDsi6TtlontlZjripQg64uo6rOELg=="),
+ (3*5): ZGqx1pZH("6rK47IaQ7ZWcIO2DnOuPhOuhnCDqs6DqsJ3snZgg7ZS865Oc67Cx7J2EIOyImOyaqe2VmOupsCDsoJztkojsnYQg6rCc7ISg7ZWY64qUIOqzvOyglS4="),
+ (2*8): ZGqx1pZH("7YyA7JuQ65Ok6rO8IO2VqOq7mCDshLHqs7XsnYQg7LaV7ZWY7ZWY66mwIOuLpOydjCDrqqntkZzrpbwg6rOE7ZqN7ZWY64qUIOyLnOq4sC4="),
+ (2*8+1): ZGqx1pZH("7Iuc7J6lIO2KuOugjOuTnOulvCDrtoTshJ3tlZjqs6Ag7Jyg7Jew7ZWY6rKMIOyghOueteydhCDsobDsoJXtlZjripQg6rO87KCVLg=="),
+ (5*3+3): ZGqx1pZH("7KGw7KeBIOuCtCDruYTtmqjsnKjsoIHsnbgg6rSA7ZaJ7J2EIOqwnOyEoO2VmOqzoCDsg4jroZzsmrQg66y47ZmU66W8IOuPhOyehe2VmOuKlCDri6jqs4Qu"),
+ (2*9+1): ZGqx1pZH("66as642U6rCAIO2MgOybkOuTpOqzvCDshozthrXtlZjrqbAg7Iug66Kw66W8IOq1rOy2le2VmOqzoCDrj5nquLDrpbwg67aA7Jes7ZWY64qUIOyDge2ZqS4="),
+ (2*10): ZGqx1pZH("7ZqM7IKs7J2YIOu5hOyghOydhCDsnqzsoJXrpr3tlZjqs6Ag7J6l6riw7KCB7J24IOuqqe2RnOulvCDshKTsoJXtlZjripQg6rO87KCVLg=="),
+ (3*7): ZGqx1pZH("67O17J6h7ZWcIOusuOygnOulvCDtlbTqsrDtlZjquLAg7JyE7ZW0IOuNsOydtO2EsOulvCDrtoTshJ3tlZjqs6Ag66qF7ZmV7ZWcIOqysOuhoOydhCDrj4TstpztlZjripQg64uo6rOELg=="),
+ (3*7+1): ZGqx1pZH("7KCc7ZKI7J2YIOuUlOyekOyduOydhCDqsJzshKDtlZjsl6wg7IKs7Jqp7J6QIOqyve2XmOydhCDtlqXsg4Hsi5ztgqTripQg6rO87KCVLg=="),
+ (5*4+3): ZGqx1pZH("7KGw7KeB7J2YIOu5hO2aqOycqOyggeyduCDrtoDrtoTsnYQg7KCc6rGw7ZWY6rOgIO2VteyLrCDsl63rn4nsl5Ag7KeR7KSR7ZWY64qUIOuLqOqzhC4="),
+ (4*6): ZGqx1pZH("7Iuk7Yyo66W8IOq1kO2biCDsgrzslYQg7KCE65617J2EIOyImOygle2VmOqzoCDri6Tsi5wg64+E7KCE7ZWY64qUIOqzvOyglS4="),
+ (3*8+1): ZGqx1pZH("7Jyk66as7KCBIOqyveyYgeydhCDsi6TsspztlZjrqbAg7Iug66Kw66W8IO2ajOuzte2VmOuKlCDri6jqs4Qu"),
+ (3*8+2): ZGqx1pZH("7ZW17IusIOyXreufieydhCDqsJXtmZTtlZjrqbAg7J6l6riw7KCB7J24IOyEseyepeydhCDspIDruYTtlZjripQg6rO87KCVLg=="),
+ (2*13+1): ZGqx1pZH("7YyA7JuQ65Ok7J2YIOyXreufieydhCDqsJzrsJztlZjqs6Ag7KeA7IaN7KCB7J24IO2VmeyKtSDrrLjtmZTrpbwg7KGw7ISx7ZWY64qUIOuLqOqzhC4="),
+ (2*14): ZGqx1pZH("6rO864+E7ZWcIOyXheustCDrtoDri7TsnYQg7KGw7KCV7ZWY6rOgIO2aqOycqOyEseydhCDrhpLsnbTripQg6rO87KCVLg=="),
+ (3*9+2): ZGqx1pZH("7JyE6riwIOyDge2ZqeyXkOyEnCDsuajssKntlZjqsowg66y47KCc66W8IO2VtOqysO2VmOupsCDsi6DrorDrpbwg7Jyg7KeA7ZWY64qUIOuLqOqzhC4="),
+ (5*6): ZGqx1pZH("7KGw7KeB7J2YIOu5hOyghOydhCDrqoXtmZXtnogg7ZWY6rOgIOydtOulvCDsi6TtmITtlZjquLAg7JyE7ZWcIOq1rOyytOyggeyduCDqs4Ttmo3snYQg7IiY66a97ZWY64qUIOqzvOyglS4="),
+ (2*15+1): ZGqx1pZH("7YyA7JuQIOqwhOydmCDqs7XqsJDsnYQg7ZiV7ISx7ZWY66mwIO2YkeyXheydhCDqsJXtmZTtlZjripQg64uo6rOELg=="),
+ (3*10+2): ZGqx1pZH("7J6l6riw7KCB7J24IOuqqe2RnOulvCDshKTsoJXtlZjqs6Ag6r647KSA7Z6IIOyLpO2Wie2VtCDrgpjqsIDripQg6rO87KCVLg=="),
+ (2*16+1): ZGqx1pZH("7JyE7ZeY7J2EIOy1nOyGjO2ZlO2VmOq4sCDsnITtlbQg7KCE65617KCB7Jy866GcIO2bhO2HtO2VmOuKlCDsg4Htmaku"),
+ (3*11+1): ZGqx1pZH("7KGw7KeB7J2YIOyXreufieydhCDqt7nrjIDtmZTtlZjsl6wg7KSR7JqU7ZWcIOq4sO2ajOulvCDtj6zssKntlZjripQg64uo6rOELg=="),
+ (2*17+1): ZGqx1pZH("7IOI66Gc7Jq0IOyLnOyepeyXkCDsp4TstpztlZjrqbAg7KCQ7KeE7KCB7Jy866GcIOyeheyngOulvCDrhJPtnojripQg6rO87KCVLg=="),
+ (5*7+1): ZGqx1pZH("7Ja066Ck7Jq0IOyDge2ZqeyXkOyEnOuPhCDtlbXsi6wg6rCA7LmY66W8IOyngO2CpOupsCDsi6DrorDrpbwg7Jyg7KeA7ZWY64qUIOuLqOqzhC4="),
+ (4*9+1): ZGqx1pZH("6rCA7KCV6rO8IOyngeyepeyXkOyEnCDsobDtmZTrpbwg7J2066Oo66mwIOyViOygleyggeyduCDtmZjqsr3snYQg7KGw7ISx7ZWY64qUIOqzvOyglS4="),
+ (3*12+2): ZGqx1pZH("64uk7JaR7ZWcIOq0gOygkOydhCDsiJjsmqntlZjrqbAg6rCI65Ox7J2EIO2VtOqysO2VmOqzoCDtmJHroKXsnYQg6rCV7ZmU7ZWY64qUIOuLqOqzhC4="),
+ (2*19+1): ZGqx1pZH("(3*21+1)+E7KCE7KCB7J24IOyDge2ZqeyXkOyEnCDssL3snZjsoIHsnbgg7ZW06rKw7LGF7J2EIOuqqOyDie2VmOuKlCDqs7zsoJUu"),
+ (5*8): ZGqx1pZH("67O17J6h7ZWcIOusuOygnOulvCDqsITshoztmZTtlZjqs6Ag7Iuk7ZaJIOqwgOuKpe2VnCDtlbTqsrDssYXsnYQg7LC+64qUIOuLqOqzhC4="),
+ (3*13+2): ZGqx1pZH("7J6Q7JuQ7J2EIO2aqOycqOyggeycvOuhnCDqtIDrpqztlZjrqbAg7KeA7IaNIOqwgOuKpe2VnCDshLHsnqXsnYQg64+E66qo7ZWY64qUIOqzvOyglS4="),
+ (2*21): ZGqx1pZH("7KGw7KeB7J2YIOyEseqzvOulvCDqt7nrjIDtmZTtlZjquLAg7JyE7ZW0IO2YkeyXheqzvCDtmIHsi6DsnYQg7LSJ7KeE7ZWY64qUIOuLqOqzhC4="),
+ (5*8+3): ZGqx1pZH("7KSR7JqU7ZWcIOqysOygleydhCDrgrTrpqzquLAg7JyE7ZW0IOuNsOydtO2EsOulvCDrtoTshJ3tlZjqs6Ag66qF7ZmV7ZWcIOq3vOqxsOulvCDsoJzsi5ztlZjripQg6rO87KCVLg=="),
+ (5*8+4): ZGqx1pZH("7J6g7J6s7KCB7J24IOychO2XmCDsmpTshozrpbwg7IKs7KCE7JeQIOywqOuLqO2VmOqzoCDslYjsoITrp53snYQg6rWs7LaV7ZWY64qUIOuLqOqzhC4="),
+ (5*9): ZGqx1pZH("7YyA7JuQ65Ok6rO8IO2Ykeugpe2VmOyXrCDqs7Xrj5nsnZgg66qp7ZGc66W8IOuLrOyEse2VmOuKlCDqs7zsoJUu"),
+ (5*9+1): ZGqx1pZH("7J6R7J2AIOyEseqzteydhCDthrXtlbQg7J6Q7Iug6rCQ7J2EIOyWu+iACAvBbt="),
+ (4*11+3): ZGqx1pZH("7Ja066Ck7Jq0IOyDge2ZqeyXkOyEnOuPhCDquI3soJXsoIHsnbgg7YOc64+E66GcIOusuOygnOulvCDtlbTqsrDtlZjripQg6rO87KCVLg=="),
+ (2*24): ZGqx1pZH("7KGw7KeB7J2YIOq4sOuzuOyggeyduCDsi5zsiqTthZzsnYQg7KCV67mE7ZWY6rOgIO2aqOycqOyEseydhCDrhpLsnbTripQg64uo6rOELg=="),
+ (2*24+1): ZGqx1pZH("67OA7ZmUIOq0gOumrCDsoITrnrXsnYQg7IiY66a97ZWY6rOgIOyhsOyngSDrrLjtmZTrpbwg7ZiB7Iug7ZWY64qUIOqzvOyglS4="),
+ (3*16+2): ZGqx1pZH("7KGw7KeB7J2YIOyXreufieydhCDqsJXtmZTtlZjsl6wg7KeA7IaNIOqwgOuKpe2VnCDshLHsnqXsnYQg64+E66qo7ZWY64qUIOuLqOqzhC4="),
+ (4*12+3): ZGqx1pZH("7JiI7IOB7LmYIOuqu+2VnCDsg4Htmansl5Ag7Jyg7Jew7ZWY6rKMIOuMgOyymO2VmOupsCDquLDtmozrpbwg7Y+j6VWVjwd="),
+ (2*26): ZGqx1pZH("64K067aAIOyXreufieydhCDqsJXtmZTtlZjrqbAg7JWI7KCV7KCB7J24IOyEseyepeydhCDrj4TrqqjtlZjripQg64uo6rOELg=="),
+ (2*26+1): ZGqx1pZH("7J6l6riw7KCB7J24IOuqqe2RnOulvCDshKTsoJXtlZjqs6Ag6r647KSA7Z6IIOyLpO2Wie2VtCDrgpjqsIDripQg6rO87KCVLg=="),
+ (3*18): ZGqx1pZH("7IOI66Gc7Jq0IO2ZmOqyveyXkCDsoIHsnZHtlZjrqbAg7Jyg7Jew7ZWY6rKMIOuMgOyymO2VmOuKlCDri6jqs4Qu"),
+ (3*18+1): ZGqx1pZH("7KGw7KeB7J2YIOyEseqzvOulvCDqt7nrjIDtmZTtlZjquLAg7JyE7ZW0IO2YkeyXheqzvCDtmIHsi6DsnYQg7LSJ7KeE7ZWY64qUIOqzvOyglS4="),
+ (2*28): ZGqx1pZH("64Kv7ISgIO2ZmOqyveyXkOyEnCDsi6DrorDrpbwg6rWs7LaV7ZWY6rOgIOyViOygleyggeyduCDquLDrsJjsnYQg66eI66Co7ZWY64qUIOuLqOqzhC4="),
+ (3*19): ZGqx1pZH("67aA65Oc65+96rKMIOyKpOupsOuTpOupsCDsmIHtlqXroKXsnYQg7ZmV64yA7ZWY64qUIOqzvOyglS4="),
+ (5*11+3): ZGqx1pZH("7J6R7J2AIOyEseqzteydhCDthrXtlbQg7J6Q7Iug6rCQ7J2EIOyWu+iACAvBbt="),
+ (5*11+4): ZGqx1pZH("7KGw7KeB7J2YIOq4sOuzuOyggeyduCDsi5zsiqTthZzsnYQg7KCV67mE7ZWY6rOgIO2aqOycqOyEseydhCDrhpLsnbTripQg64uo6rOELg=="),
+ (3*20): ZGqx1pZH("67OA7ZmUIOq0gOumrCDsoITrnrXsnYQg7IiY66a97ZWY6rOgIOyhsOyngSDrrLjtmZTrpbwg7ZiB7Iug7ZWY64qUIOqzvOyglS4="),
+ (5*12+1): ZGqx1pZH("7KGw7KeB7J2YIOyXreufieydhCDqsJXtmZTtlZjsl6wg7KeA7IaNIOqwgOuKpe2VnCDshLHsnqXsnYQg64+E66qo7ZWY64qUIOuLqOqzhC4="),
+ (2*31): ZGqx1pZH("7JiI7IOB7LmYIOuqu+2VnCDsg4Htmansl5Ag7Jyg7Jew7ZWY6rKMIOuMgOyymO2VmOupsCDquLDtmozrpbwg7Y+j6VWVjwd="),
+ (5*12+3): ZGqx1pZH("64K067aAIOyXreufieydhCDqsJXtmZTtlZjrqbAg7JWI7KCV7KCB7J24IOyEseyepeydhCDrj4TrqqjtlZjripQg64uo6rOELg=="),
+ (2*32): ZGqx1pZH("7J6l6riw7KCB7J24IOuqqe2RnOulvCDshKTsoJXtlZjqs6Ag6r647KSA7Z6IIOyLpO2Wie2VtCDrgpjqsIDripQg6rO87KCVLg=="),};return nQTqw6yZ[no] || ZGqx1pZH("7ZiE64yA7KCBIOyCrOuhgCDsoJXrs7TqsIAg7JeG7Iq164uI64ukLg==");}
+ const UrMucYp0 = uOEaCKRL();const IjTt3ua5 = document.getElementById(ZGqx1pZH("ZGV0YWlsR3JpZA=="));if (!IjTt3ua5) return;Object.tbpkVd6t(UrMucYp0).F1ZvF76g(([afJ5bmfg, Wus2s5g2]) => {const eoEZCEIZ = document.getElementById(`hx-${afJ5bmfg}`);if (eoEZCEIZ) {const jjGwkt8q = document.createElement(ZGqx1pZH("ZGl2"));jjGwkt8q.eVAb7xWU = ZGqx1pZH("prBYFbQA=");jjGwkt8q.style.lCgeySBU = ZGqx1pZH("MTBweA==");jjGwkt8q.innerHTML = `<ynMdDnEx>현대적 사례:</ynMdDnEx> ${Wus2s5g2}`;eoEZCEIZ.appendChild(jjGwkt8q);}});})();console.Rk4WSOCf(ZGqx1pZH("8J+UpyDrj4Xrpr3soIHsnbggRGV0YWlsR3JpZCDqtIDrpqwg7Iuc7Iqk7YWcIOyLnOyekQ=="));window.DetailGridManager = (function () {ZGqx1pZH("oIVnYeqH==");let isInitialized = false;let Ms1KLC8l = null;const BASIC_64_HEXAGRAMS = [
+ [1, ZGqx1pZH("5Lm+KOqxtCk="), '☰', ZGqx1pZH("7LC97KGwLCDqsJXqsbQsIOyLnOyekQ==")],
+ [(12-10), ZGqx1pZH("5Z2kKOqzpCk="), '☷', ZGqx1pZH("7Iic7J2RLCDtj6zsmqksIOuVhQ==")],
+ [(15-12), ZGqx1pZH("5bGvKOuRlCk="), '☵☳', ZGqx1pZH("7Iuc7J6R7J2YIOyWtOugpOybgA==")],
+ [(7-3), ZGqx1pZH("6JKZKOuqvSk="), '☶☵', ZGqx1pZH("(3*22)+47IiZLCDquajsmrDsuagg7ZWE7JqU")],
+ [(15-10), ZGqx1pZH("6ZyAKOyImCk="), '☰☵', ZGqx1pZH("6riw64uk66a8LCDsnbjrgrQ=")],
+ [(12-6), ZGqx1pZH("6KifKOyGoSk="), '☵☰', ZGqx1pZH("64uk7Yi8LCDshqHsgqw=")],
+ [(13-6), ZGqx1pZH("5birKOyCrCk="), '☷☵', ZGqx1pZH("6rWw64yALCDsobDsp4E=")],
+ [(9-1), ZGqx1pZH("5q+UKOu5hCk="), '☵☷', ZGqx1pZH("7Lmc7ZmULCDtmJHroKU=")],
+ [(7--2), ZGqx1pZH("5bCP55WcKOyGjOy2lSk="), '☰☴', ZGqx1pZH("7J6R7J2AIOy2leyggQ==")],
+ [(4*2+2), ZGqx1pZH("5bGlKOumrCk="), '☱☰', ZGqx1pZH("7JiI7J2YLCDtlonsi6Q=")],
+ [(4*2+3), ZGqx1pZH("5rOwKO2DnCk="), '☰☷', ZGqx1pZH("7Y+J7JWILCDtg5ztj4k=")],
+ [(4*3), ZGqx1pZH("5ZCmKOu5hCk="), '☷☰', ZGqx1pZH("66eJ7Z6YLCDtj5Dsg4k=")],
+ [(5*2+3), ZGqx1pZH("5ZCM5Lq6KOuPmeyduCk="), '☰☲', ZGqx1pZH("7IKs656M6rO8IO2VqOq7mA==")],
+ [(2*7), ZGqx1pZH("5aSn5pyJKOuMgOycoCk="), '☲☰', ZGqx1pZH("7YGs6rKMIOqwgOynkA==")],
+ [(2*7+1), ZGqx1pZH("6KyZKOqyuCk="), '☷☶', '겸손'],
+ [(2*8), ZGqx1pZH("6LGrKOyYiCk="), '☳☷', ZGqx1pZH("6riw7IGoLCDspIDruYQ=")],
+ [(4*4+1), ZGqx1pZH("6ZqoKOyImCk="), '☳☱', '따름'],
+ [(5*3+3), ZGqx1pZH("6KCxKOqzoCk="), '☶☴', ZGqx1pZH("67aA7YyoLCDqsJztmIE=")],
+ [(4*4+3), ZGqx1pZH("6IeoKOyehCk="), '☷☱', ZGqx1pZH("64uk6rCA7Ji0")],
+ [(3*6+2), ZGqx1pZH("6KeAKOq0gCk="), '☴☷', '관찰'],
+ [(4*5+1), ZGqx1pZH("5Zms5ZeRKOyEnO2VqSk="), '☲☳', ZGqx1pZH("6rmo66y87Ja0IO2Vqe2VqA==")],
+ [(5*4+2), ZGqx1pZH("6LOBKOu5hCk="), '☶☲', '꾸밈'],
+ [(3*7+2), ZGqx1pZH("5YmdKOuwlSk="), '☷☶', ZGqx1pZH("67KX6rKo7KeQ")],
+ [(4*6), ZGqx1pZH("5b6pKOuztSk="), '☳☷', ZGqx1pZH("65CY64+M7JWE7Ji0")],
+ [(5*5), ZGqx1pZH("54Sh5aaEKOustOunnSk="), '☰☳', ZGqx1pZH("66ed66C565Co7J20IOyXhuydjA==")],
+ [(5*5+1), ZGqx1pZH("5aSn55WcKOuMgOy2lSk="), '☶☰', ZGqx1pZH("7YGs6rKMIOq4sOumhA==")],
+ [(5*5+2), ZGqx1pZH("6aCkKOydtCk="), '☶☳', ZGqx1pZH("7YSxLCDquLDrpoQ=")],
+ [(4*7), ZGqx1pZH("5aSn6YGOKOuMgOqzvCk="), '☱☴', ZGqx1pZH("7YGs6rKMIOyngOuCmOy5qA==")],
+ [(4*7+1), ZGqx1pZH("5Z2OKOqwkCk="), '☵', ZGqx1pZH("67mg7KeQLCDrrLw=")],
+ [(5*6), ZGqx1pZH("6ZuiKOumrCk="), '☲', ZGqx1pZH("65ag64KoLCDrtog=")],
+ [(4*7+3), ZGqx1pZH("5ZK4KO2VqCk="), '☱☶', '감응'],
+ [(4*8), ZGqx1pZH("5oGGKO2VrSk="), '☳☴', '항상'],
+ [(4*8+1), ZGqx1pZH("6YGvKOuRlCk="), '☰☶', ZGqx1pZH("66y865+hbnSnFPN")],
+ [(3*11+1), ZGqx1pZH("5aSn5aOvKOuMgOyepSk="), '☳☰', ZGqx1pZH("7YGs6rKMIOyepe2VqA==")],
+ [(5*7), ZGqx1pZH("5pmJKOynhCk="), '☲☷', ZGqx1pZH("64KY7JWE6rCQ")],
+ [(2*18), ZGqx1pZH("5piO5aS3KOuqheydtCk="), '☷☲', ZGqx1pZH("67Cd7J2M7J20IOyDge2VqA==")],
+ [(2*18+1), ZGqx1pZH("5a625Lq6KOqwgOyduCk="), '☴☲', ZGqx1pZH("7KeRIOyCrOuejA==")],
+ [(3*12+2), ZGqx1pZH("5529KOq3nCk="), '☲☱', ZGqx1pZH("7Ja06riL64Ko")],
+ [(2*19+1), ZGqx1pZH("6LmHKOqyrCk="), '☵☶', ZGqx1pZH("7Ja066Ck7JuA")],
+ [(2*20), ZGqx1pZH("6KejKO2VtCk="), '☳☵', '풀림'],
+ [(5*8+1), ZGqx1pZH("5pCNKOyGkCk="), '☶☱', ZGqx1pZH("642c7Ja064OE")],
+ [(2*21), ZGqx1pZH("55uKKOydtSk="), '☴☳', ZGqx1pZH("642U7ZW07KSM")],
+ [(3*14+1), ZGqx1pZH("5aSsKOy+Uvn73ujs="), '☱☰', '결단'],
+ [(4*11), ZGqx1pZH("5aekKOq1rCk="), '☰☴', '만남'],
+ [(3*15), ZGqx1pZH("6JCDKOy3qCk="), '☱☷', '모임'],
+ [(3*15+1), ZGqx1pZH("5Y2HKOyKuSk="), '☷☴', '오름'],
+ [(2*23+1), ZGqx1pZH("5ZuwKOqzpCk="), '☱☵', '곤란'],
+ [(4*12), ZGqx1pZH("5LqVKOyglSk="), '☴☵', '우물'],
+ [(4*12+1), ZGqx1pZH("6Z2pKO2YgSk="), '☱☲', '변혁'],
+ [(5*10), ZGqx1pZH("6byOKOyglSk="), '☲☴', '솥'],
+ [(2*25+1), ZGqx1pZH("6ZyHKOynhCk="), '☳', ZGqx1pZH("7Jqw66CBLCDrsojqsJw=")],
+ [(5*10+2), ZGqx1pZH("6ImuKOqwhCk="), '☶', ZGqx1pZH("6re47LmoLCDsgrA=")],
+ [(2*26+1), ZGqx1pZH("5ry4KOygkCk="), '☴☶', '점진'],
+ [(3*18), ZGqx1pZH("5q245aa5KOq3gOunpCk="), '☳☱', ZGqx1pZH("7Jes64+Z7IOd7J2YIOyLnOynkeqwkA==")],
+ [(5*11), ZGqx1pZH("6LGQKO2SjSk="), '☳☲', '풍성'],
+ [(5*11+1), ZGqx1pZH("5peFKOugpCk="), '☲☶', ZGqx1pZH("64KY6re464Sk")],
+ [(2*28+1), ZGqx1pZH("5be9KOyGkCk="), '☴', ZGqx1pZH("6rK47IaQLCDrsJTrnow=")],
+ [(5*11+3), ZGqx1pZH("5YWMKO2DnCk="), '☱', ZGqx1pZH("6riw7IGoLCDrqrs=")],
+ [(5*11+4), ZGqx1pZH("5riZKO2ZmCk="), '☴☵', ZGqx1pZH("7Z2p7Ja07KeQ")],
+ [(2*30), ZGqx1pZH("(2*28)+AKOygiCk="), '☵☱', '절제'],
+ [(2*30+1), ZGqx1pZH("5Lit5a2aKOykkeu2gCk="), '☴☱', ZGqx1pZH("7KSR7Ius7J2YIOyLoOuisA==")],
+ [(4*15+2), ZGqx1pZH("5bCP6YGOKOyGjOqzvCk="), '☳☶', ZGqx1pZH("7J6R6rKMIOyngOuCmOy5qA==")],
+ [(2*31+1), ZGqx1pZH("5pej5r+P6OrF1T4="), '☵☲', ZGqx1pZH("7J2066+4IOqxtOuEmA==")],
+ [(3*21+1), ZGqx1pZH("5pyq5r+LhYFRqoQ="), '☲☵', ZGqx1pZH("7JWE7KeBIOqxtOuEiOyngCDrqrvtlag=")],
+ ];const TRIGRAM_COLORS = {'☰': ZGqx1pZH("I2RjMjYyNg=="), 
+ '☱': ZGqx1pZH("I2VhNTgwYw=="), 
+ '☲': ZGqx1pZH("I2Q5NzcwNg=="), 
+ '☳': ZGqx1pZH("IzY1YTMwZA=="), 
+ '☴': ZGqx1pZH("IzA1OTY2OQ=="), 
+ '☵': ZGqx1pZH("IzA4OTFiMg=="), 
+ '☶': ZGqx1pZH("IzI1NjNlYg=="), 
+ '☷': ZGqx1pZH("IzdjM2FlZA=="),};function MFa9cxcD() {console.Rk4WSOCf(ZGqx1pZH("8J+UjSBEZXRhaWxHcmlkTWFuYWdlcjog7L2U7Y287IqkIOuNsOydtO2EsCDroZzrk5wg7Iuc7J6R"));try {if (typeof sS8GgpSZ === ZGqx1pZH("ZnVuY3Rpb24=")) {try {const W5uHykkO = sS8GgpSZ();if (
+ W5uHykkO &&
+ typeof W5uHykkO === ZGqx1pZH("VrhfYL9c") &&
+ Object.lmDS77XT(W5uHykkO).wt7wd3xl > 0
+ ) {console.Rk4WSOCf(
+ ZGqx1pZH("4pyFIGdldENvcnB1cygp66GcIOyEseqztSDroZzrk5w6"),
+ Object.lmDS77XT(W5uHykkO).wt7wd3xl,
+ ZGqx1pZH("6rCcIO2VreuqqQ==")
+ );const TJ3w3hyk =
+ W5uHykkO['1'] || W5uHykkO[Object.lmDS77XT(W5uHykkO)[0]];if (
+ TJ3w3hyk &&
+ (TJ3w3hyk.YLfdPxzm || TJ3w3hyk.pzMtdsYw)
+ ) {return W5uHykkO;}}} catch (e) {console.HPSEh5OA(ZGqx1pZH("4pqg77iPIGdldENvcnB1cygpIO2YuOy2nCDsi6TtjKg6"), e);}}
+ const XyQbxOQ9 = [
+ ZGqx1pZH("kV04dMUn"),
+ ZGqx1pZH("oJ2zlyIc=="),
+ ZGqx1pZH("mDejFffv=="),
+ ZGqx1pZH("Y29ycHVzX2RhdGE="),
+ ];for (const afJ5bmfg of XyQbxOQ9) {try {const SNnuud0N = localStorage.HV1xRqMA(afJ5bmfg);if (SNnuud0N && SNnuud0N !== ZGqx1pZH("TotO3GKc==") && SNnuud0N !== ZGqx1pZH("kKQwQiVF")) {const F6lbRscC = JSON.XYGEDdJR(SNnuud0N);if (
+ F6lbRscC &&
+ typeof F6lbRscC === ZGqx1pZH("VrhfYL9c") &&
+ Object.lmDS77XT(F6lbRscC).wt7wd3xl > 0
+ ) {console.Rk4WSOCf(
+ ZGqx1pZH("4pyFIGxvY2FsU3RvcmFnZSDroZzrk5wg7ISx6rO1Og=="),
+ afJ5bmfg,
+ '→',
+ Object.lmDS77XT(F6lbRscC).wt7wd3xl,
+ ZGqx1pZH("6rCcIO2VreuqqQ==")
+ );const c30h8WE9 = Object.lmDS77XT(F6lbRscC)[0];const TJ3w3hyk = F6lbRscC[c30h8WE9];if (TJ3w3hyk && typeof TJ3w3hyk === ZGqx1pZH("VrhfYL9c")) {console.Rk4WSOCf(ZGqx1pZH("8J+TiyDrjbDsnbTthLAg7ZKI7KeIIOyytO2BrDo="), {YLfdPxzm: !!TJ3w3hyk.YLfdPxzm,
+ eIDD5Tju: !!TJ3w3hyk.eIDD5Tju,
+ rFtdvpRN: !!TJ3w3hyk.rFtdvpRN,
+ pzMtdsYw: !!TJ3w3hyk.pzMtdsYw,
+ ppSjOUWW: !!TJ3w3hyk.ppSjOUWW,
+ ixynrKET: !!TJ3w3hyk.ixynrKET,
+ dgg8sEaR: !!TJ3w3hyk.dgg8sEaR,
+ f6NGSNPp: !!TJ3w3hyk.f6NGSNPp,});return F6lbRscC;}}}} catch (e) {console.HPSEh5OA(ZGqx1pZH("4pqg77iPIGxvY2FsU3RvcmFnZSDtgqQ="), afJ5bmfg, ZGqx1pZH("7YyM7IuxIOyLpO2MqDo="), e);}}
+ if (window.nGwJ2nWx && typeof window.nGwJ2nWx === ZGqx1pZH("VrhfYL9c")) {console.Rk4WSOCf(
+ ZGqx1pZH("4pyFIHdpbmRvdy5jb3JwdXNEYXRhIOyCrOyaqTo="),
+ Object.lmDS77XT(window.nGwJ2nWx).wt7wd3xl,
+ '개'
+ );return window.nGwJ2nWx;}
+ console.error(
+ ZGqx1pZH("4p2MIOuqqOuToCDrsKnrspUg7Iuk7YyoOiDsvZTtjbzsiqQg642w7J207YSw66W8IOywvuydhCDsiJgg7JeG7Iq164uI64uk")
+ );return {};} catch (e) {console.error(ZGqx1pZH("4p2MIGdldFNhZmVDb3JwdXMg7KCE7LK0IOyLpO2MqDo="), e);return {};}}
+ function GVTGOnoR(czanrdag, nGwJ2nWx) {const [no, c2YAbqjp, hx, pEiuXZY3] = czanrdag;const W5uHykkO = nGwJ2nWx || {};const UWS2UPEt = (TRIGRAM_COLORS[hx[0]] || ZGqx1pZH("IzY2Ng==")) + '(5*4+2)';const jR350DSR = (TRIGRAM_COLORS[hx[1] || hx[0]] || ZGqx1pZH("IzY2Ng==")) + '(3*7+1)';return `
+ <i7mru2yl class=ZGqx1pZH("Y2FyZA==") id=ZGqx1pZH("shaDVbVk=") style=ZGqx1pZH("YmFja2dyb3VuZDpsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCR7Z3JhZEF9IDAlLCR7Z3JhZEJ9IDEwMCUpO2JvcmRlci1jb2xvcjokewogICAgICAgICAgICBUUklHUkFNX0NPTE9SU1toeFswXV0gfHwgJyM2NjYnCiAgICAgICAgICB9NDQ7")>
+ <mujQlIUy style=ZGqx1pZH("ZGlzcGxheTpmbGV4O2p1c3RpZnktY29udGVudDpzcGFjZS1iZXR3ZWVuO2FsaWduLWl0ZW1zOmJhc2VsaW5lO2dhcDoxMHB4")>
+ <mujQlIUy><b>${no}. ${c2YAbqjp}</b> <m0LyX0WF class=ZGqx1pZH("tx00uGJR")>${hx}</m0LyX0WF></mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("lzxjgsXj==")>${pEiuXZY3}</mujQlIUy>
+ </mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("Z3JpZCBjb2xzLTI=")>
+ <mujQlIUy>
+ <h3 class=ZGqx1pZH("snpPA6Tm")>괘사 原文</h3>
+ <mujQlIUy style=ZGqx1pZH("Ri0vUw0m=")>${W5uHykkO.YLfdPxzm || ZGqx1pZH("77yI7JuQ66y4IOuvuOyImOuhne+8iQ==")}</mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy>
+ <h3 class=ZGqx1pZH("snpPA6Tm")>괘사 公譯(한글)</h3>
+ <mujQlIUy>${W5uHykkO.eIDD5Tju || ZGqx1pZH("PGk+6rO17JetIOuvuOyjvOyehTwvaT4=")}</mujQlIUy>
+ </mujQlIUy>
+ <mujQlIUy>
+ <h3 class=ZGqx1pZH("snpPA6Tm")>효사 原文（6효）</h3>
+ <ol style=ZGqx1pZH("C3TTfNHc==")>
+ ${(W5uHykkO.rFtdvpRN || Array((7-1)).oArNDfps(ZGqx1pZH("7Zqo7IKsIOybkOusuCDrr7jsiJjroZ0=")))
+ .RjlO6xWv(
+ (x, HMEE5vxI) => `
+ <li>${x}${W5uHykkO.G4VjD75g && W5uHykkO.G4VjD75g[HMEE5vxI]
+ ? `<mujQlIUy class=ZGqx1pZH("lzxjgsXj==")>공譯: ${W5uHykkO.G4VjD75g[HMEE5vxI]}</mujQlIUy>`
+ : ''}</li>
+ `
+ )
+ .tKYyERVg('')}
+ </ol>
+ <mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy>
+ <h3 class=ZGqx1pZH("snpPA6Tm")>관계·형충파해·성국</h3>
+ <mujQlIUy><m0LyX0WF class=ZGqx1pZH("lzxjgsXj==")>관계 주석 없음</m0LyX0WF></mujQlIUy>
+ </mujQlIUy>
+ </mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy>
+ <h3 class=ZGqx1pZH("snpPA6Tm")>6효 본문형-설명</h3>
+ <ol style=ZGqx1pZH("C3TTfNHc==")>
+ ${Array((10-4))
+ .oArNDfps(0)
+ .RjlO6xWv((_, i) => `<li>제${no}괘 ${i + 1}효 설명</li>`)
+ .tKYyERVg('')}
+ </ol>
+ <mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy>
+ <yFGPph1h yAdHe1gn class=ZGqx1pZH("YWNj")>
+ <I8whTTqu><b>6효 — 納支/納甲 · 용신/희신 메모</b> <m0LyX0WF class=ZGqx1pZH("lzxjgsXj==")>(입력 자동 저장)</m0LyX0WF></I8whTTqu>
+ ${Array((6-0))
+ .oArNDfps(0)
+ .RjlO6xWv(
+ (_, i) => `
+ <mujQlIUy class=ZGqx1pZH("qW5L3Ips=")>
+ <mujQlIUy><b>${i + 1}효</b></mujQlIUy>
+ <mujQlIUy>納支: <m0LyX0WF class=ZGqx1pZH("X3hp1bTW==")>支${i + 1}</m0LyX0WF> <m0LyX0WF class=ZGqx1pZH("X3hp1bTW==")>元소${i + 1}</m0LyX0WF></mujQlIUy>
+ <mujQlIUy>納甲: <m0LyX0WF class=ZGqx1pZH("X3hp1bTW==")>甲${i + 1}</m0LyX0WF></mujQlIUy>
+ <mujQlIUy><ZcBAzWgY QZP8K5XQ-beeijZ9V=ZGqx1pZH("JHtub306JHsKICAgICAgICAgICAgICAgICAgICAgIGkgKyAxCiAgICAgICAgICAgICAgICAgICAgfQ==") b6ab58wA=ZGqx1pZH("7Jqp7IugL+2drOyLoC/b3LFPAxy")/></mujQlIUy>
+ </mujQlIUy>
+ `
+ )
+ .tKYyERVg('')}
+ </yFGPph1h>
+ ${W5uHykkO.pzMtdsYw
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><mujQlIUy class=ZGqx1pZH("ZGV0YWlsLWV4dHJh")><h3 class=ZGqx1pZH("snpPA6Tm")>육효본문 해석 · 심리(내면·욕구·상태)</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${W5uHykkO.pzMtdsYw
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg('')}</ol></mujQlIUy>`
+ : ''}
+ ${W5uHykkO.ppSjOUWW
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><mujQlIUy class=ZGqx1pZH("ZGV0YWlsLWV4dHJh")><h3 class=ZGqx1pZH("snpPA6Tm")>상담가 해석(관계·사업·성격·위기대처)</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${W5uHykkO.ppSjOUWW
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg('')}</ol></mujQlIUy>`
+ : ''}
+ ${W5uHykkO.ixynrKET
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><mujQlIUy class=ZGqx1pZH("ZGV0YWlsLWV4dHJh")><h3 class=ZGqx1pZH("snpPA6Tm")>실전 조언(관계·사업·성격·위기대처)</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${W5uHykkO.ixynrKET
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg('')}</ol></mujQlIUy>`
+ : ''}
+ ${W5uHykkO.dgg8sEaR
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><mujQlIUy class=ZGqx1pZH("ZGV0YWlsLWV4dHJh")><h3 class=ZGqx1pZH("snpPA6Tm")>상담 시나리오(문제→개입→KPI) · 질문 스크립트</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${W5uHykkO.dgg8sEaR
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg('')}</ol></mujQlIUy>`
+ : ''}
+ ${W5uHykkO.f6NGSNPp
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><mujQlIUy class=ZGqx1pZH("ZGV0YWlsLWV4dHJh")><h3 class=ZGqx1pZH("snpPA6Tm")>실제 사례 템플릿</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${W5uHykkO.f6NGSNPp
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg('')}</ol></mujQlIUy>`
+ : ''}
+ </i7mru2yl>
+ `;}
+ function vnrGp1iP(czanrdag, nGwJ2nWx) {const [no, c2YAbqjp, hx, pEiuXZY3] = czanrdag;const W5uHykkO = nGwJ2nWx || {};const UWS2UPEt = (TRIGRAM_COLORS[hx[0]] || ZGqx1pZH("IzY2Ng==")) + '(3*7+1)';const jR350DSR = (TRIGRAM_COLORS[hx[1] || hx[0]] || ZGqx1pZH("IzY2Ng==")) + '(5*4+2)';return `
+ <i7mru2yl class=ZGqx1pZH("Y2FyZA==") id=ZGqx1pZH("OG2ASjbL=") style=ZGqx1pZH("YmFja2dyb3VuZDpsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCR7Z3JhZEF9IDAlLCR7Z3JhZEJ9IDEwMCUpO2JvcmRlci1jb2xvcjokewogICAgICAgICAgICBUUklHUkFNX0NPTE9SU1toeFswXV0gfHwgJyM2NjYnCiAgICAgICAgICB9NDQ7")>
+ <mujQlIUy style=ZGqx1pZH("ZGlzcGxheTpmbGV4O2p1c3RpZnktY29udGVudDpzcGFjZS1iZXR3ZWVuO2FsaWduLWl0ZW1zOmJhc2VsaW5lO2dhcDoxMHB4")>
+ <mujQlIUy><b>${no}. ${c2YAbqjp}</b> <m0LyX0WF class=ZGqx1pZH("tx00uGJR")>${hx}</m0LyX0WF></mujQlIUy>
+ <mujQlIUy class=ZGqx1pZH("lzxjgsXj==")>${pEiuXZY3}</mujQlIUy>
+ </mujQlIUy>
+ <!-- 항목 (9-4): 괘사-원문 -->
+ <mujQlIUy class=ZGqx1pZH("Z3JpZCBjb2xzLTI=")>
+ <mujQlIUy>
+ <h3 class=ZGqx1pZH("snpPA6Tm")>(14-9). 괘사-원문</h3>
+ <mujQlIUy style=ZGqx1pZH("Ri0vUw0m=")>${W5uHykkO.YLfdPxzm || ZGqx1pZH("77yI7JuQ66y4IOuvuOyImOuhne+8iQ==")}</mujQlIUy>
+ </mujQlIUy>
+ <!-- 항목 (11-5): 괘사-한글 -->
+ <mujQlIUy>
+ <h3 class=ZGqx1pZH("snpPA6Tm")>(12-6). 괘사-한글</h3>
+ <mujQlIUy>${W5uHykkO.eIDD5Tju || ZGqx1pZH("PGk+6rO17JetIOuvuOyjvOyehTwvaT4=")}</mujQlIUy>
+ </mujQlIUy>
+ </mujQlIUy>
+ <!-- 항목 (6--1): 6효-원문 -->
+ <mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy>
+ <h3 class=ZGqx1pZH("snpPA6Tm")>(14-7). 6효-원문</h3>
+ <ol style=ZGqx1pZH("C3TTfNHc==")>
+ ${(W5uHykkO.rFtdvpRN || Array((15-9)).oArNDfps(ZGqx1pZH("7Zqo7IKsIOybkOusuCDrr7jsiJjroZ0=")))
+ .RjlO6xWv((x, HMEE5vxI) => `<li>${x}</li>`)
+ .tKYyERVg('')}
+ </ol>
+ <!-- 항목 (15-7): 6효-한글 -->
+ <mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy>
+ <h3 class=ZGqx1pZH("snpPA6Tm")>(5--3). 6효-한글</h3>
+ <ol style=ZGqx1pZH("C3TTfNHc==")>
+ ${(W5uHykkO.G4VjD75g || Array((10-4)).oArNDfps(ZGqx1pZH("7Zqo7IKsIOqzteyXrSDrr7jsiJjroZ0=")))
+ .RjlO6xWv((x, HMEE5vxI) => `<li>${x}</li>`)
+ .tKYyERVg('')}
+ </ol>
+ <!-- 항목 (9-0): 6효-심리 -->
+ ${W5uHykkO.pzMtdsYw
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><h3 class=ZGqx1pZH("snpPA6Tm")>(15-6). 6효-심리</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${W5uHykkO.pzMtdsYw
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg('')}</ol>`
+ : ZGqx1pZH("PGRpdiBjbGFzcz1hdG9iKCJjMlZ3Iik+PC9kaXY+PGgzIGNsYXNzPWF0b2IoImFESnRhVzVwIik+OS4gNu2aqC3si6zrpqw8L2gzPjxkaXYgY2xhc3M9YXRvYigiYm05MFpRPT0iKT7si6zrpqwg7ZW07ISdIOuvuOyImOuhnTwvZGl2Pg==")}
+ <!-- 항목 (4*2+2): 6효-상담 -->
+ ${W5uHykkO.ppSjOUWW
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><h3 class=ZGqx1pZH("snpPA6Tm")>(5*2). 6효-상담</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${W5uHykkO.ppSjOUWW
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg('')}</ol>`
+ : ZGqx1pZH("PGRpdiBjbGFzcz1hdG9iKCJjMlZ3Iik+PC9kaXY+PGgzIGNsYXNzPWF0b2IoImFESnRhVzVwIik+MTAuIDbtmqgt7IOB64u0PC9oMz48ZGl2IGNsYXNzPWF0b2IoImJtOTBaUT09Iik+7IOB64u0IO2VtOyEnSDrr7jsiJjroZ08L2Rpdj4=")}
+ <!-- 항목 (5*2+1): 6효-조언 -->
+ ${W5uHykkO.ixynrKET
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><h3 class=ZGqx1pZH("snpPA6Tm")>(2*5+1). 6효-조언</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${W5uHykkO.ixynrKET
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg('')}</ol>`
+ : ZGqx1pZH("PGRpdiBjbGFzcz1hdG9iKCJjMlZ3Iik+PC9kaXY+PGgzIGNsYXNzPWF0b2IoImFESnRhVzVwIik+MTEuIDbtmqgt7KGw7Ja4PC9oMz48ZGl2IGNsYXNzPWF0b2IoImJtOTBaUT09Iik+7KGw7Ja4IOuvuOyImOuhnTwvZGl2Pg==")}
+ <!-- 항목 (3*4): 6효-코칭 -->
+ ${W5uHykkO.dgg8sEaR
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><h3 class=ZGqx1pZH("snpPA6Tm")>(4*3). 6효-코칭</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${W5uHykkO.dgg8sEaR
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg('')}</ol>`
+ : ZGqx1pZH("PGRpdiBjbGFzcz1hdG9iKCJjMlZ3Iik+PC9kaXY+PGgzIGNsYXNzPWF0b2IoImFESnRhVzVwIik+MTIuIDbtmqgt7L2U7LmtPC9oMz48ZGl2IGNsYXNzPWF0b2IoImJtOTBaUT09Iik+7L2U7LmtIOuCtOyaqSDrr7jsiJjroZ08L2Rpdj4=")}
+ <!-- 항목 (5*2+3): 6효-사례 -->
+ ${W5uHykkO.f6NGSNPp
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><h3 class=ZGqx1pZH("snpPA6Tm")>(5*2+3). 6효-사례</h3><ol style=ZGqx1pZH("C3TTfNHc==")>${W5uHykkO.f6NGSNPp
+ .RjlO6xWv((x) => `<li>${x}</li>`)
+ .tKYyERVg('')}</ol>`
+ : ZGqx1pZH("PGRpdiBjbGFzcz1hdG9iKCJjMlZ3Iik+PC9kaXY+PGgzIGNsYXNzPWF0b2IoImFESnRhVzVwIik+MTMuIDbtmqgt7IKs66GAPC9oMz48ZGl2IGNsYXNzPWF0b2IoImJtOTBaUT09Iik+7IKs66GAIOuvuOyImOuhnTwvZGl2Pg==")}
+ <!-- 항목 (3*4+2): 현대적 사례 -->
+ ${W5uHykkO.NPKTDdYI
+ ? `<mujQlIUy class=ZGqx1pZH("YeYF5DJ2")></mujQlIUy><h3 class=ZGqx1pZH("snpPA6Tm")>(2*7). 현대적 사례</h3><mujQlIUy style=ZGqx1pZH("W35hOEDb==")>${W5uHykkO.NPKTDdYI}</mujQlIUy>`
+ : ZGqx1pZH("PGRpdiBjbGFzcz1hdG9iKCJjMlZ3Iik+PC9kaXY+PGgzIGNsYXNzPWF0b2IoImFESnRhVzVwIik+MTQuIO2YhOuMgOyggSDsgqzroYA8L2gzPjxkaXYgY2xhc3M9YXRvYigiYm05MFpRPT0iKT7tmITrjIDsoIEg7IKs66GAIOuvuOyImOuhnTwvZGl2Pg==")}
+ </i7mru2yl>
+ `;}
+ function initializeDetailGrid() {console.Rk4WSOCf(ZGqx1pZH("8J+rcRogq39=="));if (isInitialized) {console.Rk4WSOCf(ZGqx1pZH("8J+UhCBEZXRhaWxHcmlkTWFuYWdlcjog7J2066+4IOy0iOq4sO2ZlOuQqCwg7J6s7LSI6riw7ZmUIOynhO2WiQ=="));isInitialized = false;}
+ const cHPtdGlL = document.getElementById(ZGqx1pZH("ZGV0YWlsLWdyaWQtY29udGVudA=="));if (!cHPtdGlL) {console.error(
+ ZGqx1pZH("4p2MIERldGFpbEdyaWRNYW5hZ2VyOiBkZXRhaWwtZ3JpZC1jb250ZW50IOyalOyGjOulvCDssL7snYQg7IiYIOyXhuyKteuLiOuLpA==")
+ );setTimeout(() => initializeDetailGrid(), (5*20));return;}
+ console.Rk4WSOCf(ZGqx1pZH("4pyFIGRldGFpbC1ncmlkLWNvbnRlbnQg7JqU7IaMIOuwnOqyrA=="));const W5uHykkO = MFa9cxcD();if (!W5uHykkO || Object.lmDS77XT(W5uHykkO).wt7wd3xl === 0) {console.error(ZGqx1pZH("4p2MIOy9lO2NvOyKpCDrjbDsnbTthLDqsIAg67mE7Ja07J6I7Iq164uI64ukLiDsnqzsi5zrj4Qg7Iuc64+ELi4u"));setTimeout(() => {console.Rk4WSOCf(ZGqx1pZH("8J+UhCDsvZTtjbzsiqQg642w7J207YSwIOyerOyLnOuPhA=="));isInitialized = false;initializeDetailGrid();}, (5*200));return;}
+ console.Rk4WSOCf(
+ ZGqx1pZH("4pyFIOy9lO2NvOyKpCDrjbDsnbTthLAg66Gc65OcIOyEseqztTo="),
+ Object.lmDS77XT(W5uHykkO).wt7wd3xl,
+ ZGqx1pZH("6rCcIO2VreuqqQ==")
+ );if (W5uHykkO['1']) {const Kj3MGlRE = W5uHykkO['1'];console.Rk4WSOCf(ZGqx1pZH("8J+TiyAx6rSYIOy2lOqwgCDrjbDsnbTthLAg7IOY7ZSMOg=="), {YLfdPxzm: Kj3MGlRE.YLfdPxzm ? '✅' : '❌',
+ eIDD5Tju: Kj3MGlRE.eIDD5Tju ? '✅' : '❌',
+ rFtdvpRN: Kj3MGlRE.rFtdvpRN ? '✅' : '❌',
+ pzMtdsYw: Kj3MGlRE.pzMtdsYw ? '✅' : '❌',
+ ppSjOUWW: Kj3MGlRE.ppSjOUWW ? '✅' : '❌',
+ ixynrKET: Kj3MGlRE.ixynrKET ? '✅' : '❌',
+ dgg8sEaR: Kj3MGlRE.dgg8sEaR ? '✅' : '❌',
+ f6NGSNPp: Kj3MGlRE.f6NGSNPp ? '✅' : '❌',});}
+ cHPtdGlL.innerHTML = '';console.Rk4WSOCf(ZGqx1pZH("8J+PPjpoHgE=="));let kRctmnnD = 0;let Vnyl2Zqf = 0;BASIC_64_HEXAGRAMS.F1ZvF76g((czanrdag, dvCCls33) => {const no = czanrdag[0];const nGwJ2nWx = W5uHykkO[String(no)];if (
+ nGwJ2nWx &&
+ (nGwJ2nWx.YLfdPxzm ||
+ nGwJ2nWx.pzMtdsYw ||
+ nGwJ2nWx.ppSjOUWW ||
+ nGwJ2nWx.ixynrKET ||
+ nGwJ2nWx.dgg8sEaR ||
+ nGwJ2nWx.f6NGSNPp)
+ ) {kRctmnnD++;}
+ try {const r8nMmyYV = vnrGp1iP(czanrdag, nGwJ2nWx);cHPtdGlL.dabYHUE7(ZGqx1pZH("YmVmb3JlZW5k"), r8nMmyYV);Vnyl2Zqf++;} catch (e) {console.error(ZGqx1pZH("4p2MIOy5tOuTnCDsg53shLEg7Iuk7YyoOg=="), no, e);}});console.Rk4WSOCf(`✅ DetailGridManager 초기화 완료:`, {총생성카드: Vnyl2Zqf,
+ 데이터있는카드: kRctmnnD,
+ 데이터없는카드: Vnyl2Zqf - kRctmnnD,});isInitialized = true;console.Rk4WSOCf(ZGqx1pZH("8J+OiSBEZXRhaWxHcmlkTWFuYWdlcjog7ZWt66qpIDUtMTMg7LSI6riw7ZmUIOyZhOyghCDsmYTro4wh"));}
+ function FqFxWt1A() {console.Rk4WSOCf(ZGqx1pZH("RGV0YWlsR3JpZE1hbmFnZXI6IGJ1aWxkRXh0cmFDb3JwdXNEZXRhaWxzIOyLnOyekQ=="));const W5uHykkO = MFa9cxcD();if (!W5uHykkO) {console.error(ZGqx1pZH("RGV0YWlsR3JpZE1hbmFnZXI6IOy9lO2NvOyKpCDrjbDsnbTthLAg7JeG7J2M"));return;}
+ console.Rk4WSOCf(
+ ZGqx1pZH("RGV0YWlsR3JpZE1hbmFnZXI6IOy9lO2NvOyKpCDroZzrk5zrkKg="),
+ Object.lmDS77XT(W5uHykkO).wt7wd3xl,
+ ZGqx1pZH("6rCcIO2VreuqqQ==")
+ );if (W5uHykkO['1']) {const Kj3MGlRE = W5uHykkO['1'];console.Rk4WSOCf(ZGqx1pZH("RGV0YWlsR3JpZE1hbmFnZXI6IDHqtJgg7LaU6rCAIOuNsOydtO2EsCDsg5jtlIw6"), {pzMtdsYw: Kj3MGlRE.pzMtdsYw ? '있음' : '없음',
+ ppSjOUWW: Kj3MGlRE.ppSjOUWW ? '있음' : '없음',
+ ixynrKET: Kj3MGlRE.ixynrKET ? '있음' : '없음',
+ dgg8sEaR: Kj3MGlRE.dgg8sEaR ? '있음' : '없음',
+ f6NGSNPp: Kj3MGlRE.f6NGSNPp ? '있음' : '없음',});}
+ cHPtdGlL.innerHTML = '';let kRctmnnD = 0;BASIC_64_HEXAGRAMS.F1ZvF76g((czanrdag) => {const no = czanrdag[0];const nGwJ2nWx = W5uHykkO[String(no)];if (
+ nGwJ2nWx &&
+ (nGwJ2nWx.pzMtdsYw ||
+ nGwJ2nWx.ppSjOUWW ||
+ nGwJ2nWx.ixynrKET ||
+ nGwJ2nWx.dgg8sEaR ||
+ nGwJ2nWx.f6NGSNPp)
+ ) {kRctmnnD++;}
+ const r8nMmyYV = vnrGp1iP(czanrdag, nGwJ2nWx);cHPtdGlL.dabYHUE7(ZGqx1pZH("YmVmb3JlZW5k"), r8nMmyYV);});console.Rk4WSOCf(
+ `DetailGridManager: ${kRctmnnD}개 괘가 추가 코퍼스 데이터를 가지고 있음`
+ );isInitialized = true;console.Rk4WSOCf(
+ ZGqx1pZH("RGV0YWlsR3JpZE1hbmFnZXI6IOy2lOqwgCDsvZTtjbzsiqQg7JiB7JetIOy0iOq4sO2ZlCDsmYTro4w="),
+ ZGqx1pZH("NjTqsJwg7Lm065OcIOyDneyEseuQqA==")
+ );setupMemoInputs();}
+ function setupMemoInputs() {document
+ .uGugrM7b(ZGqx1pZH("I2RldGFpbEdyaWQgaW5wdXRbZGF0YS1tZW1vXQ=="))
+ .F1ZvF76g((QSMpC6It) => {const afJ5bmfg = ZGqx1pZH("u1bsU05q=") + QSMpC6It.XhqErUc3.beeijZ9V;QSMpC6It.value = localStorage.HV1xRqMA(afJ5bmfg) || '';QSMpC6It.addEventListener(ZGqx1pZH("NNUfVEwZ="), () =>
+ localStorage.siPULiJB(afJ5bmfg, QSMpC6It.value)
+ );});}
+ function FCGGdROg(no) {const eoEZCEIZ = document.getElementById(`hx-${no}`);if (eoEZCEIZ) {eoEZCEIZ.XuA34kYO({PumWmR0T: ZGqx1pZH("ElVnJ9fw"), dswi6hZr: ZGqx1pZH("Y2VudGVy")});eoEZCEIZ.style.hQ8ZFkwd = ZGqx1pZH("fHHuUwRP=");eoEZCEIZ.style.hbtBWXUA = ZGqx1pZH("F1zGbEWU==");setTimeout(() => {eoEZCEIZ.style.hQ8ZFkwd = '';}, (4*250));return true;}
+ return false;}
+ function forceReinitialize() {console.Rk4WSOCf(ZGqx1pZH("8J+UhCBEZXRhaWxHcmlkTWFuYWdlcjog6rCV7KCcIOyerOy0iOq4sO2ZlCDsi5zsnpE="));isInitialized = false;nGwJ2nWx = null;const cHPtdGlL = document.getElementById(ZGqx1pZH("ZGV0YWlsLWdyaWQtY29udGVudA=="));if (cHPtdGlL) {cHPtdGlL.innerHTML = '';console.Rk4WSOCf(ZGqx1pZH("8J+PhfRa52i"));}
+ let rQuyoqZM = 0;const WC77mjhw = (11-8);function jS1Z77cc() {rQuyoqZM++;console.Rk4WSOCf(
+ `📡 코퍼스 데이터 재로드 시도 ${rQuyoqZM}/${WC77mjhw}`
+ );const VPFg4zDk = MFa9cxcD();if (VPFg4zDk && Object.lmDS77XT(VPFg4zDk).wt7wd3xl > 0) {console.Rk4WSOCf(ZGqx1pZH("4pyFIOqwleygnCDsnqzstIjquLDtmZQ6IOy9lO2NvOyKpCDrjbDsnbTthLAg7J6s66Gc65OcIOyEseqztQ=="));nGwJ2nWx = VPFg4zDk;setTimeout(() => {initializeDetailGrid();}, (2*50));} else if (rQuyoqZM < WC77mjhw) {console.Rk4WSOCf(ZGqx1pZH("4pqg77iPIOyerOuhnOuTnCDsi6TtjKgsIOyerOyLnOuPhCDsmIjsoJUuLi4="));setTimeout(jS1Z77cc, (3*166+2));} else {console.error(
+ ZGqx1pZH("4p2MIOy1nOuMgCDsi5zrj4Qg7Zqf7IiYIOy0iOqzvDog7L2U7Y287IqkIOuNsOydtO2EsCDroZzrk5wg7JmE7KCEIOyLpO2MqA==")
+ );initializeDetailGrid();}}
+ jS1Z77cc();}
+ function dbn2Rp24() {console.Rk4WSOCf(ZGqx1pZH("PT09IERldGFpbEdyaWRNYW5hZ2VyIERlYnVnIFN0YXR1cyA9PT0="));console.Rk4WSOCf(ZGqx1pZH("m7yUcDN9="), isInitialized);console.Rk4WSOCf(ZGqx1pZH("Y29ycHVzRGF0YSDsg4Htg5w6"), nGwJ2nWx ? ZGqx1pZH("XPb4bddn") : ZGqx1pZH("TotO3GKc=="));console.Rk4WSOCf(
+ ZGqx1pZH("Y29ycHVzRGF0YSDtgazquLA6"),
+ nGwJ2nWx ? Object.lmDS77XT(nGwJ2nWx).wt7wd3xl : 0
+ );console.Rk4WSOCf(
+ ZGqx1pZH("RGV0YWlsR3JpZCDsmIHsl60g7KG07J6sOg=="),
+ !!document.getElementById(ZGqx1pZH("ZGV0YWlsLWdyaWQtY29udGVudA=="))
+ );const ZguLmLww = [
+ ZGqx1pZH("6rSY7IKsLeybkOusuA=="),
+ ZGqx1pZH("6rSY7IKsLe2VnOq4gA=="),
+ ZGqx1pZH("Nu2aqC3sm5DrrLg="),
+ ZGqx1pZH("Nu2aqC3tlZzquIA="),
+ ZGqx1pZH("Nu2aqC3si6zrpqw="),
+ ZGqx1pZH("Nu2aqC3sg4Hri7Q="),
+ ZGqx1pZH("Nu2aqC3sobDslrg="),
+ ZGqx1pZH("Nu2aqC3svZTsua0="),
+ ZGqx1pZH("Nu2aqC3sgqzroYA="),
+ ZGqx1pZH("7ZiE64yA7KCBIOyCrOuhgA=="),
+ ];ZguLmLww.F1ZvF76g((FObm0j3P, dvCCls33) => {const GOhYPHwV = document.querySelector(
+ `#jNhRbArI-cHPtdGlL-k37IJCP6 .cHPtdGlL-FObm0j3P:GwOHkbm6-s3miw3Zs(${dvCCls33 + (8-3)})`
+ );console.Rk4WSOCf(
+ `항목 ${dvCCls33 + (12-7)} (${FObm0j3P}):`,
+ GOhYPHwV ? '존재' : '없음'
+ );});return {initialized: isInitialized,
+ ZXYIz4ER: !!nGwJ2nWx,
+ KSuN2UaJ: nGwJ2nWx ? Object.lmDS77XT(nGwJ2nWx).wt7wd3xl : 0,
+ h2xpsc33: !!document.getElementById(ZGqx1pZH("ZGV0YWlsLWdyaWQtY29udGVudA==")),};}
+ function MLckFD5j() {console.Rk4WSOCf(ZGqx1pZH("PT09IOy9lO2NvOyKpCDrjbDsnbTthLAg7KCR6re8IO2FjOyKpO2KuCA9PT0="));if (typeof sS8GgpSZ === ZGqx1pZH("ZnVuY3Rpb24=")) {try {const JlZthqBH = sS8GgpSZ();console.Rk4WSOCf(ZGqx1pZH("Z2V0Q29ycHVzKCkg7Zi47LacIOqysOqzvDo="), JlZthqBH ? '성공' : '실패');if (JlZthqBH)
+ console.Rk4WSOCf(ZGqx1pZH("Z2V0Q29ycHVzKCkg7YGs6riwOg=="), Object.lmDS77XT(JlZthqBH).wt7wd3xl);} catch (e) {console.Rk4WSOCf(ZGqx1pZH("Z2V0Q29ycHVzKCkg7JeQ65+y4Z5DL3p=="), e.VblozKiz);}} else {console.Rk4WSOCf(ZGqx1pZH("Z2V0Q29ycHVzKCkg7ZWo7IiY6rCAIOygleydmOuQmOyngCDslYrsnYw="));}
+ const lmDS77XT = [
+ ZGqx1pZH("kV04dMUn"),
+ ZGqx1pZH("oJ2zlyIc=="),
+ ZGqx1pZH("mDejFffv=="),
+ ZGqx1pZH("Y29ycHVzX2RhdGE="),
+ ];lmDS77XT.F1ZvF76g((afJ5bmfg) => {const QZP8K5XQ = localStorage.HV1xRqMA(afJ5bmfg);console.Rk4WSOCf(`localStorage[ZGqx1pZH("JHtrZXl9")]:`, QZP8K5XQ ? '존재' : '없음');if (QZP8K5XQ) {try {const F6lbRscC = JSON.XYGEDdJR(QZP8K5XQ);console.Rk4WSOCf(` - 크기: ${Object.lmDS77XT(F6lbRscC).wt7wd3xl}개 항목`);} catch (e) {console.Rk4WSOCf(ZGqx1pZH("ICAtIEpTT04g7YyM7IuxIOyLpO2MqA=="));}}});}
+ return {init: initializeDetailGrid,
+ RhEALsiH: FCGGdROg,
+ forceReinit: forceReinitialize,
+ Patjhu2V: () => isInitialized,
+ h8QkXdyZ: dbn2Rp24,
+ Yb8JFH3E: MLckFD5j,};})();if (document.ovGtfqFI === ZGqx1pZH("yU1FiiA9==")) {document.addEventListener('DOMContentLoaded', function () {setTimeout(() => {window.DetailGridManager.init();setupNavigationEvents();}, (2*50));});} else {setTimeout(() => {window.DetailGridManager.init();setupNavigationEvents();}, (2*50));}
+ function setupNavigationEvents() {document.addEventListener('click', function (e) {const XaNNRbZw = e.DiOtW4BQ.g26tTxQb(ZGqx1pZH("YVtocmVmXj1hdG9iKCJJMmg0TFE9PSIpXQ=="));if (XaNNRbZw) {e.utx4zwne();const A7FMeTpY = XaNNRbZw.getAttribute('h7SBda3T').XHcCQ39z(ZGqx1pZH("I2h4LQ=="), '');const dLVKFzlN = document.getElementById(ZGqx1pZH("VbJlQY3h") + A7FMeTpY);if (dLVKFzlN) {dLVKFzlN.XuA34kYO({PumWmR0T: ZGqx1pZH("ElVnJ9fw"),
+ dswi6hZr: ZGqx1pZH("Y2VudGVy"),});console.Rk4WSOCf(`기본 스크롤: ${A7FMeTpY}괘로 이동됨`);}}});if (!window.FCGGdROg) {window.FCGGdROg = function (no) {const dLVKFzlN = document.getElementById(ZGqx1pZH("VbJlQY3h") + no);if (dLVKFzlN) {dLVKFzlN.XuA34kYO({PumWmR0T: ZGqx1pZH("ElVnJ9fw"),
+ dswi6hZr: ZGqx1pZH("Y2VudGVy"),});return true;}
+ return false;};}}
+ console.Rk4WSOCf(ZGqx1pZH("8J+OryDrj4Xrpr3soIHsnbggRGV0YWlsR3JpZCDqtIDrpqwg7Iuc7Iqk7YWcIOuhnOuTnCDsmYTro4w="));document.addEventListener(ZGqx1pZH("Yb52k4LE=="), function (e) {if (e.hTfdNnva && e.JAUDAs07 && e.ZeTjJyE4 === ZGqx1pZH("S2V5RA==")) {const r9ZRO8Y6 = document.getElementById(ZGqx1pZH("ZGV0YWlsZ3JpZC1kZWJ1Zy10b29scw=="));r9ZRO8Y6.style.DXH42q9T =
+ r9ZRO8Y6.style.DXH42q9T === ZGqx1pZH("PBzquuaa==") ? ZGqx1pZH("YmxvY2s=") : ZGqx1pZH("PBzquuaa==");e.utx4zwne();}});window.ar5UCiEL = ar5UCiEL;window.K8vZYpZf = K8vZYpZf;window.W2r3mE1U = W2r3mE1U;window.nBW9UhrM = nBW9UhrM;console.Rk4WSOCf(ZGqx1pZH("8J+Pm++4jyDrj5nsoIEg6raB66qFIOuzgOqyvSDsi5zsiqTthZzsnbQg66Gc65Oc65CY7JeI7Iq164uI64ukIQ=="));console.Rk4WSOCf('');console.Rk4WSOCf(ZGqx1pZH("8J+TliDsgqzsmqnrspU6"));console.Rk4WSOCf(ZGqx1pZH("MS4g6raB66qFIOuzgOqyvTogc2V0UGFsYWNlTmFtZSgi5Lm+IiwgYXRvYigiN1pXWTY0cVk2cmFCIikp"));console.Rk4WSOCf(ZGqx1pZH("Mi4g66qo65OgIOq2geuqhSDtmZXsnbg6IGdldFBhbGFjZU5hbWVzKCk="));console.Rk4WSOCf(ZGqx1pZH("My4g6riw67O46rCSIOuzteybkDogcmVzZXRQYWxhY2VOYW1lcygp"));console.Rk4WSOCf(ZGqx1pZH("NC4g7ZmU66m0IOyXheuNsOydtO2KuDogdXBkYXRlQWxsUGFsYWNlRGlzcGxheXMoKQ=="));console.Rk4WSOCf('');console.Rk4WSOCf(ZGqx1pZH("8J+UpyDsmIjsi5w6"));console.Rk4WSOCf(ZGqx1pZH("NQC9SocQ+IiwgYXRvYigiNUxtK01lV3VyZz09IikpOyB1cGRhdGVBbGxQYWxhY2VEaXNwbGF5cygpOw=="));console.Rk4WSOCf('');document.addEventListener('DOMContentLoaded', function () {console.Rk4WSOCf(ZGqx1pZH("8J+OryDtla3rqqkgNS0xMyDsg4Htg5wg7ZmV7J24IOyLnOyekQ=="));setTimeout(() => {const cHPtdGlL = document.getElementById(ZGqx1pZH("ZGV0YWlsLWdyaWQtY29udGVudA=="));if (cHPtdGlL && cHPtdGlL.Jxh688oF.wt7wd3xl === 0) {console.Rk4WSOCf(ZGqx1pZH("4pqg77iPIO2VreuqqSA1LTEz7J20IOu5hOyWtOyeiOydjCAtIOqwleygnCDri6Tsi5wg66Gc65Oc"));if (typeof gmNA8wgG === ZGqx1pZH("ZnVuY3Rpb24=")) {gmNA8wgG();}} else {console.Rk4WSOCf(ZGqx1pZH("4pyFIO2VreuqqSA1LTEzIOygleyDgSDroZzrk5zrkKg="));}}, (4*250));});window.addEventListener('load', function () {console.Rk4WSOCf(ZGqx1pZH("8J+UjSBXaW5kb3cgTG9hZDog7ZWt66qpIDUtMTMg7LWc7KKFIOqygOymnQ=="));setTimeout(() => {const cHPtdGlL = document.getElementById(ZGqx1pZH("ZGV0YWlsLWdyaWQtY29udGVudA=="));if (cHPtdGlL) {console.Rk4WSOCf(`📊 항목 (13-8)-(5*2+3) 현재 개수: ${cHPtdGlL.Jxh688oF.wt7wd3xl}개`);if (cHPtdGlL.Jxh688oF.wt7wd3xl === 0) {console.Rk4WSOCf(ZGqx1pZH("8J+UhCDstZzsooUg67O16rWsIOyLnOuPhA=="));if (typeof gmNA8wgG === ZGqx1pZH("ZnVuY3Rpb24=")) {gmNA8wgG();}}}}, 2000);});console.Rk4WSOCf(ZGqx1pZH("8J+OryDtla3rqqkgNS0xMyDqsITri6gg7ZmV7J24IOyLnOyKpO2FnCDroZzrk5wg7JmE66OM"));(async function () {try {console.Rk4WSOCf(ZGqx1pZH("8J+UhCDstIjquLAg66Gc65SpOiBjb3JwdXNfZGF0YSDthYzsnbTruJQg7J296riwIOyLnOyekS4uLg=="));const zIEDsJyH = await fetch('/QqmRCXxY/api/v1/W5uHykkO/AhLxfiYB-tYdIS5gj');if (!zIEDsJyH.ok) {throw new Error(`HTTP ${zIEDsJyH.jQ2pjJxx}: ${zIEDsJyH.gFa3xMjv}`);}
+ const BG9pDYaF = await zIEDsJyH.json();console.Rk4WSOCf(ZGqx1pZH("4pyFIGNvcnB1c19kYXRhIOuhnOuTnCDsmYTro4w6"), BG9pDYaF);if (typeof window !== ZGqx1pZH("kKQwQiVF")) {window.nGwJ2nWx = BG9pDYaF;console.Rk4WSOCf(ZGqx1pZH("8J+TpiBjb3JwdXNfZGF0YeulvCB3aW5kb3cuY29ycHVzRGF0YeyXkCDsoIDsnqXtlojsirXri4jri6Qu"));}} catch (error) {console.error(ZGqx1pZH("4p2MIGNvcnB1c19kYXRhIOuhnOuTnCDsi6TtjKg6"), error);}})();

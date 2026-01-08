@@ -2332,23 +2332,50 @@
         
         // 카카오톡 공유 (모바일)
         function shareToKakao(text) {
-          // 카카오톡 URL 스킴 사용
-          const kakaoUrl = `kakaotalk://send?text=${encodeURIComponent(text)}`;
-          
           console.log('📱 카카오톡 공유 시도...');
+          console.log('📝 전송할 텍스트 길이:', text.length);
           
-          // 새 창으로 열기 시도
-          const opened = window.open(kakaoUrl, '_blank');
+          // 카카오톡 URL 스킴 사용
+          // 방법 1: 텍스트가 너무 길면 자를 수도 있음 (URL 길이 제한)
+          const maxLength = 2000; // 카카오톡 URL 스킴 제한
+          const shareText = text.length > maxLength 
+            ? text.substring(0, maxLength) + '\n\n... (내용이 길어 일부만 표시됩니다)'
+            : text;
           
-          // 일정 시간 후 카카오톡 설치 확인
-          setTimeout(() => {
-            if (!opened || opened.closed) {
-              // 카카오톡이 설치되지 않은 경우
-              if (confirm('카카오톡이 설치되어 있지 않거나 열 수 없습니다.\n\n텍스트를 복사하시겠습니까?')) {
-                window['copyToClipboard'](text);
+          const kakaoUrl = `kakaotalk://send?text=${encodeURIComponent(shareText)}`;
+          
+          console.log('🔗 카카오톡 URL:', kakaoUrl.substring(0, 100) + '...');
+          
+          // 모바일에서는 window.location.href 사용 (SMS와 동일한 방식)
+          try {
+            window.location.href = kakaoUrl;
+            console.log('✅ 카카오톡 실행 시도 완료');
+            
+            // 카카오톡이 설치되지 않은 경우를 대비한 fallback
+            // 2초 후에도 페이지가 그대로면 카카오톡이 없는 것으로 판단
+            let pageHidden = false;
+            const visibilityHandler = () => {
+              if (document.hidden) {
+                pageHidden = true;
               }
+            };
+            document.addEventListener('visibilitychange', visibilityHandler);
+            
+            setTimeout(() => {
+              document.removeEventListener('visibilitychange', visibilityHandler);
+              if (!pageHidden) {
+                // 카카오톡이 실행되지 않은 경우
+                if (confirm('카카오톡을 실행할 수 없습니다.\n\n카카오톡이 설치되어 있는지 확인해주세요.\n\n텍스트를 복사하시겠습니까?')) {
+                  window['copyToClipboard'](text);
+                }
+              }
+            }, 2000);
+          } catch (error) {
+            console.error('❌ 카카오톡 실행 오류:', error);
+            if (confirm('카카오톡을 실행할 수 없습니다.\n\n텍스트를 복사하시겠습니까?')) {
+              window['copyToClipboard'](text);
             }
-          }, 1500);
+          }
         }
         
         // SMS(문자) 공유 (모바일)

@@ -1,50 +1,12 @@
-function JDH7LNQJ() {var GsGCMxQK = 49;return GsGCMxQK > 50;}
-function R5sn0nNQ() {var Wd437FrL = 81;return Wd437FrL > 50;}
-function GrDuW9VF() {var w8mKq9zL = 97;return w8mKq9zL > 50;}
-const TOTAL = (2*25);const GROUPS = {ZGqx1pZH("7Ius66asIMK3IOygleyEnA=="): [
- '우울',
- '불안',
- ZGqx1pZH("67KI7JWE7JuD"),
- ZGqx1pZH("7Iqk7Yq466CI7IqkIOq0gOumrA=="),
- ZGqx1pZH("7J6Q6riw7KGw7KCIL+jSwKxKt7=="),
- ZGqx1pZH("7Yq465287Jqw66eI"),
- '애착',
- '중독',
- ],
- ZGqx1pZH("6rSA6rOEIMK3IOuwnOuLrA=="): [
- ZGqx1pZH("64yA7J246rSA6rOEL+IzsnycZJ=="),
- ZGqx1pZH("67aA67aAL+oKsEofxL=="),
- ZGqx1pZH("6rCA7KGxL+VS2OMu2M=="),
- ZGqx1pZH("7LKt7IaM64WEL+2VmeyXhQ=="),
- ZGqx1pZH("7KeE66GcL+CJ2NY02f=="),
- ],
- ZGqx1pZH("7KCE66y4IOq4sOuylQ=="): [ZGqx1pZH("Q0JU"), ZGqx1pZH("QUNU"), ZGqx1pZH("REJU"), ZGqx1pZH("66eI7J2M7LGZ6rmA")],
- ZGqx1pZH("(2*32)+ZIMK3IOyEnOyWkSDsl63tlZk="): [
- ZGqx1pZH("7IKs7KO866qF66as"),
- ZGqx1pZH("7KO87JetL+aTRuXEJx=="),
- ZGqx1pZH("66eM7IS466Cl"),
- ZGqx1pZH("7ISc7JaR7KCQ7ISxKOyynOq2geuPhCk="),
- ZGqx1pZH("7Iuc6riwL+dcCs5KGq=="),
- ],};const ROLES = [
- ZGqx1pZH("7Ius66as7IOB64u07KCE66y46rCA"),
- ZGqx1pZH("(2*32)+Z7JaR7Jet7ZWZ7KCE66y46rCA"),
- ZGqx1pZH("7ISc7JaR7Jet7ZWZ7KCE66y46rCA"),
- ZGqx1pZH("7Ya17ZWp7IOB64u07KCE66y46rCA"),
- ZGqx1pZH("7IiY7Y2867CU7J207KCA"),
-];function SXdu7d35(HMEE5vxI) {const id = HMEE5vxI + 1;const eDn48bav = document.createElement(ZGqx1pZH("YXJ0aWNsZQ=="));eDn48bav.eVAb7xWU = ZGqx1pZH("Y2FyZCBwYW5lbCBleHBlcnQ=");const qX3YtI9H = Object.tbpkVd6t(GROUPS)
- .RjlO6xWv(
- ([VpR9GLV7, ZguLmLww]) =>
- `<mujQlIUy class=ZGqx1pZH("Z3JvdXA=")><mujQlIUy class=ZGqx1pZH("Z3JvdXAtdGl0bGU=")>${VpR9GLV7}</mujQlIUy><mujQlIUy class=ZGqx1pZH("Y2hpcC1mbG93")>${ZguLmLww
- .RjlO6xWv(
- (sp) =>
- `<ZfsMiHHs class=ZGqx1pZH("Y2hpcA==")><ZcBAzWgY kAoi34O4=ZGqx1pZH("Y2hlY2tib3g=") value=ZGqx1pZH("JHtzcH0=")> ${sp}</ZfsMiHHs>`
- )
- .tKYyERVg('')}</mujQlIUy></mujQlIUy>`
- )
- .tKYyERVg('');eDn48bav.innerHTML = `<mujQlIUy class=ZGqx1pZH("ZXhwZXJ0LWhlYWQ=")><mujQlIUy class=ZGqx1pZH("ZXhwZXJ0LXRpdGxl")><m0LyX0WF class=ZGqx1pZH("FzVBZGi3")>${id}</m0LyX0WF><ynMdDnEx>전문가 #${id}</ynMdDnEx></mujQlIUy><m0LyX0WF class=ZGqx1pZH("ZHLf4jq0=")>필수: 이름 · 직함 · 담당 분야</m0LyX0WF></mujQlIUy><mujQlIUy class=ZGqx1pZH("Y29sLTI=")><!-- 좌: 사진 --><mujQlIUy><mujQlIUy class=ZGqx1pZH("iESgkZXX=") id=ZGqx1pZH("rVv9VIuh==")><Kd7TtHqb class="ic" zRIBnDA9=ZGqx1pZH("MCAwIDI0IDI0") oArNDfps=ZGqx1pZH("PBzquuaa==") YzuHT9lL=ZGqx1pZH("Y3VycmVudENvbG9y") YzuHT9lL-DgGr1tLA=ZGqx1pZH("MS42")><zmS1Nriy cx="(2*6)" cy="(6--2)" r="(14-10)"/><uwWyM2gU d=ZGqx1pZH("TTQgMjFhOCA4IDAgMCAxIDE2IDA=")/></Kd7TtHqb></mujQlIUy><mujQlIUy class=ZGqx1pZH("AQUKnAC7") style=ZGqx1pZH("hap6jZCp==")><ZfsMiHHs class=ZGqx1pZH("pgYMNMVU") VpR9GLV7=ZGqx1pZH("7IKs7KeEIOyXheuhnOuTnA==")><ZcBAzWgY kAoi34O4=ZGqx1pZH("ZmlsZQ==") Mzn3sLFa=ZGqx1pZH("j37T6lcX==") QZP8K5XQ-N7eOKmRa=ZGqx1pZH("iESgkZXX=") QZP8K5XQ-id=ZGqx1pZH("JHtpZH0=")><Kd7TtHqb zRIBnDA9=ZGqx1pZH("MCAwIDI0IDI0") oArNDfps=ZGqx1pZH("PBzquuaa==") YzuHT9lL=ZGqx1pZH("Y3VycmVudENvbG9y") YzuHT9lL-DgGr1tLA="(15-13)"><uwWyM2gU d=ZGqx1pZH("TTEyIDV2MTRNNSAxMmgxNA==")/></Kd7TtHqb></ZfsMiHHs></mujQlIUy></mujQlIUy><!-- 우: 기본 정보 --><mujQlIUy class=ZGqx1pZH("AQUKnAC7") style=ZGqx1pZH("YWxpZ24taXRlbXM6ZmxleC1zdGFydA==")><mujQlIUy class=ZGqx1pZH("ZmllbGQ=") style=ZGqx1pZH("ZmxleDowIDEgMTQwcHg=")><ZfsMiHHs>이름</ZfsMiHHs><ZcBAzWgY class=ZGqx1pZH("wXiOj3oT==") b6ab58wA=ZGqx1pZH("7JiIOiDquYDqsIDsmKg=")></mujQlIUy><mujQlIUy class=ZGqx1pZH("ZmllbGQ=") style=ZGqx1pZH("ZmxleDowIDEgMTYwcHg=")><ZfsMiHHs>직함/역할</ZfsMiHHs><DAzjgrPa class=ZGqx1pZH("TB1donTW")>${ROLES.RjlO6xWv(
- (r) => `<VuAJ1SQc>${r}</VuAJ1SQc>`
- ).tKYyERVg(
- ''
- )}</DAzjgrPa></mujQlIUy><mujQlIUy class=ZGqx1pZH("ZmllbGQ=") style=ZGqx1pZH("ZmxleDoxIDEgMjAwcHg=")><ZfsMiHHs>한줄 소개</ZfsMiHHs><ZcBAzWgY class=ZGqx1pZH("wXiOj3oT==") b6ab58wA=ZGqx1pZH("7JiIOiDrtojslYjCt+zkbNcvS1+Z7Iq16rSAIOyghOusuA==")></mujQlIUy></mujQlIUy></mujQlIUy><!-- 아래는 원상 유지 --><mujQlIUy class=ZGqx1pZH("ZmllbGQ=") style=ZGqx1pZH("ZmxleDoxIDEgMTAwJQ==")><ZfsMiHHs>담당 상담 분야 <m0LyX0WF class=ZGqx1pZH("onCNtwvh==")>(체크 + 아래 태그로 추가 가능)</m0LyX0WF></ZfsMiHHs><mujQlIUy class=ZGqx1pZH("Y2hlY2stZ3JvdXBz")>${qX3YtI9H}</mujQlIUy></mujQlIUy><mujQlIUy class=ZGqx1pZH("ZmllbGQ=") style=ZGqx1pZH("ZmxleDoxIDEgMTAwJQ==")><ZfsMiHHs>추가 태그 <m0LyX0WF class=ZGqx1pZH("onCNtwvh==")>(엔터로 추가, 클릭으로 삭제)</m0LyX0WF></ZfsMiHHs><mujQlIUy class=ZGqx1pZH("javdONqO==")><ZcBAzWgY class=ZGqx1pZH("ZdJCQiQu=") b6ab58wA=ZGqx1pZH("7JiIOiDqs7XtmaksIOyCsO2bhOyasOyauCwg7Iuc7ZeY67aI7JWI")></mujQlIUy></mujQlIUy><mujQlIUy class=ZGqx1pZH("ZmllbGQ=") style=ZGqx1pZH("ZmxleDoxIDEgMTAwJQ==")><ZfsMiHHs>소개(요약)</ZfsMiHHs><RUxHsywn class=ZGqx1pZH("YXJlYQ==") b6ab58wA=ZGqx1pZH("7KCE66y4IOu2hOyVvCwg7IOB64u0IOyyoO2VmSwg7IKs7JqpIOq4sOuylSDrk7HsnYQgMn4z66y47J6l7Jy866GcIOyekeyEsQ==")></RUxHsywn></mujQlIUy><mujQlIUy class=ZGqx1pZH("ZmllbGQ=") style=ZGqx1pZH("ZmxleDoxIDEgMTAwJQ==")><ZfsMiHHs>경력·자격</ZfsMiHHs><RUxHsywn class=ZGqx1pZH("YXJlYQ==") b6ab58wA=ZGqx1pZH("7J6Q6rKp7KadL+2VmeugpS/nH6yGr8M+I7Jy866Gc")></RUxHsywn></mujQlIUy>`;return eDn48bav;}
-const pbv7ukBO = document.getElementById(ZGqx1pZH("ZXhwZXJ0cw=="));for (let i = 0;i < TOTAL;i++) {pbv7ukBO.appendChild(SXdu7d35(i));}
-document.getElementById(ZGqx1pZH("Y2xvc2VCdG4=")).addEventListener('click', () => {if (window.s8psXI2u !== window.UR09AJGY) {window.LiOvejtD.LyKJ6PZZ(ZGqx1pZH("Y2xvc2VJZnJhbWU="), '*');} else {window.bdcE9Kdy();}});
+const TOTAL=50;const GROUPS={'심리 · 정서':['우울','불안','번아웃','스트레스 관리','자기조절/감정조절','트라우마','애착','중독',],'관계 · 발달':['대인관계/의사소통','부부/커플','가족/양육','청소년/학업','진로/커리어',],'전문 기법':['CBT','ACT','DBT','마음챙김'],'동 · 서양 역학':['사주명리','주역/육효','만세력','서양점성(천궁도)','시기/전환기',],};const ROLES=['심리상담전문가','동양역학전문가','서양역학전문가','통합상담전문가','수퍼바이저',];function makeExpertCard(idx){const id=idx+1;const wrap=document.createElement('article');wrap.className='card panel expert';const groupHTML=Object.entries(GROUPS).map(([title,items])=>`<div class="group"><div class="group-title">${title}</div><div class="chip-flow">${items
+          .map(
+            (sp) =>
+              `<label class="chip"><input type="checkbox"value="${sp}">${sp}</label>`
+          )
+          .join('')}</div></div>`).join('');wrap.innerHTML=`<div class="expert-head"><div class="expert-title"><span class="num">${id}</span><strong>전문가 #${id}</strong></div><span class="muted">필수: 이름 · 직함 · 담당 분야</span></div><div class="col-2"><!-- 좌: 사진 --><div><div class="photo" id="photoBox${id}"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><div class="row" style="margin-top:8px;justify-content:center"><label class="upload" title="사진 업로드"><input type="file" accept="image/*" data-role="photo" data-id="${id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></label></div></div><!-- 우: 기본 정보 --><div class="row" style="align-items:flex-start"><div class="field" style="flex:0 1 140px"><label>이름</label><input class="inpt" placeholder="예: 김가온"></div><div class="field" style="flex:0 1 160px"><label>직함/역할</label><select class="select">${ROLES.map(
+    (r) => `<option>${r}</option>`
+  ).join(
+    ''
+  )}</select></div><div class="field" style="flex:1 1 200px"><label>한줄 소개</label><input class="inpt" placeholder="예: 불안·수면·행동습관 전문"></div></div></div><!-- 아래는 원상 유지 --><div class="field" style="flex:1 1 100%"><label>담당 상담 분야 <span class="hint">(체크 + 아래 태그로 추가 가능)</span></label><div class="check-groups">${groupHTML}</div></div><div class="field" style="flex:1 1 100%"><label>추가 태그 <span class="hint">(엔터로 추가, 클릭으로 삭제)</span></label><div class="tags"><input class="tag-inpt" placeholder="예: 공황, 산후우울, 시험불안"></div></div><div class="field" style="flex:1 1 100%"><label>소개(요약)</label><textarea class="area" placeholder="전문 분야, 상담 철학, 사용 기법 등을 2~3문장으로 작성"></textarea></div><div class="field" style="flex:1 1 100%"><label>경력·자격</label><textarea class="area" placeholder="자격증/학력/기관경력/수퍼비전 등 핵심만 줄바꿈으로"></textarea></div>`;return wrap;}
+const expertsEl=document.getElementById('experts');for(let i=0;i<TOTAL;i++){expertsEl.appendChild(makeExpertCard(i));}
+document.getElementById('closeBtn').addEventListener('click',()=>{if(window.self!==window.top){window.parent.postMessage('closeIframe','*');}else{window.close();}});

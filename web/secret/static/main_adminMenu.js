@@ -1,8 +1,4 @@
-(function(){const todayEl=document.getElementById('today');if(todayEl){const d=new Date();todayEl.textContent=`${d.getFullYear()}-${String(
-      d.getMonth() + 1
-    ).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(
-      d.getHours()
-    ).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;}})();(function(){const sidebar=document.getElementById('sidebar');const menuBtn=document.getElementById('menuBtn');if(menuBtn&&sidebar){menuBtn.addEventListener('click',()=>sidebar.classList.toggle('open'));}
+(function(){const todayEl=document.getElementById('today');if(todayEl){const d=new Date();todayEl.textContent=`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;}})();(function(){const sidebar=document.getElementById('sidebar');const menuBtn=document.getElementById('menuBtn');if(menuBtn&&sidebar){menuBtn.addEventListener('click',()=>sidebar.classList.toggle('open'));}
 window.addEventListener('hashchange',()=>{if(matchMedia('(max-width:900px)').matches&&sidebar)
 sidebar.classList.remove('open');});})();(function(){function syncNav(){const hash=location.hash||'#code';document.querySelectorAll('.nav-btn').forEach((a)=>{a.removeAttribute('aria-current');if(a.getAttribute('href')===hash)
 a.setAttribute('aria-current','page');});}

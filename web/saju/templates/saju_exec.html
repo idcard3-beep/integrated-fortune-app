@@ -2233,17 +2233,25 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
           `;
           
+          // 모바일 환경 감지
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+          
           modalContent.innerHTML = `
             <h3 style="margin-top:0;color:#333;text-align:center;">📤 공유 방법 선택</h3>
             <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+              ${isMobile ? `
+                <button id="shareKakaoBtn" style="padding:15px;font-size:16px;border:2px solid #FEE500;background:#FEE500;color:#000;border-radius:8px;cursor:pointer;font-weight:600;">
+                  💬 카카오톡으로 공유
+                </button>
+                <button id="shareSMSBtn" style="padding:15px;font-size:16px;border:2px solid #FF9800;background:#FF9800;color:white;border-radius:8px;cursor:pointer;font-weight:600;">
+                  💬 문자(SMS)로 공유
+                </button>
+                <button id="shareWebBtn" style="padding:15px;font-size:16px;border:2px solid #2196F3;background:#2196F3;color:white;border-radius:8px;cursor:pointer;font-weight:600;">
+                  🌐 기타 앱으로 공유
+                </button>
+              ` : ''}
               <button id="copyTextBtn" style="padding:15px;font-size:16px;border:2px solid #4CAF50;background:#4CAF50;color:white;border-radius:8px;cursor:pointer;font-weight:600;">
                 📋 텍스트 복사하기
-              </button>
-              <button id="shareKakaoBtn" style="padding:15px;font-size:16px;border:2px solid #FEE500;background:#FEE500;color:#000;border-radius:8px;cursor:pointer;font-weight:600;">
-                💬 카카오톡으로 공유
-              </button>
-              <button id="shareWebBtn" style="padding:15px;font-size:16px;border:2px solid #2196F3;background:#2196F3;color:white;border-radius:8px;cursor:pointer;font-weight:600;">
-                🌐 웹 공유 (모바일)
               </button>
               <button id="closeModalBtn" style="padding:15px;font-size:16px;border:2px solid #ccc;background:white;color:#666;border-radius:8px;cursor:pointer;margin-top:10px;">
                 취소
@@ -2260,15 +2268,23 @@
             document.body.removeChild(modal);
           });
           
-          document.getElementById('shareKakaoBtn').addEventListener('click', () => {
-            window['shareToKakao'](text);
-            document.body.removeChild(modal);
-          });
-          
-          document.getElementById('shareWebBtn').addEventListener('click', () => {
-            window['shareViaWeb'](text);
-            document.body.removeChild(modal);
-          });
+          // 모바일 전용 버튼들
+          if (isMobile) {
+            document.getElementById('shareKakaoBtn').addEventListener('click', () => {
+              window['shareToKakao'](text);
+              document.body.removeChild(modal);
+            });
+            
+            document.getElementById('shareSMSBtn').addEventListener('click', () => {
+              window['shareToSMS'](text);
+              document.body.removeChild(modal);
+            });
+            
+            document.getElementById('shareWebBtn').addEventListener('click', () => {
+              window['shareViaWeb'](text);
+              document.body.removeChild(modal);
+            });
+          }
           
           document.getElementById('closeModalBtn').addEventListener('click', () => {
             document.body.removeChild(modal);
@@ -2314,39 +2330,62 @@
           document.body.removeChild(textArea);
         }
         
-        // 카카오톡 공유
+        // 카카오톡 공유 (모바일)
         function shareToKakao(text) {
-          // 카카오톡 공유는 카카오 SDK가 필요합니다
-          // 간단한 방법: 카카오톡 URL 스킴 사용
+          // 카카오톡 URL 스킴 사용
           const kakaoUrl = `kakaotalk://send?text=${encodeURIComponent(text)}`;
           
-          // 모바일에서는 카카오톡 앱 열기 시도
-          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+          console.log('📱 카카오톡 공유 시도...');
           
-          if (isMobile) {
-            window.location.href = kakaoUrl;
-            setTimeout(() => {
-              // 카카오톡이 설치되지 않은 경우 대체 방법
-              alert('카카오톡이 설치되어 있지 않거나 열 수 없습니다.\n텍스트 복사 기능을 사용해주세요.');
-            }, 1000);
-          } else {
-            // PC에서는 클립보드 복사 후 안내
-            window['copyToClipboard'](text);
-            alert('PC에서는 복사된 텍스트를\nPC 카카오톡에서 직접 붙여넣기 해주세요.');
-          }
+          // 새 창으로 열기 시도
+          const opened = window.open(kakaoUrl, '_blank');
+          
+          // 일정 시간 후 카카오톡 설치 확인
+          setTimeout(() => {
+            if (!opened || opened.closed) {
+              // 카카오톡이 설치되지 않은 경우
+              if (confirm('카카오톡이 설치되어 있지 않거나 열 수 없습니다.\n\n텍스트를 복사하시겠습니까?')) {
+                window['copyToClipboard'](text);
+              }
+            }
+          }, 1500);
         }
         
-        // 웹 공유 API (모바일)
+        // SMS(문자) 공유 (모바일)
+        function shareToSMS(text) {
+          console.log('📱 SMS 공유 시도...');
+          
+          // SMS URL 스킴 사용
+          // Android: sms:?body=
+          // iOS: sms:&body=
+          const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+          const smsUrl = isIOS 
+            ? `sms:&body=${encodeURIComponent(text)}`
+            : `sms:?body=${encodeURIComponent(text)}`;
+          
+          window.location.href = smsUrl;
+        }
+        
+        // 웹 공유 API (모바일 - 카카오톡, 메신저, 이메일 등 선택 가능)
         function shareViaWeb(text) {
+          console.log('📱 웹 공유 API 시도...');
+          
           if (navigator.share) {
             navigator.share({
-              title: '사주팔자 분석 결과',
+              title: '📊 사주팔자 분석 결과',
               text: text
             }).then(() => {
-              console.log('✅ 공유 완료');
+              console.log('✅ 웹 공유 완료');
             }).catch((error) => {
-              console.log('공유 취소 또는 실패:', error);
-              window['copyToClipboard'](text);
+              // 사용자가 취소한 경우
+              if (error.name === 'AbortError') {
+                console.log('ℹ️ 사용자가 공유를 취소했습니다.');
+              } else {
+                console.error('❌ 웹 공유 실패:', error);
+                if (confirm('공유에 실패했습니다.\n\n텍스트를 복사하시겠습니까?')) {
+                  window['copyToClipboard'](text);
+                }
+              }
             });
           } else {
             alert('이 브라우저는 웹 공유를 지원하지 않습니다.\n텍스트 복사 기능을 사용해주세요.');
@@ -2367,6 +2406,7 @@
         window['copyToClipboard'] = copyToClipboard;
         window['fallbackCopyToClipboard'] = fallbackCopyToClipboard;
         window['shareToKakao'] = shareToKakao;
+        window['shareToSMS'] = shareToSMS;  // SMS 공유 함수 등록
         window['shareViaWeb'] = shareViaWeb;
         console.log('✅ 모든 함수 등록 완료!');
         

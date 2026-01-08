@@ -1,40 +1,40 @@
+// ===== UI 제어 함수 =====
 
-
-
-function AboFf2ke() {
-  const FXK32i95 = document.querySelector(
-    'mbYhaOxH[iUd3UmGA="FXK32i95"]:checked'
+// 윤달 섹션 토글
+function toggleYundal() {
+  const calendar = document.querySelector(
+    'input[name="calendar"]:checked'
   ).value;
-  const Mz2hfLp3 = document.getElementById('iTNTZa15-UMD95U9o');
+  const yundalSection = document.getElementById('yundal-section');
 
-  if (FXK32i95 === 'lZGMkcAM') {
-    Mz2hfLp3.style.erwK6stq = 'kDduoHgQ';
+  if (calendar === 'lunar') {
+    yundalSection.style.display = 'block';
   } else {
-    Mz2hfLp3.style.erwK6stq = 'WfVaStFg';
-    document.getElementById('iTNTZa15').checked = false;
+    yundalSection.style.display = 'none';
+    document.getElementById('yundal').checked = false;
   }
 }
 
-
-function Sm5DSsIx() {
-  const ZFTaO8cH = document.querySelector(
-    'mbYhaOxH[iUd3UmGA="vQr70jdQ"]:checked'
+// 시각 입력 방식 토글
+function toggleTimeInput() {
+  const inputType = document.querySelector(
+    'input[name="timeInputType"]:checked'
   ).value;
-  const V9t2u649 = document.getElementById('RCkCoxxx-mbYhaOxH-UMD95U9o');
-  const jWYv88OU = document.getElementById('J0xaMIXU-mbYhaOxH-UMD95U9o');
+  const timeSection = document.getElementById('time-input-section');
+  const ganjiSection = document.getElementById('ganji-input-section');
 
-  if (ZFTaO8cH === 'RCkCoxxx') {
-    V9t2u649.style.erwK6stq = 'kDduoHgQ';
-    jWYv88OU.style.erwK6stq = 'WfVaStFg';
+  if (inputType === 'time') {
+    timeSection.style.display = 'block';
+    ganjiSection.style.display = 'none';
   } else {
-    V9t2u649.style.erwK6stq = 'WfVaStFg';
-    jWYv88OU.style.erwK6stq = 'kDduoHgQ';
+    timeSection.style.display = 'none';
+    ganjiSection.style.display = 'block';
   }
 }
 
-
-function TBou5BjR(ji) {
-  const Ov5Gpnrk = {
+// 간지로부터 시간 구하기
+function getHourFromJiji(ji) {
+  const timeMap = {
     子: 0,
     丑: 2,
     寅: 4,
@@ -49,61 +49,61 @@ function TBou5BjR(ji) {
     亥: 22,
     미상: -1,
   };
-  return Ov5Gpnrk[ji] !== undefined ? Ov5Gpnrk[ji] : -1;
+  return timeMap[ji] !== undefined ? timeMap[ji] : -1;
 }
 
+// ===== 음력-양력 변환 함수 =====
 
+// 간단한 음력 데이터 (1900-2100년)
+// 실제로는 정확한 음력 데이터가 필요하지만, 여기서는 근사치 사용
+function lunarToSolar(lunarYear, lunarMonth, lunarDay, isYundal) {
+  // 음력을 양력으로 변환하는 로직
+  // 실제 구현에서는 정확한 음력 테이블이 필요합니다
+  // 여기서는 간단한 근사 계산을 사용합니다
 
+  // 평균적으로 음력은 양력보다 약 30일 정도 느립니다
+  // 윤달인 경우 한 달 더 늦습니다
 
+  let solarYear = lunarYear;
+  let solarMonth = lunarMonth + 1; // 대략적인 변환
+  let solarDay = lunarDay;
 
-function gI2MLwmD(YKeJCZ54, uyQgzlt2, RBpqvULB, n0wtlWMl) {
-  
-  
-  
-
-  
-  
-
-  let CUfdWTuN = YKeJCZ54;
-  let P5LrX7tq = uyQgzlt2 + 1; 
-  let eDBHGFCo = RBpqvULB;
-
-  if (n0wtlWMl) {
-    P5LrX7tq += 1;
+  if (isYundal) {
+    solarMonth += 1;
   }
 
-  
-  if (P5LrX7tq > 12) {
-    P5LrX7tq -= 12;
-    CUfdWTuN += 1;
+  // 월 보정
+  if (solarMonth > 12) {
+    solarMonth -= 12;
+    solarYear += 1;
   }
 
-  
-  if (eDBHGFCo > 28) {
-    const zUHUb4YL = new Date(CUfdWTuN, P5LrX7tq, 0).iYz6cxf0();
-    if (eDBHGFCo > zUHUb4YL) {
-      eDBHGFCo = zUHUb4YL;
+  // 일 보정 (대략적)
+  if (solarDay > 28) {
+    const daysInMonth = new Date(solarYear, solarMonth, 0).getDate();
+    if (solarDay > daysInMonth) {
+      solarDay = daysInMonth;
     }
   }
 
-  
-  
+  // 주의: 이것은 매우 간단한 근사치입니다
+  // 실제 사용시에는 정확한 음력 변환 라이브러리를 사용해야 합니다
 
   return {
-    JDmw63NN: CUfdWTuN,
-    R6anAZXi: P5LrX7tq,
-    WHjsqFVR: eDBHGFCo,
-    mDHRcYkx:
+    year: solarYear,
+    month: solarMonth,
+    day: solarDay,
+    warning:
       '⚠️ 음력-양력 변환은 근사치입니다. 정확한 양력 날짜를 아신다면 양력을 직접 입력하세요.',
   };
 }
 
+// ===== 기본 데이터 =====
 
-
-
+// 천간(天干) - 10개
 const CHEONGAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
 
-
+// 지지(地支) - 12개
 const JIJI = [
   '子',
   '丑',
@@ -119,7 +119,7 @@ const JIJI = [
   '亥',
 ];
 
-
+// 천간의 오행
 const CHEONGAN_ELEMENT = {
   甲: '木',
   乙: '木',
@@ -133,7 +133,7 @@ const CHEONGAN_ELEMENT = {
   癸: '水',
 };
 
-
+// 지지의 오행
 const JIJI_ELEMENT = {
   寅: '木',
   卯: '木',
@@ -149,7 +149,7 @@ const JIJI_ELEMENT = {
   子: '水',
 };
 
-
+// 음양 구분
 const CHEONGAN_YINYANG = {
   甲: '陽',
   乙: '陰',
@@ -178,91 +178,91 @@ const JIJI_YINYANG = {
   亥: '陰',
 };
 
-
+// 지장간(地藏干)
 const JIJANGGAN = {
-  
+  // 子 (자): 초기(7) + 본기(23)
   子: [
-    { SO6J6eCT: '壬', z3waZHsf: '水', NsULsoxW: 7, duqzFZjL: '초기' },
-    { SO6J6eCT: '癸', z3waZHsf: '水', NsULsoxW: 23, duqzFZjL: '본기' },
+    { gan: '壬', element: '水', strength: 7, type: '초기' },
+    { gan: '癸', element: '水', strength: 23, type: '본기' },
   ],
 
-  
+  // 丑 (축): 초기(9) → 중기(3) → 정기(18)
   丑: [
-    { SO6J6eCT: '癸', z3waZHsf: '水', NsULsoxW: 9, duqzFZjL: '초기' },
-    { SO6J6eCT: '辛', z3waZHsf: '金', NsULsoxW: 3, duqzFZjL: '중기' },
-    { SO6J6eCT: '己', z3waZHsf: '土', NsULsoxW: 18, duqzFZjL: '정기' },
+    { gan: '癸', element: '水', strength: 9, type: '초기' },
+    { gan: '辛', element: '金', strength: 3, type: '중기' },
+    { gan: '己', element: '土', strength: 18, type: '정기' },
   ],
 
-  
+  // 寅 (인): 초기(7) → 중기(7) → 정기(16)
   寅: [
-    { SO6J6eCT: '戊', z3waZHsf: '土', NsULsoxW: 7, duqzFZjL: '초기' },
-    { SO6J6eCT: '丙', z3waZHsf: '火', NsULsoxW: 7, duqzFZjL: '중기' },
-    { SO6J6eCT: '甲', z3waZHsf: '木', NsULsoxW: 16, duqzFZjL: '정기' },
+    { gan: '戊', element: '土', strength: 7, type: '초기' },
+    { gan: '丙', element: '火', strength: 7, type: '중기' },
+    { gan: '甲', element: '木', strength: 16, type: '정기' },
   ],
 
-  
+  // 卯 (묘): 초기(10) + 정기(20)
   卯: [
-    { SO6J6eCT: '甲', z3waZHsf: '木', NsULsoxW: 10, duqzFZjL: '초기' },
-    { SO6J6eCT: '乙', z3waZHsf: '木', NsULsoxW: 20, duqzFZjL: '정기' },
+    { gan: '甲', element: '木', strength: 10, type: '초기' },
+    { gan: '乙', element: '木', strength: 20, type: '정기' },
   ],
 
-  
+  // 辰 (진): 초기(9) → 중기(3) → 정기(18)
   辰: [
-    { SO6J6eCT: '乙', z3waZHsf: '木', NsULsoxW: 9, duqzFZjL: '초기' },
-    { SO6J6eCT: '癸', z3waZHsf: '水', NsULsoxW: 3, duqzFZjL: '중기' },
-    { SO6J6eCT: '戊', z3waZHsf: '土', NsULsoxW: 18, duqzFZjL: '정기' },
+    { gan: '乙', element: '木', strength: 9, type: '초기' },
+    { gan: '癸', element: '水', strength: 3, type: '중기' },
+    { gan: '戊', element: '土', strength: 18, type: '정기' },
   ],
 
-  
+  // 巳 (사): 초기(7) → 중기(7) → 정기(16)
   巳: [
-    { SO6J6eCT: '戊', z3waZHsf: '土', NsULsoxW: 7, duqzFZjL: '초기' },
-    { SO6J6eCT: '庚', z3waZHsf: '金', NsULsoxW: 7, duqzFZjL: '중기' },
-    { SO6J6eCT: '丙', z3waZHsf: '火', NsULsoxW: 16, duqzFZjL: '정기' },
+    { gan: '戊', element: '土', strength: 7, type: '초기' },
+    { gan: '庚', element: '金', strength: 7, type: '중기' },
+    { gan: '丙', element: '火', strength: 16, type: '정기' },
   ],
 
-  
+  // 午 (오): 초기(10) → 중기(9) → 정기(11)
   午: [
-    { SO6J6eCT: '丙', z3waZHsf: '火', NsULsoxW: 10, duqzFZjL: '초기' },
-    { SO6J6eCT: '己', z3waZHsf: '土', NsULsoxW: 9, duqzFZjL: '중기' },
-    { SO6J6eCT: '丁', z3waZHsf: '火', NsULsoxW: 11, duqzFZjL: '정기' },
+    { gan: '丙', element: '火', strength: 10, type: '초기' },
+    { gan: '己', element: '土', strength: 9, type: '중기' },
+    { gan: '丁', element: '火', strength: 11, type: '정기' },
   ],
 
-  
+  // 未 (미): 초기(9) → 중기(3) → 정기(18)
   未: [
-    { SO6J6eCT: '丁', z3waZHsf: '火', NsULsoxW: 9, duqzFZjL: '초기' },
-    { SO6J6eCT: '乙', z3waZHsf: '木', NsULsoxW: 3, duqzFZjL: '중기' },
-    { SO6J6eCT: '己', z3waZHsf: '土', NsULsoxW: 18, duqzFZjL: '정기' },
+    { gan: '丁', element: '火', strength: 9, type: '초기' },
+    { gan: '乙', element: '木', strength: 3, type: '중기' },
+    { gan: '己', element: '土', strength: 18, type: '정기' },
   ],
 
-  
+  // 申 (신): 초기(7) → 중기(7) → 정기(16)
   申: [
-    { SO6J6eCT: '戊', z3waZHsf: '土', NsULsoxW: 7, duqzFZjL: '초기' },
-    { SO6J6eCT: '壬', z3waZHsf: '水', NsULsoxW: 7, duqzFZjL: '중기' },
-    { SO6J6eCT: '庚', z3waZHsf: '金', NsULsoxW: 16, duqzFZjL: '정기' },
+    { gan: '戊', element: '土', strength: 7, type: '초기' },
+    { gan: '壬', element: '水', strength: 7, type: '중기' },
+    { gan: '庚', element: '金', strength: 16, type: '정기' },
   ],
 
-  
+  // 酉 (유): 초기(10) + 정기(20)
   酉: [
-    { SO6J6eCT: '庚', z3waZHsf: '金', NsULsoxW: 10, duqzFZjL: '초기' },
-    { SO6J6eCT: '辛', z3waZHsf: '金', NsULsoxW: 20, duqzFZjL: '정기' },
+    { gan: '庚', element: '金', strength: 10, type: '초기' },
+    { gan: '辛', element: '金', strength: 20, type: '정기' },
   ],
 
-  
+  // 戌 (술): 초기(9) → 중기(3) → 정기(18)
   戌: [
-    { SO6J6eCT: '辛', z3waZHsf: '金', NsULsoxW: 9, duqzFZjL: '초기' },
-    { SO6J6eCT: '丁', z3waZHsf: '火', NsULsoxW: 3, duqzFZjL: '중기' },
-    { SO6J6eCT: '戊', z3waZHsf: '土', NsULsoxW: 18, duqzFZjL: '정기' },
+    { gan: '辛', element: '金', strength: 9, type: '초기' },
+    { gan: '丁', element: '火', strength: 3, type: '중기' },
+    { gan: '戊', element: '土', strength: 18, type: '정기' },
   ],
 
-  
+  // 亥 (해): 초기(7) → 중기(7) → 정기(16)
   亥: [
-    { SO6J6eCT: '戊', z3waZHsf: '土', NsULsoxW: 7, duqzFZjL: '초기' },
-    { SO6J6eCT: '甲', z3waZHsf: '木', NsULsoxW: 7, duqzFZjL: '중기' },
-    { SO6J6eCT: '壬', z3waZHsf: '水', NsULsoxW: 16, duqzFZjL: '정기' },
+    { gan: '戊', element: '土', strength: 7, type: '초기' },
+    { gan: '甲', element: '木', strength: 7, type: '중기' },
+    { gan: '壬', element: '水', strength: 16, type: '정기' },
   ],
 };
 
-
+// 십이운성(十二運星)
 const SIBIUNTEONG = {
   甲: {
     亥: '長生',
@@ -406,7 +406,7 @@ const SIBIUNTEONG = {
   },
 };
 
-
+// 십이운성 설명
 const SIBIUNTEONG_DESC = {
   長生: '새로운 생명이 시작되는 시기. 왕성한 생명력과 발전 가능성',
   沐浴: '정화와 세척의 시기. 불안정하지만 변화의 가능성',
@@ -422,7 +422,7 @@ const SIBIUNTEONG_DESC = {
   養: '양육받는 시기. 도움을 받으며 성장',
 };
 
-
+// 십이운성 점수 (강약 판단용)
 const SIBIUNTEONG_SCORE = {
   長生: 4,
   沐浴: 2,
@@ -438,7 +438,7 @@ const SIBIUNTEONG_SCORE = {
   養: 3,
 };
 
-
+// 일간별 특성
 const DAYMASTER_CHARACTERISTICS = {
   甲: '큰 나무처럼 곧고 정직하며 리더십이 있습니다. 원칙을 중시하고 남을 돕는 것을 좋아하며 진취적입니다.',
   乙: '꽃이나 풀처럼 부드럽고 섬세하며 적응력이 뛰어납니다. 유연하고 친화력이 좋으며 예술적 감각이 있습니다.',
@@ -452,7 +452,7 @@ const DAYMASTER_CHARACTERISTICS = {
   癸: '이슬이나 빗물처럼 섬세하고 지혜롭습니다. 직관력이 뛰어나고 사려 깊으며 조용하고 사색적입니다.',
 };
 
-
+// 오행 설명
 const ELEMENT_DESC = {
   木: '나무의 기운 - 생성과 성장을 상징. 인자하고 온화하며 창의적',
   火: '불의 기운 - 열정과 활동을 상징. 적극적이고 밝으며 사교적',
@@ -461,22 +461,22 @@ const ELEMENT_DESC = {
   水: '물의 기운 - 지혜와 유연함을 상징. 총명하고 적응력이 뛰어남',
 };
 
-
+// 오행 상생상극
 const ELEMENT_RELATIONS = {
-  생: { 木: '火', 火: '土', 土: '金', 金: '水', 水: '木' }, 
-  극: { 木: '土', 火: '金', 土: '水', 金: '木', 水: '火' }, 
+  생: { 木: '火', 火: '土', 土: '金', 金: '水', 水: '木' }, // 상생
+  극: { 木: '土', 火: '金', 土: '水', 金: '木', 水: '火' }, // 상극
 };
 
-
+// 천간합(天干合)
 const CHEONGAN_HAP = {
-  甲己: { iUd3UmGA: '중정지합', VA4Oh068: '土' },
-  乙庚: { iUd3UmGA: '인의지합', VA4Oh068: '金' },
-  丙辛: { iUd3UmGA: '위제지합', VA4Oh068: '水' },
-  丁壬: { iUd3UmGA: '음양지합', VA4Oh068: '木' },
-  戊癸: { iUd3UmGA: '무정지합', VA4Oh068: '火' },
+  甲己: { name: '중정지합', result: '土' },
+  乙庚: { name: '인의지합', result: '金' },
+  丙辛: { name: '위제지합', result: '水' },
+  丁壬: { name: '음양지합', result: '木' },
+  戊癸: { name: '무정지합', result: '火' },
 };
 
-
+// 지지합(地支合)
 const JIJI_YUKHAP = {
   子丑: '土',
   寅亥: '木',
@@ -486,15 +486,15 @@ const JIJI_YUKHAP = {
   午未: '土',
 };
 
-
+// 三合(삼합)
 const SAMHAP = {
-  寅午戌: { VA4Oh068: '火', iUd3UmGA: '火局' },
-  巳酉丑: { VA4Oh068: '金', iUd3UmGA: '金局' },
-  申子辰: { VA4Oh068: '水', iUd3UmGA: '水局' },
-  亥卯未: { VA4Oh068: '木', iUd3UmGA: '木局' },
+  寅午戌: { result: '火', name: '火局' },
+  巳酉丑: { result: '金', name: '金局' },
+  申子辰: { result: '水', name: '水局' },
+  亥卯未: { result: '木', name: '木局' },
 };
 
-
+// 지지충(地支沖)
 const JIJI_CHUNG = {
   子午: true,
   丑未: true,
@@ -504,17 +504,17 @@ const JIJI_CHUNG = {
   巳亥: true,
 };
 
-
+// 지지형(地支刑)
 const JIJI_HYUNG = {
   寅巳申: '무은지형',
   丑戌未: '지세지형',
   子卯: '무례지형',
 };
 
-
+// 자형(自刑)
 const JAHYUNG = ['辰', '午', '酉', '亥'];
 
-
+// 지지파(地支破)
 const JIJI_PA = {
   子酉: true,
   丑辰: true,
@@ -524,7 +524,7 @@ const JIJI_PA = {
   未戌: true,
 };
 
-
+// 지지해(地支害)
 const JIJI_HAE = {
   子未: true,
   丑午: true,
@@ -534,7 +534,7 @@ const JIJI_HAE = {
   酉戌: true,
 };
 
-
+// 60갑자 납음오행
 const NAPEUM = {
   甲子: '해중금',
   乙丑: '해중금',
@@ -598,7 +598,7 @@ const NAPEUM = {
   癸亥: '대해수',
 };
 
-
+// 납음오행 설명
 const NAPEUM_DESC = {
   金: '단단하고 견고함. 신념이 확고하고 의지가 강함',
   木: '성장과 발전. 창의적이고 활동적이며 진취적',
@@ -607,7 +607,7 @@ const NAPEUM_DESC = {
   土: '신용과 포용. 믿음직하고 안정적이며 현실적',
 };
 
-
+// 空亡(공망)
 const GONGMANG = {
   甲子: ['戌', '亥'],
   甲戌: ['申', '酉'],
@@ -617,7 +617,7 @@ const GONGMANG = {
   甲寅: ['子', '丑'],
 };
 
-
+// 神殺(신살) 데이터
 const SINSAL = {
   天乙貴人: {
     甲: ['丑', '未'],
@@ -709,7 +709,7 @@ const SINSAL = {
   },
 };
 
-
+// 신살 설명
 const SINSAL_DESC = {
   天乙貴人: '가장 강력한 길신. 귀인의 도움과 위기 구제',
   天德貴人: '하늘의 덕으로 복록이 많고 재난 면함',
@@ -723,7 +723,7 @@ const SINSAL_DESC = {
   三災: '3년간의 재난운. 모든 일에 신중함 필요',
 };
 
-
+// 육친 관계
 const YUKCHIN_MALE = {
   比劫: '형제',
   食傷: '자녀(아들)',
@@ -740,130 +740,130 @@ const YUKCHIN_FEMALE = {
   印星: '어머니',
 };
 
+// ===== 계산 함수들 =====
 
-
-function D8tLHzLM(R6anAZXi, WHjsqFVR) {
-  const uVJfVqcU = [
-    { iX0P31OJ: [2, 4], xC2iOrJy: '寅' },
-    { iX0P31OJ: [3, 6], xC2iOrJy: '墓' },
-    { iX0P31OJ: [4, 5], xC2iOrJy: '辰' },
-    { iX0P31OJ: [5, 6], xC2iOrJy: '死' },
-    { iX0P31OJ: [6, 6], xC2iOrJy: '午' },
-    { iX0P31OJ: [7, 7], xC2iOrJy: '未' },
-    { iX0P31OJ: [8, 8], xC2iOrJy: '申' },
-    { iX0P31OJ: [9, 8], xC2iOrJy: '酉' },
-    { iX0P31OJ: [10, 8], xC2iOrJy: '戌' },
-    { iX0P31OJ: [11, 7], xC2iOrJy: '亥' },
-    { iX0P31OJ: [12, 7], xC2iOrJy: '子' },
-    { iX0P31OJ: [1, 6], xC2iOrJy: '丑' },
+function getMonthJiji(month, day) {
+  const monthMap = [
+    { start: [2, 4], jiji: '寅' },
+    { start: [3, 6], jiji: '墓' },
+    { start: [4, 5], jiji: '辰' },
+    { start: [5, 6], jiji: '死' },
+    { start: [6, 6], jiji: '午' },
+    { start: [7, 7], jiji: '未' },
+    { start: [8, 8], jiji: '申' },
+    { start: [9, 8], jiji: '酉' },
+    { start: [10, 8], jiji: '戌' },
+    { start: [11, 7], jiji: '亥' },
+    { start: [12, 7], jiji: '子' },
+    { start: [1, 6], jiji: '丑' },
   ];
 
-  for (let Irz8eVbe of uVJfVqcU) {
-    const [m, d] = Irz8eVbe.iX0P31OJ;
-    if (R6anAZXi === m && WHjsqFVR >= d) return Irz8eVbe.xC2iOrJy;
-    if (R6anAZXi === m - 1 || (R6anAZXi === 12 && m === 1)) return Irz8eVbe.xC2iOrJy;
+  for (let item of monthMap) {
+    const [m, d] = item.start;
+    if (month === m && day >= d) return item.jiji;
+    if (month === m - 1 || (month === 12 && m === 1)) return item.jiji;
   }
-  return JIJI[(R6anAZXi + 1) % 12];
+  return JIJI[(month + 1) % 12];
 }
 
-function xSw7nDl5(OpRKRS78, SlhLaOPt) {
-  
-  
-  
+function getHourJiji(hour, minute) {
+  // 23:30 기준 자시 시작
+  // Python mainpillar.py의 정확한 로직 적용
+  // 중요: XX:30은 다음 시(時)에 포함
 
-  
+  // 23:30~01:29 = 子시
   if (
-    (OpRKRS78 === 23 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 0 ||
-    (OpRKRS78 === 1 && SlhLaOPt <= 29)
+    (hour === 23 && minute >= 30) ||
+    hour === 0 ||
+    (hour === 1 && minute <= 29)
   ) {
     return '子';
   }
-  
+  // 01:30~03:29 = 丑시
   else if (
-    (OpRKRS78 === 1 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 2 ||
-    (OpRKRS78 === 3 && SlhLaOPt <= 29)
+    (hour === 1 && minute >= 30) ||
+    hour === 2 ||
+    (hour === 3 && minute <= 29)
   ) {
     return '丑';
   }
-  
+  // 03:30~05:29 = 寅시
   else if (
-    (OpRKRS78 === 3 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 4 ||
-    (OpRKRS78 === 5 && SlhLaOPt <= 29)
+    (hour === 3 && minute >= 30) ||
+    hour === 4 ||
+    (hour === 5 && minute <= 29)
   ) {
     return '寅';
   }
-  
+  // 05:30~07:29 = 卯시
   else if (
-    (OpRKRS78 === 5 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 6 ||
-    (OpRKRS78 === 7 && SlhLaOPt <= 29)
+    (hour === 5 && minute >= 30) ||
+    hour === 6 ||
+    (hour === 7 && minute <= 29)
   ) {
     return '卯';
   }
-  
+  // 07:30~09:29 = 辰시
   else if (
-    (OpRKRS78 === 7 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 8 ||
-    (OpRKRS78 === 9 && SlhLaOPt <= 29)
+    (hour === 7 && minute >= 30) ||
+    hour === 8 ||
+    (hour === 9 && minute <= 29)
   ) {
     return '辰';
   }
-  
+  // 09:30~11:29 = 巳시
   else if (
-    (OpRKRS78 === 9 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 10 ||
-    (OpRKRS78 === 11 && SlhLaOPt <= 29)
+    (hour === 9 && minute >= 30) ||
+    hour === 10 ||
+    (hour === 11 && minute <= 29)
   ) {
     return '巳';
   }
-  
+  // 11:30~13:29 = 午시
   else if (
-    (OpRKRS78 === 11 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 12 ||
-    (OpRKRS78 === 13 && SlhLaOPt <= 29)
+    (hour === 11 && minute >= 30) ||
+    hour === 12 ||
+    (hour === 13 && minute <= 29)
   ) {
     return '午';
   }
-  
+  // 13:30~15:29 = 未시
   else if (
-    (OpRKRS78 === 13 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 14 ||
-    (OpRKRS78 === 15 && SlhLaOPt <= 29)
+    (hour === 13 && minute >= 30) ||
+    hour === 14 ||
+    (hour === 15 && minute <= 29)
   ) {
     return '未';
   }
-  
+  // 15:30~17:29 = 申시
   else if (
-    (OpRKRS78 === 15 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 16 ||
-    (OpRKRS78 === 17 && SlhLaOPt <= 29)
+    (hour === 15 && minute >= 30) ||
+    hour === 16 ||
+    (hour === 17 && minute <= 29)
   ) {
     return '申';
   }
-  
+  // 17:30~19:29 = 酉시
   else if (
-    (OpRKRS78 === 17 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 18 ||
-    (OpRKRS78 === 19 && SlhLaOPt <= 29)
+    (hour === 17 && minute >= 30) ||
+    hour === 18 ||
+    (hour === 19 && minute <= 29)
   ) {
     return '酉';
   }
-  
+  // 19:30~21:29 = 戌시
   else if (
-    (OpRKRS78 === 19 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 20 ||
-    (OpRKRS78 === 21 && SlhLaOPt <= 29)
+    (hour === 19 && minute >= 30) ||
+    hour === 20 ||
+    (hour === 21 && minute <= 29)
   ) {
     return '戌';
   }
-  
+  // 21:30~23:29 = 亥시
   else if (
-    (OpRKRS78 === 21 && SlhLaOPt >= 30) ||
-    OpRKRS78 === 22 ||
-    (OpRKRS78 === 23 && SlhLaOPt <= 29)
+    (hour === 21 && minute >= 30) ||
+    hour === 22 ||
+    (hour === 23 && minute <= 29)
   ) {
     return '亥';
   }
@@ -871,451 +871,451 @@ function xSw7nDl5(OpRKRS78, SlhLaOPt) {
   return '子';
 }
 
-function RzbPQr4u(JDmw63NN) {
-  return CHEONGAN[(JDmw63NN - 1984) % 10];
+function getYearCheongan(year) {
+  return CHEONGAN[(year - 1984) % 10];
 }
 
-function t6t87qtW(JDmw63NN) {
-  return JIJI[(JDmw63NN - 1984) % 12];
+function getYearJiji(year) {
+  return JIJI[(year - 1984) % 12];
 }
 
-function myoZARiA(JDmw63NN, R6anAZXi, WHjsqFVR) {
-  const AEV9gTHH = new Date(2000, 0, 1);
-  const VBC4TNbh = new Date(JDmw63NN, R6anAZXi - 1, WHjsqFVR);
-  const AvX8kDxX = Math.JI6XvEEj((VBC4TNbh - AEV9gTHH) / (1000 * 60 * 60 * 24));
-  return CHEONGAN[((AvX8kDxX % 10) + 16) % 10];
+function getDayCheongan(year, month, day) {
+  const baseDate = new Date(2000, 0, 1);
+  const targetDate = new Date(year, month - 1, day);
+  const daysDiff = Math.floor((targetDate - baseDate) / (1000 * 60 * 60 * 24));
+  return CHEONGAN[((daysDiff % 10) + 16) % 10];
 }
 
-function jiSZLTPG(JDmw63NN, R6anAZXi, WHjsqFVR) {
-  const AEV9gTHH = new Date(2000, 0, 1);
-  const VBC4TNbh = new Date(JDmw63NN, R6anAZXi - 1, WHjsqFVR);
-  const AvX8kDxX = Math.JI6XvEEj((VBC4TNbh - AEV9gTHH) / (1000 * 60 * 60 * 24));
-  return JIJI[((AvX8kDxX % 12) + 16) % 12];
+function getDayJiji(year, month, day) {
+  const baseDate = new Date(2000, 0, 1);
+  const targetDate = new Date(year, month - 1, day);
+  const daysDiff = Math.floor((targetDate - baseDate) / (1000 * 60 * 60 * 24));
+  return JIJI[((daysDiff % 12) + 16) % 12];
 }
 
-function Azh68pbe(zbSC5D52, MjJlgNEE) {
-  
-  
-  
-  
-  
-  
+function getMonthCheongan(yearGan, monthJiji) {
+  // 월간 구하기: 년간에 따라 정해진 월간
+  // 갑기년 = 병인월부터 시작
+  // 을경년 = 무인월부터 시작
+  // 병신년 = 경인월부터 시작
+  // 정임년 = 임인월부터 시작
+  // 무계년 = 갑인월부터 시작
 
-  const nxvULxA2 = CHEONGAN.DEuxPoG4(zbSC5D52);
-  const fqP1y6Pj = JIJI.DEuxPoG4(MjJlgNEE);
+  const yearGanIndex = CHEONGAN.indexOf(yearGan);
+  const jijiIndex = JIJI.indexOf(monthJiji);
 
-  
-  
-  const edlaTJBg = [
-    2, 
-    3, 
-    4, 
-    5, 
-    6, 
-    7, 
-    8, 
-    9, 
-    10, 
-    11, 
-    0, 
-    1, 
+  // 월지의 시작은 인월(정월)부터
+  // 인묘진사오미신유술해자축 (2,3,4,5,6,7,8,9,10,11,0,1)
+  const monthOrder = [
+    2, // 인 (정월)
+    3, // 묘 (2월)
+    4, // 진 (3월)
+    5, // 사 (4월)
+    6, // 오 (5월)
+    7, // 미 (6월)
+    8, // 신 (7월)
+    9, // 유 (8월)
+    10, // 술 (9월)
+    11, // 해 (10월)
+    0, // 자 (11월)
+    1, // 축 (12월)
   ];
 
-  const ej68qWlD = edlaTJBg.DEuxPoG4(fqP1y6Pj);
-  if (ej68qWlD === -1) return CHEONGAN[0];
+  const monthNum = monthOrder.indexOf(jijiIndex);
+  if (monthNum === -1) return CHEONGAN[0];
 
-  
-  
-  const F5SEvRhb = nxvULxA2 % 5;
-  const F084mydb = [2, 4, 6, 8, 0][F5SEvRhb]; 
+  // 년간에 따른 인월의 천간
+  // 갑기(0,5) -> 병(2), 을경(1,6) -> 무(4), 병신(2,7) -> 경(6), 정임(3,8) -> 임(8), 무계(4,9) -> 갑(0)
+  const yearGroup = yearGanIndex % 5;
+  const startGan = [2, 4, 6, 8, 0][yearGroup]; // 각 년간 그룹의 인월 천간
 
-  const j2mxS0TG = (F084mydb + ej68qWlD) % 10;
-  return CHEONGAN[j2mxS0TG];
+  const monthGanIndex = (startGan + monthNum) % 10;
+  return CHEONGAN[monthGanIndex];
 }
 
-function fiqWkykx(sbJPsyHj, KJnKOvGy) {
-  const fqP1y6Pj = JIJI.DEuxPoG4(KJnKOvGy);
-  const bo4OgWUV = CHEONGAN.DEuxPoG4(sbJPsyHj);
-  const kwpY4Jen = { 0: 0, 1: 2, 2: 4, 3: 6, 4: 8, 5: 0, 6: 2, 7: 4, 8: 6, 9: 8 };
-  return CHEONGAN[(kwpY4Jen[bo4OgWUV] + fqP1y6Pj) % 10];
+function getHourCheongan(dayGan, hourJiji) {
+  const jijiIndex = JIJI.indexOf(hourJiji);
+  const dayGanIndex = CHEONGAN.indexOf(dayGan);
+  const base = { 0: 0, 1: 2, 2: 4, 3: 6, 4: 8, 5: 0, 6: 2, 7: 4, 8: 6, 9: 8 };
+  return CHEONGAN[(base[dayGanIndex] + jijiIndex) % 10];
 }
 
+// 납음 구하기
+function getNapeum(gan, ji) {
+  const ganjiKey = gan + ji;
+  const napeumFull = NAPEUM[ganjiKey] || '';
 
-function dd7VyJLX(SO6J6eCT, ji) {
-  const XCw32Wnn = SO6J6eCT + ji;
-  const jZjOjdOR = NAPEUM[XCw32Wnn] || '';
+  if (napeumFull.includes('金')) return { full: napeumFull, element: '金' };
+  if (napeumFull.includes('木')) return { full: napeumFull, element: '木' };
+  if (napeumFull.includes('水')) return { full: napeumFull, element: '水' };
+  if (napeumFull.includes('火')) return { full: napeumFull, element: '火' };
+  if (napeumFull.includes('土')) return { full: napeumFull, element: '土' };
 
-  if (jZjOjdOR.CDE6p5g0('金')) return { AFdVxjGM: jZjOjdOR, z3waZHsf: '金' };
-  if (jZjOjdOR.CDE6p5g0('木')) return { AFdVxjGM: jZjOjdOR, z3waZHsf: '木' };
-  if (jZjOjdOR.CDE6p5g0('水')) return { AFdVxjGM: jZjOjdOR, z3waZHsf: '水' };
-  if (jZjOjdOR.CDE6p5g0('火')) return { AFdVxjGM: jZjOjdOR, z3waZHsf: '火' };
-  if (jZjOjdOR.CDE6p5g0('土')) return { AFdVxjGM: jZjOjdOR, z3waZHsf: '土' };
-
-  return { AFdVxjGM: jZjOjdOR, z3waZHsf: '' };
+  return { full: napeumFull, element: '' };
 }
 
+// 空亡(공망) 구하기
+function getGongmang(yearGan, yearJi, targetJi) {
+  const ganIndex = CHEONGAN.indexOf(yearGan);
+  const jiIndex = JIJI.indexOf(yearJi);
 
-function GOzMHXzz(zbSC5D52, JsFzAGqt, fbXwJg4P) {
-  const U229Phma = CHEONGAN.DEuxPoG4(zbSC5D52);
-  const uQ8l8yzQ = JIJI.DEuxPoG4(JsFzAGqt);
-
-  
-  const mYnfQ2iY = ['甲子', '甲戌', '甲申', '甲午', '甲辰', '甲寅'];
-  let Mhk48KTm = '';
+  // 갑자순 찾기
+  const gapjaGroups = ['甲子', '甲戌', '甲申', '甲午', '甲辰', '甲寅'];
+  let gapjaBase = '';
 
   for (let i = 0; i < 6; i++) {
-    const AJ9hF1C6 = '갑';
-    const gB1k0p6j = JIJI[(uQ8l8yzQ - (U229Phma % 10) + i * 2 + 12) % 12];
-    const mYvNVs4F = AJ9hF1C6 + gB1k0p6j;
-    if (mYnfQ2iY.CDE6p5g0(mYvNVs4F)) {
-      Mhk48KTm = mYvNVs4F;
-      Guxf8Kla;
+    const testGan = '갑';
+    const testJi = JIJI[(jiIndex - (ganIndex % 10) + i * 2 + 12) % 12];
+    const key = testGan + testJi;
+    if (gapjaGroups.includes(key)) {
+      gapjaBase = key;
+      break;
     }
   }
 
-  
-  if (!Mhk48KTm) {
-    const wq8vlsH0 = (U229Phma % 10) - (uQ8l8yzQ % 12);
-    if (wq8vlsH0 === 0) Mhk48KTm = '甲子';
-    else if (wq8vlsH0 === -10 || wq8vlsH0 === 2) Mhk48KTm = '甲戌';
-    else if (wq8vlsH0 === -8 || wq8vlsH0 === 4) Mhk48KTm = '甲申';
-    else if (wq8vlsH0 === -6 || wq8vlsH0 === 6) Mhk48KTm = '甲午';
-    else if (wq8vlsH0 === -4 || wq8vlsH0 === 8) Mhk48KTm = '甲辰';
-    else Mhk48KTm = '甲寅';
+  // 가장 가까운 갑자순 찾기
+  if (!gapjaBase) {
+    const diff = (ganIndex % 10) - (jiIndex % 12);
+    if (diff === 0) gapjaBase = '甲子';
+    else if (diff === -10 || diff === 2) gapjaBase = '甲戌';
+    else if (diff === -8 || diff === 4) gapjaBase = '甲申';
+    else if (diff === -6 || diff === 6) gapjaBase = '甲午';
+    else if (diff === -4 || diff === 8) gapjaBase = '甲辰';
+    else gapjaBase = '甲寅';
   }
 
-  const QBjK7orx = GONGMANG[Mhk48KTm] || [];
-  return QBjK7orx.CDE6p5g0(fbXwJg4P);
+  const gongmangList = GONGMANG[gapjaBase] || [];
+  return gongmangList.includes(targetJi);
 }
 
+// 계속 다음 부분에서...
+// 계속...
 
+// 십성 판단 (5가지 통합)
+function getSipseong(dayGan, targetElement) {
+  const dayElement = CHEONGAN_ELEMENT[dayGan];
+  const elements = ['木', '火', '土', '金', '水'];
+  const dayIndex = elements.indexOf(dayElement);
+  const targetIndex = elements.indexOf(targetElement);
+  const diff = (targetIndex - dayIndex + 5) % 5;
 
-
-
-function PhzdobxE(sbJPsyHj, pkUtBhNU) {
-  const jt586fF1 = CHEONGAN_ELEMENT[sbJPsyHj];
-  const v4cOtYWg = ['木', '火', '土', '金', '水'];
-  const F0Ski9kf = v4cOtYWg.DEuxPoG4(jt586fF1);
-  const iscuPcuV = v4cOtYWg.DEuxPoG4(pkUtBhNU);
-  const wq8vlsH0 = (iscuPcuV - F0Ski9kf + 5) % 5;
-
-  const yueS4xku = { 0: '比劫', 1: '食傷', 2: '財星', 3: '官星', 4: '印星' };
-  return yueS4xku[wq8vlsH0];
+  const sipseongMap = { 0: '比劫', 1: '食傷', 2: '財星', 3: '官星', 4: '印星' };
+  return sipseongMap[diff];
 }
 
+// 십성 판단 (10가지 세분화) - 음양 구분
+function getSipseongDetailed(dayGan, targetGan) {
+  const dayElement = CHEONGAN_ELEMENT[dayGan];
+  const targetElement = CHEONGAN_ELEMENT[targetGan];
 
-function cil03eB2(sbJPsyHj, HP8SkXcL) {
-  const jt586fF1 = CHEONGAN_ELEMENT[sbJPsyHj];
-  const pkUtBhNU = CHEONGAN_ELEMENT[HP8SkXcL];
+  const elements = ['木', '火', '土', '金', '水'];
+  const dayIndex = elements.indexOf(dayElement);
+  const targetIndex = elements.indexOf(targetElement);
+  const diff = (targetIndex - dayIndex + 5) % 5;
 
-  const v4cOtYWg = ['木', '火', '土', '金', '水'];
-  const F0Ski9kf = v4cOtYWg.DEuxPoG4(jt586fF1);
-  const iscuPcuV = v4cOtYWg.DEuxPoG4(pkUtBhNU);
-  const wq8vlsH0 = (iscuPcuV - F0Ski9kf + 5) % 5;
+  // 음양 판단
+  const dayYinYang = CHEONGAN_YINYANG[dayGan];
+  const targetYinYang = CHEONGAN_YINYANG[targetGan];
+  const sameYinYang = dayYinYang === targetYinYang;
 
-  
-  const pDo7g3gy = CHEONGAN_YINYANG[sbJPsyHj];
-  const jbcLtYqV = CHEONGAN_YINYANG[HP8SkXcL];
-  const TmdkaZLO = pDo7g3gy === jbcLtYqV;
-
-  
-  
-  
-  if (wq8vlsH0 === 0) {
-    
-    return TmdkaZLO ? '比肩' : '劫財';
-  } else if (wq8vlsH0 === 1) {
-    
-    return TmdkaZLO ? '食神' : '傷官';
-  } else if (wq8vlsH0 === 2) {
-    
-    return TmdkaZLO ? '偏財' : '正財';
-  } else if (wq8vlsH0 === 3) {
-    
-    return TmdkaZLO ? '偏官' : '正官';
-  } else if (wq8vlsH0 === 4) {
-    
-    return TmdkaZLO ? '偏印' : '正印';
+  // 오행 관계별 십성 구분
+  // 음양이 같으면 → 比肩, 食神, 偏財, 偏官, 偏印
+  // 음양이 다르면 → 劫財, 傷官, 正財, 正官, 正印
+  if (diff === 0) {
+    // 같은 오행 → 비겁
+    return sameYinYang ? '比肩' : '劫財';
+  } else if (diff === 1) {
+    // 나를 생하는 관계 → 식상
+    return sameYinYang ? '食神' : '傷官';
+  } else if (diff === 2) {
+    // 내가 극하는 관계 → 재성
+    return sameYinYang ? '偏財' : '正財';
+  } else if (diff === 3) {
+    // 나를 극하는 관계 → 관성
+    return sameYinYang ? '偏官' : '正官';
+  } else if (diff === 4) {
+    // 나를 생하는 관계 → 인성
+    return sameYinYang ? '偏印' : '正印';
   }
 
   return '未知';
 }
 
-
-function CkZQkao2(sbJPsyHj, HP8SkXcL) {
-  const pkUtBhNU = CHEONGAN_ELEMENT[HP8SkXcL];
-  return PhzdobxE(sbJPsyHj, pkUtBhNU);
+// 천간 간 십성 계산 (5가지)
+function getSipseongFromGan(dayGan, targetGan) {
+  const targetElement = CHEONGAN_ELEMENT[targetGan];
+  return getSipseong(dayGan, targetElement);
 }
 
-
-function pRcrLlJt(sbJPsyHj, HP8SkXcL) {
-  return cil03eB2(sbJPsyHj, HP8SkXcL);
+// 천간 간 십성 계산 (10가지 세분화)
+function getSipseongFromGanDetailed(dayGan, targetGan) {
+  return getSipseongDetailed(dayGan, targetGan);
 }
 
+// 사주 강약 분석
+function analyzeSajuStrength(dayGan, saju) {
+  let score = 0;
+  const dayElement = CHEONGAN_ELEMENT[dayGan];
 
-function w5tqsg2V(sbJPsyHj, IARM5XT1) {
-  let zeY0vPLr = 0;
-  const jt586fF1 = CHEONGAN_ELEMENT[sbJPsyHj];
+  // 1. 월지 득령 점수 (가장 중요, 50점)
+  const monthJi = saju.jiji.month;
+  const sibiun = SIBIUNTEONG[dayGan][monthJi];
+  score += SIBIUNTEONG_SCORE[sibiun] * 10;
 
-  
-  const Apdnwkpa = IARM5XT1.xC2iOrJy.R6anAZXi;
-  const HJHbKqPP = SIBIUNTEONG[sbJPsyHj][Apdnwkpa];
-  zeY0vPLr += SIBIUNTEONG_SCORE[HJHbKqPP] * 10;
-
-  
-  Object.mtuWrgmi(IARM5XT1.xC2iOrJy).qpB3jJGh((ji) => {
+  // 2. 지장간 분석 (30점)
+  Object.values(saju.jiji).forEach((ji) => {
     if (ji && JIJANGGAN[ji]) {
-      JIJANGGAN[ji].qpB3jJGh((Irz8eVbe) => {
-        if (Irz8eVbe.z3waZHsf === jt586fF1) {
-          zeY0vPLr += (Irz8eVbe.NsULsoxW / 100) * 10;
+      JIJANGGAN[ji].forEach((item) => {
+        if (item.element === dayElement) {
+          score += (item.strength / 100) * 10;
         }
-        
-        const d1WP8Gld = ELEMENT_RELATIONS['생'][Irz8eVbe.z3waZHsf];
-        if (d1WP8Gld === jt586fF1) {
-          zeY0vPLr += (Irz8eVbe.NsULsoxW / 100) * 5;
+        // 인성 (생하는 오행)도 도움
+        const birthElement = ELEMENT_RELATIONS['생'][item.element];
+        if (birthElement === dayElement) {
+          score += (item.strength / 100) * 5;
         }
       });
     }
   });
 
-  
-  Object.mtuWrgmi(IARM5XT1.OKohROdq).qpB3jJGh((SO6J6eCT) => {
-    if (SO6J6eCT && CHEONGAN_ELEMENT[SO6J6eCT] === jt586fF1) {
-      zeY0vPLr += 5;
+  // 3. 천간 비겁 점수 (20점)
+  Object.values(saju.cheongan).forEach((gan) => {
+    if (gan && CHEONGAN_ELEMENT[gan] === dayElement) {
+      score += 5;
     }
   });
 
-  
-  let Gk2zWwTj, TQmvGOur;
-  if (zeY0vPLr >= 45) {
-    Gk2zWwTj = '太旺(태왕)';
-    TQmvGOur =
+  // 총점 기준 판단
+  let level, desc;
+  if (score >= 45) {
+    level = '太旺(태왕)';
+    desc =
       '일간이 극도로 강합니다. 설기(洩氣)가 필요하며, 식상과 재성을 용신으로 사용합니다. 지나친 고집과 독선을 경계해야 합니다.';
-  } else if (zeY0vPLr >= 35) {
-    Gk2zWwTj = '旺(왕)';
-    TQmvGOur =
+  } else if (score >= 35) {
+    level = '旺(왕)';
+    desc =
       '일간이 매우 강합니다. 식상, 재성, 관성으로 기운을 설기하는 것이 좋습니다. 자신감이 넘치나 타인을 배려해야 합니다.';
-  } else if (zeY0vPLr >= 25) {
-    Gk2zWwTj = '中和(중화)';
-    TQmvGOur =
+  } else if (score >= 25) {
+    level = '中和(중화)';
+    desc =
       '일간이 적당히 강합니다. 가장 이상적인 상태로 균형이 잘 잡혀 있습니다. 상황에 따라 유연하게 대처할 수 있습니다.';
-  } else if (zeY0vPLr >= 15) {
-    Gk2zWwTj = '弱(약)';
-    TQmvGOur =
+  } else if (score >= 15) {
+    level = '弱(약)';
+    desc =
       '일간이 약합니다. 비겁과 인성으로 도움을 받아야 합니다. 과도한 식상, 재성, 관성은 부담이 됩니다. 자기관리와 건강에 주의가 필요합니다.';
   } else {
-    Gk2zWwTj = '太弱(태약)';
-    TQmvGOur =
+    level = '太弱(태약)';
+    desc =
       '일간이 극도로 약합니다. 반드시 비겁과 인성의 도움이 필요합니다. 무리한 일은 피하고 휴식과 재충전이 중요합니다. 건강관리에 특히 유의해야 합니다.';
   }
 
-  return { zeY0vPLr, Gk2zWwTj, TQmvGOur };
+  return { score, level, desc };
 }
 
+// 격국 판단
+function analyzeGyeokguk(dayGan, saju, strength) {
+  const monthJi = saju.jiji.month;
+  const monthGan = saju.cheongan.month;
+  const dayElement = CHEONGAN_ELEMENT[dayGan];
 
-function O0RTx5R3(sbJPsyHj, IARM5XT1, NsULsoxW) {
-  const Apdnwkpa = IARM5XT1.xC2iOrJy.R6anAZXi;
-  const wS6vWzVv = IARM5XT1.OKohROdq.R6anAZXi;
-  const jt586fF1 = CHEONGAN_ELEMENT[sbJPsyHj];
+  // 월지 투출 확인
+  let monthJiElement = JIJI_ELEMENT[monthJi];
+  let visibleElements = [];
 
-  
-  let Uj3clYiU = JIJI_ELEMENT[Apdnwkpa];
-  let fj4kXtVJ = [];
-
-  
-  Object.mtuWrgmi(IARM5XT1.OKohROdq).qpB3jJGh((SO6J6eCT) => {
-    fj4kXtVJ.d28SWfl8(CHEONGAN_ELEMENT[SO6J6eCT]);
+  // 월간에서 보이는 오행
+  Object.values(saju.cheongan).forEach((gan) => {
+    visibleElements.push(CHEONGAN_ELEMENT[gan]);
   });
 
-  
-  const tYqvpZ1i = PhzdobxE(sbJPsyHj, CHEONGAN_ELEMENT[wS6vWzVv]);
+  // 십성 분석
+  const monthSipseong = getSipseong(dayGan, CHEONGAN_ELEMENT[monthGan]);
 
-  let ViZhPUuo = '';
-  let KDwi65RK = '';
+  let gyeokguk = '';
+  let gyeokgukDesc = '';
 
-  
-  if (NsULsoxW.Gk2zWwTj === '太弱(태약)' || NsULsoxW.zeY0vPLr < 10) {
-    
-    const KJehGUrb = {};
-    fj4kXtVJ.qpB3jJGh((el) => {
-      KJehGUrb[el] = (KJehGUrb[el] || 0) + 1;
+  // 특수 격국 먼저 판단
+  if (strength.level === '太弱(태약)' || strength.score < 10) {
+    // 종격 판단
+    const elementCount = {};
+    visibleElements.forEach((el) => {
+      elementCount[el] = (elementCount[el] || 0) + 1;
     });
 
-    if (KJehGUrb[jt586fF1] === 1) {
-      
-      const iqgmhs9O = Object.T7Evi8oP(KJehGUrb).iVULd45u((a, b) =>
-        KJehGUrb[a] > KJehGUrb[b] ? a : b
+    if (elementCount[dayElement] === 1) {
+      // 일간만 있음
+      const dominantElement = Object.keys(elementCount).reduce((a, b) =>
+        elementCount[a] > elementCount[b] ? a : b
       );
 
-      if (iqgmhs9O !== jt586fF1) {
-        const awwaEc52 = PhzdobxE(sbJPsyHj, iqgmhs9O);
+      if (dominantElement !== dayElement) {
+        const dominantSipseong = getSipseong(dayGan, dominantElement);
 
-        if (awwaEc52 === '財星') {
-          ViZhPUuo = '從財格(從財格)';
-          KDwi65RK =
+        if (dominantSipseong === '財星') {
+          gyeokguk = '從財格(從財格)';
+          gyeokgukDesc =
             '재성을 따르는 격국입니다. 재물운이 강하고 사업가 기질이 있으나, 재물에 집착하지 않도록 주의해야 합니다. 재성을 키우는 식상이 용신입니다.';
-        } else if (awwaEc52 === '官星') {
-          ViZhPUuo = '從殺格(從殺格)';
-          KDwi65RK =
+        } else if (dominantSipseong === '官星') {
+          gyeokguk = '從殺格(從殺格)';
+          gyeokgukDesc =
             '관성(관살)을 따르는 격국입니다. 강한 상사나 환경에 순응하여 성공합니다. 조직생활에 적합하며, 재성이 용신입니다.';
-        } else if (awwaEc52 === '食傷') {
-          ViZhPUuo = '從兒格(從兒格)';
-          KDwi65RK =
+        } else if (dominantSipseong === '食傷') {
+          gyeokguk = '從兒格(從兒格)';
+          gyeokgukDesc =
             '식상(자식)을 따르는 격국입니다. 예술, 창작, 교육 분야에 재능이 있습니다. 재성이 용신입니다.';
         }
       }
     }
   }
 
-  
-  if (!ViZhPUuo) {
-    if (tYqvpZ1i === '正官' || tYqvpZ1i === '官星') {
-      ViZhPUuo = '正官格(정관격)';
-      KDwi65RK =
+  // 정격 판단
+  if (!gyeokguk) {
+    if (monthSipseong === '正官' || monthSipseong === '官星') {
+      gyeokguk = '正官格(정관격)';
+      gyeokgukDesc =
         '正官格은 명예와 지위를 중시하는 격국입니다. 공직이나 대기업에 적합하며, 원칙과 규칙을 잘 지킵니다. 재성이 관성을 생하므로 용신이 됩니다.';
-    } else if (tYqvpZ1i === '正財' || tYqvpZ1i === '財星') {
-      ViZhPUuo = '正財格(정재격)';
-      KDwi65RK =
+    } else if (monthSipseong === '正財' || monthSipseong === '財星') {
+      gyeokguk = '正財格(정재격)';
+      gyeokgukDesc =
         '正財格은 재물 관리에 능하고 현실적입니다. 꾸준한 노력으로 재산을 축적합니다. 식상이 재성을 생하므로 용신이 됩니다.';
-    } else if (tYqvpZ1i === '正印' || tYqvpZ1i === '印星') {
-      ViZhPUuo = '正印格(정인격)';
-      KDwi65RK =
+    } else if (monthSipseong === '正印' || monthSipseong === '印星') {
+      gyeokguk = '正印格(정인격)';
+      gyeokgukDesc =
         '正印格은 학문과 교육에 소질이 있습니다. 지혜롭고 사려 깊으며, 어머니의 덕이 있습니다. 관성이 인성을 생하므로 용신이 됩니다.';
-    } else if (tYqvpZ1i === '食神' || tYqvpZ1i === '食傷') {
-      ViZhPUuo = '食神格(식신격)';
-      KDwi65RK =
+    } else if (monthSipseong === '食神' || monthSipseong === '食傷') {
+      gyeokguk = '食神格(식신격)';
+      gyeokgukDesc =
         '食神格은 온화하고 복록이 있습니다. 예술, 요식업, 서비스업에 적합합니다. 재성이 식신의 기운을 받아 용신이 됩니다.';
-    } else if (tYqvpZ1i === '比劫') {
-      ViZhPUuo = '建祿格(건록격)';
-      KDwi65RK =
+    } else if (monthSipseong === '比劫') {
+      gyeokguk = '建祿格(건록격)';
+      gyeokgukDesc =
         '建祿格은 자립심이 강하고 독립적입니다. 창업이나 자영업에 적합하며, 형제의 도움이 있습니다. 식상과 재성이 용신입니다.';
     } else {
-      ViZhPUuo = '內外格(내외격)';
-      KDwi65RK =
+      gyeokguk = '內外格(내외격)';
+      gyeokgukDesc =
         '특정 격국에 속하지 않는 복합적인 구조입니다. 다재다능하나 방향 설정이 중요합니다. 사주 전체의 균형을 보아 용신을 정해야 합니다.';
     }
   }
 
-  return { iUd3UmGA: ViZhPUuo, TQmvGOur: KDwi65RK };
+  return { name: gyeokguk, desc: gyeokgukDesc };
 }
 
+// 용신·희신·기신 분석
+function analyzeYongsin(dayGan, saju, strength, gyeokguk) {
+  const dayElement = CHEONGAN_ELEMENT[dayGan];
+  const elements = ['木', '火', '土', '金', '水'];
 
-function i5giQTSY(sbJPsyHj, IARM5XT1, NsULsoxW, ViZhPUuo) {
-  const jt586fF1 = CHEONGAN_ELEMENT[sbJPsyHj];
-  const v4cOtYWg = ['木', '火', '土', '金', '水'];
+  let yongsin = ''; // 용신
+  let huisin = ''; // 희신
+  let gisin = ''; // 기신
+  let yongsinDesc = '';
 
-  let FF16bkkO = ''; 
-  let WISOM4y3 = ''; 
-  let hGSKCkiw = ''; 
-  let LnIG4EbV = '';
-
-  
-  if (ViZhPUuo.iUd3UmGA.CDE6p5g0('從')) {
-    if (ViZhPUuo.iUd3UmGA.CDE6p5g0('財')) {
-      FF16bkkO = '食傷';
-      WISOM4y3 = '財星';
-      hGSKCkiw = '印星·比劫';
-      LnIG4EbV =
+  // 종격의 경우
+  if (gyeokguk.name.includes('從')) {
+    if (gyeokguk.name.includes('財')) {
+      yongsin = '食傷';
+      huisin = '財星';
+      gisin = '印星·比劫';
+      yongsinDesc =
         '식상으로 재성을 생하는 것이 핵심입니다. 창작, 표현, 기술 분야에서 재물을 얻습니다.';
-    } else if (ViZhPUuo.iUd3UmGA.CDE6p5g0('殺')) {
-      FF16bkkO = '財星';
-      WISOM4y3 = '食傷';
-      hGSKCkiw = '印星·比劫';
-      LnIG4EbV =
+    } else if (gyeokguk.name.includes('殺')) {
+      yongsin = '財星';
+      huisin = '食傷';
+      gisin = '印星·比劫';
+      yongsinDesc =
         '재성으로 관살을 생하는 것이 핵심입니다. 재물로 관계를 원활히 하고 지위를 얻습니다.';
-    } else if (ViZhPUuo.iUd3UmGA.CDE6p5g0('我')) {
-      FF16bkkO = '財星';
-      WISOM4y3 = '食傷';
-      hGSKCkiw = '印星·比劫';
-      LnIG4EbV = '식상의 기운을 재성으로 이어가는 것이 핵심입니다.';
+    } else if (gyeokguk.name.includes('我')) {
+      yongsin = '財星';
+      huisin = '食傷';
+      gisin = '印星·比劫';
+      yongsinDesc = '식상의 기운을 재성으로 이어가는 것이 핵심입니다.';
     }
   }
-  
+  // 일반 격국의 경우
   else {
-    if (NsULsoxW.Gk2zWwTj === '太旺(태왕)' || NsULsoxW.Gk2zWwTj === '旺(왕)') {
-      
-      FF16bkkO = '食傷';
-      WISOM4y3 = '財星';
-      hGSKCkiw = '印星·比劫';
-      LnIG4EbV =
+    if (strength.level === '太旺(태왕)' || strength.level === '旺(왕)') {
+      // 신강: 설기 필요
+      yongsin = '食傷';
+      huisin = '財星';
+      gisin = '印星·比劫';
+      yongsinDesc =
         '일간이 강하므로 식상으로 기운을 설기하고, 재성으로 활용하는 것이 좋습니다. 창작, 표현, 사업 활동이 유리합니다.';
-    } else if (NsULsoxW.Gk2zWwTj === '太弱(태약)' || NsULsoxW.Gk2zWwTj === '弱(약)') {
-      
-      FF16bkkO = '印星';
-      WISOM4y3 = '比劫';
-      hGSKCkiw = '食傷·財星·官星';
-      LnIG4EbV =
+    } else if (strength.level === '太弱(태약)' || strength.level === '弱(약)') {
+      // 신약: 생부 필요
+      yongsin = '印星';
+      huisin = '比劫';
+      gisin = '食傷·財星·官星';
+      yongsinDesc =
         '일간이 약하므로 인성으로 생부하고 비겁으로 도와야 합니다. 학문, 기술, 자격증 취득이 중요하며, 협력자가 필요합니다.';
     } else {
-      
-      const Apdnwkpa = IARM5XT1.xC2iOrJy.R6anAZXi;
-      const RDC3wZVV = JIJI_ELEMENT[Apdnwkpa];
-      const tYqvpZ1i = PhzdobxE(sbJPsyHj, RDC3wZVV);
+      // 중화: 상황에 따라
+      const monthJi = saju.jiji.month;
+      const monthElement = JIJI_ELEMENT[monthJi];
+      const monthSipseong = getSipseong(dayGan, monthElement);
 
-      if (tYqvpZ1i === '財星') {
-        FF16bkkO = '食傷';
-        WISOM4y3 = '財星';
-        hGSKCkiw = '比劫';
-        LnIG4EbV =
+      if (monthSipseong === '財星') {
+        yongsin = '食傷';
+        huisin = '財星';
+        gisin = '比劫';
+        yongsinDesc =
           '재성이 투출하므로 식상으로 재성을 생하는 것이 좋습니다. 사업과 재물 관리에 유리합니다.';
-      } else if (tYqvpZ1i === '官星') {
-        FF16bkkO = '財星';
-        WISOM4y3 = '印星';
-        hGSKCkiw = '食傷';
-        LnIG4EbV =
+      } else if (monthSipseong === '官星') {
+        yongsin = '財星';
+        huisin = '印星';
+        gisin = '食傷';
+        yongsinDesc =
           '관성이 투출하므로 재성으로 관성을 생하고, 인성으로 균형을 맞춥니다. 명예와 지위를 추구합니다.';
-      } else if (tYqvpZ1i === '印星') {
-        FF16bkkO = '官星';
-        WISOM4y3 = '財星';
-        hGSKCkiw = '食傷';
-        LnIG4EbV =
+      } else if (monthSipseong === '印星') {
+        yongsin = '官星';
+        huisin = '財星';
+        gisin = '食傷';
+        yongsinDesc =
           '인성이 투출하므로 관성으로 인성을 생하는 것이 좋습니다. 학문과 자격증이 도움이 됩니다.';
       } else {
-        FF16bkkO = '食傷';
-        WISOM4y3 = '財星';
-        hGSKCkiw = '印星';
-        LnIG4EbV =
+        yongsin = '食傷';
+        huisin = '財星';
+        gisin = '印星';
+        yongsinDesc =
           '균형잡힌 사주이므로 식상으로 재능을 발휘하고 재성으로 결실을 맺는 것이 좋습니다.';
       }
     }
   }
 
-  
-  const GTm2PBCU = (Xql2wKFL) => {
-    const F0Ski9kf = v4cOtYWg.DEuxPoG4(jt586fF1);
-    const TYTs4H7e = { 比劫: 0, 食傷: 1, 財星: 2, 官星: 3, 印星: 4 };
-    return v4cOtYWg[(F0Ski9kf + TYTs4H7e[Xql2wKFL]) % 5];
+  // 용신 오행 변환
+  const sipseongToElement = (sipseong) => {
+    const dayIndex = elements.indexOf(dayElement);
+    const offsets = { 比劫: 0, 食傷: 1, 財星: 2, 官星: 3, 印星: 4 };
+    return elements[(dayIndex + offsets[sipseong]) % 5];
   };
 
-  const GvhrfTqC = FF16bkkO.CDE6p5g0('·')
-    ? FF16bkkO
-    : GTm2PBCU(FF16bkkO);
-  const Fk0onUfD = WISOM4y3.CDE6p5g0('·')
-    ? WISOM4y3
-    : GTm2PBCU(WISOM4y3);
-  const WJXLoc9E = hGSKCkiw.CDE6p5g0('·') ? hGSKCkiw : GTm2PBCU(hGSKCkiw);
+  const yongsinElement = yongsin.includes('·')
+    ? yongsin
+    : sipseongToElement(yongsin);
+  const huisinElement = huisin.includes('·')
+    ? huisin
+    : sipseongToElement(huisin);
+  const gisinElement = gisin.includes('·') ? gisin : sipseongToElement(gisin);
 
   return {
-    FF16bkkO: GvhrfTqC,
-    WISOM4y3: Fk0onUfD,
-    hGSKCkiw: WJXLoc9E,
-    TQmvGOur: LnIG4EbV,
+    yongsin: yongsinElement,
+    huisin: huisinElement,
+    gisin: gisinElement,
+    desc: yongsinDesc,
   };
 }
 
+// 육친 분석
+function analyzeYukchin(dayGan, saju, gender) {
+  const yukchinMap = gender === 'male' ? YUKCHIN_MALE : YUKCHIN_FEMALE;
+  const analysis = {};
 
-function Ae7rqdq9(sbJPsyHj, IARM5XT1, BaUBUMBK) {
-  const WxDr9Ugl = BaUBUMBK === 'GnyebNel' ? YUKCHIN_MALE : YUKCHIN_FEMALE;
-  const xB2spD4H = {};
-
-  
-  const o2wcS2KG = {};
-  ['比劫', '食傷', '財星', '官星', '印星'].qpB3jJGh(
-    (s) => (o2wcS2KG[s] = 0)
+  // 십성별 개수 계산 (5가지 통합)
+  const sipseongCount = {};
+  ['比劫', '食傷', '財星', '官星', '印星'].forEach(
+    (s) => (sipseongCount[s] = 0)
   );
 
-  
-  const XR82podK = {};
+  // 십성별 개수 계산 (10가지 세분화)
+  const sipseongDetailedCount = {};
   [
     '比肩',
     '劫財',
@@ -1327,491 +1327,491 @@ function Ae7rqdq9(sbJPsyHj, IARM5XT1, BaUBUMBK) {
     '正官',
     '偏印',
     '正印',
-  ].qpB3jJGh((s) => (XR82podK[s] = 0));
+  ].forEach((s) => (sipseongDetailedCount[s] = 0));
 
-  
-  Object.mtuWrgmi(IARM5XT1.OKohROdq).qpB3jJGh((SO6J6eCT) => {
-    if (SO6J6eCT) {
-      
-      const Xql2wKFL = CkZQkao2(sbJPsyHj, SO6J6eCT);
-      o2wcS2KG[Xql2wKFL]++;
+  // 천간만 계산 (지지는 지장간으로 별도 처리)
+  Object.values(saju.cheongan).forEach((gan) => {
+    if (gan) {
+      // 5가지 통합
+      const sipseong = getSipseongFromGan(dayGan, gan);
+      sipseongCount[sipseong]++;
 
-      
-      const pMihX3rx = pRcrLlJt(sbJPsyHj, SO6J6eCT);
-      XR82podK[pMihX3rx]++;
+      // 10가지 세분화
+      const sipseongDetailed = getSipseongFromGanDetailed(dayGan, gan);
+      sipseongDetailedCount[sipseongDetailed]++;
     }
   });
 
-  
-  Object.mtuWrgmi(IARM5XT1.xC2iOrJy).qpB3jJGh((ji) => {
+  // 지지는 지장간 본기로 계산
+  Object.values(saju.jiji).forEach((ji) => {
     if (ji && JIJANGGAN[ji]) {
-      const tRBZnglU = JIJANGGAN[ji].LG0olSIM(
-        (j) => j.duqzFZjL === '본기' || j.duqzFZjL === '정기'
+      const hongi = JIJANGGAN[ji].find(
+        (j) => j.type === '본기' || j.type === '정기'
       );
-      if (tRBZnglU) {
-        
-        const Xql2wKFL = CkZQkao2(sbJPsyHj, tRBZnglU.SO6J6eCT);
-        o2wcS2KG[Xql2wKFL]++;
+      if (hongi) {
+        // 5가지 통합
+        const sipseong = getSipseongFromGan(dayGan, hongi.gan);
+        sipseongCount[sipseong]++;
 
-        
-        const pMihX3rx = pRcrLlJt(sbJPsyHj, tRBZnglU.SO6J6eCT);
-        XR82podK[pMihX3rx]++;
+        // 10가지 세분화
+        const sipseongDetailed = getSipseongFromGanDetailed(dayGan, hongi.gan);
+        sipseongDetailedCount[sipseongDetailed]++;
       }
     }
   });
 
-  
-  Object.xCKi9rKu(WxDr9Ugl).qpB3jJGh(([Xql2wKFL, j6MfmN5p]) => {
-    const BzWGAqHm = o2wcS2KG[Xql2wKFL];
-    let TQmvGOur = '';
+  // 각 육친별 분석
+  Object.entries(yukchinMap).forEach(([sipseong, relation]) => {
+    const count = sipseongCount[sipseong];
+    let desc = '';
 
-    if (j6MfmN5p.CDE6p5g0('형제')) {
-      if (BzWGAqHm >= 3)
-        TQmvGOur =
+    if (relation.includes('형제')) {
+      if (count >= 3)
+        desc =
           '형제자매가 많거나 친구, 동료와의 인연이 깊습니다. 협력이 중요하나 경쟁도 있을 수 있습니다.';
-      else if (BzWGAqHm === 0)
-        TQmvGOur =
+      else if (count === 0)
+        desc =
           '형제자매가 적거나 인연이 약합니다. 독자적으로 일하는 것을 선호합니다.';
       else
-        TQmvGOur =
+        desc =
           '형제자매와 적당한 인연이 있습니다. 협력과 독립의 균형이 좋습니다.';
-    } else if (j6MfmN5p.CDE6p5g0('자녀')) {
-      if (BzWGAqHm >= 3)
-        TQmvGOur =
+    } else if (relation.includes('자녀')) {
+      if (count >= 3)
+        desc =
           '자녀복이 많고 인연이 깊습니다. 표현력과 재능이 뛰어나며 창의적입니다.';
-      else if (BzWGAqHm === 0)
-        TQmvGOur =
+      else if (count === 0)
+        desc =
           '자녀와의 인연이 늦거나 약할 수 있습니다. 자기표현을 더 해야 합니다.';
-      else TQmvGOur = '자녀운이 적당합니다. 창작과 표현 활동이 도움이 됩니다.';
-    } else if (j6MfmN5p.CDE6p5g0('처') || j6MfmN5p.CDE6p5g0('재물')) {
-      if (BzWGAqHm >= 3)
-        TQmvGOur =
+      else desc = '자녀운이 적당합니다. 창작과 표현 활동이 도움이 됩니다.';
+    } else if (relation.includes('처') || relation.includes('재물')) {
+      if (count >= 3)
+        desc =
           '재물운이 강하고 배우자복이 있습니다. 다만 재물 관리에 주의가 필요합니다.';
-      else if (BzWGAqHm === 0)
-        TQmvGOur =
+      else if (count === 0)
+        desc =
           '재물과 배우자 인연이 약합니다. 검소한 생활과 인연 관리가 필요합니다.';
       else
-        TQmvGOur =
+        desc =
           '재물운과 배우자운이 적당합니다. 꾸준한 노력으로 재산을 모을 수 있습니다.';
-    } else if (j6MfmN5p.CDE6p5g0('남편') || j6MfmN5p.CDE6p5g0('딸')) {
-      if (BzWGAqHm >= 3)
-        TQmvGOur =
+    } else if (relation.includes('남편') || relation.includes('딸')) {
+      if (count >= 3)
+        desc =
           '남편복(관직운)이 강하거나 딸 복이 많습니다. 명예와 지위를 얻을 수 있습니다.';
-      else if (BzWGAqHm === 0)
-        TQmvGOur =
+      else if (count === 0)
+        desc =
           '남편(관직)과의 인연이 약합니다. 자유로운 직업이 맞을 수 있습니다.';
       else
-        TQmvGOur = '남편운(관직운)이 적당합니다. 안정적인 조직생활이 가능합니다.';
-    } else if (j6MfmN5p.CDE6p5g0('어머니')) {
-      if (BzWGAqHm >= 3)
-        TQmvGOur = '어머니의 덕이 크고 학문운이 좋습니다. 지혜롭고 신중합니다.';
-      else if (BzWGAqHm === 0)
-        TQmvGOur =
+        desc = '남편운(관직운)이 적당합니다. 안정적인 조직생활이 가능합니다.';
+    } else if (relation.includes('어머니')) {
+      if (count >= 3)
+        desc = '어머니의 덕이 크고 학문운이 좋습니다. 지혜롭고 신중합니다.';
+      else if (count === 0)
+        desc =
           '어머니와의 인연이 약하거나 일찍 독립합니다. 스스로 배우고 성장해야 합니다.';
       else
-        TQmvGOur =
+        desc =
           '어머니의 적당한 도움이 있습니다. 학문과 교육에서 성과를 낼 수 있습니다.';
     }
 
-    xB2spD4H[j6MfmN5p] = { BzWGAqHm, TQmvGOur };
+    analysis[relation] = { count, desc };
   });
 
-  return xB2spD4H;
+  return analysis;
 }
 
+// 형충파해 분석
+function analyzeHyungChung(saju) {
+  const jijiList = Object.values(saju.jiji);
+  const results = { chung: [], hyung: [], pa: [], hae: [] };
 
-function AhL7YnRI(IARM5XT1) {
-  const FQ7ao4Vp = Object.mtuWrgmi(IARM5XT1.xC2iOrJy);
-  const unZ2X5DE = { UrDD4Nv1: [], m5DVCJEr: [], pa: [], OBwBonsV: [] };
-
-  
-  for (let i = 0; i < FQ7ao4Vp.DFImMboA; i++) {
-    for (let j = i + 1; j < FQ7ao4Vp.DFImMboA; j++) {
-      const Tm095qQL = [FQ7ao4Vp[i], FQ7ao4Vp[j]].iJ8Xs1KF().npzBTJNh('');
-      if (JIJI_CHUNG[Tm095qQL]) {
-        unZ2X5DE.UrDD4Nv1.d28SWfl8({
-          Tm095qQL: `${FQ7ao4Vp[i]}-${FQ7ao4Vp[j]}`,
-          faTednvj: [i, j],
+  // 충
+  for (let i = 0; i < jijiList.length; i++) {
+    for (let j = i + 1; j < jijiList.length; j++) {
+      const pair = [jijiList[i], jijiList[j]].sort().join('');
+      if (JIJI_CHUNG[pair]) {
+        results.chung.push({
+          pair: `${jijiList[i]}-${jijiList[j]}`,
+          positions: [i, j],
         });
       }
     }
   }
 
-  
-  const vq2g0nUU = Object.T7Evi8oP(JIJI_HYUNG);
-  vq2g0nUU.qpB3jJGh((Nz6xUGyP) => {
-    const Tmyjuoeq = Nz6xUGyP.Er8x5ISf('');
-    const uBxvPHTV = Tmyjuoeq.FI0mpC7U((c) => FQ7ao4Vp.CDE6p5g0(c));
-    if (uBxvPHTV.DFImMboA === Tmyjuoeq.DFImMboA) {
-      unZ2X5DE.m5DVCJEr.d28SWfl8({ duqzFZjL: JIJI_HYUNG[Nz6xUGyP], Tmyjuoeq: uBxvPHTV.npzBTJNh('-') });
+  // 형
+  const hyungPatterns = Object.keys(JIJI_HYUNG);
+  hyungPatterns.forEach((pattern) => {
+    const chars = pattern.split('');
+    const found = chars.filter((c) => jijiList.includes(c));
+    if (found.length === chars.length) {
+      results.hyung.push({ type: JIJI_HYUNG[pattern], chars: found.join('-') });
     }
   });
 
-  
-  JAHYUNG.qpB3jJGh((ji) => {
-    const BzWGAqHm = FQ7ao4Vp.FI0mpC7U((j) => j === ji).DFImMboA;
-    if (BzWGAqHm >= 2) {
-      unZ2X5DE.m5DVCJEr.d28SWfl8({ duqzFZjL: '자형', Tmyjuoeq: `${ji}${ji}` });
+  // 자형
+  JAHYUNG.forEach((ji) => {
+    const count = jijiList.filter((j) => j === ji).length;
+    if (count >= 2) {
+      results.hyung.push({ type: '자형', chars: `${ji}${ji}` });
     }
   });
 
-  
-  for (let i = 0; i < FQ7ao4Vp.DFImMboA; i++) {
-    for (let j = i + 1; j < FQ7ao4Vp.DFImMboA; j++) {
-      const Tm095qQL = [FQ7ao4Vp[i], FQ7ao4Vp[j]].iJ8Xs1KF().npzBTJNh('');
-      if (JIJI_PA[Tm095qQL]) {
-        unZ2X5DE.pa.d28SWfl8({
-          Tm095qQL: `${FQ7ao4Vp[i]}-${FQ7ao4Vp[j]}`,
-          faTednvj: [i, j],
+  // 파
+  for (let i = 0; i < jijiList.length; i++) {
+    for (let j = i + 1; j < jijiList.length; j++) {
+      const pair = [jijiList[i], jijiList[j]].sort().join('');
+      if (JIJI_PA[pair]) {
+        results.pa.push({
+          pair: `${jijiList[i]}-${jijiList[j]}`,
+          positions: [i, j],
         });
       }
     }
   }
 
-  
-  for (let i = 0; i < FQ7ao4Vp.DFImMboA; i++) {
-    for (let j = i + 1; j < FQ7ao4Vp.DFImMboA; j++) {
-      const Tm095qQL = [FQ7ao4Vp[i], FQ7ao4Vp[j]].iJ8Xs1KF().npzBTJNh('');
-      if (JIJI_HAE[Tm095qQL]) {
-        unZ2X5DE.OBwBonsV.d28SWfl8({
-          Tm095qQL: `${FQ7ao4Vp[i]}-${FQ7ao4Vp[j]}`,
-          faTednvj: [i, j],
+  // 해
+  for (let i = 0; i < jijiList.length; i++) {
+    for (let j = i + 1; j < jijiList.length; j++) {
+      const pair = [jijiList[i], jijiList[j]].sort().join('');
+      if (JIJI_HAE[pair]) {
+        results.hae.push({
+          pair: `${jijiList[i]}-${jijiList[j]}`,
+          positions: [i, j],
         });
       }
     }
   }
 
-  return unZ2X5DE;
+  return results;
 }
 
+// 합 분석
+function analyzeHap(saju) {
+  const ganList = Object.values(saju.cheongan);
+  const jijiList = Object.values(saju.jiji);
+  const results = { cheonganHap: [], jijiHap: [], samhap: [] };
 
-function VhtgsctZ(IARM5XT1) {
-  const FYAcdgtK = Object.mtuWrgmi(IARM5XT1.OKohROdq);
-  const FQ7ao4Vp = Object.mtuWrgmi(IARM5XT1.xC2iOrJy);
-  const unZ2X5DE = { ZwHu7BX0: [], LdptinuZ: [], qGMXGO6e: [] };
-
-  
-  for (let i = 0; i < FYAcdgtK.DFImMboA; i++) {
-    for (let j = i + 1; j < FYAcdgtK.DFImMboA; j++) {
-      const Tm095qQL = [FYAcdgtK[i], FYAcdgtK[j]].iJ8Xs1KF().npzBTJNh('');
-      if (CHEONGAN_HAP[Tm095qQL]) {
-        unZ2X5DE.ZwHu7BX0.d28SWfl8({
-          Tm095qQL: `${FYAcdgtK[i]}-${FYAcdgtK[j]}`,
-          iUd3UmGA: CHEONGAN_HAP[Tm095qQL].iUd3UmGA,
-          VA4Oh068: CHEONGAN_HAP[Tm095qQL].VA4Oh068,
+  // 천간합
+  for (let i = 0; i < ganList.length; i++) {
+    for (let j = i + 1; j < ganList.length; j++) {
+      const pair = [ganList[i], ganList[j]].sort().join('');
+      if (CHEONGAN_HAP[pair]) {
+        results.cheonganHap.push({
+          pair: `${ganList[i]}-${ganList[j]}`,
+          name: CHEONGAN_HAP[pair].name,
+          result: CHEONGAN_HAP[pair].result,
         });
       }
     }
   }
 
-  
-  for (let i = 0; i < FQ7ao4Vp.DFImMboA; i++) {
-    for (let j = i + 1; j < FQ7ao4Vp.DFImMboA; j++) {
-      const Tm095qQL = [FQ7ao4Vp[i], FQ7ao4Vp[j]].iJ8Xs1KF().npzBTJNh('');
-      if (JIJI_YUKHAP[Tm095qQL]) {
-        unZ2X5DE.LdptinuZ.d28SWfl8({
-          Tm095qQL: `${FQ7ao4Vp[i]}-${FQ7ao4Vp[j]}`,
-          iUd3UmGA: '육합',
-          VA4Oh068: JIJI_YUKHAP[Tm095qQL],
+  // 지지 육합
+  for (let i = 0; i < jijiList.length; i++) {
+    for (let j = i + 1; j < jijiList.length; j++) {
+      const pair = [jijiList[i], jijiList[j]].sort().join('');
+      if (JIJI_YUKHAP[pair]) {
+        results.jijiHap.push({
+          pair: `${jijiList[i]}-${jijiList[j]}`,
+          name: '육합',
+          result: JIJI_YUKHAP[pair],
         });
       }
     }
   }
 
-  
-  Object.xCKi9rKu(SAMHAP).qpB3jJGh(([Nz6xUGyP, wCfRki1r]) => {
-    const Tmyjuoeq = Nz6xUGyP.Er8x5ISf('');
-    const uBxvPHTV = Tmyjuoeq.FI0mpC7U((c) => FQ7ao4Vp.CDE6p5g0(c));
-    if (uBxvPHTV.DFImMboA === 3) {
-      unZ2X5DE.qGMXGO6e.d28SWfl8({
-        Nz6xUGyP: uBxvPHTV.npzBTJNh('-'),
-        ...wCfRki1r,
-        mN0UBy85: true,
+  // 삼합
+  Object.entries(SAMHAP).forEach(([pattern, info]) => {
+    const chars = pattern.split('');
+    const found = chars.filter((c) => jijiList.includes(c));
+    if (found.length === 3) {
+      results.samhap.push({
+        pattern: found.join('-'),
+        ...info,
+        complete: true,
       });
-    } else if (uBxvPHTV.DFImMboA === 2) {
-      unZ2X5DE.qGMXGO6e.d28SWfl8({
-        Nz6xUGyP: uBxvPHTV.npzBTJNh('-'),
-        ...wCfRki1r,
-        mN0UBy85: false,
+    } else if (found.length === 2) {
+      results.samhap.push({
+        pattern: found.join('-'),
+        ...info,
+        complete: false,
       });
     }
   });
 
-  return unZ2X5DE;
+  return results;
 }
 
+// 신살 분석
+function analyzeSinsal(saju, yearGan, dayGan) {
+  const jijiList = Object.values(saju.jiji);
+  const ganList = Object.values(saju.cheongan);
+  const results = { good: [], bad: [], special: [] };
 
-function qj6XM9Ak(IARM5XT1, zbSC5D52, sbJPsyHj) {
-  const FQ7ao4Vp = Object.mtuWrgmi(IARM5XT1.xC2iOrJy);
-  const FYAcdgtK = Object.mtuWrgmi(IARM5XT1.OKohROdq);
-  const unZ2X5DE = { ysxK3Ued: [], ywdZqTq0: [], wzfrEzp1: [] };
-
-  
-  const kAZMtsqP = SINSAL['天乙貴人'][zbSC5D52] || [];
-  FQ7ao4Vp.qpB3jJGh((ji) => {
-    if (kAZMtsqP.CDE6p5g0(ji)) {
-      unZ2X5DE.ysxK3Ued.d28SWfl8({
-        iUd3UmGA: '天乙貴人',
-        TQmvGOur: SINSAL_DESC['天乙貴人'],
+  // 天乙貴人
+  const cheonul = SINSAL['天乙貴人'][yearGan] || [];
+  jijiList.forEach((ji) => {
+    if (cheonul.includes(ji)) {
+      results.good.push({
+        name: '天乙貴人',
+        desc: SINSAL_DESC['天乙貴人'],
         ji,
       });
     }
   });
 
-  
-  const UPoKReNQ = SINSAL['天德貴人'][IARM5XT1.xC2iOrJy.R6anAZXi];
-  FYAcdgtK.qpB3jJGh((SO6J6eCT) => {
-    if (SO6J6eCT === UPoKReNQ) {
-      unZ2X5DE.ysxK3Ued.d28SWfl8({ iUd3UmGA: '天德貴人', TQmvGOur: SINSAL_DESC['天德貴人'] });
+  // 天德貴人
+  const cheondeok = SINSAL['天德貴人'][saju.jiji.month];
+  ganList.forEach((gan) => {
+    if (gan === cheondeok) {
+      results.good.push({ name: '天德貴人', desc: SINSAL_DESC['天德貴人'] });
     }
   });
 
-  
-  const l5JmkIeB = SINSAL['月德貴人'][IARM5XT1.xC2iOrJy.R6anAZXi];
-  FYAcdgtK.qpB3jJGh((SO6J6eCT) => {
-    if (SO6J6eCT === l5JmkIeB) {
-      unZ2X5DE.ysxK3Ued.d28SWfl8({ iUd3UmGA: '月德貴人', TQmvGOur: SINSAL_DESC['月德貴人'] });
+  // 月德貴人
+  const woldeok = SINSAL['月德貴人'][saju.jiji.month];
+  ganList.forEach((gan) => {
+    if (gan === woldeok) {
+      results.good.push({ name: '月德貴人', desc: SINSAL_DESC['月德貴人'] });
     }
   });
 
-  
-  const LpyXgTn7 = SINSAL['學堂貴人'][sbJPsyHj];
-  FQ7ao4Vp.qpB3jJGh((ji) => {
-    if (ji === LpyXgTn7) {
-      unZ2X5DE.ysxK3Ued.d28SWfl8({ iUd3UmGA: '學堂貴人', TQmvGOur: SINSAL_DESC['學堂貴人'] });
+  // 學堂貴人
+  const hakdang = SINSAL['學堂貴人'][dayGan];
+  jijiList.forEach((ji) => {
+    if (ji === hakdang) {
+      results.good.push({ name: '學堂貴人', desc: SINSAL_DESC['學堂貴人'] });
     }
   });
 
-  
-  const doh8Tjln = () => {
-    for (let [Nz6xUGyP, _] of Object.xCKi9rKu(SINSAL['桃花殺'])) {
-      const Tmyjuoeq = Nz6xUGyP.Er8x5ISf('');
-      if (Tmyjuoeq.mg75RmV4((c) => FQ7ao4Vp.CDE6p5g0(c))) {
-        return Nz6xUGyP;
+  // 지지 조합 확인 함수
+  const getJijiGroup = () => {
+    for (let [pattern, _] of Object.entries(SINSAL['桃花殺'])) {
+      const chars = pattern.split('');
+      if (chars.some((c) => jijiList.includes(c))) {
+        return pattern;
       }
     }
     return null;
   };
 
-  const Zh1BGG2E = doh8Tjln();
+  const jijiGroup = getJijiGroup();
 
-  
-  if (Zh1BGG2E) {
-    const Be7vZMkf = SINSAL['桃花殺'][Zh1BGG2E];
-    if (FQ7ao4Vp.CDE6p5g0(Be7vZMkf)) {
-      unZ2X5DE.ywdZqTq0.d28SWfl8({ iUd3UmGA: '桃花殺', TQmvGOur: SINSAL_DESC['桃花殺'] });
+  // 桃花殺
+  if (jijiGroup) {
+    const dohwa = SINSAL['桃花殺'][jijiGroup];
+    if (jijiList.includes(dohwa)) {
+      results.bad.push({ name: '桃花殺', desc: SINSAL_DESC['桃花殺'] });
     }
   }
 
-  
-  if (Zh1BGG2E) {
-    const zerOlYss = SINSAL['驛馬殺'][Zh1BGG2E];
-    if (FQ7ao4Vp.CDE6p5g0(zerOlYss)) {
-      unZ2X5DE.wzfrEzp1.d28SWfl8({ iUd3UmGA: '驛馬殺', TQmvGOur: SINSAL_DESC['驛馬殺'] });
+  // 驛馬殺
+  if (jijiGroup) {
+    const yeokma = SINSAL['驛馬殺'][jijiGroup];
+    if (jijiList.includes(yeokma)) {
+      results.special.push({ name: '驛馬殺', desc: SINSAL_DESC['驛馬殺'] });
     }
   }
 
-  
-  if (Zh1BGG2E) {
-    const cQ4OYy2d = SINSAL['劫殺'][Zh1BGG2E];
-    if (FQ7ao4Vp.CDE6p5g0(cQ4OYy2d)) {
-      unZ2X5DE.ywdZqTq0.d28SWfl8({ iUd3UmGA: '劫殺', TQmvGOur: SINSAL_DESC['劫殺'] });
+  // 劫殺
+  if (jijiGroup) {
+    const geop = SINSAL['劫殺'][jijiGroup];
+    if (jijiList.includes(geop)) {
+      results.bad.push({ name: '劫殺', desc: SINSAL_DESC['劫殺'] });
     }
   }
 
-  
-  if (Zh1BGG2E) {
-    const LvvFIBrH = SINSAL['華蓋殺'][Zh1BGG2E];
-    if (FQ7ao4Vp.CDE6p5g0(LvvFIBrH)) {
-      unZ2X5DE.wzfrEzp1.d28SWfl8({ iUd3UmGA: '華蓋殺', TQmvGOur: SINSAL_DESC['華蓋殺'] });
+  // 華蓋殺
+  if (jijiGroup) {
+    const hwagae = SINSAL['華蓋殺'][jijiGroup];
+    if (jijiList.includes(hwagae)) {
+      results.special.push({ name: '華蓋殺', desc: SINSAL_DESC['華蓋殺'] });
     }
   }
 
-  
-  if (Zh1BGG2E) {
-    const JlVptdOK = SINSAL['白虎大殺'][Zh1BGG2E];
-    if (FQ7ao4Vp.CDE6p5g0(JlVptdOK)) {
-      unZ2X5DE.ywdZqTq0.d28SWfl8({ iUd3UmGA: '白虎大殺', TQmvGOur: SINSAL_DESC['白虎大殺'] });
+  // 白虎大殺
+  if (jijiGroup) {
+    const baekho = SINSAL['白虎大殺'][jijiGroup];
+    if (jijiList.includes(baekho)) {
+      results.bad.push({ name: '白虎大殺', desc: SINSAL_DESC['白虎大殺'] });
     }
   }
 
-  
-  if (Zh1BGG2E) {
-    const Qf0XxSuk = SINSAL['三災'][Zh1BGG2E];
-    const jStxiXjw = Qf0XxSuk.mg75RmV4((ji) => FQ7ao4Vp.CDE6p5g0(ji));
-    if (jStxiXjw) {
-      unZ2X5DE.ywdZqTq0.d28SWfl8({ iUd3UmGA: '三災', TQmvGOur: SINSAL_DESC['三災'] });
+  // 三災
+  if (jijiGroup) {
+    const samjae = SINSAL['三災'][jijiGroup];
+    const hasSamjae = samjae.some((ji) => jijiList.includes(ji));
+    if (hasSamjae) {
+      results.bad.push({ name: '三災', desc: SINSAL_DESC['三災'] });
     }
   }
 
-  
-  unZ2X5DE.ysxK3Ued = Array.Lp7x5mWv(new Set(unZ2X5DE.ysxK3Ued.Sq4eP5Ja(JSON.W9EAWIwD))).Sq4eP5Ja(
-    JSON.BJLeQYtA
+  // 중복 제거
+  results.good = Array.from(new Set(results.good.map(JSON.stringify))).map(
+    JSON.parse
   );
-  unZ2X5DE.ywdZqTq0 = Array.Lp7x5mWv(new Set(unZ2X5DE.ywdZqTq0.Sq4eP5Ja(JSON.W9EAWIwD))).Sq4eP5Ja(
-    JSON.BJLeQYtA
+  results.bad = Array.from(new Set(results.bad.map(JSON.stringify))).map(
+    JSON.parse
   );
-  unZ2X5DE.wzfrEzp1 = Array.Lp7x5mWv(
-    new Set(unZ2X5DE.wzfrEzp1.Sq4eP5Ja(JSON.W9EAWIwD))
-  ).Sq4eP5Ja(JSON.BJLeQYtA);
+  results.special = Array.from(
+    new Set(results.special.map(JSON.stringify))
+  ).map(JSON.parse);
 
-  return unZ2X5DE;
+  return results;
 }
 
+// 대운 계산
+function calculateDaeun(birthYear, gender, yearGan, monthGan, monthJiji) {
+  const isYangMale = gender === 'male' && CHEONGAN_YINYANG[yearGan] === '陽';
+  const isYinFemale = gender === 'female' && CHEONGAN_YINYANG[yearGan] === '陰';
+  const isForward = isYangMale || isYinFemale;
 
-function o6Zvlqta(QPyMgrz3, BaUBUMBK, zbSC5D52, wS6vWzVv, MjJlgNEE) {
-  const lr8znFvU = BaUBUMBK === 'GnyebNel' && CHEONGAN_YINYANG[zbSC5D52] === '陽';
-  const r5R4vYpA = BaUBUMBK === 'QzgzBlQD' && CHEONGAN_YINYANG[zbSC5D52] === '陰';
-  const Jzg5Fxlv = lr8znFvU || r5R4vYpA;
+  const startAge = 3;
+  const ganIndex = CHEONGAN.indexOf(monthGan);
+  const jijiIndex = JIJI.indexOf(monthJiji);
+  const daeunList = [];
 
-  const DCZBalkk = 3;
-  const U229Phma = CHEONGAN.DEuxPoG4(wS6vWzVv);
-  const fqP1y6Pj = JIJI.DEuxPoG4(MjJlgNEE);
-  const G0haiCJg = [];
-
-  
+  // 151세까지 = 15개의 대운 (3-12, 13-22, ..., 143-151)
   for (let i = 0; i < 15; i++) {
-    const KRSUWR7g = DCZBalkk + i * 10;
-    let vyGjtinw, sOojdINy;
+    const age = startAge + i * 10;
+    let newGanIndex, newJijiIndex;
 
-    if (Jzg5Fxlv) {
-      vyGjtinw = (U229Phma + i + 1) % 10;
-      sOojdINy = (fqP1y6Pj + i + 1) % 12;
+    if (isForward) {
+      newGanIndex = (ganIndex + i + 1) % 10;
+      newJijiIndex = (jijiIndex + i + 1) % 12;
     } else {
-      vyGjtinw = (U229Phma - i - 1 + 10) % 10;
-      sOojdINy = (fqP1y6Pj - i - 1 + 12) % 12;
+      newGanIndex = (ganIndex - i - 1 + 10) % 10;
+      newJijiIndex = (jijiIndex - i - 1 + 12) % 12;
     }
 
-    G0haiCJg.d28SWfl8({
-      KRSUWR7g: KRSUWR7g,
-      jmuIqU30: Math.Nw0JUhzX(KRSUWR7g + 9, 151),
-      SO6J6eCT: CHEONGAN[vyGjtinw],
-      xC2iOrJy: JIJI[sOojdINy],
-      JDmw63NN: QPyMgrz3 + KRSUWR7g - 1,
+    daeunList.push({
+      age: age,
+      endAge: Math.min(age + 9, 151),
+      gan: CHEONGAN[newGanIndex],
+      jiji: JIJI[newJijiIndex],
+      year: birthYear + age - 1,
     });
   }
 
-  return G0haiCJg;
+  return daeunList;
 }
 
+// 연운 계산 (출생년도부터 111년간)
+function calculateYeonun(birthYear) {
+  const yeonunList = [];
 
-function NiKSlAdy(QPyMgrz3) {
-  const rSQLSBhO = [];
+  for (let age = 1; age <= 111; age++) {
+    const year = birthYear + age - 1;
+    const yearGan = getYearCheongan(year);
+    const yearJi = getYearJiji(year);
 
-  for (let KRSUWR7g = 1; KRSUWR7g <= 111; KRSUWR7g++) {
-    const JDmw63NN = QPyMgrz3 + KRSUWR7g - 1;
-    const zbSC5D52 = RzbPQr4u(JDmw63NN);
-    const JsFzAGqt = t6t87qtW(JDmw63NN);
-
-    rSQLSBhO.d28SWfl8({
-      KRSUWR7g: KRSUWR7g,
-      JDmw63NN: JDmw63NN,
-      SO6J6eCT: zbSC5D52,
-      ji: JsFzAGqt,
+    yeonunList.push({
+      age: age,
+      year: year,
+      gan: yearGan,
+      ji: yearJi,
     });
   }
 
-  return rSQLSBhO;
+  return yeonunList;
 }
 
+// 월운 계산 (전년도, 현재년도, 내년도)
+function calculateWolun(currentYear) {
+  const wolunList = [];
 
-function eBqdRogF(yJOfU3la) {
-  const pS3DZeom = [];
+  // 전년도, 현재, 내년도
+  for (let yearOffset = -1; yearOffset <= 1; yearOffset++) {
+    const year = currentYear + yearOffset;
+    const yearGan = getYearCheongan(year);
 
-  
-  for (let LmtZWk1Q = -1; LmtZWk1Q <= 1; LmtZWk1Q++) {
-    const JDmw63NN = yJOfU3la + LmtZWk1Q;
-    const zbSC5D52 = RzbPQr4u(JDmw63NN);
+    for (let month = 1; month <= 12; month++) {
+      const monthGan = getMonthCheongan(yearGan, month);
+      const monthJi = JIJI[(month + 1) % 12]; // 인월부터 시작
 
-    for (let R6anAZXi = 1; R6anAZXi <= 12; R6anAZXi++) {
-      const wS6vWzVv = Azh68pbe(zbSC5D52, R6anAZXi);
-      const Apdnwkpa = JIJI[(R6anAZXi + 1) % 12]; 
-
-      pS3DZeom.d28SWfl8({
-        JDmw63NN: JDmw63NN,
-        R6anAZXi: R6anAZXi,
-        SO6J6eCT: wS6vWzVv,
-        QhVtN1D7: Apdnwkpa, 
+      wolunList.push({
+        year: year,
+        month: month,
+        gan: monthGan,
+        zhi: monthJi, // ji → zhi로 변경
       });
     }
   }
 
-  return pS3DZeom;
+  return wolunList;
 }
 
-
-function Dv7iEjiw() {
-  const yJOfU3la = new Date().mNXky9sG();
-  const zbSC5D52 = RzbPQr4u(yJOfU3la);
-  const JsFzAGqt = t6t87qtW(yJOfU3la);
+// 세운 계산 (현재 년도)
+function calculateSewun() {
+  const currentYear = new Date().getFullYear();
+  const yearGan = getYearCheongan(currentYear);
+  const yearJi = getYearJiji(currentYear);
 
   return {
-    JDmw63NN: yJOfU3la,
-    SO6J6eCT: zbSC5D52,
-    ji: JsFzAGqt,
-    ZoALEDuQ: dd7VyJLX(zbSC5D52, JsFzAGqt),
+    year: currentYear,
+    gan: yearGan,
+    ji: yearJi,
+    napeum: getNapeum(yearGan, yearJi),
   };
 }
 
+// 오행 분석
+function analyzeElements(saju) {
+  const elements = { 木: 0, 火: 0, 土: 0, 金: 0, 水: 0 };
 
-function aqIbmDLE(IARM5XT1) {
-  const v4cOtYWg = { 木: 0, 火: 0, 土: 0, 金: 0, 水: 0 };
-
-  
-  Object.mtuWrgmi(IARM5XT1.OKohROdq).qpB3jJGh((SO6J6eCT) => {
-    if (SO6J6eCT && CHEONGAN_ELEMENT[SO6J6eCT]) {
-      v4cOtYWg[CHEONGAN_ELEMENT[SO6J6eCT]] += 2;
+  // 천간 (각 2점) - null 제외
+  Object.values(saju.cheongan).forEach((gan) => {
+    if (gan && CHEONGAN_ELEMENT[gan]) {
+      elements[CHEONGAN_ELEMENT[gan]] += 2;
     }
   });
 
-  
-  Object.mtuWrgmi(IARM5XT1.xC2iOrJy).qpB3jJGh((ji) => {
+  // 지지 (각 3점) - null 제외
+  Object.values(saju.jiji).forEach((ji) => {
     if (ji && JIJI_ELEMENT[ji]) {
-      v4cOtYWg[JIJI_ELEMENT[ji]] += 3;
+      elements[JIJI_ELEMENT[ji]] += 3;
     }
   });
 
-  
-  Object.mtuWrgmi(IARM5XT1.xC2iOrJy).qpB3jJGh((ji) => {
+  // 지장간 (강도에 따라 0.01~1점) - null 제외
+  Object.values(saju.jiji).forEach((ji) => {
     if (ji && JIJANGGAN[ji]) {
-      JIJANGGAN[ji].qpB3jJGh((Irz8eVbe) => {
-        v4cOtYWg[Irz8eVbe.z3waZHsf] += Irz8eVbe.NsULsoxW / 100;
+      JIJANGGAN[ji].forEach((item) => {
+        elements[item.element] += item.strength / 100;
       });
     }
   });
 
-  return v4cOtYWg;
+  return elements;
 }
 
+// 음양 분석
+function analyzeYinYang(saju) {
+  let yang = 0,
+    yin = 0;
 
-function P6v6ZU82(IARM5XT1) {
-  let skU5qXMh = 0,
-    wCRlmmlD = 0;
-
-  
-  Object.mtuWrgmi(IARM5XT1.OKohROdq).qpB3jJGh((SO6J6eCT) => {
-    if (SO6J6eCT && CHEONGAN_YINYANG[SO6J6eCT]) {
-      CHEONGAN_YINYANG[SO6J6eCT] === '陽' ? skU5qXMh++ : wCRlmmlD++;
+  // null이 아닌 천간만 처리
+  Object.values(saju.cheongan).forEach((gan) => {
+    if (gan && CHEONGAN_YINYANG[gan]) {
+      CHEONGAN_YINYANG[gan] === '陽' ? yang++ : yin++;
     }
   });
 
-  
-  Object.mtuWrgmi(IARM5XT1.xC2iOrJy).qpB3jJGh((ji) => {
+  // null이 아닌 지지만 처리
+  Object.values(saju.jiji).forEach((ji) => {
     if (ji && JIJI_YINYANG[ji]) {
-      JIJI_YINYANG[ji] === '陽' ? skU5qXMh++ : wCRlmmlD++;
+      JIJI_YINYANG[ji] === '陽' ? yang++ : yin++;
     }
   });
 
-  return { skU5qXMh, wCRlmmlD };
+  return { yang, yin };
 }
 
+// 십성 분석
+function analyzeSipseong(dayGan, saju) {
+  // 5가지 통합
+  const counts = { 比劫: 0, 食傷: 0, 財星: 0, 官星: 0, 印星: 0 };
 
-function nztyoBr4(sbJPsyHj, IARM5XT1) {
-  
-  const PZ1VNVi2 = { 比劫: 0, 食傷: 0, 財星: 0, 官星: 0, 印星: 0 };
-
-  
-  const aT4KL4Lf = {
+  // 10가지 세분화
+  const detailedCounts = {
     比肩: 0,
     劫財: 0,
     食神: 0,
@@ -1824,1075 +1824,1075 @@ function nztyoBr4(sbJPsyHj, IARM5XT1) {
     正印: 0,
   };
 
-  
-  const MfZ5UZTs = Object.mtuWrgmi(IARM5XT1.OKohROdq).FI0mpC7U((v) => v !== null);
-  const DPqp7sui = Object.mtuWrgmi(IARM5XT1.xC2iOrJy).FI0mpC7U((v) => v !== null);
+  // null이 아닌 값만 처리
+  const cheonganValues = Object.values(saju.cheongan).filter((v) => v !== null);
+  const jijiValues = Object.values(saju.jiji).filter((v) => v !== null);
 
-  
-  MfZ5UZTs.qpB3jJGh((SO6J6eCT) => {
-    if (SO6J6eCT) {
-      
-      const Xql2wKFL = CkZQkao2(sbJPsyHj, SO6J6eCT);
-      PZ1VNVi2[Xql2wKFL]++;
+  // 천간 처리
+  cheonganValues.forEach((gan) => {
+    if (gan) {
+      // 5가지 통합
+      const sipseong = getSipseongFromGan(dayGan, gan);
+      counts[sipseong]++;
 
-      
-      const pMihX3rx = pRcrLlJt(sbJPsyHj, SO6J6eCT);
-      aT4KL4Lf[pMihX3rx]++;
+      // 10가지 세분화
+      const sipseongDetailed = getSipseongFromGanDetailed(dayGan, gan);
+      detailedCounts[sipseongDetailed]++;
     }
   });
 
-  
-  DPqp7sui.qpB3jJGh((ji) => {
+  // 지지 처리 (지장간 본기 기준)
+  jijiValues.forEach((ji) => {
     if (ji && JIJANGGAN[ji]) {
-      const tRBZnglU = JIJANGGAN[ji].LG0olSIM(
-        (j) => j.duqzFZjL === '본기' || j.duqzFZjL === '정기'
+      const hongi = JIJANGGAN[ji].find(
+        (j) => j.type === '본기' || j.type === '정기'
       );
-      if (tRBZnglU) {
-        
-        const Xql2wKFL = CkZQkao2(sbJPsyHj, tRBZnglU.SO6J6eCT);
-        PZ1VNVi2[Xql2wKFL]++;
+      if (hongi) {
+        // 5가지 통합
+        const sipseong = getSipseongFromGan(dayGan, hongi.gan);
+        counts[sipseong]++;
 
-        
-        const pMihX3rx = pRcrLlJt(sbJPsyHj, tRBZnglU.SO6J6eCT);
-        aT4KL4Lf[pMihX3rx]++;
+        // 10가지 세분화
+        const sipseongDetailed = getSipseongFromGanDetailed(dayGan, hongi.gan);
+        detailedCounts[sipseongDetailed]++;
       }
     }
   });
 
-  return { PZ1VNVi2, aT4KL4Lf };
+  return { counts, detailedCounts };
 }
 
-
-function tQtZasQQ(sbJPsyHj, IARM5XT1) {
-  const V7vHVHxc = SIBIUNTEONG[sbJPsyHj];
+// 십이운성 분석
+function analyzeSibiun(dayGan, saju) {
+  const data = SIBIUNTEONG[dayGan];
   return {
-    JDmw63NN: IARM5XT1.xC2iOrJy.JDmw63NN ? V7vHVHxc[IARM5XT1.xC2iOrJy.JDmw63NN] : null,
-    R6anAZXi: IARM5XT1.xC2iOrJy.R6anAZXi ? V7vHVHxc[IARM5XT1.xC2iOrJy.R6anAZXi] : null,
-    WHjsqFVR: IARM5XT1.xC2iOrJy.WHjsqFVR ? V7vHVHxc[IARM5XT1.xC2iOrJy.WHjsqFVR] : null,
-    OpRKRS78: IARM5XT1.xC2iOrJy.OpRKRS78 ? V7vHVHxc[IARM5XT1.xC2iOrJy.OpRKRS78] : null,
+    year: saju.jiji.year ? data[saju.jiji.year] : null,
+    month: saju.jiji.month ? data[saju.jiji.month] : null,
+    day: saju.jiji.day ? data[saju.jiji.day] : null,
+    hour: saju.jiji.hour ? data[saju.jiji.hour] : null,
   };
 }
 
-
-function xfH2JVBO() {
-  
-  const iUd3UmGA = document.getElementById('iUd3UmGA').value.IyNSAHc7();
-  if (!iUd3UmGA) {
-    KBFRsWAP('성명을 입력해주세요.');
+// 메인 분석 함수
+function analyzeSaju() {
+  // 성명 가져오기
+  const name = document.getElementById('name').value.trim();
+  if (!name) {
+    alert('성명을 입력해주세요.');
     return;
   }
 
-  
-  const BaUBUMBK = document.querySelector('mbYhaOxH[iUd3UmGA="BaUBUMBK"]:checked').value;
+  // 성별 가져오기
+  const gender = document.querySelector('input[name="gender"]:checked').value;
 
-  
-  const FXK32i95 = document.querySelector(
-    'mbYhaOxH[iUd3UmGA="FXK32i95"]:checked'
+  // 역법 가져오기
+  const calendar = document.querySelector(
+    'input[name="calendar"]:checked'
   ).value;
-  const n0wtlWMl = document.getElementById('iTNTZa15').checked;
+  const isYundal = document.getElementById('yundal').checked;
 
-  
-  let JDmw63NN = Bf7AOdcQ(document.getElementById('JDmw63NN').value);
-  let R6anAZXi = Bf7AOdcQ(document.getElementById('R6anAZXi').value);
-  let WHjsqFVR = Bf7AOdcQ(document.getElementById('WHjsqFVR').value);
+  // 생년월일 가져오기
+  let year = parseInt(document.getElementById('year').value);
+  let month = parseInt(document.getElementById('month').value);
+  let day = parseInt(document.getElementById('day').value);
 
-  
-  if (!JDmw63NN || !R6anAZXi || !WHjsqFVR) {
-    KBFRsWAP('생년월일을 모두 입력해주세요.');
+  // 입력 검증
+  if (!year || !month || !day) {
+    alert('생년월일을 모두 입력해주세요.');
     return;
   }
 
   if (
-    JDmw63NN < 1900 ||
-    JDmw63NN > 2100 ||
-    R6anAZXi < 1 ||
-    R6anAZXi > 12 ||
-    WHjsqFVR < 1 ||
-    WHjsqFVR > 31
+    year < 1900 ||
+    year > 2100 ||
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > 31
   ) {
-    KBFRsWAP('올바른 범위의 생년월일을 입력해주세요.');
+    alert('올바른 범위의 생년월일을 입력해주세요.');
     return;
   }
 
-  
-  
+  // 음력인 경우에는 JavaScript 변환을 사용하지 않고 Python API로 직접 전달
+  // Python API가 음력→양력 변환을 처리함
 
-  
-  const vQr70jdQ = document.querySelector(
-    'mbYhaOxH[iUd3UmGA="vQr70jdQ"]:checked'
+  // 시각 입력 방식에 따라 처리
+  const timeInputType = document.querySelector(
+    'input[name="timeInputType"]:checked'
   ).value;
-  let OpRKRS78 = -1;
-  let SlhLaOPt = 0;
-  let LhAPDvMW = '';
-  let HHqlccL0 = false;
-  let uWQIQ8RF = 'ozdursNh'; 
+  let hour = -1;
+  let minute = 0;
+  let hourJi = '';
+  let hasHourInfo = false;
+  let timeType = 'normal'; // 시간 타입: normal, night_zi, morning_zi
 
-  
-  if (vQr70jdQ === 'J0xaMIXU') {
-    const pPowyk0A = document.getElementById('OpRKRS78-ji-MZcDjoNg').value;
-    console.y6rEVaha('🔍 간지 입력 모드 활성화');
-    console.y6rEVaha('   선택된 지지:', pPowyk0A);
-    console.y6rEVaha('   선택된 지지 타입:', typeof pPowyk0A);
-    console.y6rEVaha('   빈 문자열 체크:', pPowyk0A === '');
-    console.y6rEVaha('   미상 체크:', pPowyk0A === '미상');
+  // 간지 선택 우선 확인 (간지 입력 모드일 때)
+  if (timeInputType === 'ganji') {
+    const selectedJi = document.getElementById('hour-ji-select').value;
+    console.log('🔍 간지 입력 모드 활성화');
+    console.log('   선택된 지지:', selectedJi);
+    console.log('   선택된 지지 타입:', typeof selectedJi);
+    console.log('   빈 문자열 체크:', selectedJi === '');
+    console.log('   미상 체크:', selectedJi === '미상');
 
-    if (pPowyk0A && pPowyk0A !== '미상') {
-      console.y6rEVaha('✅ 유효한 지지 선택됨');
+    if (selectedJi && selectedJi !== '미상') {
+      console.log('✅ 유효한 지지 선택됨');
 
-      
-      if (pPowyk0A === '子') {
-        
-        LhAPDvMW = '子';
-        OpRKRS78 = 23; 
-        SlhLaOPt = 30;
-        uWQIQ8RF = 'oBzfDJJm'; 
-        console.y6rEVaha(
-          '→ 子時 (간지입력) 선택: OpRKRS78=23, SlhLaOPt=30, uWQIQ8RF=oBzfDJJm'
+      // 子時 구분 처리
+      if (selectedJi === '子') {
+        // 간지 입력 子時: 다음날 일주, 朝子時 조견표
+        hourJi = '子';
+        hour = 23; // 23:30으로 설정하여 다음날 일주 계산
+        minute = 30;
+        timeType = 'zi_ganji'; // 간지 입력 子時 전용
+        console.log(
+          '→ 子時 (간지입력) 선택: hour=23, minute=30, timeType=zi_ganji'
         );
-      } else if (pPowyk0A === '子-夜') {
-        
-        LhAPDvMW = '子';
-        OpRKRS78 = 23;
-        SlhLaOPt = 30;
-        uWQIQ8RF = 'tZAu3V1m'; 
-        console.y6rEVaha('→ 夜子時 선택: OpRKRS78=23, SlhLaOPt=30, uWQIQ8RF=tZAu3V1m');
-      } else if (pPowyk0A === '子-朝') {
-        
-        LhAPDvMW = '子';
-        OpRKRS78 = 0;
-        SlhLaOPt = 30;
-        uWQIQ8RF = 'q7ha157S'; 
-        console.y6rEVaha('→ 朝子時 선택: OpRKRS78=0, SlhLaOPt=30, uWQIQ8RF=q7ha157S');
+      } else if (selectedJi === '子-夜') {
+        // 夜子時: 23:30~00:29 (당일 일주, 夜子時 조견표)
+        hourJi = '子';
+        hour = 23;
+        minute = 30;
+        timeType = 'night_zi'; // 야자시 타입
+        console.log('→ 夜子時 선택: hour=23, minute=30, timeType=night_zi');
+      } else if (selectedJi === '子-朝') {
+        // 朝子時: 00:30~01:29 (당일 일주, 朝子時 조견표)
+        hourJi = '子';
+        hour = 0;
+        minute = 30;
+        timeType = 'morning_zi'; // 조자시 타입
+        console.log('→ 朝子時 선택: hour=0, minute=30, timeType=morning_zi');
       } else {
-        LhAPDvMW = pPowyk0A;
-        OpRKRS78 = TBou5BjR(pPowyk0A);
-        SlhLaOPt = 30; 
-        uWQIQ8RF = 'ozdursNh'; 
-        console.y6rEVaha('→ 기타 지지 선택:', pPowyk0A, 'OpRKRS78=', OpRKRS78);
+        hourJi = selectedJi;
+        hour = getHourFromJiji(selectedJi);
+        minute = 30; // 각 시(時)의 시작 시간(XX:30)으로 설정
+        timeType = 'normal'; // 기본 타입
+        console.log('→ 기타 지지 선택:', selectedJi, 'hour=', hour);
       }
-      HHqlccL0 = true;
-      console.y6rEVaha('✅ HHqlccL0 = true 설정 완료');
+      hasHourInfo = true;
+      console.log('✅ hasHourInfo = true 설정 완료');
     } else {
-      console.y6rEVaha('❌ 지지가 선택되지 않음 또는 미상');
+      console.log('❌ 지지가 선택되지 않음 또는 미상');
     }
-  } else if (vQr70jdQ === 'RCkCoxxx') {
-    
-    const hVQ1gZsA = document.getElementById('OpRKRS78').value;
-    const lVUTP4HQ = document.getElementById('SlhLaOPt').value;
+  } else if (timeInputType === 'time') {
+    // 시각 직접 입력 모드
+    const hourInput = document.getElementById('hour').value;
+    const minuteInput = document.getElementById('minute').value;
 
-    if (hVQ1gZsA !== '') {
-      OpRKRS78 = Bf7AOdcQ(hVQ1gZsA);
-      SlhLaOPt = lVUTP4HQ ? Bf7AOdcQ(lVUTP4HQ) : 0;
+    if (hourInput !== '') {
+      hour = parseInt(hourInput);
+      minute = minuteInput ? parseInt(minuteInput) : 0;
 
-      if (OpRKRS78 < 0 || OpRKRS78 > 23 || SlhLaOPt < 0 || SlhLaOPt > 59) {
-        KBFRsWAP('시각은 0-23시, 분은 0-59분 사이로 입력해주세요.');
+      if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+        alert('시각은 0-23시, 분은 0-59분 사이로 입력해주세요.');
         return;
       }
 
-      HHqlccL0 = true;
-      
-      uWQIQ8RF = 'ozdursNh';
+      hasHourInfo = true;
+      // 시각 직접 입력은 항상 normal 타입
+      timeType = 'normal';
     }
   }
 
-  
-  if (!HHqlccL0) {
-    const xRp6asuF =
+  // 시각이 없어도 년월일만으로 분석 가능 (시주 제외)
+  if (!hasHourInfo) {
+    const confirmMsg =
       '출생시각 정보가 없습니다.\n시주(時柱) 분석은 제외되지만, 나머지 분석은 가능합니다.\n계속하시겠습니까?';
-    if (!TosVHBNX(xRp6asuF)) {
+    if (!confirm(confirmMsg)) {
       return;
     }
-    OpRKRS78 = 12; 
-    SlhLaOPt = 0;
-    uWQIQ8RF = 'ozdursNh';
+    hour = 12; // 기본값으로 정오 사용
+    minute = 0;
+    timeType = 'normal';
   }
 
-  
-  if (vQr70jdQ === 'RCkCoxxx' && HHqlccL0) {
-    const uYAN2BWV =
-      (OpRKRS78 == 23 && SlhLaOPt >= 30) || OpRKRS78 == 0 || (OpRKRS78 == 1 && SlhLaOPt <= 29);
-    if (uYAN2BWV && !uWQIQ8RF) {
-      
-      uWQIQ8RF = 'ozdursNh';
-    } else if (!uWQIQ8RF) {
-      uWQIQ8RF = 'ozdursNh';
+  // 시간 입력 방식에서도 子時 자동 판별
+  if (timeInputType === 'time' && hasHourInfo) {
+    const isZiTime =
+      (hour == 23 && minute >= 30) || hour == 0 || (hour == 1 && minute <= 29);
+    if (isZiTime && !timeType) {
+      // 시간 직접 입력 시 기본은 normal
+      timeType = 'normal';
+    } else if (!timeType) {
+      timeType = 'normal';
     }
   }
 
-  
-  
-  const Jx32cWFR = `${JDmw63NN}-${String(R6anAZXi).UoXO8407(2, '0')}-${String(WHjsqFVR).UoXO8407(2, '0')} ${String(OpRKRS78).UoXO8407(2, '0')}:${String(SlhLaOPt).UoXO8407(2, '0')}`;
+  // ===== Python API를 사용한 정확한 사주 계산 =====
+  // 날짜/시간 문자열 생성 (한 줄로 연결하여 압축 시 줄바꿈 문제 방지)
+  const birthDatetime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
 
-  console.y6rEVaha('📅 생성된 Jx32cWFR:', Jx32cWFR);
-  console.y6rEVaha('⏰ OpRKRS78:', OpRKRS78, 'SlhLaOPt:', SlhLaOPt);
-  console.y6rEVaha('🔧 uWQIQ8RF:', uWQIQ8RF);
+  console.log('📅 생성된 birthDatetime:', birthDatetime);
+  console.log('⏰ hour:', hour, 'minute:', minute);
+  console.log('🔧 timeType:', timeType);
 
-  
-  let mrNJ1iMK = 'YeA1tsQ2';
-  if (FXK32i95 === 'lZGMkcAM') {
-    mrNJ1iMK = n0wtlWMl ? 'IFo7KTBj' : 'lZGMkcAM';
+  // 역법 타입 결정
+  let calendarType = 'solar';
+  if (calendar === 'lunar') {
+    calendarType = isYundal ? 'leap' : 'lunar';
   }
 
-  console.y6rEVaha('📋 API 호출 파라미터:');
-  console.y6rEVaha('   G3Mz88Kf:', Jx32cWFR);
-  console.y6rEVaha('   DNRlLv48:', mrNJ1iMK);
-  console.y6rEVaha('   QMCGcXXO:', uWQIQ8RF);
+  console.log('📋 API 호출 파라미터:');
+  console.log('   birth_datetime:', birthDatetime);
+  console.log('   calendar_type:', calendarType);
+  console.log('   time_type:', timeType);
 
-  
-  SajuAPI.RtCdkRlB(Jx32cWFR, mrNJ1iMK, uWQIQ8RF)
-    .then((DRWCfraG) => {
-      console.y6rEVaha('Python API 사주 결과:', DRWCfraG);
-      console.y6rEVaha('시간 타입:', uWQIQ8RF);
+  // Python API 호출하여 정확한 사주 계산 (timeType 포함)
+  SajuAPI.calcSaju(birthDatetime, calendarType, timeType)
+    .then((apiResult) => {
+      console.log('Python API 사주 결과:', apiResult);
+      console.log('시간 타입:', timeType);
 
-      
-      const zbSC5D52 = DRWCfraG.JDmw63NN[0]; 
-      const JsFzAGqt = DRWCfraG.JDmw63NN[1]; 
-      const wS6vWzVv = DRWCfraG.R6anAZXi[0]; 
-      const Apdnwkpa = DRWCfraG.R6anAZXi[1]; 
-      const sbJPsyHj = DRWCfraG.WHjsqFVR[0]; 
-      const gtHUb49J = DRWCfraG.WHjsqFVR[1]; 
-      const Lu3VfIkW = HHqlccL0 ? DRWCfraG.OpRKRS78[0] : null; 
-      const LhAPDvMW = HHqlccL0 ? DRWCfraG.OpRKRS78[1] : null; 
+      // API 결과에서 사주 기둥 추출
+      const yearGan = apiResult.year[0]; // 년간
+      const yearJi = apiResult.year[1]; // 년지
+      const monthGan = apiResult.month[0]; // 월간
+      const monthJi = apiResult.month[1]; // 월지
+      const dayGan = apiResult.day[0]; // 일간
+      const dayJi = apiResult.day[1]; // 일지
+      const hourGan = hasHourInfo ? apiResult.hour[0] : null; // 시간
+      const hourJi = hasHourInfo ? apiResult.hour[1] : null; // 시지
 
-      
-      const IARM5XT1 = {
-        iUd3UmGA: iUd3UmGA,
-        BaUBUMBK: BaUBUMBK,
-        FXK32i95: FXK32i95,
-        n0wtlWMl: n0wtlWMl,
-        HHqlccL0: HHqlccL0,
-        fdTkyYLX: {
-          JDmw63NN,
-          R6anAZXi,
-          WHjsqFVR,
-          OpRKRS78: HHqlccL0 ? OpRKRS78 : null,
-          SlhLaOPt: HHqlccL0 ? SlhLaOPt : null,
+      // 사주 객체 생성
+      const saju = {
+        name: name,
+        gender: gender,
+        calendar: calendar,
+        isYundal: isYundal,
+        hasHourInfo: hasHourInfo,
+        birthDate: {
+          year,
+          month,
+          day,
+          hour: hasHourInfo ? hour : null,
+          minute: hasHourInfo ? minute : null,
         },
-        OKohROdq: {
-          JDmw63NN: zbSC5D52,
-          R6anAZXi: wS6vWzVv,
-          WHjsqFVR: sbJPsyHj,
-          OpRKRS78: Lu3VfIkW,
+        cheongan: {
+          year: yearGan,
+          month: monthGan,
+          day: dayGan,
+          hour: hourGan,
         },
-        xC2iOrJy: { JDmw63NN: JsFzAGqt, R6anAZXi: Apdnwkpa, WHjsqFVR: gtHUb49J, OpRKRS78: LhAPDvMW },
-        lZGMkcAM: DRWCfraG.lZGMkcAM || '', 
-        zvmHrYyJ: DRWCfraG.JVGARymL || '', 
-        vMe72aE8: DRWCfraG.wCfRki1r || {}, 
+        jiji: { year: yearJi, month: monthJi, day: dayJi, hour: hourJi },
+        lunar: apiResult.lunar || '', // 음력 정보
+        solarConverted: apiResult.solar_converted || '', // 양력 변환 정보 (음력 입력 시)
+        apiInfo: apiResult.info || {}, // API 상세 정보
       };
 
+      // 성능 최적화: 단계별 계산 (의존성 고려)
+      // 1단계: strength 계산 (gyeokguk, yongsin에 필요)
+      const strength = analyzeSajuStrength(dayGan, saju);
       
+      // 2단계: gyeokguk 계산 (yongsin에 필요)
+      const gyeokguk = analyzeGyeokguk(dayGan, saju, strength);
       
-      const NsULsoxW = w5tqsg2V(sbJPsyHj, IARM5XT1);
+      // 3단계: yongsin 계산 (strength, gyeokguk 필요)
+      const yongsin = analyzeYongsin(dayGan, saju, strength, gyeokguk);
       
+      // 성능 최적화: 클라이언트 측 분석을 즉시 실행 (서버 응답 대기 불필요)
+      const elements = analyzeElements(saju);
+      const yinyang = analyzeYinYang(saju);
+      const sipseongResult = analyzeSipseong(dayGan, saju);
+      const sibiun = analyzeSibiun(dayGan, saju);
+      const yukchin = analyzeYukchin(dayGan, saju, gender);
+      const hap = analyzeHap(saju);
+      const hyungchung = analyzeHyungChung(saju);
+      const sinsal = analyzeSinsal(saju, yearGan, dayGan);
       
-      const ViZhPUuo = O0RTx5R3(sbJPsyHj, IARM5XT1, NsULsoxW);
+      const sipseong = sipseongResult.counts; // 5가지 통합
+      const sipseongDetailed = sipseongResult.detailedCounts; // 10가지 세분화
       
+      // 신살 분석 함수들도 즉시 실행
+      const hyungchungEnhanced = window.SajuSinsalExtended.analyzeHyungChungEnhanced(saju);
+      const sibiSinsal = window.SajuSinsalExtended.analyzeSibiSinsal(saju);
+      const gilsin = window.SajuSinsalExtended.analyzeGilsin(saju, dayGan);
+      const extraSinsal = window.SajuSinsalExtended.analyzeExtraSinsal(saju, dayGan);
       
-      const FF16bkkO = i5giQTSY(sbJPsyHj, IARM5XT1, NsULsoxW, ViZhPUuo);
+      // 세운 계산도 즉시 실행 (서버 응답 불필요)
+      const sewun = calculateSewun();
       
+      // 성능 최적화: 결과 섹션을 먼저 표시하여 사용자가 즉시 피드백을 받을 수 있도록 함
+      document.getElementById('result-section').classList.remove('hidden');
       
-      const v4cOtYWg = aqIbmDLE(IARM5XT1);
-      const GD0C200Y = P6v6ZU82(IARM5XT1);
-      const siiHkwr7 = nztyoBr4(sbJPsyHj, IARM5XT1);
-      const HJHbKqPP = tQtZasQQ(sbJPsyHj, IARM5XT1);
-      const GWnGpJOC = Ae7rqdq9(sbJPsyHj, IARM5XT1, BaUBUMBK);
-      const P1aBAGa7 = VhtgsctZ(IARM5XT1);
-      const RD5u18Ss = AhL7YnRI(IARM5XT1);
-      const bfgQkUBn = qj6XM9Ak(IARM5XT1, zbSC5D52, sbJPsyHj);
-      
-      const Xql2wKFL = siiHkwr7.PZ1VNVi2; 
-      const pMihX3rx = siiHkwr7.aT4KL4Lf; 
-      
-      
-      const C9h0Qd1V = window.SajuSinsalExtended.wwcBxub1(IARM5XT1);
-      const uRkeWWcQ = window.SajuSinsalExtended.Ohq92RNP(IARM5XT1);
-      const Hic5DRbS = window.SajuSinsalExtended.FP68n4FX(IARM5XT1, sbJPsyHj);
-      const n3sjfcAe = window.SajuSinsalExtended.skixdFah(IARM5XT1, sbJPsyHj);
-      
-      
-      const ind6vw1a = Dv7iEjiw();
-      
-      
-      document.getElementById('VA4Oh068-UMD95U9o').classList.HieU5JXm('VESlKZAh');
-      
-      
-      const NwebDb9Q = document.getElementById('NwebDb9Q');
-      if (NwebDb9Q) {
-        NwebDb9Q.classList.HieU5JXm('VESlKZAh');
+      // resultWrap 섹션도 표시 (사주팔자 보기 클릭 시)
+      const resultWrap = document.getElementById('resultWrap');
+      if (resultWrap) {
+        resultWrap.classList.remove('hidden');
       }
       
+      // 화면에 표시 (기존 로직 유지)
+      displayUserInfo(saju, '');
       
-      k2421NQf(IARM5XT1, '');
-      
-      
-      szajxNz4(
-        IARM5XT1,
-        HJHbKqPP,
-        zbSC5D52,
-        JsFzAGqt,
-        sbJPsyHj,
-        P1aBAGa7,
-        RD5u18Ss,
-        bfgQkUBn,
-        C9h0Qd1V,
-        uRkeWWcQ,
-        Hic5DRbS,
-        n3sjfcAe
+      // 클라이언트 측 계산 결과를 즉시 화면에 표시 (서버 응답 대기 불필요)
+      displayBasicSaju(
+        saju,
+        sibiun,
+        yearGan,
+        yearJi,
+        dayGan,
+        hap,
+        hyungchung,
+        sinsal,
+        hyungchungEnhanced,
+        sibiSinsal,
+        gilsin,
+        extraSinsal
       );
       
-      
-      DGMIK33D(sbJPsyHj);
-      HLIivYHQ(NsULsoxW);
-      q3cw9QzA(ViZhPUuo);
-      cpFZpUTr(FF16bkkO);
-      lVipUb4s(v4cOtYWg);
-      Aqfyfw9a(GD0C200Y);
-      OFdwK3Vh(IARM5XT1);
-      wHclOR2H(Xql2wKFL, pMihX3rx);
-      AS7ZnBp7(HJHbKqPP);
-      bgHgGeEa(GWnGpJOC);
-      mhsAJNTb(P1aBAGa7);
-      BYe2TkBW(C9h0Qd1V);
-      vo02EDZR(bfgQkUBn);
-      y5sCBWRP(IARM5XT1, zbSC5D52, JsFzAGqt);
-      vNlhjt5o(bfgQkUBn);
-      aHFvl1H4(uRkeWWcQ);
-      P1K9xuky(Hic5DRbS);
-      jpM18VG2(n3sjfcAe);
-      dDK96k8L(ind6vw1a, sbJPsyHj);
-      jabfQxqL(
-        IARM5XT1,
-        sbJPsyHj,
-        NsULsoxW,
-        ViZhPUuo,
-        FF16bkkO,
-        v4cOtYWg,
-        HJHbKqPP
+      // 기본 정보 표시 (즉시)
+      displayDayMaster(dayGan);
+      displayStrength(strength);
+      displayGyeokguk(gyeokguk);
+      displayYongsin(yongsin);
+      displayElements(elements);
+      displayYinYang(yinyang);
+      displayJijanggan(saju);
+      displaySipseong(sipseong, sipseongDetailed);
+      displaySibiunDetail(sibiun);
+      displayYukchin(yukchin);
+      displayHap(hap);
+      displayHyungChungEnhanced(hyungchungEnhanced);
+      displaySinsal(sinsal);
+      displayGongmangDetail(saju, yearGan, yearJi);
+      displaySpecialSinsal(sinsal);
+      displaySibiSinsal(sibiSinsal);
+      displayGilsin(gilsin);
+      displayExtraSinsal(extraSinsal);
+      displaySewun(sewun, dayGan);
+      displayComprehensive(
+        saju,
+        dayGan,
+        strength,
+        gyeokguk,
+        yongsin,
+        elements,
+        sibiun
       );
-      tUl47vZj(FF16bkkO, NsULsoxW);
+      displayGaewun(yongsin, strength);
       
-      
-      let UBEy5N65 = Jx32cWFR;
-      if (mrNJ1iMK !== 'YeA1tsQ2' && DRWCfraG.wCfRki1r && DRWCfraG.wCfRki1r.IF5qbaz0) {
-        UBEy5N65 = DRWCfraG.wCfRki1r.IF5qbaz0;
-        console.y6rEVaha(
+      // 대운 계산용 날짜: 음력 입력 시 양력으로 변환된 날짜 사용
+      let daeuBirthDatetime = birthDatetime;
+      if (calendarType !== 'solar' && apiResult.info && apiResult.info.birth) {
+        daeuBirthDatetime = apiResult.info.birth;
+        console.log(
           '🔄 대운 계산: 음력→양력 변환된 날짜 사용:',
-          UBEy5N65
+          daeuBirthDatetime
         );
       } else {
-        console.y6rEVaha('✅ 대운 계산: 양력 날짜 그대로 사용:', UBEy5N65);
+        console.log('✅ 대운 계산: 양력 날짜 그대로 사용:', daeuBirthDatetime);
       }
 
-      
-      const osjICI1j = new Date();
-      const yJOfU3la = osjICI1j.mNXky9sG();
-      const vUtEoU5Z = 110;
+      // 성능 최적화: 서버 측 API 호출들을 병렬로 실행 (클라이언트 측 표시와 독립적)
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const yearRange = 110;
 
-      
-      Promise.HAxC9Bg6([
-        
-        SajuAPI.EM8Cr3dO(
-          UBEy5N65,
-          BaUBUMBK,
-          wS6vWzVv,
-          Apdnwkpa,
-          'YeA1tsQ2' 
+      // 서버 측 API 호출들을 병렬로 실행
+      Promise.allSettled([
+        // 대운 계산
+        SajuAPI.calcDaeun(
+          daeuBirthDatetime,
+          gender,
+          monthGan,
+          monthJi,
+          'solar' // 이미 양력으로 변환된 날짜이므로 solar로 전달
         ),
+        // 연운 계산
+        SajuAPI.calcYeonun(year, year + 55, yearRange),
+        // 월운 계산
+        SajuAPI.calcWolun(currentYear)
+      ]).then((serverResults) => {
+        // 서버 API 결과 처리
+        const [daeunResult, yeonunResult, wolunResult] = serverResults;
         
-        SajuAPI.I9TIS3PA(JDmw63NN, JDmw63NN + 55, vUtEoU5Z),
-        
-        SajuAPI.oCxUFbtv(yJOfU3la)
-      ]).then((V7bwvnrj) => {
-        
-        const [xeyP9pia, d7VUSg5M, vFEXijQh] = V7bwvnrj;
-        
-        
-        if (xeyP9pia.p3yZzmgK === 'uReMlg0K') {
-          console.nyrsOJgt('대운 계산 오류:', xeyP9pia.rndRc9OI);
+        // 에러 처리 및 로깅
+        if (daeunResult.status === 'rejected') {
+          console.error('대운 계산 오류:', daeunResult.reason);
         }
-        if (d7VUSg5M.p3yZzmgK === 'uReMlg0K') {
-          console.nyrsOJgt('연운 계산 오류:', d7VUSg5M.rndRc9OI);
+        if (yeonunResult.status === 'rejected') {
+          console.error('연운 계산 오류:', yeonunResult.reason);
         }
-        if (vFEXijQh.p3yZzmgK === 'uReMlg0K') {
-          console.nyrsOJgt('월운 계산 오류:', vFEXijQh.rndRc9OI);
+        if (wolunResult.status === 'rejected') {
+          console.error('월운 계산 오류:', wolunResult.reason);
         }
         
+        // 성공한 결과 추출 (실패한 경우 빈 배열 사용)
+        const daeun = daeunResult.status === 'fulfilled' ? daeunResult.value : [];
+        const yeonun = yeonunResult.status === 'fulfilled' ? yeonunResult.value : [];
+        const wolun = wolunResult.status === 'fulfilled' ? wolunResult.value : [];
         
-        const cLJ0WBlw = xeyP9pia.p3yZzmgK === 'ZsCOS67r' ? xeyP9pia.value : [];
-        const AFbeYj5G = d7VUSg5M.p3yZzmgK === 'ZsCOS67r' ? d7VUSg5M.value : [];
-        const qOoeDImX = vFEXijQh.p3yZzmgK === 'ZsCOS67r' ? vFEXijQh.value : [];
+        // 전역 변수에 저장 (보내기 기능에서 사용)
+        window.lastYeonunResult = yeonun;
+        console.log('✅ 전역 변수에 년운 데이터 저장:', yeonun.length, '개');
         
-        
-        window.Yra349HI = AFbeYj5G;
-        console.y6rEVaha('✅ 전역 변수에 년운 데이터 저장:', AFbeYj5G.DFImMboA, '개');
-        
-        console.y6rEVaha('Python API 대운 결과:', cLJ0WBlw);
-        console.y6rEVaha('Python API 연운 결과:', AFbeYj5G);
-        console.y6rEVaha('Python API 월운 결과:', qOoeDImX);
-        console.y6rEVaha('월운 데이터 타입:', typeof qOoeDImX);
-        if (qOoeDImX && qOoeDImX.DFImMboA > 0) {
-          console.y6rEVaha(
-            '첫 번째 월운 SO6J6eCT:',
-            qOoeDImX[0].SO6J6eCT,
-            'QhVtN1D7:',
-            qOoeDImX[0].QhVtN1D7
+        console.log('Python API 대운 결과:', daeun);
+        console.log('Python API 연운 결과:', yeonun);
+        console.log('Python API 월운 결과:', wolun);
+        console.log('월운 데이터 타입:', typeof wolun);
+        if (wolun && wolun.length > 0) {
+          console.log(
+            '첫 번째 월운 gan:',
+            wolun[0].gan,
+            'zhi:',
+            wolun[0].zhi
           );
         }
 
         
-        
-        ackr4kMh(cLJ0WBlw, sbJPsyHj, IARM5XT1.fdTkyYLX.JDmw63NN);
+        // 서버 API 결과를 받으면 대운/연운/월운만 표시 (나머지는 이미 표시됨)
+        displayDaeun(daeun, dayGan, saju.birthDate.year);
 
-        
-        const B9hJEm0G = document.querySelector('.AFbeYj5G-kKYCBUrG');
-        const PPb2MQAF = document.getElementById('qOoeDImX-kKYCBUrG');
-        if (B9hJEm0G) B9hJEm0G.HieU5JXm();
-        if (PPb2MQAF) PPb2MQAF.HieU5JXm();
+        // 기존 연운/월운 제거 (중복 방지)
+        const existingYeonun = document.querySelector('.yeonun-container');
+        const existingWolun = document.getElementById('wolun-container');
+        if (existingYeonun) existingYeonun.remove();
+        if (existingWolun) existingWolun.remove();
 
-        
-        const YKVeF06u = eziNSggj(AFbeYj5G);
-        const GeZBoOq7 = sj8Rpza2(qOoeDImX);
+        // 연운과 월운 추가
+        const yeonunHTML = displayYeonun(yeonun);
+        const wolunHTML = displayWolun(wolun);
         document
-          .getElementById('cLJ0WBlw-YPPVqfLO')
-          .ebSh5K7T('mBroIFAb', YKVeF06u + GeZBoOq7);
+          .getElementById('daeun-summary')
+          .insertAdjacentHTML('afterend', yeonunHTML + wolunHTML);
 
-        
-        pTMMyOWH(IARM5XT1.fdTkyYLX.JDmw63NN, cLJ0WBlw);
+        // 자동 트리거: 대운 → 연운 → 월운
+        autoTriggerDaeun(saju.birthDate.year, daeun);
       });
     })
-    .catch((nyrsOJgt) => {
-      console.nyrsOJgt('사주 계산 오류:', nyrsOJgt);
-      let yJVyY96W = '사주 계산 중 오류가 발생했습니다.\n\n';
+    .catch((error) => {
+      console.error('사주 계산 오류:', error);
+      let errorMessage = '사주 계산 중 오류가 발생했습니다.\n\n';
       
-      if (nyrsOJgt.DBaI248J.CDE6p5g0('시간 초과') || nyrsOJgt.DBaI248J.CDE6p5g0('bdJwOHcu') || nyrsOJgt.DBaI248J.CDE6p5g0('TIMED_OUT')) {
-        yJVyY96W += '⏰ 서버 응답 시간 초과\n\n';
-        yJVyY96W += '서버가 응답하는 데 시간이 너무 오래 걸렸습니다.\n';
-        yJVyY96W += '다음을 확인해주세요:\n';
-        yJVyY96W += '1. 서버가 정상적으로 실행 중인지\n';
-        yJVyY96W += '2. 네트워크 연결 상태\n';
-        yJVyY96W += '3. 잠시 후 다시 시도\n\n';
-      } else if (nyrsOJgt.DBaI248J.CDE6p5g0('Failed to fetch') || nyrsOJgt.DBaI248J.CDE6p5g0('네트워크')) {
-        yJVyY96W += '🌐 네트워크 오류\n\n';
-        yJVyY96W += '서버에 연결할 수 없습니다.\n';
-        yJVyY96W += 'Flask 서버가 실행 중인지 확인해주세요.\n\n';
+      if (error.message.includes('시간 초과') || error.message.includes('timeout') || error.message.includes('TIMED_OUT')) {
+        errorMessage += '⏰ 서버 응답 시간 초과\n\n';
+        errorMessage += '서버가 응답하는 데 시간이 너무 오래 걸렸습니다.\n';
+        errorMessage += '다음을 확인해주세요:\n';
+        errorMessage += '1. 서버가 정상적으로 실행 중인지\n';
+        errorMessage += '2. 네트워크 연결 상태\n';
+        errorMessage += '3. 잠시 후 다시 시도\n\n';
+      } else if (error.message.includes('Failed to fetch') || error.message.includes('네트워크')) {
+        errorMessage += '🌐 네트워크 오류\n\n';
+        errorMessage += '서버에 연결할 수 없습니다.\n';
+        errorMessage += 'Flask 서버가 실행 중인지 확인해주세요.\n\n';
       } else {
-        yJVyY96W += '오류 내용: ' + nyrsOJgt.DBaI248J + '\n\n';
-        yJVyY96W += 'Flask 서버가 실행 중인지 확인해주세요.';
+        errorMessage += '오류 내용: ' + error.message + '\n\n';
+        errorMessage += 'Flask 서버가 실행 중인지 확인해주세요.';
       }
       
-      KBFRsWAP(yJVyY96W);
+      alert(errorMessage);
     });
 }
 
+// ===== Display 함수들 =====
 
+// 사용자 정보 표시 (양력/음력 모두 표시)
+function displayUserInfo(saju, calendarWarning) {
+  const genderText = saju.gender === 'male' ? '남자 (乾命)' : '여자 (坤命)';
 
-
-function k2421NQf(IARM5XT1, YJJUdBJJ) {
-  const e6OysDQR = IARM5XT1.BaUBUMBK === 'GnyebNel' ? '남자 (乾命)' : '여자 (坤命)';
-
-  
-  const wpFJN1Mx =
-    IARM5XT1.FXK32i95 === 'YeA1tsQ2'
+  // 입력한 역법 정보
+  const inputCalendarText =
+    saju.calendar === 'solar'
       ? '양력 (陽曆)'
-      : `음력 (陰曆)${IARM5XT1.n0wtlWMl ? ' - 윤달' : ''}`;
-  const wkRthVG3 = `${IARM5XT1.fdTkyYLX.JDmw63NN}년 ${IARM5XT1.fdTkyYLX.R6anAZXi}월 ${IARM5XT1.fdTkyYLX.WHjsqFVR}일`;
+      : `음력 (陰曆)${saju.isYundal ? ' - 윤달' : ''}`;
+  const inputBirthDateText = `${saju.birthDate.year}년 ${saju.birthDate.month}월 ${saju.birthDate.day}일`;
 
-  
-  let VspRceKt = '';
-  let H9E5feN7 = '';
+  // 음력 정보 (API에서 반환된 lunar 정보 사용)
+  let lunarInfoText = '';
+  let solarInfoText = '';
 
-  if (IARM5XT1.FXK32i95 === 'YeA1tsQ2') {
-    
-    if (IARM5XT1.lZGMkcAM) {
-      VspRceKt = IARM5XT1.lZGMkcAM;
+  if (saju.calendar === 'solar') {
+    // 양력 입력 → lunar에 음력 정보가 있음
+    if (saju.lunar) {
+      lunarInfoText = saju.lunar;
     }
   } else {
-    
-    if (IARM5XT1.zvmHrYyJ) {
-      H9E5feN7 = IARM5XT1.zvmHrYyJ;
+    // 음력 입력 → solarConverted에 양력 정보가 있음
+    if (saju.solarConverted) {
+      solarInfoText = saju.solarConverted;
     }
   }
 
-  const dVCImOdW = IARM5XT1.HHqlccL0
-    ? IARM5XT1.fdTkyYLX.OpRKRS78 !== null
-      ? `${IARM5XT1.fdTkyYLX.OpRKRS78}시 ${
-          IARM5XT1.fdTkyYLX.SlhLaOPt !== null ? IARM5XT1.fdTkyYLX.SlhLaOPt + '분' : ''
+  const hourText = saju.hasHourInfo
+    ? saju.birthDate.hour !== null
+      ? `${saju.birthDate.hour}시 ${
+          saju.birthDate.minute !== null ? saju.birthDate.minute + '분' : ''
         }`
-      : `${IARM5XT1.xC2iOrJy.OpRKRS78}시`
+      : `${saju.jiji.hour}시`
     : '시각 미상';
 
-  
-  const qd3vUCSS = new Date();
-  const yJOfU3la = qd3vUCSS.mNXky9sG();
+  // 나이 계산 (세는 나이 - 한국식)
+  const today = new Date();
+  const currentYear = today.getFullYear();
 
-  
-  let KRSUWR7g = yJOfU3la - IARM5XT1.fdTkyYLX.JDmw63NN + 1;
+  // 세는 나이 = 현재 연도 - 출생 연도 + 1
+  let age = currentYear - saju.birthDate.year + 1;
 
-  
-  const dIwb1xkh = document.getElementById('VA4Oh068-UMD95U9o');
+  // 결과 섹션
+  const resultSection = document.getElementById('result-section');
 
-  
-  const nSBtdaSN = document.getElementById('F9nwGKWH-wCfRki1r-erwK6stq');
-  if (nSBtdaSN) {
-    nSBtdaSN.HieU5JXm();
+  // 기존 정보 div가 있다면 제거
+  const existingInfo = document.getElementById('user-info-display');
+  if (existingInfo) {
+    existingInfo.remove();
   }
 
-  let KHJINZhO = '';
-  if (YJJUdBJJ) {
-    KHJINZhO = `
-            <qZojOiNG style="agSaZYEV:#Ahb2NSUV;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-bGrBuWte:15px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #AovKXqH1;">
-                <p style="HkF8konD:#MM7KdyOo;MSF8VRSk-l3dSJNbg:700;MW0RkjO2:0;">${YJJUdBJJ}</p>
-            </qZojOiNG>
+  let warningHTML = '';
+  if (calendarWarning) {
+    warningHTML = `
+            <div style="background:#ffebee;padding:15px;border-radius:10px;margin-top:15px;border-left:4px solid #f44336;">
+                <p style="color:#c62828;font-weight:700;margin:0;">${calendarWarning}</p>
+            </div>
         `;
   }
 
-  let XexgKhRq = '';
-  if (!IARM5XT1.HHqlccL0) {
-    XexgKhRq = `
-            <qZojOiNG style="agSaZYEV:#LEtIwwjC;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-bGrBuWte:15px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #2196F3;">
-                <p style="HkF8konD:#1565c0;MSF8VRSk-l3dSJNbg:700;MW0RkjO2:0;">ℹ️ 출생시각 정보가 없어 시주(時柱) 분석은 제외되었습니다.</p>
-            </qZojOiNG>
+  let hourWarningHTML = '';
+  if (!saju.hasHourInfo) {
+    hourWarningHTML = `
+            <div style="background:#e3f2fd;padding:15px;border-radius:10px;margin-top:15px;border-left:4px solid #2196F3;">
+                <p style="color:#1565c0;font-weight:700;margin:0;">ℹ️ 출생시각 정보가 없어 시주(時柱) 분석은 제외되었습니다.</p>
+            </div>
         `;
   }
 
-  
-  let qllc3jjT = '';
-  if (IARM5XT1.FXK32i95 === 'YeA1tsQ2') {
-    
-    qllc3jjT = `
-            <qZojOiNG style="agSaZYEV:EP7RnItk;Xse8owrK:12px;mq0x0xuF-dQJ4zoC8:10px;x5EMmYXR-Q0MMuhrN:0 2px 8px wj5MkFlR(0,0,0,0.1);">
-                <qZojOiNG style="HkF8konD:#6c757d;MSF8VRSk-QFYeY4ME:0.85em;MW0RkjO2-USwWzAgn:4px;">陽曆 (입력)</qZojOiNG>
-                <qZojOiNG style="MSF8VRSk-l3dSJNbg:700;MSF8VRSk-QFYeY4ME:1em;HkF8konD:#2a5298;">${wkRthVG3}</qZojOiNG>
-            </qZojOiNG>
+  // 양력/음력 모두 표시
+  let calendarInfoHTML = '';
+  if (saju.calendar === 'solar') {
+    // 양력 입력 시 → 양력 표시 + 음력 변환 표시
+    calendarInfoHTML = `
+            <div style="background:white;padding:12px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                <div style="color:#6c757d;font-size:0.85em;margin-bottom:4px;">陽曆 (입력)</div>
+                <div style="font-weight:700;font-size:1em;color:#2a5298;">${inputBirthDateText}</div>
+            </div>
             ${
-              VspRceKt
+              lunarInfoText
                 ? `
-            <qZojOiNG style="agSaZYEV:EP7RnItk;Xse8owrK:12px;mq0x0xuF-dQJ4zoC8:10px;x5EMmYXR-Q0MMuhrN:0 2px 8px wj5MkFlR(0,0,0,0.1);">
-                <qZojOiNG style="HkF8konD:#6c757d;MSF8VRSk-QFYeY4ME:0.85em;MW0RkjO2-USwWzAgn:4px;">陰曆 (변환)</qZojOiNG>
-                <qZojOiNG style="MSF8VRSk-l3dSJNbg:700;MSF8VRSk-QFYeY4ME:1em;HkF8konD:#2a5298;">${VspRceKt}</qZojOiNG>
-            </qZojOiNG>`
+            <div style="background:white;padding:12px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                <div style="color:#6c757d;font-size:0.85em;margin-bottom:4px;">陰曆 (변환)</div>
+                <div style="font-weight:700;font-size:1em;color:#2a5298;">${lunarInfoText}</div>
+            </div>`
                 : ''
             }
         `;
   } else {
-    
-    qllc3jjT = `
-            <qZojOiNG style="agSaZYEV:EP7RnItk;Xse8owrK:12px;mq0x0xuF-dQJ4zoC8:10px;x5EMmYXR-Q0MMuhrN:0 2px 8px wj5MkFlR(0,0,0,0.1);">
-                <qZojOiNG style="HkF8konD:#6c757d;MSF8VRSk-QFYeY4ME:0.85em;MW0RkjO2-USwWzAgn:4px;">陰曆 (입력)</qZojOiNG>
-                <qZojOiNG style="MSF8VRSk-l3dSJNbg:700;MSF8VRSk-QFYeY4ME:1em;HkF8konD:#2a5298;">${wkRthVG3}${
-      IARM5XT1.n0wtlWMl ? ' 윤달' : ''
-    }</qZojOiNG>
-            </qZojOiNG>
+    // 음력 입력 시 → 음력 표시 + 양력 변환 표시
+    calendarInfoHTML = `
+            <div style="background:white;padding:12px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                <div style="color:#6c757d;font-size:0.85em;margin-bottom:4px;">陰曆 (입력)</div>
+                <div style="font-weight:700;font-size:1em;color:#2a5298;">${inputBirthDateText}${
+      saju.isYundal ? ' 윤달' : ''
+    }</div>
+            </div>
             ${
-              H9E5feN7
+              solarInfoText
                 ? `
-            <qZojOiNG style="agSaZYEV:EP7RnItk;Xse8owrK:12px;mq0x0xuF-dQJ4zoC8:10px;x5EMmYXR-Q0MMuhrN:0 2px 8px wj5MkFlR(0,0,0,0.1);">
-                <qZojOiNG style="HkF8konD:#6c757d;MSF8VRSk-QFYeY4ME:0.85em;MW0RkjO2-USwWzAgn:4px;">陽曆 (변환)</qZojOiNG>
-                <qZojOiNG style="MSF8VRSk-l3dSJNbg:700;MSF8VRSk-QFYeY4ME:1em;HkF8konD:#2a5298;">${H9E5feN7}</qZojOiNG>
-            </qZojOiNG>`
+            <div style="background:white;padding:12px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                <div style="color:#6c757d;font-size:0.85em;margin-bottom:4px;">陽曆 (변환)</div>
+                <div style="font-weight:700;font-size:1em;color:#2a5298;">${solarInfoText}</div>
+            </div>`
                 : ''
             }
         `;
   }
 
-  const VFbWLSKj = `
-        <qZojOiNG id="F9nwGKWH-wCfRki1r-erwK6stq" style="agSaZYEV:DL3nDv9L-xEXyiNb2(135deg,#itWTqpR7 0%,#i5lebKuz 100%);Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:15px;MW0RkjO2-USwWzAgn:30px;mq0x0xuF:3px oyABhJdC #ceJOQRsD;x5EMmYXR-Q0MMuhrN:0 8px 25px wj5MkFlR(255,193,7,0.3);al7LEXd1-lDH6PZpH:900px;MW0RkjO2-dy0UJ5N0:guXSQNFx;MW0RkjO2-L7L20aOS:guXSQNFx;">
-            <qZojOiNG style="UJyWhVPr-ib1rwzJf:POHNCWPm;">
-                <h3 style="MSF8VRSk-QFYeY4ME:1.8em;HkF8konD:#pfTrYmld;MW0RkjO2-USwWzAgn:12px;MSF8VRSk-l3dSJNbg:900;">${IARM5XT1.iUd3UmGA} (${KRSUWR7g}세)</h3>
-                <qZojOiNG style="erwK6stq:pyQ38Qr0;pyQ38Qr0-Zkrwt17g-oyIXfG5W:L6QRsK7q(guXSQNFx-x8a04qfK,PvtNS36h(180px,1fr));KZQyUHjD:12px;MW0RkjO2-bGrBuWte:15px;">
-                    <qZojOiNG style="agSaZYEV:EP7RnItk;Xse8owrK:12px;mq0x0xuF-dQJ4zoC8:10px;x5EMmYXR-Q0MMuhrN:0 2px 8px wj5MkFlR(0,0,0,0.1);">
-                        <qZojOiNG style="HkF8konD:#6c757d;MSF8VRSk-QFYeY4ME:0.85em;MW0RkjO2-USwWzAgn:4px;">性別</qZojOiNG>
-                        <qZojOiNG style="MSF8VRSk-l3dSJNbg:700;MSF8VRSk-QFYeY4ME:1em;HkF8konD:#2a5298;">${e6OysDQR}</qZojOiNG>
-                    </qZojOiNG>
-                    ${qllc3jjT}
-                    <qZojOiNG style="agSaZYEV:EP7RnItk;Xse8owrK:12px;mq0x0xuF-dQJ4zoC8:10px;x5EMmYXR-Q0MMuhrN:0 2px 8px wj5MkFlR(0,0,0,0.1);">
-                        <qZojOiNG style="HkF8konD:#6c757d;MSF8VRSk-QFYeY4ME:0.85em;MW0RkjO2-USwWzAgn:4px;">出生時刻</qZojOiNG>
-                        <qZojOiNG style="MSF8VRSk-l3dSJNbg:700;MSF8VRSk-QFYeY4ME:1em;HkF8konD:#2a5298;">${dVCImOdW}</qZojOiNG>
-                    </qZojOiNG>
-                </qZojOiNG>
-            </qZojOiNG>
-            ${KHJINZhO}
-            ${XexgKhRq}
-        </qZojOiNG>
+  const infoHTML = `
+        <div id="user-info-display" style="background:linear-gradient(135deg,#fff9e6 0%,#fff3cd 100%);padding:20px;border-radius:15px;margin-bottom:30px;border:3px solid #ffc107;box-shadow:0 8px 25px rgba(255,193,7,0.3);max-width:900px;margin-left:auto;margin-right:auto;">
+            <div style="text-align:center;">
+                <h3 style="font-size:1.8em;color:#f57c00;margin-bottom:12px;font-weight:900;">${saju.name} (${age}세)</h3>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:15px;">
+                    <div style="background:white;padding:12px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                        <div style="color:#6c757d;font-size:0.85em;margin-bottom:4px;">性別</div>
+                        <div style="font-weight:700;font-size:1em;color:#2a5298;">${genderText}</div>
+                    </div>
+                    ${calendarInfoHTML}
+                    <div style="background:white;padding:12px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                        <div style="color:#6c757d;font-size:0.85em;margin-bottom:4px;">出生時刻</div>
+                        <div style="font-weight:700;font-size:1em;color:#2a5298;">${hourText}</div>
+                    </div>
+                </div>
+            </div>
+            ${warningHTML}
+            ${hourWarningHTML}
+        </div>
     `;
 
-  
-  dIwb1xkh.ebSh5K7T('Yb2Mry9w', VFbWLSKj);
+  // 맨 앞에 HTML 삽입
+  resultSection.insertAdjacentHTML('afterbegin', infoHTML);
 }
 
-function v24qW6mO(z3waZHsf) {
-  const Sq4eP5Ja = { 木: 'nF1Hn7fg', 火: 'T2TV45NB', 土: 'IbOQ5SAg', 金: 'sWPIEpks', 水: 'Ei9NcxqI' };
-  return Sq4eP5Ja[z3waZHsf] || '';
+function getElementClass(element) {
+  const map = { 木: 'wood', 火: 'fire', 土: 'earth', 金: 'metal', 水: 'water' };
+  return map[element] || '';
 }
 
-
-function szajxNz4(
-  IARM5XT1,
-  HJHbKqPP,
-  zbSC5D52,
-  JsFzAGqt,
-  sbJPsyHj,
-  P1aBAGa7,
-  RD5u18Ss,
-  bfgQkUBn,
-  C9h0Qd1V,
-  uRkeWWcQ,
-  Hic5DRbS,
-  n3sjfcAe
+// 1. 기본 사주 표시
+function displayBasicSaju(
+  saju,
+  sibiun,
+  yearGan,
+  yearJi,
+  dayGan,
+  hap,
+  hyungchung,
+  sinsal,
+  hyungchungEnhanced,
+  sibiSinsal,
+  gilsin,
+  extraSinsal
 ) {
-  const KoYoSNvy = IARM5XT1.HHqlccL0
-    ? ['JDmw63NN', 'R6anAZXi', 'WHjsqFVR', 'OpRKRS78']
-    : ['JDmw63NN', 'R6anAZXi', 'WHjsqFVR'];
-  const FYAcdgtK = Object.mtuWrgmi(IARM5XT1.OKohROdq).FI0mpC7U((g) => g !== null);
-  const bamURinj = Object.mtuWrgmi(IARM5XT1.xC2iOrJy).FI0mpC7U((j) => j !== null);
+  const pillars = saju.hasHourInfo
+    ? ['year', 'month', 'day', 'hour']
+    : ['year', 'month', 'day'];
+  const ganList = Object.values(saju.cheongan).filter((g) => g !== null);
+  const jiList = Object.values(saju.jiji).filter((j) => j !== null);
 
-  KoYoSNvy.qpB3jJGh((OthlApQy, Ki8MOK2O) => {
-    const SO6J6eCT = FYAcdgtK[Ki8MOK2O];
-    const ji = bamURinj[Ki8MOK2O];
+  pillars.forEach((pillar, idx) => {
+    const gan = ganList[idx];
+    const ji = jiList[idx];
 
-    
-    let Z7ZWaqJO = '';
-    let qN3rKE8O = '';
-    if (SO6J6eCT && SO6J6eCT !== sbJPsyHj) {
-      Z7ZWaqJO = pRcrLlJt(sbJPsyHj, SO6J6eCT); 
-      qN3rKE8O = CHEONGAN_ELEMENT[SO6J6eCT];
-    } else if (SO6J6eCT === sbJPsyHj) {
-      
-      if (OthlApQy === 'WHjsqFVR') {
-        Z7ZWaqJO = '日干';
+    // 천간 십성과 오행 계산 (10가지 세분화)
+    let ganSipseong = '';
+    let ganElement = '';
+    if (gan && gan !== dayGan) {
+      ganSipseong = getSipseongFromGanDetailed(dayGan, gan); // 10가지 세분화
+      ganElement = CHEONGAN_ELEMENT[gan];
+    } else if (gan === dayGan) {
+      // 일주의 천간만 "日干", 나머지는 "比肩"
+      if (pillar === 'day') {
+        ganSipseong = '日干';
       } else {
-        Z7ZWaqJO = '比肩';
+        ganSipseong = '比肩';
       }
-      qN3rKE8O = CHEONGAN_ELEMENT[SO6J6eCT];
+      ganElement = CHEONGAN_ELEMENT[gan];
     }
 
-    
-    let APd7FVPo = '';
-    let k1UOWmeG = '';
+    // 지지 십성과 오행 계산 (지장간 본기 기준, 10가지 세분화)
+    let jiSipseong = '';
+    let jiElement = '';
     if (ji && JIJANGGAN[ji]) {
-      
-      const tRBZnglU = JIJANGGAN[ji].LG0olSIM(
-        (j) => j.duqzFZjL === '본기' || j.duqzFZjL === '정기'
+      // 본기 찾기
+      const hongi = JIJANGGAN[ji].find(
+        (j) => j.type === '본기' || j.type === '정기'
       );
-      if (tRBZnglU) {
-        const o6HcOMmz = tRBZnglU.SO6J6eCT;
-        k1UOWmeG = JIJI_ELEMENT[ji];
-        if (o6HcOMmz !== sbJPsyHj) {
-          APd7FVPo = pRcrLlJt(sbJPsyHj, o6HcOMmz); 
+      if (hongi) {
+        const mainGan = hongi.gan;
+        jiElement = JIJI_ELEMENT[ji];
+        if (mainGan !== dayGan) {
+          jiSipseong = getSipseongFromGanDetailed(dayGan, mainGan); // 10가지 세분화
         } else {
-          
-          APd7FVPo = '比肩';
+          // 일간과 같으면 모두 "比肩" (日支 표시 없음)
+          jiSipseong = '比肩';
         }
       }
     }
 
-    
-    const mFbLU6nM = Z7ZWaqJO ? `${Z7ZWaqJO}(${qN3rKE8O})` : '';
-    const I4OUV3WY = APd7FVPo ? `${APd7FVPo}(${k1UOWmeG})` : '';
+    // 십성 라벨 구성
+    const ganLabel = ganSipseong ? `${ganSipseong}(${ganElement})` : '';
+    const jiLabel = jiSipseong ? `${jiSipseong}(${jiElement})` : '';
 
-    
-    const fRB9VdJU = document.getElementById(`${OthlApQy}-SO6J6eCT`);
-    if (fRB9VdJU && SO6J6eCT) {
-      fRB9VdJU.innerHTML = `
-                <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.5em;HkF8konD:#555;MSF8VRSk-l3dSJNbg:600;MW0RkjO2-USwWzAgn:3px;NBnoE0PG-KXZdsU0k:1.2;">${mFbLU6nM}</qZojOiNG>
-                <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.5em;">${SO6J6eCT}</qZojOiNG>
+    // 천간
+    const ganEl = document.getElementById(`${pillar}-gan`);
+    if (ganEl && gan) {
+      ganEl.innerHTML = `
+                <div style="font-size:0.5em;color:#555;font-weight:600;margin-bottom:3px;line-height:1.2;">${ganLabel}</div>
+                <div style="font-size:1.5em;">${gan}</div>
             `;
-      fRB9VdJU.NCDQQP9C = 'SO6J6eCT-x5EMmYXR ' + v24qW6mO(CHEONGAN_ELEMENT[SO6J6eCT]);
+      ganEl.className = 'gan-box ' + getElementClass(CHEONGAN_ELEMENT[gan]);
     }
 
-    
-    const ea6V77bw = document.getElementById(`${OthlApQy}-ji`);
-    if (ea6V77bw && ji) {
-      ea6V77bw.innerHTML = `
-                <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.5em;">${ji}</qZojOiNG>
-                <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.5em;HkF8konD:#555;MSF8VRSk-l3dSJNbg:600;MW0RkjO2-bGrBuWte:3px;NBnoE0PG-KXZdsU0k:1.2;">${I4OUV3WY}</qZojOiNG>
+    // 지지
+    const jiEl = document.getElementById(`${pillar}-ji`);
+    if (jiEl && ji) {
+      jiEl.innerHTML = `
+                <div style="font-size:1.5em;">${ji}</div>
+                <div style="font-size:0.5em;color:#555;font-weight:600;margin-top:3px;line-height:1.2;">${jiLabel}</div>
             `;
-      ea6V77bw.NCDQQP9C = 'ji-x5EMmYXR ' + v24qW6mO(JIJI_ELEMENT[ji]);
+      jiEl.className = 'ji-box ' + getElementClass(JIJI_ELEMENT[ji]);
     }
 
-    
-    const lrl34em3 = document.getElementById(`${OthlApQy}-HJHbKqPP`);
-    if (lrl34em3 && HJHbKqPP[OthlApQy]) {
-      lrl34em3.textContent = HJHbKqPP[OthlApQy];
+    // 십이운성
+    const sibiunEl = document.getElementById(`${pillar}-sibiun`);
+    if (sibiunEl && sibiun[pillar]) {
+      sibiunEl.textContent = sibiun[pillar];
     }
 
-    
-    const JiPErNFj = document.getElementById(`${OthlApQy}-ZoALEDuQ`);
-    if (JiPErNFj && SO6J6eCT && ji) {
-      const ZoALEDuQ = dd7VyJLX(SO6J6eCT, ji);
-      JiPErNFj.textContent = ZoALEDuQ.AFdVxjGM;
+    // 납음
+    const napeumEl = document.getElementById(`${pillar}-napeum`);
+    if (napeumEl && gan && ji) {
+      const napeum = getNapeum(gan, ji);
+      napeumEl.textContent = napeum.full;
     }
 
-    
-    const PUVXFhzX = document.getElementById(`${OthlApQy}-VT6bTHS7`);
-    if (PUVXFhzX && ji) {
-      const OtDs22Bc = GOzMHXzz(zbSC5D52, JsFzAGqt, ji);
-      PUVXFhzX.textContent = OtDs22Bc ? '⚠️ 공망' : '✓';
-      PUVXFhzX.NCDQQP9C = OtDs22Bc
-        ? 'VT6bTHS7-wCfRki1r'
-        : 'VT6bTHS7-wCfRki1r VdtCjjdP';
+    // 공망
+    const gongmangEl = document.getElementById(`${pillar}-gongmang`);
+    if (gongmangEl && ji) {
+      const isGongmang = getGongmang(yearGan, yearJi, ji);
+      gongmangEl.textContent = isGongmang ? '⚠️ 공망' : '✓';
+      gongmangEl.className = isGongmang
+        ? 'gongmang-info'
+        : 'gongmang-info empty';
     }
   });
 
-  
-  if (!IARM5XT1.HHqlccL0) {
-    const zlVCXkOP = document.querySelector('.OthlApQy-Af8wFdVx:h7nZO3Iz-n1Ang3Kr');
-    if (zlVCXkOP) {
-      zlVCXkOP.style.Vt7101E7 = '0.3';
-      zlVCXkOP.style.Yndu4iFL = 'WfVaStFg';
-      const UDcynQ3G = zlVCXkOP.querySelector('.OthlApQy-XeLAPJ2z');
-      if (UDcynQ3G) {
-        UDcynQ3G.innerHTML =
-          '時柱 (시주)<br><nvfWKvf8 style="MSF8VRSk-QFYeY4ME:0.7em;HkF8konD:#nQ7DUYwv;">시각 미상</nvfWKvf8>';
+  // 시주가 없는 경우 시주 카드 숨김 처리
+  if (!saju.hasHourInfo) {
+    const hourCard = document.querySelector('.pillar-card:first-child');
+    if (hourCard) {
+      hourCard.style.opacity = '0.3';
+      hourCard.style.pointerEvents = 'none';
+      const hourTitle = hourCard.querySelector('.pillar-title');
+      if (hourTitle) {
+        hourTitle.innerHTML =
+          '時柱 (시주)<br><small style="font-size:0.7em;color:#e53935;">시각 미상</small>';
       }
     }
   }
 
-  
-  const KJehGUrb = { 木: 0, 火: 0, 土: 0, 金: 0, 水: 0 };
+  // 오행 집계 표시
+  const elementCount = { 木: 0, 火: 0, 土: 0, 金: 0, 水: 0 };
 
-  
-  FYAcdgtK.qpB3jJGh((SO6J6eCT) => {
-    if (SO6J6eCT) {
-      const z3waZHsf = CHEONGAN_ELEMENT[SO6J6eCT];
-      KJehGUrb[z3waZHsf]++;
+  // 천간 집계
+  ganList.forEach((gan) => {
+    if (gan) {
+      const element = CHEONGAN_ELEMENT[gan];
+      elementCount[element]++;
     }
   });
 
-  
-  bamURinj.qpB3jJGh((ji) => {
+  // 지지 집계
+  jiList.forEach((ji) => {
     if (ji) {
-      const z3waZHsf = JIJI_ELEMENT[ji];
-      KJehGUrb[z3waZHsf]++;
+      const element = JIJI_ELEMENT[ji];
+      elementCount[element]++;
     }
   });
 
-  
-  const oO7jTzJN = Object.T7Evi8oP(KJehGUrb)
-    .Sq4eP5Ja((el) => `${el}(${KJehGUrb[el]})`)
-    .npzBTJNh(', ');
+  // 오행 집계 텍스트 생성
+  const elementSummary = Object.keys(elementCount)
+    .map((el) => `${el}(${elementCount[el]})`)
+    .join(', ');
 
-  
-  const aFBPr7zm = {
-    JDmw63NN: '년주',
-    R6anAZXi: '월주',
-    WHjsqFVR: '일주',
-    OpRKRS78: '시주',
+  // 지장간 텍스트 생성 (시주→일주→월주→년주 순서)
+  const pillarNames = {
+    year: '년주',
+    month: '월주',
+    day: '일주',
+    hour: '시주',
   };
-  const BPaK2VGO = ['OpRKRS78', 'WHjsqFVR', 'R6anAZXi', 'JDmw63NN']; 
-  let AZT9n5zf = '';
+  const pillarOrder = ['hour', 'day', 'month', 'year']; // 시주부터 시작
+  let jijangganSummary = '';
 
-  BPaK2VGO.qpB3jJGh((OthlApQy) => {
-    const Ki8MOK2O = KoYoSNvy.DEuxPoG4(OthlApQy);
-    if (Ki8MOK2O !== -1) {
-      const ji = bamURinj[Ki8MOK2O];
+  pillarOrder.forEach((pillar) => {
+    const idx = pillars.indexOf(pillar);
+    if (idx !== -1) {
+      const ji = jiList[idx];
       if (ji && JIJANGGAN[ji]) {
-        const L0OIaEXS = JIJANGGAN[ji];
-        const XVQU3c6v = L0OIaEXS.Sq4eP5Ja((Irz8eVbe) => Irz8eVbe.SO6J6eCT).npzBTJNh('');
-        AZT9n5zf += `${aFBPr7zm[OthlApQy]}: ${XVQU3c6v}　`;
+        const jijangganList = JIJANGGAN[ji];
+        const ganStr = jijangganList.map((item) => item.gan).join('');
+        jijangganSummary += `${pillarNames[pillar]}: ${ganStr}　`;
       }
     }
   });
 
-  const TOMso6OK = document.getElementById('OthlApQy-z3waZHsf-YPPVqfLO');
-  if (TOMso6OK) {
-    let GjNRxSOT = '';
+  const summaryEl = document.getElementById('pillar-element-summary');
+  if (summaryEl) {
+    let additionalInfo = '';
 
-    
-    GjNRxSOT += `<qZojOiNG id="z3waZHsf-YPPVqfLO-A7jExRLh" style="MW0RkjO2-USwWzAgn:8px;tbgQPFRJ:rDcjmySz;Xse8owrK:5px;mq0x0xuF-dQJ4zoC8:5px;PhmIpqGA:agSaZYEV 0.2s;" OrbgOc5N="this.style.agSaZYEV='#LEtIwwjC'" nJR9eccX="this.style.agSaZYEV='JOnSmqtS'" BlXgvOAG="document.getElementById('z3waZHsf-YPPVqfLO-Pqdlk7mn').style.erwK6stq = document.getElementById('z3waZHsf-YPPVqfLO-Pqdlk7mn').style.erwK6stq === 'WfVaStFg' ? 'kDduoHgQ' : 'WfVaStFg';">
-      <OaKCeIe9 style="HkF8konD:#666;">🔍 오행:</OaKCeIe9> ${oO7jTzJN} <OaKCeIe9 style="HkF8konD:#999;MSF8VRSk-QFYeY4ME:0.8em;">(클릭:神殺보기)</OaKCeIe9>
-    </qZojOiNG>`;
+    // 1. 오행 집계 (항상 표시, 클릭 가능)
+    additionalInfo += `<div id="element-summary-header" style="margin-bottom:8px;cursor:pointer;padding:5px;border-radius:5px;transition:background 0.2s;" onmouseover="this.style.background='#e3f2fd'" onmouseout="this.style.background='transparent'" onclick="document.getElementById('element-summary-details').style.display = document.getElementById('element-summary-details').style.display === 'none' ? 'block' : 'none';">
+      <span style="color:#666;">🔍 오행:</span> ${elementSummary} <span style="color:#999;font-size:0.8em;">(클릭:神殺보기)</span>
+    </div>`;
 
-    
-    GjNRxSOT += `<qZojOiNG id="z3waZHsf-YPPVqfLO-Pqdlk7mn" style="erwK6stq:WfVaStFg;Xse8owrK-dy0UJ5N0:10px;mq0x0xuF-dy0UJ5N0:3px oyABhJdC #Vbv6ZFqM;">`;
+    // 상세 정보 (기본 숨김)
+    additionalInfo += `<div id="element-summary-details" style="display:none;padding-left:10px;border-left:3px solid #e0e0e0;">`;
 
-    
-    GjNRxSOT += `<qZojOiNG style="MW0RkjO2-USwWzAgn:8px;MSF8VRSk-QFYeY4ME:0.9em;HkF8konD:#888;"><OaKCeIe9 style="HkF8konD:#666;">지장간:</OaKCeIe9> ${AZT9n5zf}</qZojOiNG>`;
+    // 2. 지장간
+    additionalInfo += `<div style="margin-bottom:8px;font-size:0.9em;color:#888;"><span style="color:#666;">지장간:</span> ${jijangganSummary}</div>`;
 
-    
-    if (P1aBAGa7) {
-      let HwKe3BlS = '';
-      let djNgBXA8 = [];
+    // 3. 合 (합) 요약
+    if (hap) {
+      let hapSummary = '';
+      let hapDetails = [];
 
-      
-      if (P1aBAGa7.ZwHu7BX0 && P1aBAGa7.ZwHu7BX0.DFImMboA > 0) {
-        P1aBAGa7.ZwHu7BX0.qpB3jJGh((h) => {
-          djNgBXA8.d28SWfl8(`${h.Tm095qQL} → ${h.VA4Oh068}`);
+      // 천간합
+      if (hap.cheonganHap && hap.cheonganHap.length > 0) {
+        hap.cheonganHap.forEach((h) => {
+          hapDetails.push(`${h.pair} → ${h.result}`);
         });
       }
 
-      
-      if (P1aBAGa7.LdptinuZ && P1aBAGa7.LdptinuZ.DFImMboA > 0) {
-        P1aBAGa7.LdptinuZ.qpB3jJGh((h) => {
-          djNgBXA8.d28SWfl8(`${h.iUd3UmGA}(${h.Tm095qQL})`);
+      // 지지합 (육합)
+      if (hap.jijiHap && hap.jijiHap.length > 0) {
+        hap.jijiHap.forEach((h) => {
+          hapDetails.push(`${h.name}(${h.pair})`);
         });
       }
 
-      
-      if (P1aBAGa7.qGMXGO6e && P1aBAGa7.qGMXGO6e.DFImMboA > 0) {
-        P1aBAGa7.qGMXGO6e.qpB3jJGh((s) => {
-          if (s.Nz6xUGyP) {
-            const ifJoRAvy = s.mN0UBy85 ? '완성' : '반합';
-            djNgBXA8.d28SWfl8(
-              `${s.duqzFZjL || '삼합'}(${s.Nz6xUGyP}) ${ifJoRAvy}`
+      // 삼합/방합
+      if (hap.samhap && hap.samhap.length > 0) {
+        hap.samhap.forEach((s) => {
+          if (s.pattern) {
+            const completeText = s.complete ? '완성' : '반합';
+            hapDetails.push(
+              `${s.type || '삼합'}(${s.pattern}) ${completeText}`
             );
           }
         });
       }
 
-      if (djNgBXA8.DFImMboA > 0) {
-        HwKe3BlS = djNgBXA8.npzBTJNh(', ');
-        GjNRxSOT += `<qZojOiNG style="MW0RkjO2-USwWzAgn:8px;MSF8VRSk-QFYeY4ME:0.9em;"><OaKCeIe9 style="HkF8konD:#666;">合 (합):</OaKCeIe9> <OaKCeIe9 style="HkF8konD:#4caf50;">${HwKe3BlS}</OaKCeIe9></qZojOiNG>`;
+      if (hapDetails.length > 0) {
+        hapSummary = hapDetails.join(', ');
+        additionalInfo += `<div style="margin-bottom:8px;font-size:0.9em;"><span style="color:#666;">合 (합):</span> <span style="color:#4caf50;">${hapSummary}</span></div>`;
       } else {
-        GjNRxSOT += `<qZojOiNG style="MW0RkjO2-USwWzAgn:8px;MSF8VRSk-QFYeY4ME:0.9em;HkF8konD:#999;"><OaKCeIe9 style="HkF8konD:#666;">合 (합):</OaKCeIe9> 없음</qZojOiNG>`;
+        additionalInfo += `<div style="margin-bottom:8px;font-size:0.9em;color:#999;"><span style="color:#666;">合 (합):</span> 없음</div>`;
       }
     }
 
-    
-    if (C9h0Qd1V) {
+    // 4. 刑沖破害 요약 (강화 버전)
+    if (hyungchungEnhanced) {
       if (
-        C9h0Qd1V.UrDD4Nv1.DFImMboA === 0 &&
-        C9h0Qd1V.m5DVCJEr.DFImMboA === 0 &&
-        C9h0Qd1V.pa.DFImMboA === 0 &&
-        C9h0Qd1V.OBwBonsV.DFImMboA === 0 &&
-        C9h0Qd1V.XceN1HC0.DFImMboA === 0
+        hyungchungEnhanced.chung.length === 0 &&
+        hyungchungEnhanced.hyung.length === 0 &&
+        hyungchungEnhanced.pa.length === 0 &&
+        hyungchungEnhanced.hae.length === 0 &&
+        hyungchungEnhanced.wongjin.length === 0
       ) {
-        GjNRxSOT += `<qZojOiNG style="MW0RkjO2-USwWzAgn:8px;MSF8VRSk-QFYeY4ME:0.9em;HkF8konD:#999;"><OaKCeIe9 style="HkF8konD:#666;">刑沖破害:</OaKCeIe9> 없음 (안정적)</qZojOiNG>`;
+        additionalInfo += `<div style="margin-bottom:8px;font-size:0.9em;color:#999;"><span style="color:#666;">刑沖破害:</span> 없음 (안정적)</div>`;
       } else {
-        const AwufVxQN = [];
+        const items = [];
 
-        
-        if (C9h0Qd1V.UrDD4Nv1.DFImMboA > 0) {
-          const Yfo7vrGL = C9h0Qd1V.UrDD4Nv1
-            .Sq4eP5Ja((c) => c.iUd3UmGA)
-            .npzBTJNh(', ');
-          AwufVxQN.d28SWfl8(
-            `<OaKCeIe9 style="HkF8konD:#E20GBKa1;">충(沖): ${Yfo7vrGL}</OaKCeIe9>`
+        // 충(沖)
+        if (hyungchungEnhanced.chung.length > 0) {
+          const chungItems = hyungchungEnhanced.chung
+            .map((c) => c.name)
+            .join(', ');
+          items.push(
+            `<span style="color:#d32f2f;">충(沖): ${chungItems}</span>`
           );
         }
 
-        
-        if (C9h0Qd1V.m5DVCJEr.DFImMboA > 0) {
-          const ESJuBQge = C9h0Qd1V.m5DVCJEr
-            .Sq4eP5Ja((h) => h.iUd3UmGA)
-            .npzBTJNh(', ');
-          AwufVxQN.d28SWfl8(
-            `<OaKCeIe9 style="HkF8konD:#MM7KdyOo;">형(刑): ${ESJuBQge}</OaKCeIe9>`
+        // 형(刑)
+        if (hyungchungEnhanced.hyung.length > 0) {
+          const hyungItems = hyungchungEnhanced.hyung
+            .map((h) => h.name)
+            .join(', ');
+          items.push(
+            `<span style="color:#c62828;">형(刑): ${hyungItems}</span>`
           );
         }
 
-        
-        if (C9h0Qd1V.pa.DFImMboA > 0) {
-          const fDoT9sP5 = C9h0Qd1V.pa.Sq4eP5Ja((p) => p.iUd3UmGA).npzBTJNh(', ');
-          AwufVxQN.d28SWfl8(`<OaKCeIe9 style="HkF8konD:#UVk8NsCR;">파(破): ${fDoT9sP5}</OaKCeIe9>`);
+        // 파(破)
+        if (hyungchungEnhanced.pa.length > 0) {
+          const paItems = hyungchungEnhanced.pa.map((p) => p.name).join(', ');
+          items.push(`<span style="color:#e64a19;">파(破): ${paItems}</span>`);
         }
 
-        
-        if (C9h0Qd1V.OBwBonsV.DFImMboA > 0) {
-          const uUEdKLDk = C9h0Qd1V.OBwBonsV.Sq4eP5Ja((h) => h.iUd3UmGA).npzBTJNh(', ');
-          AwufVxQN.d28SWfl8(`<OaKCeIe9 style="HkF8konD:#pfTrYmld;">해(害): ${uUEdKLDk}</OaKCeIe9>`);
+        // 해(害)
+        if (hyungchungEnhanced.hae.length > 0) {
+          const haeItems = hyungchungEnhanced.hae.map((h) => h.name).join(', ');
+          items.push(`<span style="color:#f57c00;">해(害): ${haeItems}</span>`);
         }
 
-        
-        if (C9h0Qd1V.XceN1HC0.DFImMboA > 0) {
-          const HCOBwDeh = C9h0Qd1V.XceN1HC0
-            .Sq4eP5Ja((w) => w.Tm095qQL)
-            .npzBTJNh(', ');
-          AwufVxQN.d28SWfl8(
-            `<OaKCeIe9 style="HkF8konD:#5d4037;">원진(怨嗔): ${HCOBwDeh}</OaKCeIe9>`
+        // 원진(怨嗔)
+        if (hyungchungEnhanced.wongjin.length > 0) {
+          const wonjinItems = hyungchungEnhanced.wongjin
+            .map((w) => w.pair)
+            .join(', ');
+          items.push(
+            `<span style="color:#5d4037;">원진(怨嗔): ${wonjinItems}</span>`
           );
         }
 
-        if (AwufVxQN.DFImMboA > 0) {
-          GjNRxSOT += `<qZojOiNG style="MW0RkjO2-USwWzAgn:8px;MSF8VRSk-QFYeY4ME:0.9em;"><OaKCeIe9 style="HkF8konD:#666;">刑沖破害:</OaKCeIe9> ${AwufVxQN.npzBTJNh(
+        if (items.length > 0) {
+          additionalInfo += `<div style="margin-bottom:8px;font-size:0.9em;"><span style="color:#666;">刑沖破害:</span> ${items.join(
             ' / '
-          )}</qZojOiNG>`;
+          )}</div>`;
         }
       }
     }
 
-    
-    if (bfgQkUBn) {
-      let NqO442Ug = '';
-      if (bfgQkUBn.ysxK3Ued.DFImMboA > 0) {
-        NqO442Ug += '길신: ' + bfgQkUBn.ysxK3Ued.Sq4eP5Ja((s) => s.iUd3UmGA).npzBTJNh(', ');
+    // 5. 神殺 요약
+    if (sinsal) {
+      let sinsalSummary = '';
+      if (sinsal.good.length > 0) {
+        sinsalSummary += '길신: ' + sinsal.good.map((s) => s.name).join(', ');
       }
-      if (bfgQkUBn.ywdZqTq0.DFImMboA > 0) {
-        if (NqO442Ug) NqO442Ug += ' / ';
-        NqO442Ug += '흉신: ' + bfgQkUBn.ywdZqTq0.Sq4eP5Ja((s) => s.iUd3UmGA).npzBTJNh(', ');
+      if (sinsal.bad.length > 0) {
+        if (sinsalSummary) sinsalSummary += ' / ';
+        sinsalSummary += '흉신: ' + sinsal.bad.map((s) => s.name).join(', ');
       }
-      if (NqO442Ug) {
-        GjNRxSOT += `<qZojOiNG style="MW0RkjO2-USwWzAgn:8px;MSF8VRSk-QFYeY4ME:0.9em;"><OaKCeIe9 style="HkF8konD:#666;">神殺:</OaKCeIe9> ${NqO442Ug}</qZojOiNG>`;
+      if (sinsalSummary) {
+        additionalInfo += `<div style="margin-bottom:8px;font-size:0.9em;"><span style="color:#666;">神殺:</span> ${sinsalSummary}</div>`;
       }
     }
 
-    
-    const HrPQe9XT = [];
-    bamURinj.qpB3jJGh((ji) => {
+    // 6. 空亡 요약
+    const gongmangJi = [];
+    jiList.forEach((ji) => {
       if (ji) {
-        const OtDs22Bc = GOzMHXzz(zbSC5D52, JsFzAGqt, ji);
-        if (OtDs22Bc) {
-          HrPQe9XT.d28SWfl8(ji);
+        const isGongmang = getGongmang(yearGan, yearJi, ji);
+        if (isGongmang) {
+          gongmangJi.push(ji);
         }
       }
     });
-    if (HrPQe9XT.DFImMboA > 0) {
-      GjNRxSOT += `<qZojOiNG style="MW0RkjO2-USwWzAgn:8px;MSF8VRSk-QFYeY4ME:0.9em;"><OaKCeIe9 style="HkF8konD:#666;">空亡:</OaKCeIe9> <OaKCeIe9 style="HkF8konD:#a1VHClsX;">${HrPQe9XT.npzBTJNh(
+    if (gongmangJi.length > 0) {
+      additionalInfo += `<div style="margin-bottom:8px;font-size:0.9em;"><span style="color:#666;">空亡:</span> <span style="color:#ff9800;">${gongmangJi.join(
         ', '
-      )}</OaKCeIe9></qZojOiNG>`;
+      )}</span></div>`;
     } else {
-      GjNRxSOT += `<qZojOiNG style="MW0RkjO2-USwWzAgn:8px;MSF8VRSk-QFYeY4ME:0.9em;HkF8konD:#999;"><OaKCeIe9 style="HkF8konD:#666;">空亡:</OaKCeIe9> 없음</qZojOiNG>`;
+      additionalInfo += `<div style="margin-bottom:8px;font-size:0.9em;color:#999;"><span style="color:#666;">空亡:</span> 없음</div>`;
     }
 
-    
-    if (bfgQkUBn) {
-      const KYTpfomA = [];
-      bfgQkUBn.ysxK3Ued.qpB3jJGh((s) => {
-        if (['天乙貴人', '學堂貴人'].CDE6p5g0(s.iUd3UmGA)) {
-          KYTpfomA.d28SWfl8(s.iUd3UmGA);
+    // 7. 특수 神殺 요약
+    if (sinsal) {
+      const specialSinsal = [];
+      sinsal.good.forEach((s) => {
+        if (['天乙貴人', '學堂貴人'].includes(s.name)) {
+          specialSinsal.push(s.name);
         }
       });
-      bfgQkUBn.ywdZqTq0.qpB3jJGh((s) => {
-        if (['桃花殺', '驛馬殺', '三災', '白虎大殺'].CDE6p5g0(s.iUd3UmGA)) {
-          KYTpfomA.d28SWfl8(s.iUd3UmGA);
+      sinsal.bad.forEach((s) => {
+        if (['桃花殺', '驛馬殺', '三災', '白虎大殺'].includes(s.name)) {
+          specialSinsal.push(s.name);
         }
       });
-      if (KYTpfomA.DFImMboA > 0) {
-        GjNRxSOT += `<qZojOiNG style="MW0RkjO2-USwWzAgn:8px;MSF8VRSk-QFYeY4ME:0.9em;"><OaKCeIe9 style="HkF8konD:#666;">특수 神殺:</OaKCeIe9> ${KYTpfomA.npzBTJNh(
+      if (specialSinsal.length > 0) {
+        additionalInfo += `<div style="margin-bottom:8px;font-size:0.9em;"><span style="color:#666;">특수 神殺:</span> ${specialSinsal.join(
           ', '
-        )}</qZojOiNG>`;
+        )}</div>`;
       }
     }
 
-    
+    // ===== 추가: 상세 신살 분석 =====
 
-    
-    if (C9h0Qd1V) {
-      GjNRxSOT += sWWTcImh(C9h0Qd1V);
+    // 8. 형충파해 상세 분석
+    if (hyungchungEnhanced) {
+      additionalInfo += generateHyungChungSummary(hyungchungEnhanced);
     }
 
-    
-    if (uRkeWWcQ && uRkeWWcQ.DFImMboA > 0) {
-      GjNRxSOT += dQgbA8yq(uRkeWWcQ);
+    // 9. 십이신살 분석
+    if (sibiSinsal && sibiSinsal.length > 0) {
+      additionalInfo += generateSibiSinsalSummary(sibiSinsal);
     }
 
-    
-    if (Hic5DRbS && Hic5DRbS.DFImMboA > 0) {
-      GjNRxSOT += zadKTT9F(Hic5DRbS);
+    // 10. 길신류 분석
+    if (gilsin && gilsin.length > 0) {
+      additionalInfo += generateGilsinSummary(gilsin);
     }
 
-    
-    if (n3sjfcAe && n3sjfcAe.DFImMboA > 0) {
-      GjNRxSOT += a15Crnix(n3sjfcAe);
+    // 11. 그외 신살 분석
+    if (extraSinsal && extraSinsal.length > 0) {
+      additionalInfo += generateExtraSinsalSummary(extraSinsal);
     }
 
-    
-    GjNRxSOT += `</qZojOiNG>`;
+    // 닫기 태그
+    additionalInfo += `</div>`;
 
-    TOMso6OK.innerHTML = GjNRxSOT;
+    summaryEl.innerHTML = additionalInfo;
   }
 }
 
-
-function DGMIK33D(sbJPsyHj) {
-  const el = CHEONGAN_ELEMENT[sbJPsyHj];
-  const z0MYnRzG = `
-        <qZojOiNG aCly2GRM="SPRdZPeq-wCfRki1r">
-            <qZojOiNG aCly2GRM="SPRdZPeq-XeLAPJ2z">
-                <OaKCeIe9 aCly2GRM="SO6J6eCT-x5EMmYXR ${v24qW6mO(
+// 2. 일간 분석 표시
+function displayDayMaster(dayGan) {
+  const el = CHEONGAN_ELEMENT[dayGan];
+  const html = `
+        <div class="daymaster-info">
+            <div class="daymaster-title">
+                <span class="gan-box ${getElementClass(
                   el
-                )}" style="erwK6stq:CM58an2P-kDduoHgQ;Xse8owrK:10px 20px;MW0RkjO2-L7L20aOS:10px;">${sbJPsyHj}</OaKCeIe9>
+                )}" style="display:inline-block;padding:10px 20px;margin-right:10px;">${dayGan}</span>
                 일간 (본인의 핵심)
-            </qZojOiNG>
-            <qZojOiNG aCly2GRM="SPRdZPeq-TQmvGOur">
-                <p><NvAO6LJ1>▶ 기본 특성:</NvAO6LJ1> ${
-                  DAYMASTER_CHARACTERISTICS[sbJPsyHj]
+            </div>
+            <div class="daymaster-desc">
+                <p><strong>▶ 기본 특성:</strong> ${
+                  DAYMASTER_CHARACTERISTICS[dayGan]
                 }</p>
-                <p><NvAO6LJ1>▶ 오행:</NvAO6LJ1> ${el}(${v24qW6mO(el)}) - ${
+                <p><strong>▶ 오행:</strong> ${el}(${getElementClass(el)}) - ${
     ELEMENT_DESC[el]
   }</p>
-                <p><NvAO6LJ1>▶ 음양:</NvAO6LJ1> ${CHEONGAN_YINYANG[sbJPsyHj]} - ${
-    CHEONGAN_YINYANG[sbJPsyHj] === '陽'
+                <p><strong>▶ 음양:</strong> ${CHEONGAN_YINYANG[dayGan]} - ${
+    CHEONGAN_YINYANG[dayGan] === '陽'
       ? '적극적이고 외향적인 기질'
       : '차분하고 내면적인 기질'
   }</p>
-            </qZojOiNG>
-        </qZojOiNG>
+            </div>
+        </div>
     `;
-  document.getElementById('SPRdZPeq-xB2spD4H').innerHTML = z0MYnRzG;
+  document.getElementById('daymaster-analysis').innerHTML = html;
 }
 
-
-function HLIivYHQ(NsULsoxW) {
-  const z0MYnRzG = `
-        <qZojOiNG aCly2GRM="NsULsoxW-VA4Oh068">
-            <qZojOiNG aCly2GRM="NsULsoxW-Gk2zWwTj">${NsULsoxW.Gk2zWwTj}</qZojOiNG>
-            <qZojOiNG aCly2GRM="NsULsoxW-TQmvGOur">${NsULsoxW.TQmvGOur}</qZojOiNG>
-        </qZojOiNG>
-        <qZojOiNG aCly2GRM="NsULsoxW-U2xieDOg">
-            <p><NvAO6LJ1>▶ 강약 점수:</NvAO6LJ1> ${NsULsoxW.zeY0vPLr.Hs5WMdMQ(
+// 3. 사주 강약 표시
+function displayStrength(strength) {
+  const html = `
+        <div class="strength-result">
+            <div class="strength-level">${strength.level}</div>
+            <div class="strength-desc">${strength.desc}</div>
+        </div>
+        <div class="strength-detail">
+            <p><strong>▶ 강약 점수:</strong> ${strength.score.toFixed(
               1
             )}점 / 60점</p>
-            <p><NvAO6LJ1>▶ 해석:</NvAO6LJ1> ${
-              NsULsoxW.zeY0vPLr >= 35
+            <p><strong>▶ 해석:</strong> ${
+              strength.score >= 35
                 ? '일간이 강하여 자신감과 추진력이 있으나, 독선적이지 않도록 주의해야 합니다.'
-                : NsULsoxW.zeY0vPLr >= 25
+                : strength.score >= 25
                 ? '일간이 균형 잡혀 있어 가장 이상적입니다. 다양한 분야에서 능력을 발휘할 수 있습니다.'
                 : '일간이 약하여 도움이 필요합니다. 협력자를 만나고 자기계발에 힘써야 합니다.'
             }</p>
-        </qZojOiNG>
+        </div>
     `;
-  document.getElementById('NsULsoxW-xB2spD4H').innerHTML = z0MYnRzG;
+  document.getElementById('strength-analysis').innerHTML = html;
 }
 
-
-function q3cw9QzA(ViZhPUuo) {
-  const z0MYnRzG = `
-        <qZojOiNG aCly2GRM="ViZhPUuo-VA4Oh068">
-            <qZojOiNG aCly2GRM="ViZhPUuo-iUd3UmGA">${ViZhPUuo.iUd3UmGA}</qZojOiNG>
-            <qZojOiNG aCly2GRM="ViZhPUuo-TQmvGOur">${ViZhPUuo.TQmvGOur}</qZojOiNG>
-        </qZojOiNG>
+// 4. 격국 표시
+function displayGyeokguk(gyeokguk) {
+  const html = `
+        <div class="gyeokguk-result">
+            <div class="gyeokguk-name">${gyeokguk.name}</div>
+            <div class="gyeokguk-desc">${gyeokguk.desc}</div>
+        </div>
     `;
-  document.getElementById('ViZhPUuo-xB2spD4H').innerHTML = z0MYnRzG;
+  document.getElementById('gyeokguk-analysis').innerHTML = html;
 }
 
-
-function cpFZpUTr(FF16bkkO) {
-  const z0MYnRzG = `
-        <qZojOiNG aCly2GRM="FF16bkkO-VA4Oh068">
-            <qZojOiNG aCly2GRM="FF16bkkO-Irz8eVbe FF16bkkO">
-                <qZojOiNG aCly2GRM="FF16bkkO-S9XouHk3">用神 (용신)</qZojOiNG>
-                <qZojOiNG aCly2GRM="FF16bkkO-value">${FF16bkkO.FF16bkkO}</qZojOiNG>
-                <qZojOiNG aCly2GRM="FF16bkkO-y2DF0BkE">가장 필요한 기운</qZojOiNG>
-            </qZojOiNG>
-            <qZojOiNG aCly2GRM="FF16bkkO-Irz8eVbe WISOM4y3">
-                <qZojOiNG aCly2GRM="FF16bkkO-S9XouHk3">喜神 (희신)</qZojOiNG>
-                <qZojOiNG aCly2GRM="FF16bkkO-value">${FF16bkkO.WISOM4y3}</qZojOiNG>
-                <qZojOiNG aCly2GRM="FF16bkkO-y2DF0BkE">용신을 돕는 기운</qZojOiNG>
-            </qZojOiNG>
-            <qZojOiNG aCly2GRM="FF16bkkO-Irz8eVbe hGSKCkiw">
-                <qZojOiNG aCly2GRM="FF16bkkO-S9XouHk3">忌神 (기신)</qZojOiNG>
-                <qZojOiNG aCly2GRM="FF16bkkO-value">${FF16bkkO.hGSKCkiw}</qZojOiNG>
-                <qZojOiNG aCly2GRM="FF16bkkO-y2DF0BkE">피해야 할 기운</qZojOiNG>
-            </qZojOiNG>
-        </qZojOiNG>
-        <qZojOiNG aCly2GRM="FF16bkkO-U2xieDOg">
-            <p><NvAO6LJ1>▶ 용신 활용법:</NvAO6LJ1> ${FF16bkkO.TQmvGOur}</p>
-            <p><NvAO6LJ1>▶ 실생활 적용:</NvAO6LJ1></p>
-            <ul style="MW0RkjO2-bGrBuWte:10px;NBnoE0PG-KXZdsU0k:1.8;">
-                <li>용신(${FF16bkkO.FF16bkkO})에 해당하는 색상, 방향, 직업을 선택하세요</li>
-                <li>희신(${FF16bkkO.WISOM4y3})으로 용신을 보조하면 더욱 좋습니다</li>
-                <li>기신(${FF16bkkO.hGSKCkiw})은 가능한 피하거나 최소화하세요</li>
+// 5. 용신 표시
+function displayYongsin(yongsin) {
+  const html = `
+        <div class="yongsin-result">
+            <div class="yongsin-item yongsin">
+                <div class="yongsin-label">用神 (용신)</div>
+                <div class="yongsin-value">${yongsin.yongsin}</div>
+                <div class="yongsin-meaning">가장 필요한 기운</div>
+            </div>
+            <div class="yongsin-item huisin">
+                <div class="yongsin-label">喜神 (희신)</div>
+                <div class="yongsin-value">${yongsin.huisin}</div>
+                <div class="yongsin-meaning">용신을 돕는 기운</div>
+            </div>
+            <div class="yongsin-item gisin">
+                <div class="yongsin-label">忌神 (기신)</div>
+                <div class="yongsin-value">${yongsin.gisin}</div>
+                <div class="yongsin-meaning">피해야 할 기운</div>
+            </div>
+        </div>
+        <div class="yongsin-detail">
+            <p><strong>▶ 용신 활용법:</strong> ${yongsin.desc}</p>
+            <p><strong>▶ 실생활 적용:</strong></p>
+            <ul style="margin-top:10px;line-height:1.8;">
+                <li>용신(${yongsin.yongsin})에 해당하는 색상, 방향, 직업을 선택하세요</li>
+                <li>희신(${yongsin.huisin})으로 용신을 보조하면 더욱 좋습니다</li>
+                <li>기신(${yongsin.gisin})은 가능한 피하거나 최소화하세요</li>
             </ul>
-        </qZojOiNG>
+        </div>
     `;
-  document.getElementById('FF16bkkO-xB2spD4H').innerHTML = z0MYnRzG;
+  document.getElementById('yongsin-analysis').innerHTML = html;
 }
 
-
-function lVipUb4s(v4cOtYWg) {
-  const gNuqe6aX = Object.mtuWrgmi(v4cOtYWg).iVULd45u((a, b) => a + b, 0);
-  const kQ5r1UbX = {
+// 6. 오행 표시
+function displayElements(elements) {
+  const total = Object.values(elements).reduce((a, b) => a + b, 0);
+  const names = {
     木: '木(목)',
     火: '火(화)',
     土: '土(토)',
@@ -2900,142 +2900,142 @@ function lVipUb4s(v4cOtYWg) {
     水: '水(수)',
   };
 
-  let s1db9oQ2 = '';
-  Object.T7Evi8oP(v4cOtYWg).qpB3jJGh((el) => {
-    const BzWGAqHm = v4cOtYWg[el].Hs5WMdMQ(1);
-    const DXWIcGVX = gNuqe6aX > 0 ? ((v4cOtYWg[el] / gNuqe6aX) * 100).Hs5WMdMQ(1) : 0;
-    s1db9oQ2 += `
-            <qZojOiNG aCly2GRM="z3waZHsf-WoioRByI">
-                <qZojOiNG aCly2GRM="z3waZHsf-S9XouHk3">${kQ5r1UbX[el]}</qZojOiNG>
-                <qZojOiNG aCly2GRM="z3waZHsf-WoioRByI-bg">
-                    <qZojOiNG aCly2GRM="z3waZHsf-WoioRByI-GVYAIlYo ${v24qW6mO(
+  let chartHTML = '';
+  Object.keys(elements).forEach((el) => {
+    const count = elements[el].toFixed(1);
+    const pct = total > 0 ? ((elements[el] / total) * 100).toFixed(1) : 0;
+    chartHTML += `
+            <div class="element-bar">
+                <div class="element-label">${names[el]}</div>
+                <div class="element-bar-bg">
+                    <div class="element-bar-fill ${getElementClass(
                       el
-                    )}" style="lDH6PZpH:${DXWIcGVX}%">${BzWGAqHm}</qZojOiNG>
-                </qZojOiNG>
-            </qZojOiNG>
+                    )}" style="width:${pct}%">${count}</div>
+                </div>
+            </div>
         `;
   });
 
-  const al7LEXd1 = Object.T7Evi8oP(v4cOtYWg).iVULd45u((a, b) =>
-    v4cOtYWg[a] > v4cOtYWg[b] ? a : b
+  const max = Object.keys(elements).reduce((a, b) =>
+    elements[a] > elements[b] ? a : b
   );
-  const Nw0JUhzX = Object.T7Evi8oP(v4cOtYWg).iVULd45u((a, b) =>
-    v4cOtYWg[a] < v4cOtYWg[b] ? a : b
+  const min = Object.keys(elements).reduce((a, b) =>
+    elements[a] < elements[b] ? a : b
   );
 
-  const KeNvz6HS = `
-        <NvAO6LJ1>▶ 분포:</NvAO6LJ1> ${kQ5r1UbX[al7LEXd1]}이(가) ${v4cOtYWg[al7LEXd1].Hs5WMdMQ(
+  const summaryHTML = `
+        <strong>▶ 분포:</strong> ${names[max]}이(가) ${elements[max].toFixed(
     1
   )}로 가장 많고, 
-        ${kQ5r1UbX[Nw0JUhzX]}이(가) ${v4cOtYWg[Nw0JUhzX].Hs5WMdMQ(1)}로 가장 적습니다.<br><br>
-        <NvAO6LJ1>▶ 특성:</NvAO6LJ1> ${ELEMENT_DESC[al7LEXd1]}
+        ${names[min]}이(가) ${elements[min].toFixed(1)}로 가장 적습니다.<br><br>
+        <strong>▶ 특성:</strong> ${ELEMENT_DESC[max]}
     `;
 
-  document.getElementById('z3waZHsf-lMnn9MIA').innerHTML = s1db9oQ2;
-  document.getElementById('z3waZHsf-YPPVqfLO').innerHTML = KeNvz6HS;
+  document.getElementById('element-chart').innerHTML = chartHTML;
+  document.getElementById('element-summary').innerHTML = summaryHTML;
 }
 
+// 7. 음양 표시
+function displayYinYang(yinyang) {
+  const total = yinyang.yang + yinyang.yin;
+  const yangPct = ((yinyang.yang / total) * 100).toFixed(1);
 
-function Aqfyfw9a(GD0C200Y) {
-  const gNuqe6aX = GD0C200Y.skU5qXMh + GD0C200Y.wCRlmmlD;
-  const t8QHjxwM = ((GD0C200Y.skU5qXMh / gNuqe6aX) * 100).Hs5WMdMQ(1);
-
-  const s1db9oQ2 = `
-        <qZojOiNG aCly2GRM="GD0C200Y-lpJgCC0f skU5qXMh-lpJgCC0f">
-            <qZojOiNG aCly2GRM="GD0C200Y-S9XouHk3">陽(양)</qZojOiNG>
-            <qZojOiNG aCly2GRM="GD0C200Y-BzWGAqHm">${GD0C200Y.skU5qXMh}</qZojOiNG>
-        </qZojOiNG>
-        <qZojOiNG aCly2GRM="GD0C200Y-lpJgCC0f wCRlmmlD-lpJgCC0f">
-            <qZojOiNG aCly2GRM="GD0C200Y-S9XouHk3">陰(음)</qZojOiNG>
-            <qZojOiNG aCly2GRM="GD0C200Y-BzWGAqHm">${GD0C200Y.wCRlmmlD}</qZojOiNG>
-        </qZojOiNG>
+  const chartHTML = `
+        <div class="yinyang-circle yang-circle">
+            <div class="yinyang-label">陽(양)</div>
+            <div class="yinyang-count">${yinyang.yang}</div>
+        </div>
+        <div class="yinyang-circle yin-circle">
+            <div class="yinyang-label">陰(음)</div>
+            <div class="yinyang-count">${yinyang.yin}</div>
+        </div>
     `;
 
-  let YPPVqfLO = `<NvAO6LJ1>▶ 비율:</NvAO6LJ1> 陽 ${t8QHjxwM}% / 陰 ${(
-    100 - t8QHjxwM
-  ).Hs5WMdMQ(1)}%<br><br>`;
-  if (GD0C200Y.skU5qXMh > GD0C200Y.wCRlmmlD + 2) {
-    YPPVqfLO +=
+  let summary = `<strong>▶ 비율:</strong> 陽 ${yangPct}% / 陰 ${(
+    100 - yangPct
+  ).toFixed(1)}%<br><br>`;
+  if (yinyang.yang > yinyang.yin + 2) {
+    summary +=
       '양의 기운이 강하여 적극적, 활동적, 외향적입니다. 리더십과 추진력이 뛰어나나 성급함을 경계해야 합니다.';
-  } else if (GD0C200Y.wCRlmmlD > GD0C200Y.skU5qXMh + 2) {
-    YPPVqfLO +=
+  } else if (yinyang.yin > yinyang.yang + 2) {
+    summary +=
       '음의 기운이 강하여 차분하고 내향적이며 사려 깊습니다. 인내심과 포용력이 뛰어나나 소극적이지 않도록 주의해야 합니다.';
   } else {
-    YPPVqfLO +=
+    summary +=
       '음양의 균형이 잘 잡혀 있습니다. 상황에 따라 적극적이거나 신중할 수 있으며 조화로운 성격입니다.';
   }
 
-  document.getElementById('GD0C200Y-lMnn9MIA').innerHTML = s1db9oQ2;
-  document.getElementById('GD0C200Y-YPPVqfLO').innerHTML = YPPVqfLO;
+  document.getElementById('yinyang-chart').innerHTML = chartHTML;
+  document.getElementById('yinyang-summary').innerHTML = summary;
 }
 
+// 8. 지장간 표시
+function displayJijanggan(saju) {
+  // 순서 변경: 시지 → 일지 → 월지 → 년지
+  const pillars = ['hour', 'day', 'month', 'year'];
+  const names = ['시지', '일지', '월지', '년지'];
 
-function OFdwK3Vh(IARM5XT1) {
-  
-  const KoYoSNvy = ['OpRKRS78', 'WHjsqFVR', 'R6anAZXi', 'JDmw63NN'];
-  const kQ5r1UbX = ['시지', '일지', '월지', '년지'];
+  let html = '';
+  pillars.forEach((p, idx) => {
+    const ji = saju.jiji[p];
 
-  let z0MYnRzG = '';
-  KoYoSNvy.qpB3jJGh((p, Ki8MOK2O) => {
-    const ji = IARM5XT1.xC2iOrJy[p];
-
-    
+    // ji가 있고 JIJANGGAN에 데이터가 있을 때만 처리
     if (ji && JIJANGGAN[ji]) {
-      const K1CAfvYe = JIJANGGAN[ji];
+      const list = JIJANGGAN[ji];
 
-      let FKmVBgkX = '';
-      K1CAfvYe.qpB3jJGh((Irz8eVbe) => {
-        FKmVBgkX += `
-                    <qZojOiNG aCly2GRM="dIBWS7X8-SO6J6eCT">
-                        <OaKCeIe9 aCly2GRM="dIBWS7X8-SO6J6eCT-iUd3UmGA">${Irz8eVbe.SO6J6eCT}</OaKCeIe9>
-                        <OaKCeIe9 aCly2GRM="dIBWS7X8-SO6J6eCT-z3waZHsf ${v24qW6mO(
-                          Irz8eVbe.z3waZHsf
-                        )}">${Irz8eVbe.z3waZHsf}</OaKCeIe9>
-                    </qZojOiNG>
+      let ganHTML = '';
+      list.forEach((item) => {
+        ganHTML += `
+                    <div class="jijanggan-gan">
+                        <span class="jijanggan-gan-name">${item.gan}</span>
+                        <span class="jijanggan-gan-element ${getElementClass(
+                          item.element
+                        )}">${item.element}</span>
+                    </div>
                 `;
       });
 
-      z0MYnRzG += `
-                <qZojOiNG aCly2GRM="dIBWS7X8-Irz8eVbe">
-                    <qZojOiNG aCly2GRM="dIBWS7X8-XeLAPJ2z">${kQ5r1UbX[Ki8MOK2O]} ${ji}</qZojOiNG>
-                    <qZojOiNG aCly2GRM="dIBWS7X8-SO6J6eCT-K1CAfvYe">${FKmVBgkX}</qZojOiNG>
-                </qZojOiNG>
+      html += `
+                <div class="jijanggan-item">
+                    <div class="jijanggan-title">${names[idx]} ${ji}</div>
+                    <div class="jijanggan-gan-list">${ganHTML}</div>
+                </div>
             `;
     }
   });
 
-  document.getElementById('dIBWS7X8-xB2spD4H').innerHTML = z0MYnRzG;
+  document.getElementById('jijanggan-analysis').innerHTML = html;
 }
 
-
-function wHclOR2H(Xql2wKFL, pMihX3rx) {
-  const dYKsi2Ks = {
-    
+// 9. 십성 표시 (10가지 세분화)
+function displaySipseong(sipseong, sipseongDetailed) {
+  const meanings = {
+    // 5가지 통합 (기존 호환성)
     比劫: '형제·친구·동료·경쟁',
     食傷: '표현·재능·자식·창의성',
     財星: '재물·배우자·실리·현실',
     官星: '직장·명예·권위·사회성',
     印星: '학문·어머니·지혜·학습',
 
-    
+    // 10가지 세분화
     比肩: '형제·동료·평등·협력',
     劫財: '경쟁·분쟁·탈취·손실',
     食神: '재능·여유·복록·자식(딸)',
     傷官: '표현·예술·비판·자식(아들)',
     偏財: '유동재산·사업·활동·투자',
     正財: '고정재산·월급·안정·절약',
-    偏官: '권력·승부·도전·군인·경찰', 
+    偏官: '권력·승부·도전·군인·경찰', // 칠살(七殺)
     正官: '명예·직장·법·공무원·질서',
-    偏印: '특수학문·예술·종교·의학', 
+    偏印: '특수학문·예술·종교·의학', // 도식(倒食)
     正印: '정규학문·어머니·명예·자격증',
   };
 
-  
-  if (pMihX3rx) {
-    let M3MhMGhG = '';
+  // 10가지 세분화 표시 (있으면 사용)
+  if (sipseongDetailed) {
+    let itemHTML = '';
 
-    
-    const ELnc0A7u = {
+    // 그룹별로 표시
+    const groups = {
       '比劫 (비겁)': ['比肩', '劫財'],
       '食傷 (식상)': ['食神', '傷官'],
       '財星 (재성)': ['偏財', '正財'],
@@ -3043,91 +3043,91 @@ function wHclOR2H(Xql2wKFL, pMihX3rx) {
       '印星 (인성)': ['偏印', '正印'],
     };
 
-    Object.xCKi9rKu(ELnc0A7u).qpB3jJGh(([m9rUnfPE, OuKIzHll]) => {
-      const MbZ5jV2u = OuKIzHll.iVULd45u(
-        (mdOa4rRL, birnfCY0) => mdOa4rRL + (pMihX3rx[birnfCY0] || 0),
+    Object.entries(groups).forEach(([groupName, stars]) => {
+      const groupTotal = stars.reduce(
+        (sum, star) => sum + (sipseongDetailed[star] || 0),
         0
       );
 
-      if (MbZ5jV2u > 0) {
-        M3MhMGhG += `<qZojOiNG aCly2GRM="Xql2wKFL-zuLt5tjq">`;
-        M3MhMGhG += `<qZojOiNG aCly2GRM="Xql2wKFL-zuLt5tjq-XeLAPJ2z">${m9rUnfPE} (총 ${MbZ5jV2u}개)</qZojOiNG>`;
+      if (groupTotal > 0) {
+        itemHTML += `<div class="sipseong-group">`;
+        itemHTML += `<div class="sipseong-group-title">${groupName} (총 ${groupTotal}개)</div>`;
 
-        OuKIzHll.qpB3jJGh((birnfCY0) => {
-          const BzWGAqHm = pMihX3rx[birnfCY0] || 0;
-          if (BzWGAqHm > 0) {
-            M3MhMGhG += `
-              <qZojOiNG aCly2GRM="Xql2wKFL-Irz8eVbe">
-                  <qZojOiNG aCly2GRM="Xql2wKFL-iUd3UmGA">${birnfCY0}</qZojOiNG>
-                  <qZojOiNG aCly2GRM="Xql2wKFL-BzWGAqHm">${BzWGAqHm}</qZojOiNG>
-                  <qZojOiNG aCly2GRM="Xql2wKFL-y2DF0BkE">${dYKsi2Ks[birnfCY0]}</qZojOiNG>
-              </qZojOiNG>
+        stars.forEach((star) => {
+          const count = sipseongDetailed[star] || 0;
+          if (count > 0) {
+            itemHTML += `
+              <div class="sipseong-item">
+                  <div class="sipseong-name">${star}</div>
+                  <div class="sipseong-count">${count}</div>
+                  <div class="sipseong-meaning">${meanings[star]}</div>
+              </div>
             `;
           }
         });
 
-        M3MhMGhG += `</qZojOiNG>`;
+        itemHTML += `</div>`;
       }
     });
 
-    
-    const iYn3I9HU = Object.T7Evi8oP(pMihX3rx).iVULd45u((a, b) =>
-      pMihX3rx[a] > pMihX3rx[b] ? a : b
+    // 가장 많은 십성 찾기
+    const maxStar = Object.keys(sipseongDetailed).reduce((a, b) =>
+      sipseongDetailed[a] > sipseongDetailed[b] ? a : b
     );
 
-    const YPPVqfLO = `
-      <NvAO6LJ1>▶ 십성 분포:</NvAO6LJ1> ${iYn3I9HU}이(가) ${
-      pMihX3rx[iYn3I9HU]
+    const summary = `
+      <strong>▶ 십성 분포:</strong> ${maxStar}이(가) ${
+      sipseongDetailed[maxStar]
     }개로 가장 많습니다.<br><br>
-      <NvAO6LJ1>▶ 해석:</NvAO6LJ1> ${UPb3g2la(
-        iYn3I9HU,
-        pMihX3rx
+      <strong>▶ 해석:</strong> ${getDetailedSipseongInterpretation(
+        maxStar,
+        sipseongDetailed
       )}
     `;
 
-    document.getElementById('Xql2wKFL-xB2spD4H').innerHTML = M3MhMGhG;
-    document.getElementById('Xql2wKFL-YPPVqfLO').innerHTML = YPPVqfLO;
+    document.getElementById('sipseong-analysis').innerHTML = itemHTML;
+    document.getElementById('sipseong-summary').innerHTML = summary;
   } else {
-    
-    let M3MhMGhG = '';
-    Object.T7Evi8oP(Xql2wKFL).qpB3jJGh((birnfCY0) => {
-      M3MhMGhG += `
-              <qZojOiNG aCly2GRM="Xql2wKFL-Irz8eVbe">
-                  <qZojOiNG aCly2GRM="Xql2wKFL-iUd3UmGA">${birnfCY0}</qZojOiNG>
-                  <qZojOiNG aCly2GRM="Xql2wKFL-BzWGAqHm">${Xql2wKFL[birnfCY0]}</qZojOiNG>
-                  <qZojOiNG aCly2GRM="Xql2wKFL-y2DF0BkE">${dYKsi2Ks[birnfCY0]}</qZojOiNG>
-              </qZojOiNG>
+    // 기존 5가지 통합 표시
+    let itemHTML = '';
+    Object.keys(sipseong).forEach((star) => {
+      itemHTML += `
+              <div class="sipseong-item">
+                  <div class="sipseong-name">${star}</div>
+                  <div class="sipseong-count">${sipseong[star]}</div>
+                  <div class="sipseong-meaning">${meanings[star]}</div>
+              </div>
           `;
     });
 
-    const al7LEXd1 = Object.T7Evi8oP(Xql2wKFL).iVULd45u((a, b) =>
-      Xql2wKFL[a] > Xql2wKFL[b] ? a : b
+    const max = Object.keys(sipseong).reduce((a, b) =>
+      sipseong[a] > sipseong[b] ? a : b
     );
-    const YPPVqfLO = `
-          <NvAO6LJ1>▶ 십성 분포:</NvAO6LJ1> ${al7LEXd1}이(가) ${
-      Xql2wKFL[al7LEXd1]
+    const summary = `
+          <strong>▶ 십성 분포:</strong> ${max}이(가) ${
+      sipseong[max]
     }개로 가장 많습니다.<br><br>
-          <NvAO6LJ1>▶ 해석:</NvAO6LJ1> ${
-            al7LEXd1 === '比劫'
+          <strong>▶ 해석:</strong> ${
+            max === '比劫'
               ? '형제, 친구, 동료와의 인연이 깊고 경쟁 의식이 강합니다. 협력과 독립의 균형이 중요합니다.'
-              : al7LEXd1 === '食傷'
+              : max === '食傷'
               ? '표현력과 재능이 뛰어나고 창의적입니다. 예술, 교육, 창작 분야에 적합합니다.'
-              : al7LEXd1 === '財星'
+              : max === '財星'
               ? '재물운이 강하고 현실적입니다. 사업이나 재테크에 관심이 많고 실속을 챙깁니다.'
-              : al7LEXd1 === '官星'
+              : max === '官星'
               ? '명예와 지위를 중시하고 조직생활에 적합합니다. 책임감이 강하고 원칙을 지킵니다.'
               : '학문과 지혜를 중시하고 어머니의 덕이 있습니다. 공부와 자격증 취득에 유리합니다.'
           }
     `;
 
-    document.getElementById('Xql2wKFL-xB2spD4H').innerHTML = M3MhMGhG;
-    document.getElementById('Xql2wKFL-YPPVqfLO').innerHTML = YPPVqfLO;
+    document.getElementById('sipseong-analysis').innerHTML = itemHTML;
+    document.getElementById('sipseong-summary').innerHTML = summary;
   }
 }
 
-
-function UPb3g2la(iYn3I9HU, pMihX3rx) {
-  const wtLs1s7f = {
+// 십성 세부 해석 함수
+function getDetailedSipseongInterpretation(maxStar, sipseongDetailed) {
+  const interpretations = {
     比肩: '형제, 동료와의 인연이 깊고 독립심이 강합니다. 자존심이 강하고 협력보다는 독자적인 행동을 선호합니다.',
     劫財: '경쟁심이 강하고 활동력이 뛰어납니다. 재물의 유출입이 많고 변화를 추구하는 성향이 있습니다.',
     食神: '재능이 뛰어나고 여유로우며 복록이 있습니다. 평화를 좋아하고 봉사정신이 강합니다.',
@@ -3140,601 +3140,601 @@ function UPb3g2la(iYn3I9HU, pMihX3rx) {
     正印: '정규 학문에 뛰어나고 어머니의 덕이 큽니다. 품위있고 학습능력이 뛰어나며 자격증 취득에 유리합니다.',
   };
 
-  return wtLs1s7f[iYn3I9HU] || '균형있는 십성 분포를 가지고 있습니다.';
+  return interpretations[maxStar] || '균형있는 십성 분포를 가지고 있습니다.';
 }
 
+// 10. 십이운성 상세 표시
+function displaySibiunDetail(sibiun) {
+  const pillars = ['year', 'month', 'day', 'hour'];
+  const names = ['년주', '월주', '일주', '시주'];
 
-function AS7ZnBp7(HJHbKqPP) {
-  const KoYoSNvy = ['JDmw63NN', 'R6anAZXi', 'WHjsqFVR', 'OpRKRS78'];
-  const kQ5r1UbX = ['년주', '월주', '일주', '시주'];
-
-  let lOjgIYBH = '';
-  KoYoSNvy.qpB3jJGh((p, Ki8MOK2O) => {
-    if (HJHbKqPP[p]) {
-      lOjgIYBH += `
-                <qZojOiNG aCly2GRM="HJHbKqPP-U2xieDOg-Irz8eVbe">
-                    <qZojOiNG aCly2GRM="HJHbKqPP-iUd3UmGA">${HJHbKqPP[p]}</qZojOiNG>
-                    <qZojOiNG aCly2GRM="HJHbKqPP-OthlApQy">${kQ5r1UbX[Ki8MOK2O]}</qZojOiNG>
-                    <qZojOiNG aCly2GRM="HJHbKqPP-TQmvGOur">${
-                      SIBIUNTEONG_DESC[HJHbKqPP[p]] || '정보 없음'
-                    }</qZojOiNG>
-                </qZojOiNG>
+  let gridHTML = '';
+  pillars.forEach((p, idx) => {
+    if (sibiun[p]) {
+      gridHTML += `
+                <div class="sibiun-detail-item">
+                    <div class="sibiun-name">${sibiun[p]}</div>
+                    <div class="sibiun-pillar">${names[idx]}</div>
+                    <div class="sibiun-desc">${
+                      SIBIUNTEONG_DESC[sibiun[p]] || '정보 없음'
+                    }</div>
+                </div>
             `;
     }
   });
 
-  const wcA9Zsxg = HJHbKqPP.WHjsqFVR;
-  const YPPVqfLO = `
-        <qZojOiNG aCly2GRM="CItaAHBp-YPPVqfLO">
-            <NvAO6LJ1>▶ 일주 십이운성:</NvAO6LJ1> ${wcA9Zsxg} (가장 중요)<br><br>
+  const dayState = sibiun.day;
+  const summary = `
+        <div class="sibiunteong-summary">
+            <strong>▶ 일주 십이운성:</strong> ${dayState} (가장 중요)<br><br>
             ${
-              ['長生', '冠帶', '建祿', '帝旺'].CDE6p5g0(wcA9Zsxg)
+              ['長生', '冠帶', '建祿', '帝旺'].includes(dayState)
                 ? '현재 생명력이 왕성하고 활동력이 강합니다. 적극적으로 일을 추진하기 좋은 상태입니다.'
-                : ['衰', '病', '死', '墓'].CDE6p5g0(wcA9Zsxg)
+                : ['衰', '病', '死', '墓'].includes(dayState)
                 ? '조심하고 신중해야 하는 시기입니다. 무리한 확장보다는 내실을 기하는 것이 좋습니다.'
                 : '준비와 변화의 시기입니다. 새로운 시작을 위한 기반을 다지는 때입니다.'
             }
-        </qZojOiNG>
+        </div>
     `;
 
-  document.getElementById('HJHbKqPP-U2xieDOg-xB2spD4H').innerHTML =
-    lOjgIYBH + YPPVqfLO;
+  document.getElementById('sibiun-detail-analysis').innerHTML =
+    gridHTML + summary;
 }
 
+// 11. 육친 표시
+function displayYukchin(yukchin) {
+  let gridHTML = '';
 
-function bgHgGeEa(GWnGpJOC) {
-  let lOjgIYBH = '';
-
-  Object.xCKi9rKu(GWnGpJOC).qpB3jJGh(([j6MfmN5p, V7vHVHxc]) => {
-    lOjgIYBH += `
-            <qZojOiNG aCly2GRM="GWnGpJOC-Irz8eVbe">
-                <qZojOiNG aCly2GRM="GWnGpJOC-XeLAPJ2z">${j6MfmN5p}</qZojOiNG>
-                <qZojOiNG aCly2GRM="GWnGpJOC-kvqUaG6N">
-                    <p><NvAO6LJ1>개수:</NvAO6LJ1> ${V7vHVHxc.BzWGAqHm}개</p>
-                    <p>${V7vHVHxc.TQmvGOur}</p>
-                </qZojOiNG>
-            </qZojOiNG>
+  Object.entries(yukchin).forEach(([relation, data]) => {
+    gridHTML += `
+            <div class="yukchin-item">
+                <div class="yukchin-title">${relation}</div>
+                <div class="yukchin-content">
+                    <p><strong>개수:</strong> ${data.count}개</p>
+                    <p>${data.desc}</p>
+                </div>
+            </div>
         `;
   });
 
-  const YPPVqfLO = `
-        <qZojOiNG aCly2GRM="GWnGpJOC-YPPVqfLO">
-            <NvAO6LJ1>▶ 육친 종합:</NvAO6LJ1><br>
+  const summary = `
+        <div class="yukchin-summary">
+            <strong>▶ 육친 종합:</strong><br>
             육친은 사주에서 인간관계를 나타냅니다. 
             각 육친의 개수가 적당하면 좋으나, 너무 많거나 없으면 그에 따른 특징이 나타납니다. 
             부족한 육친은 노력으로 보완하고, 많은 육친은 잘 활용하되 균형을 유지해야 합니다.
-        </qZojOiNG>
+        </div>
     `;
 
-  document.getElementById('GWnGpJOC-xB2spD4H').innerHTML = lOjgIYBH + YPPVqfLO;
+  document.getElementById('yukchin-analysis').innerHTML = gridHTML + summary;
 }
 
-
-function mhsAJNTb(P1aBAGa7) {
+// 12. 합 표시
+function displayHap(hap) {
   if (
-    P1aBAGa7.ZwHu7BX0.DFImMboA === 0 &&
-    P1aBAGa7.LdptinuZ.DFImMboA === 0 &&
-    P1aBAGa7.qGMXGO6e.DFImMboA === 0
+    hap.cheonganHap.length === 0 &&
+    hap.jijiHap.length === 0 &&
+    hap.samhap.length === 0
   ) {
-    document.getElementById('P1aBAGa7-xB2spD4H').innerHTML =
-      '<qZojOiNG aCly2GRM="no-P1aBAGa7">사주에 특별한 합이 없습니다</qZojOiNG>';
+    document.getElementById('hap-analysis').innerHTML =
+      '<div class="no-hap">사주에 특별한 합이 없습니다</div>';
     return;
   }
 
-  let z0MYnRzG = '';
+  let html = '';
 
-  if (P1aBAGa7.ZwHu7BX0.DFImMboA > 0) {
-    z0MYnRzG += `
-            <qZojOiNG aCly2GRM="P1aBAGa7-UMD95U9o">
-                <qZojOiNG aCly2GRM="P1aBAGa7-duqzFZjL">🤝 천간합(天干合)</qZojOiNG>
-                <qZojOiNG aCly2GRM="P1aBAGa7-AwufVxQN">
-                    ${P1aBAGa7.ZwHu7BX0
-                      .Sq4eP5Ja(
+  if (hap.cheonganHap.length > 0) {
+    html += `
+            <div class="hap-section">
+                <div class="hap-type">🤝 천간합(天干合)</div>
+                <div class="hap-items">
+                    ${hap.cheonganHap
+                      .map(
                         (h) =>
-                          `<qZojOiNG aCly2GRM="P1aBAGa7-Irz8eVbe">${h.Tm095qQL} (${h.iUd3UmGA}) → ${h.VA4Oh068}</qZojOiNG>`
+                          `<div class="hap-item">${h.pair} (${h.name}) → ${h.result}</div>`
                       )
-                      .npzBTJNh('')}
-                </qZojOiNG>
-                <qZojOiNG aCly2GRM="P1aBAGa7-TQmvGOur">
+                      .join('')}
+                </div>
+                <div class="hap-desc">
                     천간이 합하여 조화와 협력의 기운이 있습니다. 인간관계가 원만하고 협력이 잘 됩니다. 
                     합이 되면 새로운 오행(${
-                      P1aBAGa7.ZwHu7BX0[0].VA4Oh068
+                      hap.cheonganHap[0].result
                     })으로 변화합니다.
-                </qZojOiNG>
-            </qZojOiNG>
+                </div>
+            </div>
         `;
   }
 
-  if (P1aBAGa7.LdptinuZ.DFImMboA > 0) {
-    z0MYnRzG += `
-            <qZojOiNG aCly2GRM="P1aBAGa7-UMD95U9o">
-                <qZojOiNG aCly2GRM="P1aBAGa7-duqzFZjL">💫 지지 육합(地支六合)</qZojOiNG>
-                <qZojOiNG aCly2GRM="P1aBAGa7-AwufVxQN">
-                    ${P1aBAGa7.LdptinuZ
-                      .Sq4eP5Ja(
+  if (hap.jijiHap.length > 0) {
+    html += `
+            <div class="hap-section">
+                <div class="hap-type">💫 지지 육합(地支六合)</div>
+                <div class="hap-items">
+                    ${hap.jijiHap
+                      .map(
                         (h) =>
-                          `<qZojOiNG aCly2GRM="P1aBAGa7-Irz8eVbe">${h.Tm095qQL} → ${h.VA4Oh068}</qZojOiNG>`
+                          `<div class="hap-item">${h.pair} → ${h.result}</div>`
                       )
-                      .npzBTJNh('')}
-                </qZojOiNG>
-                <qZojOiNG aCly2GRM="P1aBAGa7-TQmvGOur">
+                      .join('')}
+                </div>
+                <div class="hap-desc">
                     지지가 합하여 새로운 기운을 생성합니다. 변화와 발전의 계기가 될 수 있으며, 
                     결혼운이나 사업 파트너십에 유리합니다.
-                </qZojOiNG>
-            </qZojOiNG>
+                </div>
+            </div>
         `;
   }
 
-  if (P1aBAGa7.qGMXGO6e.DFImMboA > 0) {
-    z0MYnRzG += `
-            <qZojOiNG aCly2GRM="P1aBAGa7-UMD95U9o">
-                <qZojOiNG aCly2GRM="P1aBAGa7-duqzFZjL">⭐ 三合(삼합)</qZojOiNG>
-                <qZojOiNG aCly2GRM="P1aBAGa7-AwufVxQN">
-                    ${P1aBAGa7.qGMXGO6e
-                      .Sq4eP5Ja(
+  if (hap.samhap.length > 0) {
+    html += `
+            <div class="hap-section">
+                <div class="hap-type">⭐ 三合(삼합)</div>
+                <div class="hap-items">
+                    ${hap.samhap
+                      .map(
                         (h) =>
-                          `<qZojOiNG aCly2GRM="P1aBAGa7-Irz8eVbe">${h.Nz6xUGyP} → ${h.iUd3UmGA} ${
-                            h.mN0UBy85 ? '(완성)' : '(반합)'
-                          }</qZojOiNG>`
+                          `<div class="hap-item">${h.pattern} → ${h.name} ${
+                            h.complete ? '(완성)' : '(반합)'
+                          }</div>`
                       )
-                      .npzBTJNh('')}
-                </qZojOiNG>
-                <qZojOiNG aCly2GRM="P1aBAGa7-TQmvGOur">
+                      .join('')}
+                </div>
+                <div class="hap-desc">
                     삼합은 가장 강력한 합의 기운입니다. ${
-                      P1aBAGa7.qGMXGO6e[0].VA4Oh068
+                      hap.samhap[0].result
                     } 오행의 힘이 크게 강화되어 
                     해당 분야에서 큰 성취가 가능합니다. ${
-                      P1aBAGa7.qGMXGO6e[0].mN0UBy85
+                      hap.samhap[0].complete
                         ? '완전한 삼합으로 매우 강력합니다.'
                         : '반합으로 완성되지 않았으나 영향력은 있습니다.'
                     }
-                </qZojOiNG>
-            </qZojOiNG>
+                </div>
+            </div>
         `;
   }
 
-  document.getElementById('P1aBAGa7-xB2spD4H').innerHTML = z0MYnRzG;
+  document.getElementById('hap-analysis').innerHTML = html;
 }
 
-
-
-function BYe2TkBW(RD5u18Ss) {
-  const kKYCBUrG = document.getElementById('RD5u18Ss-xB2spD4H');
+// 13. 형충파해 표시
+// 강화된 형충파해 표시 함수
+function displayHyungChungEnhanced(hyungchung) {
+  const container = document.getElementById('hyungchung-analysis');
 
   if (
-    RD5u18Ss.UrDD4Nv1.DFImMboA === 0 &&
-    RD5u18Ss.m5DVCJEr.DFImMboA === 0 &&
-    RD5u18Ss.pa.DFImMboA === 0 &&
-    RD5u18Ss.OBwBonsV.DFImMboA === 0 &&
-    RD5u18Ss.XceN1HC0.DFImMboA === 0
+    hyungchung.chung.length === 0 &&
+    hyungchung.hyung.length === 0 &&
+    hyungchung.pa.length === 0 &&
+    hyungchung.hae.length === 0 &&
+    hyungchung.wongjin.length === 0
   ) {
-    kKYCBUrG.innerHTML = `
-      <qZojOiNG style="UJyWhVPr-ib1rwzJf:POHNCWPm;Xse8owrK:30px;agSaZYEV:DL3nDv9L-xEXyiNb2(135deg,#CsREf9xG 0%,#HPQiAW2N 100%);mq0x0xuF-dQJ4zoC8:15px;">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:3em;MW0RkjO2-USwWzAgn:10px;">✅</qZojOiNG>
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.3em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#2e7d32;">${RD5u18Ss.YPPVqfLO}</qZojOiNG>
-      </qZojOiNG>
+    container.innerHTML = `
+      <div style="text-align:center;padding:30px;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);border-radius:15px;">
+        <div style="font-size:3em;margin-bottom:10px;">✅</div>
+        <div style="font-size:1.3em;font-weight:700;color:#2e7d32;">${hyungchung.summary}</div>
+      </div>
     `;
     return;
   }
 
-  let z0MYnRzG = `
-    <qZojOiNG style="agSaZYEV:#i5lebKuz;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:20px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #a1VHClsX;">
-      <qZojOiNG style="MSF8VRSk-l3dSJNbg:700;MSF8VRSk-QFYeY4ME:1.1em;HkF8konD:#tq60nxnG;">${RD5u18Ss.YPPVqfLO}</qZojOiNG>
-    </qZojOiNG>
+  let html = `
+    <div style="background:#fff3cd;padding:15px;border-radius:10px;margin-bottom:20px;border-left:4px solid #ff9800;">
+      <div style="font-weight:700;font-size:1.1em;color:#e65100;">${hyungchung.summary}</div>
+    </div>
   `;
 
-  
-  if (RD5u18Ss.UrDD4Nv1.DFImMboA > 0) {
-    z0MYnRzG += `
-      <qZojOiNG style="MW0RkjO2-USwWzAgn:25px;agSaZYEV:EP7RnItk;Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.4em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#E20GBKa1;MW0RkjO2-USwWzAgn:15px;mq0x0xuF-USwWzAgn:3px oyABhJdC #E20GBKa1;Xse8owrK-USwWzAgn:10px;">
+  // 충 (沖)
+  if (hyungchung.chung.length > 0) {
+    html += `
+      <div style="margin-bottom:25px;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div style="font-size:1.4em;font-weight:700;color:#d32f2f;margin-bottom:15px;border-bottom:3px solid #d32f2f;padding-bottom:10px;">
           ⚡ 충(沖) - 충돌과 변동
-        </qZojOiNG>
-        ${RD5u18Ss.UrDD4Nv1
-          .Sq4eP5Ja(
+        </div>
+        ${hyungchung.chung
+          .map(
             (c) => `
-          <qZojOiNG style="agSaZYEV:#Ahb2NSUV;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:12px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #E20GBKa1;">
-            <qZojOiNG style="erwK6stq:HFr8aVaG;thpMrT0V-kvqUaG6N:Vj3WhnK5-QYO2LXpb;ib1rwzJf-AwufVxQN:POHNCWPm;MW0RkjO2-USwWzAgn:10px;">
-              <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.2em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#XbpyA3Bg;">${
-                c.iUd3UmGA
-              }</qZojOiNG>
-              <qZojOiNG style="agSaZYEV:${
-                c.DSCAVzLo === '중요' ? '#E20GBKa1' : '#a1VHClsX'
-              };HkF8konD:EP7RnItk;Xse8owrK:4px 12px;mq0x0xuF-dQJ4zoC8:20px;MSF8VRSk-QFYeY4ME:0.85em;">
-                ${c.DSCAVzLo}
-              </qZojOiNG>
-            </qZojOiNG>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;MW0RkjO2-USwWzAgn:8px;">${
-              c.TQmvGOur
-            }</qZojOiNG>
+          <div style="background:#ffebee;padding:15px;border-radius:10px;margin-bottom:12px;border-left:4px solid #d32f2f;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div style="font-size:1.2em;font-weight:700;color:#b71c1c;">${
+                c.name
+              }</div>
+              <div style="background:${
+                c.severity === '중요' ? '#d32f2f' : '#ff9800'
+              };color:white;padding:4px 12px;border-radius:20px;font-size:0.85em;">
+                ${c.severity}
+              </div>
+            </div>
+            <div style="font-size:0.95em;color:#555;margin-bottom:8px;">${
+              c.desc
+            }</div>
             ${
-              c.CLchRNO6
-                ? `<qZojOiNG style="agSaZYEV:#KzZb5etn;Xse8owrK:10px;mq0x0xuF-dQJ4zoC8:8px;HkF8konD:#E20GBKa1;MSF8VRSk-l3dSJNbg:600;">📍 ${c.CLchRNO6}</qZojOiNG>`
+              c.impact
+                ? `<div style="background:#fff;padding:10px;border-radius:8px;color:#d32f2f;font-weight:600;">📍 ${c.impact}</div>`
                 : ''
             }
-            <qZojOiNG style="MW0RkjO2-bGrBuWte:8px;HkF8konD:#666;MSF8VRSk-QFYeY4ME:0.9em;">위치: ${c.faTednvj
-              .Sq4eP5Ja((p) => {
-                const kQ5r1UbX = {
-                  JDmw63NN: '년주',
-                  R6anAZXi: '월주',
-                  WHjsqFVR: '일주',
-                  OpRKRS78: '시주',
+            <div style="margin-top:8px;color:#666;font-size:0.9em;">위치: ${c.positions
+              .map((p) => {
+                const names = {
+                  year: '년주',
+                  month: '월주',
+                  day: '일주',
+                  hour: '시주',
                 };
-                return kQ5r1UbX[p];
+                return names[p];
               })
-              .npzBTJNh(', ')}</qZojOiNG>
-          </qZojOiNG>
+              .join(', ')}</div>
+          </div>
         `
           )
-          .npzBTJNh('')}
-      </qZojOiNG>
+          .join('')}
+      </div>
     `;
   }
 
-  
-  if (RD5u18Ss.m5DVCJEr.DFImMboA > 0) {
-    z0MYnRzG += `
-      <qZojOiNG style="MW0RkjO2-USwWzAgn:25px;agSaZYEV:EP7RnItk;Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.4em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#MM7KdyOo;MW0RkjO2-USwWzAgn:15px;mq0x0xuF-USwWzAgn:3px oyABhJdC #MM7KdyOo;Xse8owrK-USwWzAgn:10px;">
+  // 형 (刑)
+  if (hyungchung.hyung.length > 0) {
+    html += `
+      <div style="margin-bottom:25px;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div style="font-size:1.4em;font-weight:700;color:#c62828;margin-bottom:15px;border-bottom:3px solid #c62828;padding-bottom:10px;">
           ⚠️ 형(刑) - 형벌과 재난
-        </qZojOiNG>
-        ${RD5u18Ss.m5DVCJEr
-          .Sq4eP5Ja(
+        </div>
+        ${hyungchung.hyung
+          .map(
             (h) => `
-          <qZojOiNG style="agSaZYEV:#dCeTHBHZ;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:12px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #MM7KdyOo;">
-            <qZojOiNG style="erwK6stq:HFr8aVaG;thpMrT0V-kvqUaG6N:Vj3WhnK5-QYO2LXpb;ib1rwzJf-AwufVxQN:POHNCWPm;MW0RkjO2-USwWzAgn:10px;">
-              <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.2em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#XbpyA3Bg;">${
-                h.iUd3UmGA
-              }</qZojOiNG>
-              <qZojOiNG style="agSaZYEV:${
-                h.DSCAVzLo === '심각' ? '#MM7KdyOo' : '#imYQI5i6'
-              };HkF8konD:EP7RnItk;Xse8owrK:4px 12px;mq0x0xuF-dQJ4zoC8:20px;MSF8VRSk-QFYeY4ME:0.85em;">
-                ${h.DSCAVzLo}
-              </qZojOiNG>
-            </qZojOiNG>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;MW0RkjO2-USwWzAgn:8px;">${
-              h.duqzFZjL
-            }: ${h.TQmvGOur}</qZojOiNG>
-            <qZojOiNG style="agSaZYEV:#KzZb5etn;Xse8owrK:10px;mq0x0xuF-dQJ4zoC8:8px;HkF8konD:#MM7KdyOo;MSF8VRSk-l3dSJNbg:600;">
-              ${h.mN0UBy85 ? '🔴 완전형성' : '🟡 부분형성'} - ${h.uBxvPHTV}
-            </qZojOiNG>
-          </qZojOiNG>
+          <div style="background:#ffe5e5;padding:15px;border-radius:10px;margin-bottom:12px;border-left:4px solid #c62828;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div style="font-size:1.2em;font-weight:700;color:#b71c1c;">${
+                h.name
+              }</div>
+              <div style="background:${
+                h.severity === '심각' ? '#c62828' : '#ff6f00'
+              };color:white;padding:4px 12px;border-radius:20px;font-size:0.85em;">
+                ${h.severity}
+              </div>
+            </div>
+            <div style="font-size:0.95em;color:#555;margin-bottom:8px;">${
+              h.type
+            }: ${h.desc}</div>
+            <div style="background:#fff;padding:10px;border-radius:8px;color:#c62828;font-weight:600;">
+              ${h.complete ? '🔴 완전형성' : '🟡 부분형성'} - ${h.found}
+            </div>
+          </div>
         `
           )
-          .npzBTJNh('')}
-        <qZojOiNG style="agSaZYEV:#Ahb2NSUV;Xse8owrK:12px;mq0x0xuF-dQJ4zoC8:8px;MW0RkjO2-bGrBuWte:12px;HkF8konD:#XbpyA3Bg;MSF8VRSk-QFYeY4ME:0.95em;">
+          .join('')}
+        <div style="background:#ffebee;padding:12px;border-radius:8px;margin-top:12px;color:#b71c1c;font-size:0.95em;">
           ⚠️ 형은 충보다 더 흉한 작용을 합니다. 법적 문제, 사고, 질병, 가족 간 불화에 특히 주의하세요.
-        </qZojOiNG>
-      </qZojOiNG>
+        </div>
+      </div>
     `;
   }
 
-  
-  if (RD5u18Ss.pa.DFImMboA > 0) {
-    z0MYnRzG += `
-      <qZojOiNG style="MW0RkjO2-USwWzAgn:25px;agSaZYEV:EP7RnItk;Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.4em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#UVk8NsCR;MW0RkjO2-USwWzAgn:15px;mq0x0xuF-USwWzAgn:3px oyABhJdC #UVk8NsCR;Xse8owrK-USwWzAgn:10px;">
+  // 파 (破)
+  if (hyungchung.pa.length > 0) {
+    html += `
+      <div style="margin-bottom:25px;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div style="font-size:1.4em;font-weight:700;color:#e64a19;margin-bottom:15px;border-bottom:3px solid #e64a19;padding-bottom:10px;">
           💥 파(破) - 파괴와 손실
-        </qZojOiNG>
-        ${RD5u18Ss.pa
-          .Sq4eP5Ja(
+        </div>
+        ${hyungchung.pa
+          .map(
             (p) => `
-          <qZojOiNG style="agSaZYEV:#YsGTnlI3;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:12px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #UVk8NsCR;">
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#ZfRqW9Yu;MW0RkjO2-USwWzAgn:8px;">${p.iUd3UmGA}</qZojOiNG>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;MW0RkjO2-USwWzAgn:8px;">${p.TQmvGOur}</qZojOiNG>
-            <qZojOiNG style="agSaZYEV:#KzZb5etn;Xse8owrK:10px;mq0x0xuF-dQJ4zoC8:8px;HkF8konD:#UVk8NsCR;MSF8VRSk-QFYeY4ME:0.9em;">💡 ${p.CLchRNO6}</qZojOiNG>
-          </qZojOiNG>
+          <div style="background:#fff3e0;padding:15px;border-radius:10px;margin-bottom:12px;border-left:4px solid #e64a19;">
+            <div style="font-size:1.1em;font-weight:700;color:#d84315;margin-bottom:8px;">${p.name}</div>
+            <div style="font-size:0.95em;color:#555;margin-bottom:8px;">${p.desc}</div>
+            <div style="background:#fff;padding:10px;border-radius:8px;color:#e64a19;font-size:0.9em;">💡 ${p.impact}</div>
+          </div>
         `
           )
-          .npzBTJNh('')}
-      </qZojOiNG>
+          .join('')}
+      </div>
     `;
   }
 
-  
-  if (RD5u18Ss.OBwBonsV.DFImMboA > 0) {
-    z0MYnRzG += `
-      <qZojOiNG style="MW0RkjO2-USwWzAgn:25px;agSaZYEV:EP7RnItk;Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.4em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#pfTrYmld;MW0RkjO2-USwWzAgn:15px;mq0x0xuF-USwWzAgn:3px oyABhJdC #pfTrYmld;Xse8owrK-USwWzAgn:10px;">
+  // 해 (害)
+  if (hyungchung.hae.length > 0) {
+    html += `
+      <div style="margin-bottom:25px;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div style="font-size:1.4em;font-weight:700;color:#f57c00;margin-bottom:15px;border-bottom:3px solid #f57c00;padding-bottom:10px;">
           🔥 해(害) - 해침과 방해
-        </qZojOiNG>
-        ${RD5u18Ss.OBwBonsV
-          .Sq4eP5Ja(
+        </div>
+        ${hyungchung.hae
+          .map(
             (h) => `
-          <qZojOiNG style="agSaZYEV:#YPTmO5mg;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:12px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #pfTrYmld;">
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#tq60nxnG;MW0RkjO2-USwWzAgn:8px;">${h.iUd3UmGA}</qZojOiNG>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;MW0RkjO2-USwWzAgn:8px;">${h.TQmvGOur}</qZojOiNG>
-            <qZojOiNG style="agSaZYEV:#KzZb5etn;Xse8owrK:10px;mq0x0xuF-dQJ4zoC8:8px;HkF8konD:#pfTrYmld;MSF8VRSk-QFYeY4ME:0.9em;">📍 영향: ${h.CLchRNO6}</qZojOiNG>
-          </qZojOiNG>
+          <div style="background:#ffe0b2;padding:15px;border-radius:10px;margin-bottom:12px;border-left:4px solid #f57c00;">
+            <div style="font-size:1.1em;font-weight:700;color:#e65100;margin-bottom:8px;">${h.name}</div>
+            <div style="font-size:0.95em;color:#555;margin-bottom:8px;">${h.desc}</div>
+            <div style="background:#fff;padding:10px;border-radius:8px;color:#f57c00;font-size:0.9em;">📍 영향: ${h.impact}</div>
+          </div>
         `
           )
-          .npzBTJNh('')}
-      </qZojOiNG>
+          .join('')}
+      </div>
     `;
   }
 
-  
-  if (RD5u18Ss.XceN1HC0.DFImMboA > 0) {
-    z0MYnRzG += `
-      <qZojOiNG style="MW0RkjO2-USwWzAgn:25px;agSaZYEV:EP7RnItk;Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.4em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#5d4037;MW0RkjO2-USwWzAgn:15px;mq0x0xuF-USwWzAgn:3px oyABhJdC #5d4037;Xse8owrK-USwWzAgn:10px;">
+  // 원진 (怨嗔)
+  if (hyungchung.wongjin.length > 0) {
+    html += `
+      <div style="margin-bottom:25px;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div style="font-size:1.4em;font-weight:700;color:#5d4037;margin-bottom:15px;border-bottom:3px solid #5d4037;padding-bottom:10px;">
           😤 원진(怨嗔) - 원망과 분노
-        </qZojOiNG>
-        ${RD5u18Ss.XceN1HC0
-          .Sq4eP5Ja(
+        </div>
+        ${hyungchung.wongjin
+          .map(
             (w) => `
-          <qZojOiNG style="agSaZYEV:#c4811O98;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:12px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #5d4037;">
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#3e2723;MW0RkjO2-USwWzAgn:8px;">${w.Tm095qQL}</qZojOiNG>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;">${w.TQmvGOur}</qZojOiNG>
-          </qZojOiNG>
+          <div style="background:#efebe9;padding:15px;border-radius:10px;margin-bottom:12px;border-left:4px solid #5d4037;">
+            <div style="font-size:1.1em;font-weight:700;color:#3e2723;margin-bottom:8px;">${w.pair}</div>
+            <div style="font-size:0.95em;color:#555;">${w.desc}</div>
+          </div>
         `
           )
-          .npzBTJNh('')}
-      </qZojOiNG>
+          .join('')}
+      </div>
     `;
   }
 
-  kKYCBUrG.innerHTML = z0MYnRzG;
+  container.innerHTML = html;
 }
 
-
-function Hnr2iX3z(RD5u18Ss) {
-  
-  BYe2TkBW(RD5u18Ss);
+// 기존 함수 유지 (호환성)
+function displayHyungChung(hyungchung) {
+  // 강화 버전으로 리다이렉트
+  displayHyungChungEnhanced(hyungchung);
 }
 
+// 14. 신살 표시
+// 14. 神殺(신살) 표시
+function displaySinsal(sinsal) {
+  let html = '<div class="sinsal-grid">';
 
-
-function vo02EDZR(bfgQkUBn) {
-  let z0MYnRzG = '<qZojOiNG aCly2GRM="bfgQkUBn-pyQ38Qr0">';
-
-  bfgQkUBn.ysxK3Ued.qpB3jJGh((s) => {
-    z0MYnRzG += `
-            <qZojOiNG aCly2GRM="bfgQkUBn-Irz8eVbe bfgQkUBn-ysxK3Ued">
-                <qZojOiNG aCly2GRM="bfgQkUBn-iUd3UmGA">✨ ${s.iUd3UmGA}</qZojOiNG>
-                <qZojOiNG aCly2GRM="bfgQkUBn-TQmvGOur">${s.TQmvGOur}</qZojOiNG>
-            </qZojOiNG>
+  sinsal.good.forEach((s) => {
+    html += `
+            <div class="sinsal-item sinsal-good">
+                <div class="sinsal-name">✨ ${s.name}</div>
+                <div class="sinsal-desc">${s.desc}</div>
+            </div>
         `;
   });
 
-  bfgQkUBn.ywdZqTq0.qpB3jJGh((s) => {
-    z0MYnRzG += `
-            <qZojOiNG aCly2GRM="bfgQkUBn-Irz8eVbe bfgQkUBn-ywdZqTq0">
-                <qZojOiNG aCly2GRM="bfgQkUBn-iUd3UmGA">⚠️ ${s.iUd3UmGA}</qZojOiNG>
-                <qZojOiNG aCly2GRM="bfgQkUBn-TQmvGOur">${s.TQmvGOur}</qZojOiNG>
-            </qZojOiNG>
+  sinsal.bad.forEach((s) => {
+    html += `
+            <div class="sinsal-item sinsal-bad">
+                <div class="sinsal-name">⚠️ ${s.name}</div>
+                <div class="sinsal-desc">${s.desc}</div>
+            </div>
         `;
   });
 
-  bfgQkUBn.wzfrEzp1.qpB3jJGh((s) => {
-    z0MYnRzG += `
-            <qZojOiNG aCly2GRM="bfgQkUBn-Irz8eVbe" style="agSaZYEV:DL3nDv9L-xEXyiNb2(135deg,#itWTqpR7 0%,#i5lebKuz 100%);mq0x0xuF-HkF8konD:#ceJOQRsD;">
-                <qZojOiNG aCly2GRM="bfgQkUBn-iUd3UmGA" style="HkF8konD:#pfTrYmld;">⭐ ${s.iUd3UmGA}</qZojOiNG>
-                <qZojOiNG aCly2GRM="bfgQkUBn-TQmvGOur">${s.TQmvGOur}</qZojOiNG>
-            </qZojOiNG>
+  sinsal.special.forEach((s) => {
+    html += `
+            <div class="sinsal-item" style="background:linear-gradient(135deg,#fff9e6 0%,#fff3cd 100%);border-color:#ffc107;">
+                <div class="sinsal-name" style="color:#f57c00;">⭐ ${s.name}</div>
+                <div class="sinsal-desc">${s.desc}</div>
+            </div>
         `;
   });
 
-  z0MYnRzG += '</qZojOiNG>';
+  html += '</div>';
 
   if (
-    bfgQkUBn.ysxK3Ued.DFImMboA === 0 &&
-    bfgQkUBn.ywdZqTq0.DFImMboA === 0 &&
-    bfgQkUBn.wzfrEzp1.DFImMboA === 0
+    sinsal.good.length === 0 &&
+    sinsal.bad.length === 0 &&
+    sinsal.special.length === 0
   ) {
-    z0MYnRzG =
-      '<qZojOiNG style="UJyWhVPr-ib1rwzJf:POHNCWPm;HkF8konD:#757575;">사주에 특별한 神殺(신살)이 확인되지 않았습니다</qZojOiNG>';
+    html =
+      '<div style="text-align:center;color:#757575;">사주에 특별한 神殺(신살)이 확인되지 않았습니다</div>';
   }
 
-  document.getElementById('bfgQkUBn-xB2spD4H').innerHTML = z0MYnRzG;
+  document.getElementById('sinsal-analysis').innerHTML = html;
 }
 
+// 15. 空亡(공망) 상세 표시
+function displayGongmangDetail(saju, yearGan, yearJi) {
+  const jijiList = Object.values(saju.jiji);
+  const pillars = ['年支', '月支', '日支', '時支'];
 
-function y5sCBWRP(IARM5XT1, zbSC5D52, JsFzAGqt) {
-  const FQ7ao4Vp = Object.mtuWrgmi(IARM5XT1.xC2iOrJy);
-  const KoYoSNvy = ['年支', '月支', '日支', '時支'];
+  let html = '<div style="line-height:2;">';
+  html +=
+    '<p><strong>▶ 空亡(공망)이란?</strong> 60갑자 순환에서 빠진 지지로, 그 위치의 기운이 약하거나 공허함을 의미합니다.</p><br>';
+  html +=
+    '<p><strong>▶ 각 기둥의 空亡(공망) 여부:</strong></p><ul style="margin-top:10px;">';
 
-  let z0MYnRzG = '<qZojOiNG style="NBnoE0PG-KXZdsU0k:2;">';
-  z0MYnRzG +=
-    '<p><NvAO6LJ1>▶ 空亡(공망)이란?</NvAO6LJ1> 60갑자 순환에서 빠진 지지로, 그 위치의 기운이 약하거나 공허함을 의미합니다.</p><br>';
-  z0MYnRzG +=
-    '<p><NvAO6LJ1>▶ 각 기둥의 空亡(공망) 여부:</NvAO6LJ1></p><ul style="MW0RkjO2-bGrBuWte:10px;">';
-
-  FQ7ao4Vp.qpB3jJGh((ji, Ki8MOK2O) => {
-    const OtDs22Bc = GOzMHXzz(zbSC5D52, JsFzAGqt, ji);
-    z0MYnRzG += `<li style="Xse8owrK:8px 0;">${KoYoSNvy[Ki8MOK2O]} ${ji}: ${
-      OtDs22Bc
-        ? '<NvAO6LJ1 style="HkF8konD:#MM7KdyOo;">空亡 ⚠️</NvAO6LJ1> - 이 분야가 약하거나 공허할 수 있습니다'
-        : '<NvAO6LJ1 style="HkF8konD:#2e7d32;">정상 ✓</NvAO6LJ1>'
+  jijiList.forEach((ji, idx) => {
+    const isGongmang = getGongmang(yearGan, yearJi, ji);
+    html += `<li style="padding:8px 0;">${pillars[idx]} ${ji}: ${
+      isGongmang
+        ? '<strong style="color:#c62828;">空亡 ⚠️</strong> - 이 분야가 약하거나 공허할 수 있습니다'
+        : '<strong style="color:#2e7d32;">정상 ✓</strong>'
     }</li>`;
   });
 
-  z0MYnRzG += '</ul><br>';
-  z0MYnRzG +=
-    '<p><NvAO6LJ1>▶ 대처법:</NvAO6LJ1> 空亡(공망)이 있는 기둥은 노력으로 보완해야 합니다. 해당 육친이나 분야에 더욱 신경 쓰고 준비하세요.</p>';
-  z0MYnRzG += '</qZojOiNG>';
+  html += '</ul><br>';
+  html +=
+    '<p><strong>▶ 대처법:</strong> 空亡(공망)이 있는 기둥은 노력으로 보완해야 합니다. 해당 육친이나 분야에 더욱 신경 쓰고 준비하세요.</p>';
+  html += '</div>';
 
-  document.getElementById('VT6bTHS7-U2xieDOg-xB2spD4H').innerHTML = z0MYnRzG;
+  document.getElementById('gongmang-detail-analysis').innerHTML = html;
 }
 
+// 16. 特殊 神殺(신살) 표시
+function displaySpecialSinsal(sinsal) {
+  let html = '<div style="line-height:2;">';
 
-function vNlhjt5o(bfgQkUBn) {
-  let z0MYnRzG = '<qZojOiNG style="NBnoE0PG-KXZdsU0k:2;">';
-
-  const Q1R2IfOR =
-    bfgQkUBn.ysxK3Ued.mg75RmV4((s) => ['天乙貴人', '學堂貴人'].CDE6p5g0(s.iUd3UmGA)) ||
-    bfgQkUBn.ywdZqTq0.mg75RmV4((s) =>
-      ['桃花殺', '驛馬殺', '三災', '白虎大殺'].CDE6p5g0(s.iUd3UmGA)
+  const hasSpecial =
+    sinsal.good.some((s) => ['天乙貴人', '學堂貴人'].includes(s.name)) ||
+    sinsal.bad.some((s) =>
+      ['桃花殺', '驛馬殺', '三災', '白虎大殺'].includes(s.name)
     );
 
-  if (!Q1R2IfOR) {
-    z0MYnRzG +=
-      '<p style="UJyWhVPr-ib1rwzJf:POHNCWPm;HkF8konD:#757575;">특별히 주목할 만한 神殺(신살)이 없습니다</p>';
+  if (!hasSpecial) {
+    html +=
+      '<p style="text-align:center;color:#757575;">특별히 주목할 만한 神殺(신살)이 없습니다</p>';
   } else {
-    z0MYnRzG += '<p><NvAO6LJ1>▶ 주요 神殺(신살) 상세 해석:</NvAO6LJ1></p><br>';
+    html += '<p><strong>▶ 주요 神殺(신살) 상세 해석:</strong></p><br>';
 
-    bfgQkUBn.ysxK3Ued.qpB3jJGh((s) => {
-      if (['天乙貴人', '學堂貴人'].CDE6p5g0(s.iUd3UmGA)) {
-        z0MYnRzG += `<p style="MW0RkjO2-USwWzAgn:15px;">• <NvAO6LJ1>${s.iUd3UmGA}:</NvAO6LJ1> ${s.TQmvGOur}</p>`;
+    sinsal.good.forEach((s) => {
+      if (['天乙貴人', '學堂貴人'].includes(s.name)) {
+        html += `<p style="margin-bottom:15px;">• <strong>${s.name}:</strong> ${s.desc}</p>`;
       }
     });
 
-    bfgQkUBn.ywdZqTq0.qpB3jJGh((s) => {
-      if (['桃花殺', '驛馬殺', '三災', '白虎大殺'].CDE6p5g0(s.iUd3UmGA)) {
-        z0MYnRzG += `<p style="MW0RkjO2-USwWzAgn:15px;">• <NvAO6LJ1>${s.iUd3UmGA}:</NvAO6LJ1> ${s.TQmvGOur}</p>`;
+    sinsal.bad.forEach((s) => {
+      if (['桃花殺', '驛馬殺', '三災', '白虎大殺'].includes(s.name)) {
+        html += `<p style="margin-bottom:15px;">• <strong>${s.name}:</strong> ${s.desc}</p>`;
       }
     });
   }
 
-  z0MYnRzG += '</qZojOiNG>';
-  document.getElementById('wzfrEzp1-bfgQkUBn-xB2spD4H').innerHTML = z0MYnRzG;
+  html += '</div>';
+  document.getElementById('special-sinsal-analysis').innerHTML = html;
 }
 
+// 17. 대운 표시
+function displayDaeun(daeunList, dayGan, birthYear) {
+  let itemsHTML = '';
 
-function ackr4kMh(G0haiCJg, sbJPsyHj, QPyMgrz3) {
-  let KPHzHcO5 = '';
+  // 대운 배열을 역순으로 정렬 (나이 많은 쪽이 왼쪽)
+  const reversedDaeun = [...daeunList].reverse();
 
-  
-  const qCC1teGU = [...G0haiCJg].WeDSE3gK();
+  // 대운 항목들 생성
+  reversedDaeun.forEach((daeun) => {
+    const ganEl = CHEONGAN_ELEMENT[daeun.gan];
+    const jiEl = JIJI_ELEMENT[daeun.jiji];
 
-  
-  qCC1teGU.qpB3jJGh((cLJ0WBlw) => {
-    const fRB9VdJU = CHEONGAN_ELEMENT[cLJ0WBlw.SO6J6eCT];
-    const ea6V77bw = JIJI_ELEMENT[cLJ0WBlw.xC2iOrJy];
+    // 대운 시작 연도 계산: 출생연도 + 대운 시작 나이
+    const daeunStartYear = birthYear + daeun.age;
 
-    
-    const IQ6SqCdf = QPyMgrz3 + cLJ0WBlw.KRSUWR7g;
-
-    KPHzHcO5 += `
-            <qZojOiNG aCly2GRM="cLJ0WBlw-Irz8eVbe" BlXgvOAG="pcUhFIDj(${IQ6SqCdf})" style="tbgQPFRJ:rDcjmySz;" XeLAPJ2z="클릭하여 ${IQ6SqCdf}년 (만 ${
-      cLJ0WBlw.KRSUWR7g
+    itemsHTML += `
+            <div class="daeun-item" onclick="scrollToYeonun(${daeunStartYear})" style="cursor:pointer;" title="클릭하여 ${daeunStartYear}년 (만 ${
+      daeun.age
     }세) 연운 보기">
-                <qZojOiNG aCly2GRM="cLJ0WBlw-KRSUWR7g">${cLJ0WBlw.KRSUWR7g}-${cLJ0WBlw.jmuIqU30}세</qZojOiNG>
-                <qZojOiNG aCly2GRM="SO6J6eCT-x5EMmYXR ${v24qW6mO(fRB9VdJU)}">${
-      cLJ0WBlw.SO6J6eCT
-    }</qZojOiNG>
-                <qZojOiNG aCly2GRM="ji-x5EMmYXR ${v24qW6mO(ea6V77bw)}">${cLJ0WBlw.xC2iOrJy}</qZojOiNG>
-            </qZojOiNG>
+                <div class="daeun-age">${daeun.age}-${daeun.endAge}세</div>
+                <div class="gan-box ${getElementClass(ganEl)}">${
+      daeun.gan
+    }</div>
+                <div class="ji-box ${getElementClass(jiEl)}">${daeun.jiji}</div>
+            </div>
         `;
   });
 
-  
-  const s1db9oQ2 = `
-        <qZojOiNG aCly2GRM="cLJ0WBlw-BNSDcgyN">
-            ${KPHzHcO5}
-        </qZojOiNG>
+  // 스크롤 컨테이너로 감싸기
+  const chartHTML = `
+        <div class="daeun-scroll">
+            ${itemsHTML}
+        </div>
     `;
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  const YPPVqfLO = ``;
-  
-  document.getElementById('cLJ0WBlw-lMnn9MIA').innerHTML = s1db9oQ2;
-  document.getElementById('cLJ0WBlw-YPPVqfLO').innerHTML = YPPVqfLO;
+  //const summary = `
+  //      <div class="daeun-summary">
+  //          <strong>▶ 대운 해석:</strong><br>
+  //          대운은 10年 주기로 바뀌는 큰 운의 흐름입니다.
+  //          각 대운마다 오행의 영향이 달라지므로, 현재와 미래의 대운을 파악하여
+  //          인생 계획을 세우는 것이 중요합니다.
+  //          용신에 해당하는 대운에는 발전하고, 기신에 해당하는 대운에는 신중해야 합니다.
+  //          <br><br>
+  //          <strong>💡 대운 클릭:</strong> 각 대운을 클릭하면 해당 나이의 연도 연운으로 이동합니다.
+  //      </div>
+  //  `;
+  //---
+  const summary = ``;
+  //---
+  document.getElementById('daeun-chart').innerHTML = chartHTML;
+  document.getElementById('daeun-summary').innerHTML = summary;
 
-  
+  // 대운 스크롤을 중앙으로 이동
   setTimeout(() => {
-    const dYJMqkr1 = document.querySelector('.cLJ0WBlw-BNSDcgyN');
-    if (dYJMqkr1) {
-      
-      const yJOfU3la = new Date().mNXky9sG();
-      const a8ThLeLA = yJOfU3la - QPyMgrz3;
+    const daeunScroll = document.querySelector('.daeun-scroll');
+    if (daeunScroll) {
+      // 현재 나이 계산
+      const currentYear = new Date().getFullYear();
+      const currentAge = currentYear - birthYear;
 
-      
-      const VvBXkgwZ = G0haiCJg.LG0olSIM(
-        (d) => a8ThLeLA >= d.KRSUWR7g && a8ThLeLA <= d.jmuIqU30
+      // 현재 나이에 해당하는 대운 찾기
+      const currentDaeun = daeunList.find(
+        (d) => currentAge >= d.age && currentAge <= d.endAge
       );
 
-      if (VvBXkgwZ) {
-        
-        const EcBJ9TI0 = document.X8SwBKOB('.cLJ0WBlw-Irz8eVbe');
-        let Q8LEMXyv = null;
+      if (currentDaeun) {
+        // 현재 대운 항목 찾기 (title 속성 사용)
+        const daeunItems = document.querySelectorAll('.daeun-item');
+        let targetItem = null;
 
-        EcBJ9TI0.qpB3jJGh((Irz8eVbe) => {
-          const XeLAPJ2z = Irz8eVbe.Lv6rZjxb('XeLAPJ2z');
-          if (XeLAPJ2z && XeLAPJ2z.CDE6p5g0(`만 ${VvBXkgwZ.KRSUWR7g}세`)) {
-            Q8LEMXyv = Irz8eVbe;
+        daeunItems.forEach((item) => {
+          const title = item.getAttribute('title');
+          if (title && title.includes(`만 ${currentDaeun.age}세`)) {
+            targetItem = item;
           }
         });
 
-        if (Q8LEMXyv) {
-          
-          const MqoXpc7d = Q8LEMXyv.LQIXQh63;
-          const zXAqM4N4 = Q8LEMXyv.iR2v3w7r;
-          const XGTYITWq = dYJMqkr1.iR2v3w7r;
-          const N5FPOzIV = MqoXpc7d - XGTYITWq / 2 + zXAqM4N4 / 2;
-          dYJMqkr1.phfvOTXj({ dy0UJ5N0: N5FPOzIV, sVRZRfMF: 'Sv3bYoEo' });
+        if (targetItem) {
+          // 해당 항목을 중앙으로 스크롤
+          const itemLeft = targetItem.offsetLeft;
+          const itemWidth = targetItem.offsetWidth;
+          const scrollWidth = daeunScroll.offsetWidth;
+          const targetScroll = itemLeft - scrollWidth / 2 + itemWidth / 2;
+          daeunScroll.scrollTo({ left: targetScroll, behavior: 'smooth' });
 
-          
-          Q8LEMXyv.style.agSaZYEV =
-            'DL3nDv9L-xEXyiNb2(135deg, #itWTqpR7 0%, #i5lebKuz 100%)';
-          Q8LEMXyv.style.mq0x0xuF = '3px oyABhJdC #ceJOQRsD';
-          Q8LEMXyv.style.IH98tKA8 = '0 4px 12px wj5MkFlR(255, 193, 7, 0.3)';
+          // 현재 대운 하이라이트
+          targetItem.style.background =
+            'linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%)';
+          targetItem.style.border = '3px solid #ffc107';
+          targetItem.style.boxShadow = '0 4px 12px rgba(255, 193, 7, 0.3)';
         }
       } else {
-        
-        const XGTYITWq = dYJMqkr1.XGTYITWq;
-        const ZLy4cart = dYJMqkr1.ZLy4cart;
-        const XhKjyhZO = (XGTYITWq - ZLy4cart) / 2;
-        dYJMqkr1.phfvOTXj({ dy0UJ5N0: XhKjyhZO, sVRZRfMF: 'Sv3bYoEo' });
+        // 현재 나이에 해당하는 대운이 없으면 중앙으로
+        const scrollWidth = daeunScroll.scrollWidth;
+        const clientWidth = daeunScroll.clientWidth;
+        const centerScroll = (scrollWidth - clientWidth) / 2;
+        daeunScroll.scrollTo({ left: centerScroll, behavior: 'smooth' });
       }
     }
   }, 100);
 }
 
+// 17-2. 연운 표시 (년주 60갑자)
+function displayYeonun(yeonunList) {
+  // 음수 나이 필터링 (나이가 1 이상인 것만)
+  const filteredYeonun = yeonunList.filter((yeonun) => yeonun.age >= 1);
 
-function eziNSggj(rSQLSBhO) {
-  
-  const E5q6z6ry = rSQLSBhO.FI0mpC7U((AFbeYj5G) => AFbeYj5G.KRSUWR7g >= 1);
+  let chartHTML =
+    '<div class="yeonun-container" style="margin-top:30px;"><h3 style="display:none;">📅 年運 (연운) - 60甲子 年柱 <span style="font-size:0.8em;color:#666;">(클릭하여 월운 보기)</span></h3><div class="yeonun-scroll" style="display:flex;flex-direction:row-reverse;overflow-x:auto;padding:10px 0;gap:8px;">';
 
-  let s1db9oQ2 =
-    '<qZojOiNG aCly2GRM="AFbeYj5G-kKYCBUrG" style="MW0RkjO2-bGrBuWte:30px;"><h3 style="erwK6stq:WfVaStFg;">📅 年運 (연운) - 60甲子 年柱 <OaKCeIe9 style="MSF8VRSk-QFYeY4ME:0.8em;HkF8konD:#666;">(클릭하여 월운 보기)</OaKCeIe9></h3><qZojOiNG aCly2GRM="AFbeYj5G-BNSDcgyN" style="erwK6stq:HFr8aVaG;HFr8aVaG-qLD8ZDIS:T0mlTvM7-WeDSE3gK;LTnFT33H-x:guXSQNFx;Xse8owrK:10px 0;KZQyUHjD:8px;">';
+  // 1줄로 표시
+  filteredYeonun.forEach((yeonun) => {
+    const ganEl = CHEONGAN_ELEMENT[yeonun.gan];
+    const jiEl = JIJI_ELEMENT[yeonun.ji]; // 'jiji'가 아니라 'ji'
 
-  
-  E5q6z6ry.qpB3jJGh((AFbeYj5G) => {
-    const fRB9VdJU = CHEONGAN_ELEMENT[AFbeYj5G.SO6J6eCT];
-    const ea6V77bw = JIJI_ELEMENT[AFbeYj5G.ji]; 
-
-    s1db9oQ2 += `
-            <qZojOiNG aCly2GRM="AFbeYj5G-Irz8eVbe" V7vHVHxc-JDmw63NN="${
-              AFbeYj5G.JDmw63NN
-            }" BlXgvOAG="pcUhFIDj(${
-      AFbeYj5G.JDmw63NN
-    });" style="tbgQPFRJ:rDcjmySz;" XeLAPJ2z="클릭하여 ${AFbeYj5G.JDmw63NN}년 월운 보기">
-                <qZojOiNG aCly2GRM="AFbeYj5G-JDmw63NN">${AFbeYj5G.KRSUWR7g}세 · ${AFbeYj5G.JDmw63NN}</qZojOiNG>
-                <qZojOiNG aCly2GRM="AFbeYj5G-keaQc9n4">
-                    <qZojOiNG aCly2GRM="SO6J6eCT-x5EMmYXR ${v24qW6mO(fRB9VdJU)}">${
-      AFbeYj5G.SO6J6eCT
-    }</qZojOiNG>
-                    <qZojOiNG aCly2GRM="ji-x5EMmYXR ${v24qW6mO(ea6V77bw)}">${
-      AFbeYj5G.ji
-    }</qZojOiNG>
-                </qZojOiNG>
-            </qZojOiNG>
+    chartHTML += `
+            <div class="yeonun-item" data-year="${
+              yeonun.year
+            }" onclick="scrollToYeonun(${
+      yeonun.year
+    });" style="cursor:pointer;" title="클릭하여 ${yeonun.year}년 월운 보기">
+                <div class="yeonun-year">${yeonun.age}세 · ${yeonun.year}</div>
+                <div class="yeonun-ganzhi">
+                    <div class="gan-box ${getElementClass(ganEl)}">${
+      yeonun.gan
+    }</div>
+                    <div class="ji-box ${getElementClass(jiEl)}">${
+      yeonun.ji
+    }</div>
+                </div>
+            </div>
         `;
   });
 
-  s1db9oQ2 += '</qZojOiNG></qZojOiNG>';
+  chartHTML += '</div></div>';
 
-  return s1db9oQ2;
+  return chartHTML;
 }
 
+// 17-3. 월운 표시 (전년도 12개월 + 당년도 12개월 + 익년도 12개월 = 36개월)
+function displayWolun(wolunList) {
+  let chartHTML =
+    '<div class="wolun-container" id="wolun-container" style="margin-top:30px;"><h3 style="display:none;">📆 月運 (월운) - 前年·現在年·次年 月柱 (36개월)</h3>';
 
-function sj8Rpza2(pS3DZeom) {
-  let s1db9oQ2 =
-    '<qZojOiNG aCly2GRM="qOoeDImX-kKYCBUrG" id="qOoeDImX-kKYCBUrG" style="MW0RkjO2-bGrBuWte:30px;"><h3 style="erwK6stq:WfVaStFg;">📆 月運 (월운) - 前年·現在年·次年 月柱 (36개월)</h3>';
-
-  const O33SrZis = [
+  const monthNames = [
     '1月',
     '2月',
     '3月',
@@ -3749,1138 +3749,1152 @@ function sj8Rpza2(pS3DZeom) {
     '12月',
   ];
 
-  
-  const udCrjBZm = [...new Set(pS3DZeom.Sq4eP5Ja((w) => w.JDmw63NN))].iJ8Xs1KF(
+  // 연도별로 정렬
+  const years = [...new Set(wolunList.map((w) => w.year))].sort(
     (a, b) => a - b
   );
 
-  if (udCrjBZm.DFImMboA === 0) {
-    s1db9oQ2 +=
-      '<qZojOiNG style="Xse8owrK:20px;UJyWhVPr-ib1rwzJf:POHNCWPm;HkF8konD:#666;">월운 데이터가 없습니다.</qZojOiNG></qZojOiNG>';
-    return s1db9oQ2;
+  if (years.length === 0) {
+    chartHTML +=
+      '<div style="padding:20px;text-align:center;color:#666;">월운 데이터가 없습니다.</div></div>';
+    return chartHTML;
   }
 
-  
-  const I5NE7j3N = udCrjBZm[0];
-  const yJOfU3la = udCrjBZm[1] || I5NE7j3N;
-  const KFsUlwZV = udCrjBZm[2] || udCrjBZm[1] || I5NE7j3N;
+  // 전년도, 당년도, 익년도 구분
+  const prevYear = years[0];
+  const currentYear = years[1] || prevYear;
+  const nextYear = years[2] || years[1] || prevYear;
 
-  s1db9oQ2 += `
-        <qZojOiNG style="erwK6stq:WfVaStFg;">
-            <NvAO6LJ1 style="HkF8konD:#1976d2;">익년도 ${KFsUlwZV}년 12개월 → 당년도 ${yJOfU3la}년 12개월 → 전년도 ${I5NE7j3N}년 12개월</NvAO6LJ1>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.85em;HkF8konD:#666;MW0RkjO2-bGrBuWte:5px;">각 연도마다 12월→11월→...→2월→1월 순서 (왼쪽에서 오른쪽으로)</qZojOiNG>
-        </qZojOiNG>
+  chartHTML += `
+        <div style="display:none;">
+            <strong style="color:#1976d2;">익년도 ${nextYear}년 12개월 → 당년도 ${currentYear}년 12개월 → 전년도 ${prevYear}년 12개월</strong>
+            <div style="font-size:0.85em;color:#666;margin-top:5px;">각 연도마다 12월→11월→...→2월→1월 순서 (왼쪽에서 오른쪽으로)</div>
+        </div>
     `;
 
-  s1db9oQ2 +=
-    '<qZojOiNG aCly2GRM="qOoeDImX-BNSDcgyN" style="erwK6stq:HFr8aVaG;LTnFT33H-x:guXSQNFx;Xse8owrK:15px 0;KZQyUHjD:8px;">';
+  chartHTML +=
+    '<div class="wolun-scroll" style="display:flex;overflow-x:auto;padding:15px 0;gap:8px;">';
 
-  
-  [KFsUlwZV, yJOfU3la, I5NE7j3N].qpB3jJGh((JDmw63NN, B19vdUM3) => {
-    const F4H0IleE =
-      B19vdUM3 === 0 ? '익년도' : B19vdUM3 === 1 ? '당년도' : '전년도';
-    const Sb4SwG9w =
-      B19vdUM3 === 0 ? '#a1VHClsX' : B19vdUM3 === 1 ? '#2196f3' : '#4caf50';
+  // 익년도, 당년도, 전년도 순서 (왼쪽→오른쪽)
+  [nextYear, currentYear, prevYear].forEach((year, yearIdx) => {
+    const yearLabel =
+      yearIdx === 0 ? '익년도' : yearIdx === 1 ? '당년도' : '전년도';
+    const yearColor =
+      yearIdx === 0 ? '#ff9800' : yearIdx === 1 ? '#2196f3' : '#4caf50';
 
-    
-    for (let R6anAZXi = 12; R6anAZXi >= 1; R6anAZXi--) {
-      const qOoeDImX = pS3DZeom.LG0olSIM((w) => w.JDmw63NN === JDmw63NN && w.R6anAZXi === R6anAZXi);
+    // 각 연도마다 12월부터 1월까지 (왼쪽→오른쪽)
+    for (let month = 12; month >= 1; month--) {
+      const wolun = wolunList.find((w) => w.year === year && w.month === month);
 
-      if (qOoeDImX) {
-        const fRB9VdJU = CHEONGAN_ELEMENT[qOoeDImX.SO6J6eCT];
-        const ea6V77bw = JIJI_ELEMENT[qOoeDImX.QhVtN1D7]; 
+      if (wolun) {
+        const ganEl = CHEONGAN_ELEMENT[wolun.gan];
+        const jiEl = JIJI_ELEMENT[wolun.zhi]; // 'ji'가 아니라 'zhi'
 
-        s1db9oQ2 += `
-                    <qZojOiNG aCly2GRM="qOoeDImX-R6anAZXi-Irz8eVbe" V7vHVHxc-JDmw63NN="${
-                      qOoeDImX.JDmw63NN
-                    }" V7vHVHxc-R6anAZXi="${
-          qOoeDImX.R6anAZXi
-        }" style="Nw0JUhzX-lDH6PZpH:70px;Xse8owrK:8px;agSaZYEV:#aLiJh3qN;mq0x0xuF-dQJ4zoC8:6px;UJyWhVPr-ib1rwzJf:POHNCWPm;PhmIpqGA:AK2dVayR 0.3s;">
-                        <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.65em;HkF8konD:#666;MW0RkjO2-USwWzAgn:2px;">${F4H0IleE}</qZojOiNG>
-                        <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.7em;HkF8konD:#333;MSF8VRSk-l3dSJNbg:600;MW0RkjO2-USwWzAgn:4px;">${JDmw63NN}.${R6anAZXi}월</qZojOiNG>
-                        <qZojOiNG style="MW0RkjO2:3px 0;">
-                            <qZojOiNG aCly2GRM="SO6J6eCT-x5EMmYXR ${v24qW6mO(
-                              fRB9VdJU
-                            )}" style="erwK6stq:kDduoHgQ;Xse8owrK:4px 6px;MSF8VRSk-QFYeY4ME:0.9em;MSF8VRSk-l3dSJNbg:700;MW0RkjO2-USwWzAgn:2px;">${
-          qOoeDImX.SO6J6eCT
-        }</qZojOiNG>
-                            <qZojOiNG aCly2GRM="ji-x5EMmYXR ${v24qW6mO(
-                              ea6V77bw
-                            )}" style="erwK6stq:kDduoHgQ;Xse8owrK:4px 6px;MSF8VRSk-QFYeY4ME:0.9em;MSF8VRSk-l3dSJNbg:700;">${
-          qOoeDImX.QhVtN1D7
-        }</qZojOiNG>
-                        </qZojOiNG>
-                    </qZojOiNG>
+        chartHTML += `
+                    <div class="wolun-month-item" data-year="${
+                      wolun.year
+                    }" data-month="${
+          wolun.month
+        }" style="min-width:70px;padding:8px;background:#f8f9fa;border-radius:6px;text-align:center;transition:all 0.3s;">
+                        <div style="font-size:0.65em;color:#666;margin-bottom:2px;">${yearLabel}</div>
+                        <div style="font-size:0.7em;color:#333;font-weight:600;margin-bottom:4px;">${year}.${month}월</div>
+                        <div style="margin:3px 0;">
+                            <div class="gan-box ${getElementClass(
+                              ganEl
+                            )}" style="display:block;padding:4px 6px;font-size:0.9em;font-weight:700;margin-bottom:2px;">${
+          wolun.gan
+        }</div>
+                            <div class="ji-box ${getElementClass(
+                              jiEl
+                            )}" style="display:block;padding:4px 6px;font-size:0.9em;font-weight:700;">${
+          wolun.zhi
+        }</div>
+                        </div>
+                    </div>
                 `;
       }
     }
 
-    
-    if (B19vdUM3 < 2) {
-      s1db9oQ2 += `
-                <qZojOiNG style="lDH6PZpH:3px;agSaZYEV:DL3nDv9L-xEXyiNb2(to USwWzAgn, JOnSmqtS, #666, JOnSmqtS);MW0RkjO2:0 5px;Nw0JUhzX-KXZdsU0k:120px;ib1rwzJf-UmEGBAio:POHNCWPm;"></qZojOiNG>
+    // 연도 구분선 (마지막 연도 제외)
+    if (yearIdx < 2) {
+      chartHTML += `
+                <div style="width:3px;background:linear-gradient(to bottom, transparent, #666, transparent);margin:0 5px;min-height:120px;align-self:center;"></div>
             `;
     }
   });
 
-  s1db9oQ2 += '</qZojOiNG></qZojOiNG>';
+  chartHTML += '</div></div>';
 
-  
+  // 월운이 렌더링된 후 자동으로 중앙(당년도 중간)으로 스크롤
   setTimeout(() => {
-    const L7LQDwMu = document.querySelector('.qOoeDImX-BNSDcgyN');
-    if (L7LQDwMu) {
-      
-      const kMrBj4L6 = document.X8SwBKOB(
-        `.qOoeDImX-R6anAZXi-Irz8eVbe[V7vHVHxc-JDmw63NN="${yJOfU3la}"]`
+    const wolunScroll = document.querySelector('.wolun-scroll');
+    if (wolunScroll) {
+      // 당년도(중간 연도) 찾기
+      const currentYearItems = document.querySelectorAll(
+        `.wolun-month-item[data-year="${currentYear}"]`
       );
-      if (kMrBj4L6.DFImMboA > 0) {
-        
-        const PziiPkKt = new Date().wjkSgQ1l() + 1;
-        let Q8LEMXyv = Array.Lp7x5mWv(kMrBj4L6).LG0olSIM(
-          (Irz8eVbe) => Bf7AOdcQ(Irz8eVbe.Lv6rZjxb('V7vHVHxc-R6anAZXi')) === PziiPkKt
+      if (currentYearItems.length > 0) {
+        // 당년도의 중간 월(6월 또는 현재 월) 찾기
+        const currentMonth = new Date().getMonth() + 1;
+        let targetItem = Array.from(currentYearItems).find(
+          (item) => parseInt(item.getAttribute('data-month')) === currentMonth
         );
 
-        
-        if (!Q8LEMXyv) {
-          Q8LEMXyv = Array.Lp7x5mWv(kMrBj4L6).LG0olSIM(
-            (Irz8eVbe) => Bf7AOdcQ(Irz8eVbe.Lv6rZjxb('V7vHVHxc-R6anAZXi')) === 6
+        // 현재 월이 없으면 6월 선택
+        if (!targetItem) {
+          targetItem = Array.from(currentYearItems).find(
+            (item) => parseInt(item.getAttribute('data-month')) === 6
           );
         }
 
-        
-        if (!Q8LEMXyv && kMrBj4L6.DFImMboA > 0) {
-          Q8LEMXyv =
-            kMrBj4L6[Math.JI6XvEEj(kMrBj4L6.DFImMboA / 2)];
+        // 첫 번째 월이라도 선택
+        if (!targetItem && currentYearItems.length > 0) {
+          targetItem =
+            currentYearItems[Math.floor(currentYearItems.length / 2)];
         }
 
-        if (Q8LEMXyv) {
-          const MqoXpc7d = Q8LEMXyv.LQIXQh63;
-          const zXAqM4N4 = Q8LEMXyv.iR2v3w7r;
-          const XGTYITWq = L7LQDwMu.iR2v3w7r;
-          const N5FPOzIV = MqoXpc7d - XGTYITWq / 2 + zXAqM4N4 / 2;
-          L7LQDwMu.Ntfulu8D = N5FPOzIV; 
+        if (targetItem) {
+          const itemLeft = targetItem.offsetLeft;
+          const itemWidth = targetItem.offsetWidth;
+          const scrollWidth = wolunScroll.offsetWidth;
+          const targetScroll = itemLeft - scrollWidth / 2 + itemWidth / 2;
+          wolunScroll.scrollLeft = targetScroll; // 즉시 스크롤 (애니메이션 없음)
         }
       }
     }
   }, 50);
 
-  return s1db9oQ2;
+  return chartHTML;
 }
 
+// 18. 세운 표시
+function displaySewun(sewun, dayGan) {
+  const ganEl = CHEONGAN_ELEMENT[sewun.gan];
+  const jiEl = JIJI_ELEMENT[sewun.ji];
 
-function dDK96k8L(ind6vw1a, sbJPsyHj) {
-  const fRB9VdJU = CHEONGAN_ELEMENT[ind6vw1a.SO6J6eCT];
-  const ea6V77bw = JIJI_ELEMENT[ind6vw1a.ji];
-
-  const z0MYnRzG = `
-        <qZojOiNG aCly2GRM="ind6vw1a-edrzH6Y5">
-            <qZojOiNG aCly2GRM="ind6vw1a-JDmw63NN">${ind6vw1a.JDmw63NN}년</qZojOiNG>
-            <qZojOiNG aCly2GRM="ind6vw1a-rQMECP4n">
-                <OaKCeIe9 aCly2GRM="SO6J6eCT-x5EMmYXR ${v24qW6mO(
-                  fRB9VdJU
-                )}" style="erwK6stq:CM58an2P-kDduoHgQ;Xse8owrK:12px 20px;MW0RkjO2:5px;">${
-    ind6vw1a.SO6J6eCT
-  }</OaKCeIe9>
-                <OaKCeIe9 aCly2GRM="ji-x5EMmYXR ${v24qW6mO(
-                  ea6V77bw
-                )}" style="erwK6stq:CM58an2P-kDduoHgQ;Xse8owrK:12px 20px;MW0RkjO2:5px;">${
-    ind6vw1a.ji
-  }</OaKCeIe9>
-            </qZojOiNG>
-            <qZojOiNG style="MW0RkjO2:15px 0;MSF8VRSk-QFYeY4ME:1em;HkF8konD:#5d4037;">
-                납음: ${ind6vw1a.ZoALEDuQ.AFdVxjGM}
-            </qZojOiNG>
-            <qZojOiNG aCly2GRM="ind6vw1a-TQmvGOur">
-                <NvAO6LJ1>▶ ${ind6vw1a.JDmw63NN}년 운세:</NvAO6LJ1><br>
-                올해는 ${ind6vw1a.SO6J6eCT}${ind6vw1a.ji}년으로, ${
-    ind6vw1a.ZoALEDuQ.z3waZHsf
+  const html = `
+        <div class="sewun-current">
+            <div class="sewun-year">${sewun.year}년</div>
+            <div class="sewun-ganja">
+                <span class="gan-box ${getElementClass(
+                  ganEl
+                )}" style="display:inline-block;padding:12px 20px;margin:5px;">${
+    sewun.gan
+  }</span>
+                <span class="ji-box ${getElementClass(
+                  jiEl
+                )}" style="display:inline-block;padding:12px 20px;margin:5px;">${
+    sewun.ji
+  }</span>
+            </div>
+            <div style="margin:15px 0;font-size:1em;color:#5d4037;">
+                납음: ${sewun.napeum.full}
+            </div>
+            <div class="sewun-desc">
+                <strong>▶ ${sewun.year}년 운세:</strong><br>
+                올해는 ${sewun.gan}${sewun.ji}년으로, ${
+    sewun.napeum.element
   } 기운이 강합니다. 
                 ${
-                  ind6vw1a.ZoALEDuQ.z3waZHsf === CHEONGAN_ELEMENT[sbJPsyHj]
+                  sewun.napeum.element === CHEONGAN_ELEMENT[dayGan]
                     ? '일간과 같은 오행이므로 기운이 강해집니다. 적극적으로 활동하기 좋은 해입니다.'
-                    : `일간(${CHEONGAN_ELEMENT[sbJPsyHj]})과 ${PhzdobxE(
-                        sbJPsyHj,
-                        ind6vw1a.ZoALEDuQ.z3waZHsf
+                    : `일간(${CHEONGAN_ELEMENT[dayGan]})과 ${getSipseong(
+                        dayGan,
+                        sewun.napeum.element
                       )} 관계입니다. 이에 맞는 전략이 필요합니다.`
                 }
-            </qZojOiNG>
-        </qZojOiNG>
+            </div>
+        </div>
     `;
 
-  document.getElementById('ind6vw1a-xB2spD4H').innerHTML = z0MYnRzG;
+  document.getElementById('sewun-analysis').innerHTML = html;
 }
 
-
-function jabfQxqL(
-  IARM5XT1,
-  sbJPsyHj,
-  NsULsoxW,
-  ViZhPUuo,
-  FF16bkkO,
-  v4cOtYWg,
-  HJHbKqPP
+// 19. 종합 해석 표시
+function displayComprehensive(
+  saju,
+  dayGan,
+  strength,
+  gyeokguk,
+  yongsin,
+  elements,
+  sibiun
 ) {
-  const HNvJwkYZ = CHEONGAN_ELEMENT[sbJPsyHj];
-  const Q6PYg09e = Object.T7Evi8oP(v4cOtYWg).iVULd45u((a, b) =>
-    v4cOtYWg[a] > v4cOtYWg[b] ? a : b
+  const dayEl = CHEONGAN_ELEMENT[dayGan];
+  const maxEl = Object.keys(elements).reduce((a, b) =>
+    elements[a] > elements[b] ? a : b
   );
 
-  const z0MYnRzG = `
-        <qZojOiNG aCly2GRM="YvzZzM4N-UMD95U9o">
-            <qZojOiNG aCly2GRM="UMD95U9o-GRHIXbi7">🎭 성격과 기질</qZojOiNG>
-            <qZojOiNG aCly2GRM="UMD95U9o-kvqUaG6N">
-                ${DAYMASTER_CHARACTERISTICS[sbJPsyHj]}<br><br>
-                오행 중 <OaKCeIe9 aCly2GRM="q3dK9dGW-UJyWhVPr">${Q6PYg09e}</OaKCeIe9>의 기운이 가장 강하며, 
-                사주는 <OaKCeIe9 aCly2GRM="q3dK9dGW-UJyWhVPr">${
-                  NsULsoxW.Gk2zWwTj
-                }</OaKCeIe9> 상태입니다.
-            </qZojOiNG>
-        </qZojOiNG>
+  const html = `
+        <div class="comprehensive-section">
+            <div class="section-subtitle">🎭 성격과 기질</div>
+            <div class="section-content">
+                ${DAYMASTER_CHARACTERISTICS[dayGan]}<br><br>
+                오행 중 <span class="highlight-text">${maxEl}</span>의 기운이 가장 강하며, 
+                사주는 <span class="highlight-text">${
+                  strength.level
+                }</span> 상태입니다.
+            </div>
+        </div>
         
-        <qZojOiNG aCly2GRM="YvzZzM4N-UMD95U9o">
-            <qZojOiNG aCly2GRM="UMD95U9o-GRHIXbi7">💼 적성과 진로</qZojOiNG>
-            <qZojOiNG aCly2GRM="UMD95U9o-kvqUaG6N">
-                ${ViZhPUuo.iUd3UmGA} 격국으로, ${
-    ViZhPUuo.iUd3UmGA.CDE6p5g0('正官')
+        <div class="comprehensive-section">
+            <div class="section-subtitle">💼 적성과 진로</div>
+            <div class="section-content">
+                ${gyeokguk.name} 격국으로, ${
+    gyeokguk.name.includes('正官')
       ? '공직, 대기업, 교육계가 적합합니다. 안정과 명예를 추구합니다.'
-      : ViZhPUuo.iUd3UmGA.CDE6p5g0('正財')
+      : gyeokguk.name.includes('正財')
       ? '재무, 회계, 사업 분야가 적합합니다. 꾸준한 재산 축적이 가능합니다.'
-      : ViZhPUuo.iUd3UmGA.CDE6p5g0('正印')
+      : gyeokguk.name.includes('正印')
       ? '교육, 연구, 학문 분야가 적합합니다. 자격증과 학위가 도움됩니다.'
-      : ViZhPUuo.iUd3UmGA.CDE6p5g0('食神')
+      : gyeokguk.name.includes('食神')
       ? '예술, 요식업, 서비스업이 적합합니다. 사람들에게 즐거움을 주는 일이 좋습니다.'
-      : ViZhPUuo.iUd3UmGA.CDE6p5g0('建祿')
+      : gyeokguk.name.includes('建祿')
       ? '자영업, 창업이 적합합니다. 독립적으로 일하는 것을 선호합니다.'
-      : ViZhPUuo.iUd3UmGA.CDE6p5g0('從')
+      : gyeokguk.name.includes('從')
       ? '전문기술, 특수 분야가 적합합니다. 한 분야에 집중하면 성공합니다.'
       : '다양한 분야에 적응할 수 있습니다. 자신의 강점을 찾아 특화하는 것이 좋습니다.'
   }<br><br>
-                용신 <OaKCeIe9 aCly2GRM="q3dK9dGW-UJyWhVPr">${
-                  FF16bkkO.FF16bkkO
-                }</OaKCeIe9>과 관련된 직업이나 활동이 유리합니다.
-            </qZojOiNG>
-        </qZojOiNG>
+                용신 <span class="highlight-text">${
+                  yongsin.yongsin
+                }</span>과 관련된 직업이나 활동이 유리합니다.
+            </div>
+        </div>
         
-        <qZojOiNG aCly2GRM="YvzZzM4N-UMD95U9o">
-            <qZojOiNG aCly2GRM="UMD95U9o-GRHIXbi7">💪 건강과 주의사항</qZojOiNG>
-            <qZojOiNG aCly2GRM="UMD95U9o-kvqUaG6N">
+        <div class="comprehensive-section">
+            <div class="section-subtitle">💪 건강과 주의사항</div>
+            <div class="section-content">
                 ${
-                  NsULsoxW.Gk2zWwTj === '太弱(태약)' || NsULsoxW.Gk2zWwTj === '弱(약)'
+                  strength.level === '太弱(태약)' || strength.level === '弱(약)'
                     ? '일간이 약하므로 체력 관리에 신경 써야 합니다. 과로를 피하고 충분한 휴식이 필요합니다.'
                     : '기본적으로 건강한 편이나, 과신하지 말고 꾸준한 운동과 건강 관리를 해야 합니다.'
                 }<br><br>
                 ${
-                  HNvJwkYZ === '木'
+                  dayEl === '木'
                     ? '간, 담낭, 신경계를 주의하세요.'
-                    : HNvJwkYZ === '火'
+                    : dayEl === '火'
                     ? '심장, 혈압, 소화기를 주의하세요.'
-                    : HNvJwkYZ === '土'
+                    : dayEl === '土'
                     ? '위장, 비장, 소화기를 주의하세요.'
-                    : HNvJwkYZ === '金'
+                    : dayEl === '金'
                     ? '폐, 호흡기, 피부를 주의하세요.'
                     : '신장, 방광, 생식기를 주의하세요.'
                 }
-            </qZojOiNG>
-        </qZojOiNG>
+            </div>
+        </div>
         
-        <qZojOiNG aCly2GRM="YvzZzM4N-UMD95U9o">
-            <qZojOiNG aCly2GRM="UMD95U9o-GRHIXbi7">🌟 현재 운세와 조언</qZojOiNG>
-            <qZojOiNG aCly2GRM="UMD95U9o-kvqUaG6N">
-                일주의 십이운성이 <OaKCeIe9 aCly2GRM="q3dK9dGW-UJyWhVPr">${
-                  HJHbKqPP.WHjsqFVR
-                }</OaKCeIe9>로, 
+        <div class="comprehensive-section">
+            <div class="section-subtitle">🌟 현재 운세와 조언</div>
+            <div class="section-content">
+                일주의 십이운성이 <span class="highlight-text">${
+                  sibiun.day
+                }</span>로, 
                 ${
-                  ['長生', '冠帶', '建祿', '帝旺'].CDE6p5g0(HJHbKqPP.WHjsqFVR)
+                  ['長生', '冠帶', '建祿', '帝旺'].includes(sibiun.day)
                     ? '현재 활동력이 왕성합니다. 적극적으로 기회를 잡고 목표를 추진하세요.'
-                    : ['衰', '病', '巳', '卯'].CDE6p5g0(HJHbKqPP.WHjsqFVR)
+                    : ['衰', '病', '巳', '卯'].includes(sibiun.day)
                     ? '신중하게 행동해야 하는 시기입니다. 무리하지 말고 차근차근 준비하세요.'
                     : '준비와 학습의 시기입니다. 내면을 키우고 다음 단계를 준비하세요.'
                 }
-            </qZojOiNG>
-        </qZojOiNG>
+            </div>
+        </div>
         
-        <qZojOiNG aCly2GRM="YvzZzM4N-UMD95U9o">
-            <qZojOiNG aCly2GRM="UMD95U9o-GRHIXbi7">📝 인생 전략</qZojOiNG>
-            <qZojOiNG aCly2GRM="UMD95U9o-kvqUaG6N">
-                1. <NvAO6LJ1>용신 활용:</NvAO6LJ1> ${
-                  FF16bkkO.FF16bkkO
+        <div class="comprehensive-section">
+            <div class="section-subtitle">📝 인생 전략</div>
+            <div class="section-content">
+                1. <strong>용신 활용:</strong> ${
+                  yongsin.yongsin
                 } 오행을 적극 활용하세요. 이와 관련된 색상, 방향, 직업을 선택하면 좋습니다.<br>
-                2. <NvAO6LJ1>기신 회피:</NvAO6LJ1> ${
-                  FF16bkkO.hGSKCkiw
+                2. <strong>기신 회피:</strong> ${
+                  yongsin.gisin
                 } 오행은 가능한 피하거나 최소화하세요.<br>
-                3. <NvAO6LJ1>육친 관리:</NvAO6LJ1> 부족한 육친은 노력으로 보완하고, 많은 육친은 잘 활용하되 균형을 유지하세요.<br>
-                4. <NvAO6LJ1>형충파해 주의:</NvAO6LJ1> 해당 시기나 상황에서는 특히 신중하게 행동하세요.<br>
-                5. <NvAO6LJ1>지속적 발전:</NvAO6LJ1> 사주는 타고난 잠재력일 뿐, 노력과 선택으로 운명을 개척할 수 있습니다.
-            </qZojOiNG>
-        </qZojOiNG>
+                3. <strong>육친 관리:</strong> 부족한 육친은 노력으로 보완하고, 많은 육친은 잘 활용하되 균형을 유지하세요.<br>
+                4. <strong>형충파해 주의:</strong> 해당 시기나 상황에서는 특히 신중하게 행동하세요.<br>
+                5. <strong>지속적 발전:</strong> 사주는 타고난 잠재력일 뿐, 노력과 선택으로 운명을 개척할 수 있습니다.
+            </div>
+        </div>
     `;
 
-  document.getElementById('YvzZzM4N-xB2spD4H').innerHTML = z0MYnRzG;
+  document.getElementById('comprehensive-analysis').innerHTML = html;
 }
 
-
-function tUl47vZj(FF16bkkO, NsULsoxW) {
-  const bJtpOvC9 = FF16bkkO.FF16bkkO;
-  const mnoU2z8c = {
+// 20. 開運(개운) 방법 표시
+function displayGaewun(yongsin, strength) {
+  const yongsinEl = yongsin.yongsin;
+  const elementInfo = {
     木: {
-      HkF8konD: '녹색, 청색',
-      qLD8ZDIS: '동쪽',
-      qQPLrbrl: '3, 8',
-      mTbnaNO1: '봄',
-      YXPumfUn: '교육, 문화, 출판, 원예',
+      color: '녹색, 청색',
+      direction: '동쪽',
+      number: '3, 8',
+      season: '봄',
+      job: '교육, 문화, 출판, 원예',
     },
     火: {
-      HkF8konD: '빨강, 주황, 보라',
-      qLD8ZDIS: '남쪽',
-      qQPLrbrl: '2, 7',
-      mTbnaNO1: '여름',
-      YXPumfUn: '영업, 마케팅, 방송, 연예',
+      color: '빨강, 주황, 보라',
+      direction: '남쪽',
+      number: '2, 7',
+      season: '여름',
+      job: '영업, 마케팅, 방송, 연예',
     },
     土: {
-      HkF8konD: '노랑, 갈색, 베이지',
-      qLD8ZDIS: '중앙, 서남, 동북',
-      qQPLrbrl: '5, 10',
-      mTbnaNO1: '환절기',
-      YXPumfUn: '부동산, 건설, 금융, 농업',
+      color: '노랑, 갈색, 베이지',
+      direction: '중앙, 서남, 동북',
+      number: '5, 10',
+      season: '환절기',
+      job: '부동산, 건설, 금융, 농업',
     },
     金: {
-      HkF8konD: '흰색, 은색, 금색',
-      qLD8ZDIS: '서쪽',
-      qQPLrbrl: '4, 9',
-      mTbnaNO1: '가을',
-      YXPumfUn: '법률, 의료, 공학, 금융',
+      color: '흰색, 은색, 금색',
+      direction: '서쪽',
+      number: '4, 9',
+      season: '가을',
+      job: '법률, 의료, 공학, 금융',
     },
     水: {
-      HkF8konD: '검정, 남색, 회색',
-      qLD8ZDIS: '북쪽',
-      qQPLrbrl: '1, 6',
-      mTbnaNO1: '겨울',
-      YXPumfUn: 'IT, 연구, 무역, 물류',
+      color: '검정, 남색, 회색',
+      direction: '북쪽',
+      number: '1, 6',
+      season: '겨울',
+      job: 'IT, 연구, 무역, 물류',
     },
   };
 
-  const wCfRki1r = mnoU2z8c[bJtpOvC9] || mnoU2z8c['木'];
+  const info = elementInfo[yongsinEl] || elementInfo['木'];
 
-  const z0MYnRzG = `
-        <qZojOiNG aCly2GRM="Ftm7114N-pyQ38Qr0">
-            <qZojOiNG aCly2GRM="Ftm7114N-Irz8eVbe">
-                <qZojOiNG aCly2GRM="Ftm7114N-XeLAPJ2z">🎨 開運(개운) 색상</qZojOiNG>
-                <qZojOiNG aCly2GRM="Ftm7114N-kvqUaG6N">
-                    <p><NvAO6LJ1>${wCfRki1r.HkF8konD}</NvAO6LJ1></p>
-                    <p style="MW0RkjO2-bGrBuWte:10px;MSF8VRSk-QFYeY4ME:0.95em;">옷, 소품, 인테리어에 이 색상을 활용하세요. 명함, 휴대폰 케이스, 지갑 등 자주 보는 물건에 적용하면 좋습니다.</p>
-                </qZojOiNG>
-            </qZojOiNG>
+  const html = `
+        <div class="gaewun-grid">
+            <div class="gaewun-item">
+                <div class="gaewun-title">🎨 開運(개운) 색상</div>
+                <div class="gaewun-content">
+                    <p><strong>${info.color}</strong></p>
+                    <p style="margin-top:10px;font-size:0.95em;">옷, 소품, 인테리어에 이 색상을 활용하세요. 명함, 휴대폰 케이스, 지갑 등 자주 보는 물건에 적용하면 좋습니다.</p>
+                </div>
+            </div>
             
-            <qZojOiNG aCly2GRM="Ftm7114N-Irz8eVbe">
-                <qZojOiNG aCly2GRM="Ftm7114N-XeLAPJ2z">🧭 開運(개운) 방향</qZojOiNG>
-                <qZojOiNG aCly2GRM="Ftm7114N-kvqUaG6N">
-                    <p><NvAO6LJ1>${wCfRki1r.qLD8ZDIS}</NvAO6LJ1></p>
-                    <p style="MW0RkjO2-bGrBuWte:10px;MSF8VRSk-QFYeY4ME:0.95em;">집이나 사무실에서 이 방향을 활용하세요. 책상을 이 방향으로 향하게 하거나, 이 방향으로 이사, 여행을 가면 좋습니다.</p>
-                </qZojOiNG>
-            </qZojOiNG>
+            <div class="gaewun-item">
+                <div class="gaewun-title">🧭 開運(개운) 방향</div>
+                <div class="gaewun-content">
+                    <p><strong>${info.direction}</strong></p>
+                    <p style="margin-top:10px;font-size:0.95em;">집이나 사무실에서 이 방향을 활용하세요. 책상을 이 방향으로 향하게 하거나, 이 방향으로 이사, 여행을 가면 좋습니다.</p>
+                </div>
+            </div>
             
-            <qZojOiNG aCly2GRM="Ftm7114N-Irz8eVbe">
-                <qZojOiNG aCly2GRM="Ftm7114N-XeLAPJ2z">🔢 開運(개운) 숫자</qZojOiNG>
-                <qZojOiNG aCly2GRM="Ftm7114N-kvqUaG6N">
-                    <p><NvAO6LJ1>${wCfRki1r.qQPLrbrl}</NvAO6LJ1></p>
-                    <p style="MW0RkjO2-bGrBuWte:10px;MSF8VRSk-QFYeY4ME:0.95em;">전화번호, 차량번호, 비밀번호 등에 이 숫자를 포함하면 좋습니다. 중요한 결정을 이 날짜에 하는 것도 좋습니다.</p>
-                </qZojOiNG>
-            </qZojOiNG>
+            <div class="gaewun-item">
+                <div class="gaewun-title">🔢 開運(개운) 숫자</div>
+                <div class="gaewun-content">
+                    <p><strong>${info.number}</strong></p>
+                    <p style="margin-top:10px;font-size:0.95em;">전화번호, 차량번호, 비밀번호 등에 이 숫자를 포함하면 좋습니다. 중요한 결정을 이 날짜에 하는 것도 좋습니다.</p>
+                </div>
+            </div>
             
-            <qZojOiNG aCly2GRM="Ftm7114N-Irz8eVbe">
-                <qZojOiNG aCly2GRM="Ftm7114N-XeLAPJ2z">📅 開運(개운) 계절</qZojOiNG>
-                <qZojOiNG aCly2GRM="Ftm7114N-kvqUaG6N">
-                    <p><NvAO6LJ1>${wCfRki1r.mTbnaNO1}</NvAO6LJ1></p>
-                    <p style="MW0RkjO2-bGrBuWte:10px;MSF8VRSk-QFYeY4ME:0.95em;">이 계절에 중요한 일을 시작하거나 계획하면 좋습니다. 이 시기에 활동량을 늘리고 적극적으로 행동하세요.</p>
-                </qZojOiNG>
-            </qZojOiNG>
+            <div class="gaewun-item">
+                <div class="gaewun-title">📅 開運(개운) 계절</div>
+                <div class="gaewun-content">
+                    <p><strong>${info.season}</strong></p>
+                    <p style="margin-top:10px;font-size:0.95em;">이 계절에 중요한 일을 시작하거나 계획하면 좋습니다. 이 시기에 활동량을 늘리고 적극적으로 행동하세요.</p>
+                </div>
+            </div>
             
-            <qZojOiNG aCly2GRM="Ftm7114N-Irz8eVbe">
-                <qZojOiNG aCly2GRM="Ftm7114N-XeLAPJ2z">💼 開運(개운) 직업</qZojOiNG>
-                <qZojOiNG aCly2GRM="Ftm7114N-kvqUaG6N">
-                    <p><NvAO6LJ1>${wCfRki1r.YXPumfUn}</NvAO6LJ1></p>
-                    <p style="MW0RkjO2-bGrBuWte:10px;MSF8VRSk-QFYeY4ME:0.95em;">이와 관련된 직업이나 부업을 추천합니다. 직접 종사하지 않더라도 관련 분야에 투자하거나 공부하면 도움이 됩니다.</p>
-                </qZojOiNG>
-            </qZojOiNG>
+            <div class="gaewun-item">
+                <div class="gaewun-title">💼 開運(개운) 직업</div>
+                <div class="gaewun-content">
+                    <p><strong>${info.job}</strong></p>
+                    <p style="margin-top:10px;font-size:0.95em;">이와 관련된 직업이나 부업을 추천합니다. 직접 종사하지 않더라도 관련 분야에 투자하거나 공부하면 도움이 됩니다.</p>
+                </div>
+            </div>
             
-            <qZojOiNG aCly2GRM="Ftm7114N-Irz8eVbe">
-                <qZojOiNG aCly2GRM="Ftm7114N-XeLAPJ2z">📿 추가 開運(개운)법</qZojOiNG>
-                <qZojOiNG aCly2GRM="Ftm7114N-kvqUaG6N">
-                    <ul aCly2GRM="Ftm7114N-K1CAfvYe">
+            <div class="gaewun-item">
+                <div class="gaewun-title">📿 추가 開運(개운)법</div>
+                <div class="gaewun-content">
+                    <ul class="gaewun-list">
                         <li>용신에 해당하는 오행의 물건을 소지하세요</li>
                         <li>긍정적인 마음가짐과 감사하는 태도를 유지하세요</li>
                         <li>선행과 봉사활동으로 덕을 쌓으세요</li>
                         <li>자기계발과 학습을 게을리하지 마세요</li>
                         <li>건강 관리와 규칙적인 생활을 하세요</li>
                     </ul>
-                </qZojOiNG>
-            </qZojOiNG>
-        </qZojOiNG>
+                </div>
+            </div>
+        </div>
         
-        <qZojOiNG style="MW0RkjO2-bGrBuWte:25px;Xse8owrK:20px;agSaZYEV:#itWTqpR7;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #ceJOQRsD;mq0x0xuF-dQJ4zoC8:10px;">
-            <p style="MSF8VRSk-QFYeY4ME:1.05em;NBnoE0PG-KXZdsU0k:1.9;">
-                <NvAO6LJ1>💡 開運(개운)의 핵심:</NvAO6LJ1><br>
+        <div style="margin-top:25px;padding:20px;background:#fff9e6;border-left:4px solid #ffc107;border-radius:10px;">
+            <p style="font-size:1.05em;line-height:1.9;">
+                <strong>💡 開運(개운)의 핵심:</strong><br>
                 開運(개운)은 단순히 물건이나 색상만으로 이루어지는 것이 아닙니다. 
                 용신을 이해하고 자신의 강약을 파악하여, 
-                부족한 부분은 보완하고 강한 부분은 활용하는 <NvAO6LJ1>균형 잡힌 삶의 태도</NvAO6LJ1>가 가장 중요합니다. 
+                부족한 부분은 보완하고 강한 부분은 활용하는 <strong>균형 잡힌 삶의 태도</strong>가 가장 중요합니다. 
                 ${
-                  NsULsoxW.Gk2zWwTj === '太弱(태약)' || NsULsoxW.Gk2zWwTj === '弱(약)'
+                  strength.level === '太弱(태약)' || strength.level === '弱(약)'
                     ? '일간이 약하므로 무리하지 말고 꾸준히 노력하며, 협력자를 찾아 함께 성장하세요.'
-                    : NsULsoxW.Gk2zWwTj === '太旺(태왕)' ||
-                      NsULsoxW.Gk2zWwTj === '旺(왕)'
+                    : strength.level === '太旺(태왕)' ||
+                      strength.level === '旺(왕)'
                     ? '일간이 강하므로 독선적이지 않도록 주의하며, 타인을 배려하고 나누는 자세가 필요합니다.'
                     : '균형 잡힌 사주이므로 현재 상태를 잘 유지하며 발전시켜 나가세요.'
                 }
             </p>
-        </qZojOiNG>
+        </div>
     `;
 
-  document.getElementById('Ftm7114N-cITUrjX8').innerHTML = z0MYnRzG;
+  document.getElementById('gaewun-guide').innerHTML = html;
 }
 
-
-function pcUhFIDj(JDmw63NN) {
-  const VAptu08m = document.querySelector(
-    `.AFbeYj5G-Irz8eVbe[V7vHVHxc-JDmw63NN="${JDmw63NN}"]`
+// 연운으로 스크롤 및 하이라이트
+function scrollToYeonun(year) {
+  const yeonunItem = document.querySelector(
+    `.yeonun-item[data-year="${year}"]`
   );
 
-  if (VAptu08m) {
-    
-    document.X8SwBKOB('.AFbeYj5G-Irz8eVbe').qpB3jJGh((Irz8eVbe) => {
-      Irz8eVbe.style.agSaZYEV = '#aLiJh3qN';
-      Irz8eVbe.style.Y6gqvYMQ = 'n9ZeJFbg(1)';
-      Irz8eVbe.style.IH98tKA8 = 'WfVaStFg';
+  if (yeonunItem) {
+    // 기존 하이라이트 제거
+    document.querySelectorAll('.yeonun-item').forEach((item) => {
+      item.style.background = '#f8f9fa';
+      item.style.transform = 'scale(1)';
+      item.style.boxShadow = 'none';
     });
 
-    
-    VAptu08m.style.agSaZYEV =
-      'DL3nDv9L-xEXyiNb2(135deg, #YsGTnlI3 0%, #YPTmO5mg 100%)';
-    VAptu08m.style.Y6gqvYMQ = 'n9ZeJFbg(1.1)';
-    VAptu08m.style.IH98tKA8 = '0 4px 12px wj5MkFlR(255, 152, 0, 0.3)';
-    VAptu08m.style.mq0x0xuF = '2px oyABhJdC #a1VHClsX';
+    // 선택된 항목 하이라이트 (즉시)
+    yeonunItem.style.background =
+      'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)';
+    yeonunItem.style.transform = 'scale(1.1)';
+    yeonunItem.style.boxShadow = '0 4px 12px rgba(255, 152, 0, 0.3)';
+    yeonunItem.style.border = '2px solid #ff9800';
 
-    
-    const jEb3GpWf = VAptu08m.IQU2S3GP('.AFbeYj5G-BNSDcgyN');
-    if (jEb3GpWf) {
-      const MqoXpc7d = VAptu08m.LQIXQh63;
-      const zXAqM4N4 = VAptu08m.iR2v3w7r;
-      const Ntfulu8D = jEb3GpWf.Ntfulu8D;
-      const XGTYITWq = jEb3GpWf.iR2v3w7r;
+    // 해당 항목이 보이도록 가로 스크롤만 (화면 이동 없음)
+    const yeonunScroll = yeonunItem.closest('.yeonun-scroll');
+    if (yeonunScroll) {
+      const itemLeft = yeonunItem.offsetLeft;
+      const itemWidth = yeonunItem.offsetWidth;
+      const scrollLeft = yeonunScroll.scrollLeft;
+      const scrollWidth = yeonunScroll.offsetWidth;
 
-      
-      const N5FPOzIV = MqoXpc7d - XGTYITWq / 2 + zXAqM4N4 / 2;
-      jEb3GpWf.phfvOTXj({ dy0UJ5N0: N5FPOzIV, sVRZRfMF: 'Sv3bYoEo' });
+      // 아이템이 중앙에 오도록 스크롤
+      const targetScroll = itemLeft - scrollWidth / 2 + itemWidth / 2;
+      yeonunScroll.scrollTo({ left: targetScroll, behavior: 'smooth' });
     }
 
-    
+    // 자동으로 월운 트리거 (200ms로 단축)
     setTimeout(() => {
-      XypaCAAf(JDmw63NN);
+      autoTriggerWolun(year);
     }, 200);
   }
 }
 
+// 월운으로 스크롤 및 하이라이트
+// 월운으로 스크롤 및 해당 연도 기준 재생성
+function scrollToWolun(year) {
+  console.log('🔍 scrollToWolun 호출 - 연도:', year);
 
-
-function dwCuwhh5(JDmw63NN) {
-  console.y6rEVaha('🔍 dwCuwhh5 호출 - 연도:', JDmw63NN);
-
-  
-  document.X8SwBKOB('.AFbeYj5G-Irz8eVbe').qpB3jJGh((Irz8eVbe) => {
-    Irz8eVbe.style.agSaZYEV = '#aLiJh3qN';
-    Irz8eVbe.style.Y6gqvYMQ = 'n9ZeJFbg(1)';
-    Irz8eVbe.style.IH98tKA8 = 'WfVaStFg';
-    Irz8eVbe.style.mq0x0xuF = 'WfVaStFg';
+  // 기존 하이라이트 제거
+  document.querySelectorAll('.yeonun-item').forEach((item) => {
+    item.style.background = '#f8f9fa';
+    item.style.transform = 'scale(1)';
+    item.style.boxShadow = 'none';
+    item.style.border = 'none';
   });
 
-  
-  SajuAPI.oCxUFbtv(JDmw63NN)
-    .then((pS3DZeom) => {
-      console.y6rEVaha('📊 dwCuwhh5 - Python API 월운 응답:', pS3DZeom);
-      if (pS3DZeom && pS3DZeom.DFImMboA > 0) {
-        console.y6rEVaha(
-          '📊 dwCuwhh5 - 첫 월운 SO6J6eCT:',
-          pS3DZeom[0].SO6J6eCT,
-          'QhVtN1D7:',
-          pS3DZeom[0].QhVtN1D7
+  // Python API로 클릭한 연도를 기준으로 월운 재생성 (전년, 당년, 차년)
+  SajuAPI.calcWolun(year)
+    .then((wolunList) => {
+      console.log('📊 scrollToWolun - Python API 월운 응답:', wolunList);
+      if (wolunList && wolunList.length > 0) {
+        console.log(
+          '📊 scrollToWolun - 첫 월운 gan:',
+          wolunList[0].gan,
+          'zhi:',
+          wolunList[0].zhi
         );
       }
 
-      const GeZBoOq7 = sj8Rpza2(pS3DZeom);
+      const wolunHTML = displayWolun(wolunList);
 
-      
-      const qXn9vM0t = document.getElementById('qOoeDImX-kKYCBUrG');
-      if (qXn9vM0t) {
-        
-        const qK8Y9Q0P = document.createElement('qZojOiNG');
-        qK8Y9Q0P.innerHTML = GeZBoOq7;
-        const FJSQetqc = qK8Y9Q0P.JjU9DeBS;
-        qXn9vM0t.bzw43yVm.s3RmiwV8(
-          FJSQetqc,
-          qXn9vM0t
+      // 기존 월운 컨테이너 찾기
+      const existingWolunContainer = document.getElementById('wolun-container');
+      if (existingWolunContainer) {
+        // 기존 월운을 새로운 월운으로 교체
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = wolunHTML;
+        const newWolunContainer = tempDiv.firstChild;
+        existingWolunContainer.parentNode.replaceChild(
+          newWolunContainer,
+          existingWolunContainer
         );
       } else {
-        
-        const DqplhRRb = document.querySelector('.AFbeYj5G-kKYCBUrG');
-        if (DqplhRRb) {
-          DqplhRRb.ebSh5K7T('mBroIFAb', GeZBoOq7);
+        // 월운 컨테이너가 없으면 연운 뒤에 추가
+        const yeonunContainer = document.querySelector('.yeonun-container');
+        if (yeonunContainer) {
+          yeonunContainer.insertAdjacentHTML('afterend', wolunHTML);
         }
       }
 
-      
+      // 당년도(클릭한 연도) 하이라이트 (화면 이동 없음)
       setTimeout(() => {
-        const iXZjGoco = document.X8SwBKOB(
-          `.qOoeDImX-R6anAZXi-Irz8eVbe[V7vHVHxc-JDmw63NN="${JDmw63NN}"]`
+        const wolunItems = document.querySelectorAll(
+          `.wolun-month-item[data-year="${year}"]`
         );
 
-        if (iXZjGoco.DFImMboA > 0) {
-          iXZjGoco.qpB3jJGh((Irz8eVbe) => {
-            Irz8eVbe.style.agSaZYEV =
-              'DL3nDv9L-xEXyiNb2(135deg, #YsGTnlI3 0%, #YPTmO5mg 100%)';
-            Irz8eVbe.style.Y6gqvYMQ = 'n9ZeJFbg(1.1)';
-            Irz8eVbe.style.IH98tKA8 = '0 6px 16px wj5MkFlR(255, 152, 0, 0.4)';
-            Irz8eVbe.style.mq0x0xuF = '3px oyABhJdC #a1VHClsX';
+        if (wolunItems.length > 0) {
+          wolunItems.forEach((item) => {
+            item.style.background =
+              'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)';
+            item.style.transform = 'scale(1.1)';
+            item.style.boxShadow = '0 6px 16px rgba(255, 152, 0, 0.4)';
+            item.style.border = '3px solid #ff9800';
           });
 
-          
-          const PziiPkKt = new Date().wjkSgQ1l() + 1;
-          let ov5WuebX = Array.Lp7x5mWv(iXZjGoco).LG0olSIM(
-            (Irz8eVbe) => Bf7AOdcQ(Irz8eVbe.Lv6rZjxb('V7vHVHxc-R6anAZXi')) === PziiPkKt
+          // ⭐ 당년도의 중간 월(현재 월 또는 6월)이 화면 중앙에 오도록 스크롤
+          const currentMonth = new Date().getMonth() + 1;
+          let targetMonthItem = Array.from(wolunItems).find(
+            (item) => parseInt(item.getAttribute('data-month')) === currentMonth
           );
 
-          
-          if (!ov5WuebX) {
-            ov5WuebX = Array.Lp7x5mWv(iXZjGoco).LG0olSIM(
-              (Irz8eVbe) => Bf7AOdcQ(Irz8eVbe.Lv6rZjxb('V7vHVHxc-R6anAZXi')) === 6
+          // 현재 월이 없으면 6월 선택
+          if (!targetMonthItem) {
+            targetMonthItem = Array.from(wolunItems).find(
+              (item) => parseInt(item.getAttribute('data-month')) === 6
             );
           }
 
-          
-          if (!ov5WuebX && iXZjGoco.DFImMboA > 0) {
-            ov5WuebX = iXZjGoco[Math.JI6XvEEj(iXZjGoco.DFImMboA / 2)];
+          // 그래도 없으면 중간 항목 선택
+          if (!targetMonthItem && wolunItems.length > 0) {
+            targetMonthItem = wolunItems[Math.floor(wolunItems.length / 2)];
           }
 
-          if (ov5WuebX) {
-            const L7LQDwMu = ov5WuebX.IQU2S3GP('.qOoeDImX-BNSDcgyN');
-            if (L7LQDwMu) {
-              const MqoXpc7d = ov5WuebX.LQIXQh63;
-              const zXAqM4N4 = ov5WuebX.iR2v3w7r;
-              const XGTYITWq = L7LQDwMu.iR2v3w7r;
+          if (targetMonthItem) {
+            const wolunScroll = targetMonthItem.closest('.wolun-scroll');
+            if (wolunScroll) {
+              const itemLeft = targetMonthItem.offsetLeft;
+              const itemWidth = targetMonthItem.offsetWidth;
+              const scrollWidth = wolunScroll.offsetWidth;
 
-              
-              const N5FPOzIV = MqoXpc7d - XGTYITWq / 2 + zXAqM4N4 / 2;
-              L7LQDwMu.phfvOTXj({ dy0UJ5N0: N5FPOzIV, sVRZRfMF: 'Sv3bYoEo' });
+              // 해당 월이 화면 중앙에 오도록 스크롤
+              const targetScroll = itemLeft - scrollWidth / 2 + itemWidth / 2;
+              wolunScroll.scrollTo({ left: targetScroll, behavior: 'smooth' });
             }
           }
         }
       }, 300);
     })
-    .catch((nyrsOJgt) => {
-      console.nyrsOJgt('❌ dwCuwhh5 월운 계산 오류:', nyrsOJgt);
-      KBFRsWAP('월운 계산 중 오류가 발생했습니다.');
+    .catch((error) => {
+      console.error('❌ scrollToWolun 월운 계산 오류:', error);
+      alert('월운 계산 중 오류가 발생했습니다.');
     });
 }
+// ===== 자동 트리거 함수들 =====
 
+// 1. 분석 시작 시 현재 나이의 대운으로 자동 이동
+function autoTriggerDaeun(birthYear, daeunList) {
+  const currentYear = new Date().getFullYear();
+  const currentAge = currentYear - birthYear;
 
-
-function pTMMyOWH(QPyMgrz3, G0haiCJg) {
-  const yJOfU3la = new Date().mNXky9sG();
-  const a8ThLeLA = yJOfU3la - QPyMgrz3;
-
-  console.y6rEVaha(
-    '🎯 pTMMyOWH 호출 - QPyMgrz3:',
-    QPyMgrz3,
-    'yJOfU3la:',
-    yJOfU3la,
-    'a8ThLeLA:',
-    a8ThLeLA
+  console.log(
+    '🎯 autoTriggerDaeun 호출 - birthYear:',
+    birthYear,
+    'currentYear:',
+    currentYear,
+    'currentAge:',
+    currentAge
   );
 
-  
-  const VvBXkgwZ = G0haiCJg.LG0olSIM(
-    (cLJ0WBlw) => a8ThLeLA >= cLJ0WBlw.KRSUWR7g && a8ThLeLA <= cLJ0WBlw.jmuIqU30
+  // 현재 나이에 해당하는 대운 찾기
+  const currentDaeun = daeunList.find(
+    (daeun) => currentAge >= daeun.age && currentAge <= daeun.endAge
   );
 
-  if (VvBXkgwZ) {
-    console.y6rEVaha('✅ 현재 대운 찾음:', VvBXkgwZ);
+  if (currentDaeun) {
+    console.log('✅ 현재 대운 찾음:', currentDaeun);
 
-    
+    // 해당 대운 항목 하이라이트 (화면 이동 없음)
     setTimeout(() => {
-      console.y6rEVaha('⏰ pTMMyOWH setTimeout 실행 (3초 후)');
+      console.log('⏰ autoTriggerDaeun setTimeout 실행 (3초 후)');
 
-      const EcBJ9TI0 = document.X8SwBKOB('.cLJ0WBlw-Irz8eVbe');
-      EcBJ9TI0.qpB3jJGh((Irz8eVbe) => {
-        const dMGB3B3e = Irz8eVbe.querySelector('.cLJ0WBlw-KRSUWR7g').textContent;
-        const sQl2yUCI = dMGB3B3e
-          .Er8x5ISf('-')
-          .Sq4eP5Ja((a) => Bf7AOdcQ(a.MJA5tOxk('세', '')));
+      const daeunItems = document.querySelectorAll('.daeun-item');
+      daeunItems.forEach((item) => {
+        const ageText = item.querySelector('.daeun-age').textContent;
+        const ageRange = ageText
+          .split('-')
+          .map((a) => parseInt(a.replace('세', '')));
 
-        if (a8ThLeLA >= sQl2yUCI[0] && a8ThLeLA <= sQl2yUCI[1]) {
-          console.y6rEVaha('✅ 대운 하이라이트:', sQl2yUCI[0], '-', sQl2yUCI[1]);
+        if (currentAge >= ageRange[0] && currentAge <= ageRange[1]) {
+          console.log('✅ 대운 하이라이트:', ageRange[0], '-', ageRange[1]);
 
-          
-          Irz8eVbe.style.agSaZYEV =
-            'DL3nDv9L-xEXyiNb2(135deg, #YsGTnlI3 0%, #YPTmO5mg 100%)';
-          Irz8eVbe.style.Y6gqvYMQ = 'n9ZeJFbg(1.1)';
-          Irz8eVbe.style.IH98tKA8 = '0 8px 16px wj5MkFlR(255, 152, 0, 0.4)';
-          Irz8eVbe.style.mq0x0xuF = '3px oyABhJdC #a1VHClsX';
+          // 현재 대운 하이라이트
+          item.style.background =
+            'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)';
+          item.style.transform = 'scale(1.1)';
+          item.style.boxShadow = '0 8px 16px rgba(255, 152, 0, 0.4)';
+          item.style.border = '3px solid #ff9800';
 
-          
-          const dYJMqkr1 = Irz8eVbe.IQU2S3GP('.cLJ0WBlw-BNSDcgyN');
-          if (dYJMqkr1) {
-            const MqoXpc7d = Irz8eVbe.LQIXQh63;
-            const zXAqM4N4 = Irz8eVbe.iR2v3w7r;
-            const XGTYITWq = dYJMqkr1.iR2v3w7r;
-            const N5FPOzIV = MqoXpc7d - XGTYITWq / 2 + zXAqM4N4 / 2;
-            dYJMqkr1.phfvOTXj({ dy0UJ5N0: N5FPOzIV, sVRZRfMF: 'Sv3bYoEo' });
+          // 대운 항목이 중앙에 오도록 가로 스크롤만 (화면 이동 없음)
+          const daeunScroll = item.closest('.daeun-scroll');
+          if (daeunScroll) {
+            const itemLeft = item.offsetLeft;
+            const itemWidth = item.offsetWidth;
+            const scrollWidth = daeunScroll.offsetWidth;
+            const targetScroll = itemLeft - scrollWidth / 2 + itemWidth / 2;
+            daeunScroll.scrollTo({ left: targetScroll, behavior: 'smooth' });
           }
 
-          
-          const IQ6SqCdf = QPyMgrz3 + sQl2yUCI[0];
-          console.y6rEVaha(
-            '🔄 연운 트리거 예약 - IQ6SqCdf:',
-            IQ6SqCdf,
-            'yJOfU3la:',
-            yJOfU3la
+          // 자동으로 연운 트리거
+          const daeunStartYear = birthYear + ageRange[0];
+          console.log(
+            '🔄 연운 트리거 예약 - daeunStartYear:',
+            daeunStartYear,
+            'currentYear:',
+            currentYear
           );
 
           setTimeout(() => {
-            console.y6rEVaha('▶️ 연운 트리거 실행!');
-            unXUeoan(IQ6SqCdf, yJOfU3la);
+            console.log('▶️ 연운 트리거 실행!');
+            autoTriggerYeonun(daeunStartYear, currentYear);
           }, 1500);
         }
       });
     }, 3000);
   } else {
-    console.y6rEVaha('❌ 현재 대운을 찾지 못함');
+    console.log('❌ 현재 대운을 찾지 못함');
   }
 }
 
+// 2. 대운 클릭 시 해당 연도의 연운으로 자동 이동
+function autoTriggerYeonun(daeunStartYear, targetYear) {
+  console.log('🔍 autoTriggerYeonun 호출됨 - targetYear:', targetYear);
 
-function unXUeoan(IQ6SqCdf, agafDP7C) {
-  console.y6rEVaha('🔍 unXUeoan 호출됨 - agafDP7C:', agafDP7C);
+  // DOM이 준비될 때까지 반복 확인 (최대 10초)
+  let attempts = 0;
+  const maxAttempts = 50; // 50번 시도 (50 * 200ms = 10초)
 
-  
-  let MjznxFdt = 0;
-  const J6acXfi0 = 50; 
+  const checkAndExecute = () => {
+    attempts++;
+    console.log('🔄 연운 항목 확인 시도:', attempts);
 
-  const mpfSv73j = () => {
-    MjznxFdt++;
-    console.y6rEVaha('🔄 연운 항목 확인 시도:', MjznxFdt);
+    const yeonunItems = document.querySelectorAll('.yeonun-item');
+    console.log('📊 연운 항목 개수:', yeonunItems.length);
 
-    const b169ve3v = document.X8SwBKOB('.AFbeYj5G-Irz8eVbe');
-    console.y6rEVaha('📊 연운 항목 개수:', b169ve3v.DFImMboA);
+    // 연운 항목이 충분히 생성되었는지 확인 (최소 10개)
+    if (yeonunItems.length >= 10) {
+      console.log('✅ 연운 항목 준비 완료! 실행 시작');
 
-    
-    if (b169ve3v.DFImMboA >= 10) {
-      console.y6rEVaha('✅ 연운 항목 준비 완료! 실행 시작');
-
-      
-      b169ve3v.qpB3jJGh((Irz8eVbe) => {
-        Irz8eVbe.style.agSaZYEV = '#aLiJh3qN';
-        Irz8eVbe.style.Y6gqvYMQ = 'n9ZeJFbg(1)';
-        Irz8eVbe.style.IH98tKA8 = 'WfVaStFg';
-        Irz8eVbe.style.mq0x0xuF = 'WfVaStFg';
+      // 기존 하이라이트 제거
+      yeonunItems.forEach((item) => {
+        item.style.background = '#f8f9fa';
+        item.style.transform = 'scale(1)';
+        item.style.boxShadow = 'none';
+        item.style.border = 'none';
       });
 
-      
-      let maOBgY9U = null;
+      // 목표 연도의 연운 항목 하이라이트
+      let targetYeonunItem = null;
 
-      b169ve3v.qpB3jJGh((Irz8eVbe) => {
-        const JDmw63NN = Bf7AOdcQ(Irz8eVbe.Lv6rZjxb('V7vHVHxc-JDmw63NN'));
-        if (JDmw63NN === agafDP7C) {
-          console.y6rEVaha('✅ 목표 연도 찾음:', JDmw63NN);
-          maOBgY9U = Irz8eVbe;
-          Irz8eVbe.style.agSaZYEV =
-            'DL3nDv9L-xEXyiNb2(135deg, #YsGTnlI3 0%, #YPTmO5mg 100%)';
-          Irz8eVbe.style.Y6gqvYMQ = 'n9ZeJFbg(1.1)';
-          Irz8eVbe.style.IH98tKA8 = '0 6px 16px wj5MkFlR(255, 152, 0, 0.4)';
-          Irz8eVbe.style.mq0x0xuF = '3px oyABhJdC #a1VHClsX';
+      yeonunItems.forEach((item) => {
+        const year = parseInt(item.getAttribute('data-year'));
+        if (year === targetYear) {
+          console.log('✅ 목표 연도 찾음:', year);
+          targetYeonunItem = item;
+          item.style.background =
+            'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)';
+          item.style.transform = 'scale(1.1)';
+          item.style.boxShadow = '0 6px 16px rgba(255, 152, 0, 0.4)';
+          item.style.border = '3px solid #ff9800';
         }
       });
 
-      if (!maOBgY9U) {
-        console.y6rEVaha('❌ 목표 연도를 찾지 못함:', agafDP7C);
+      if (!targetYeonunItem) {
+        console.log('❌ 목표 연도를 찾지 못함:', targetYear);
       }
 
-      
-      if (maOBgY9U) {
-        const jEb3GpWf = maOBgY9U.IQU2S3GP('.AFbeYj5G-BNSDcgyN');
-        if (jEb3GpWf) {
-          const MqoXpc7d = maOBgY9U.LQIXQh63;
-          const zXAqM4N4 = maOBgY9U.iR2v3w7r;
-          const XGTYITWq = jEb3GpWf.iR2v3w7r;
-          const N5FPOzIV = MqoXpc7d - XGTYITWq / 2 + zXAqM4N4 / 2;
-          console.y6rEVaha('📍 중앙 스크롤 실행:', N5FPOzIV);
-          jEb3GpWf.phfvOTXj({ dy0UJ5N0: N5FPOzIV, sVRZRfMF: 'Sv3bYoEo' });
+      // 연운 항목이 중앙에 오도록 가로 스크롤
+      if (targetYeonunItem) {
+        const yeonunScroll = targetYeonunItem.closest('.yeonun-scroll');
+        if (yeonunScroll) {
+          const itemLeft = targetYeonunItem.offsetLeft;
+          const itemWidth = targetYeonunItem.offsetWidth;
+          const scrollWidth = yeonunScroll.offsetWidth;
+          const targetScroll = itemLeft - scrollWidth / 2 + itemWidth / 2;
+          console.log('📍 중앙 스크롤 실행:', targetScroll);
+          yeonunScroll.scrollTo({ left: targetScroll, behavior: 'smooth' });
         }
 
-        
+        // 자동으로 월운 트리거
         setTimeout(() => {
-          console.y6rEVaha('🌙 월운 자동 트리거 실행');
-          XypaCAAf(agafDP7C);
+          console.log('🌙 월운 자동 트리거 실행');
+          autoTriggerWolun(targetYear);
         }, 500);
       }
-    } else if (MjznxFdt < J6acXfi0) {
-      
-      console.y6rEVaha('⏳ 연운 항목 준비 중... 200ms 후 재시도');
-      setTimeout(mpfSv73j, 200);
+    } else if (attempts < maxAttempts) {
+      // 아직 준비 안됨, 200ms 후 재시도
+      console.log('⏳ 연운 항목 준비 중... 200ms 후 재시도');
+      setTimeout(checkAndExecute, 200);
     } else {
-      
-      console.y6rEVaha('❌ 연운 항목 로드 실패 (타임아웃)');
+      // 최대 시도 횟수 초과
+      console.log('❌ 연운 항목 로드 실패 (타임아웃)');
     }
   };
 
-  
-  setTimeout(mpfSv73j, 500);
+  // 첫 시도 (500ms 후 시작)
+  setTimeout(checkAndExecute, 500);
 }
 
+// 3. 연운 클릭 시 해당 연도의 월운으로 자동 이동
+function autoTriggerWolun(year) {
+  console.log('🔍 autoTriggerWolun 호출 - 연도:', year);
 
-function XypaCAAf(JDmw63NN) {
-  console.y6rEVaha('🔍 XypaCAAf 호출 - 연도:', JDmw63NN);
-
-  
-  SajuAPI.oCxUFbtv(JDmw63NN)
-    .then((pS3DZeom) => {
-      console.y6rEVaha('📊 Python API 월운 응답:', pS3DZeom);
-      console.y6rEVaha('📊 첫 번째 월운:', pS3DZeom[0]);
-      if (pS3DZeom && pS3DZeom.DFImMboA > 0) {
-        console.y6rEVaha(
-          '📊 첫 월운 SO6J6eCT:',
-          pS3DZeom[0].SO6J6eCT,
-          'QhVtN1D7:',
-          pS3DZeom[0].QhVtN1D7
+  // Python API로 해당 연도 기준 월운 계산
+  SajuAPI.calcWolun(year)
+    .then((wolunList) => {
+      console.log('📊 Python API 월운 응답:', wolunList);
+      console.log('📊 첫 번째 월운:', wolunList[0]);
+      if (wolunList && wolunList.length > 0) {
+        console.log(
+          '📊 첫 월운 gan:',
+          wolunList[0].gan,
+          'zhi:',
+          wolunList[0].zhi
         );
       }
 
-      const GeZBoOq7 = sj8Rpza2(pS3DZeom);
+      const wolunHTML = displayWolun(wolunList);
 
-      const qXn9vM0t = document.getElementById('qOoeDImX-kKYCBUrG');
-      if (qXn9vM0t) {
-        const qK8Y9Q0P = document.createElement('qZojOiNG');
-        qK8Y9Q0P.innerHTML = GeZBoOq7;
-        const FJSQetqc = qK8Y9Q0P.JjU9DeBS;
-        qXn9vM0t.bzw43yVm.s3RmiwV8(
-          FJSQetqc,
-          qXn9vM0t
+      const existingWolunContainer = document.getElementById('wolun-container');
+      if (existingWolunContainer) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = wolunHTML;
+        const newWolunContainer = tempDiv.firstChild;
+        existingWolunContainer.parentNode.replaceChild(
+          newWolunContainer,
+          existingWolunContainer
         );
       }
 
-      
+      // 당년도 월 하이라이트 (화면 이동 없음)
       setTimeout(() => {
-        const iXZjGoco = document.X8SwBKOB(
-          `.qOoeDImX-R6anAZXi-Irz8eVbe[V7vHVHxc-JDmw63NN="${JDmw63NN}"]`
+        const wolunItems = document.querySelectorAll(
+          `.wolun-month-item[data-year="${year}"]`
         );
 
-        if (iXZjGoco.DFImMboA > 0) {
-          iXZjGoco.qpB3jJGh((Irz8eVbe) => {
-            Irz8eVbe.style.agSaZYEV =
-              'DL3nDv9L-xEXyiNb2(135deg, #LEtIwwjC 0%, #A30vGrFl 100%)';
-            Irz8eVbe.style.Y6gqvYMQ = 'n9ZeJFbg(1.05)';
-            Irz8eVbe.style.IH98tKA8 = '0 4px 12px wj5MkFlR(33, 150, 243, 0.3)';
-            Irz8eVbe.style.mq0x0xuF = '3px oyABhJdC #2196f3';
+        if (wolunItems.length > 0) {
+          wolunItems.forEach((item) => {
+            item.style.background =
+              'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)';
+            item.style.transform = 'scale(1.05)';
+            item.style.boxShadow = '0 4px 12px rgba(33, 150, 243, 0.3)';
+            item.style.border = '3px solid #2196f3';
           });
 
-          
-          const PziiPkKt = new Date().wjkSgQ1l() + 1;
-          let ov5WuebX = Array.Lp7x5mWv(iXZjGoco).LG0olSIM(
-            (Irz8eVbe) => Bf7AOdcQ(Irz8eVbe.Lv6rZjxb('V7vHVHxc-R6anAZXi')) === PziiPkKt
+          // 당년도의 현재 월 또는 중간 월이 중앙에 오도록 가로 스크롤만
+          const currentMonth = new Date().getMonth() + 1;
+          let targetMonthItem = Array.from(wolunItems).find(
+            (item) => parseInt(item.getAttribute('data-month')) === currentMonth
           );
 
-          
-          if (!ov5WuebX) {
-            ov5WuebX = Array.Lp7x5mWv(iXZjGoco).LG0olSIM(
-              (Irz8eVbe) => Bf7AOdcQ(Irz8eVbe.Lv6rZjxb('V7vHVHxc-R6anAZXi')) === 6
+          // 현재 월이 없으면 6월(중간)을 선택
+          if (!targetMonthItem) {
+            targetMonthItem = Array.from(wolunItems).find(
+              (item) => parseInt(item.getAttribute('data-month')) === 6
             );
           }
 
-          if (ov5WuebX) {
-            const L7LQDwMu = ov5WuebX.IQU2S3GP('.qOoeDImX-BNSDcgyN');
-            if (L7LQDwMu) {
-              const MqoXpc7d = ov5WuebX.LQIXQh63;
-              const zXAqM4N4 = ov5WuebX.iR2v3w7r;
-              const XGTYITWq = L7LQDwMu.iR2v3w7r;
-              const N5FPOzIV = MqoXpc7d - XGTYITWq / 2 + zXAqM4N4 / 2;
-              L7LQDwMu.phfvOTXj({ dy0UJ5N0: N5FPOzIV, sVRZRfMF: 'Sv3bYoEo' });
+          if (targetMonthItem) {
+            const wolunScroll = targetMonthItem.closest('.wolun-scroll');
+            if (wolunScroll) {
+              const itemLeft = targetMonthItem.offsetLeft;
+              const itemWidth = targetMonthItem.offsetWidth;
+              const scrollWidth = wolunScroll.offsetWidth;
+              const targetScroll = itemLeft - scrollWidth / 2 + itemWidth / 2;
+              wolunScroll.scrollTo({ left: targetScroll, behavior: 'smooth' });
             }
           }
         }
       }, 300);
     })
-    .catch((nyrsOJgt) => {
-      console.nyrsOJgt('월운 계산 오류:', nyrsOJgt);
-      KBFRsWAP('월운 계산 중 오류가 발생했습니다.');
+    .catch((error) => {
+      console.error('월운 계산 오류:', error);
+      alert('월운 계산 중 오류가 발생했습니다.');
     });
 }
 
-
-
-
+// ========================================
+// 이벤트 리스너 등록 (DOMContentLoaded)
+// ========================================
 document.addEventListener('DOMContentLoaded', function () {
-  console.y6rEVaha('✅ DOM 로드 완료 - 이벤트 리스너 등록');
+  console.log('✅ DOM 로드 완료 - 이벤트 리스너 등록');
 
-  
-  const JnvWsJP9 = document.getElementById('uCBVmEZu-R333Ebba');
-  if (JnvWsJP9) {
-    JnvWsJP9.addEventListener('click', xfH2JVBO);
-    console.y6rEVaha('✅ 분석 버튼 이벤트 등록 완료');
+  // 분석 버튼 이벤트
+  const analyzeBtn = document.getElementById('analyze-btn');
+  if (analyzeBtn) {
+    analyzeBtn.addEventListener('click', analyzeSaju);
+    console.log('✅ 분석 버튼 이벤트 등록 완료');
   }
 
-  
-  const JG6zrVjc = document.X8SwBKOB(
-    'mbYhaOxH[iUd3UmGA="vQr70jdQ"]'
+  // 시각 입력 방식 라디오 버튼 이벤트
+  const timeInputRadios = document.querySelectorAll(
+    'input[name="timeInputType"]'
   );
-  JG6zrVjc.qpB3jJGh((Tb0Qrwtj) => {
-    Tb0Qrwtj.addEventListener('change', Sm5DSsIx);
+  timeInputRadios.forEach((radio) => {
+    radio.addEventListener('change', toggleTimeInput);
   });
-  console.y6rEVaha('✅ 시각 입력 방식 라디오 버튼 이벤트 등록 완료');
+  console.log('✅ 시각 입력 방식 라디오 버튼 이벤트 등록 완료');
 
-  
-  Sm5DSsIx();
-  console.y6rEVaha('✅ 초기 시각 입력 방식 UI 설정 완료');
+  // 초기 상태 설정 (페이지 로드 시)
+  toggleTimeInput();
+  console.log('✅ 초기 시각 입력 방식 UI 설정 완료');
 
-  
-  const Q8gonsFb = document.X8SwBKOB('mbYhaOxH[iUd3UmGA="FXK32i95"]');
-  Q8gonsFb.qpB3jJGh((Tb0Qrwtj) => {
-    Tb0Qrwtj.addEventListener('change', AboFf2ke);
+  // 역법 라디오 버튼 이벤트
+  const calendarRadios = document.querySelectorAll('input[name="calendar"]');
+  calendarRadios.forEach((radio) => {
+    radio.addEventListener('change', toggleYundal);
   });
-  console.y6rEVaha('✅ 역법 라디오 버튼 이벤트 등록 완료');
+  console.log('✅ 역법 라디오 버튼 이벤트 등록 완료');
 });
 
+// ========================================
+// pillar-element-summary용 요약 생성 함수들
+// ========================================
 
-
-
-
-
-function sWWTcImh(C9h0Qd1V) {
-  
+/**
+ * 형충파해 요약 생성 (비활성화 - displayBasicSaju로 이동됨)
+ */
+function generateHyungChungSummary(hyungchungEnhanced) {
+  // 형충파해 요약은 이제 displayBasicSaju 함수 내부에서 처리됨
   return '';
 }
 
+/**
+ * 십이신살 요약 생성
+ */
+function generateSibiSinsalSummary(sibiSinsal) {
+  const goodSinsal = sibiSinsal.filter((s) => s.type === 'good');
+  const badSinsal = sibiSinsal.filter((s) => s.type === 'bad');
 
-function dQgbA8yq(uRkeWWcQ) {
-  const jQSFHOya = uRkeWWcQ.FI0mpC7U((s) => s.duqzFZjL === 'ysxK3Ued');
-  const MSgbrQY9 = uRkeWWcQ.FI0mpC7U((s) => s.duqzFZjL === 'ywdZqTq0');
+  let html = '<div style="margin-top:5px;">';
 
-  let z0MYnRzG = '<qZojOiNG style="MW0RkjO2-bGrBuWte:5px;">';
-
-  const AwufVxQN = [];
-  if (jQSFHOya.DFImMboA > 0) {
-    AwufVxQN.d28SWfl8(
-      `<OaKCeIe9 style="HkF8konD:#4caf50;">길신: ${jQSFHOya
-        .Sq4eP5Ja((s) => s.iUd3UmGA)
-        .npzBTJNh(', ')}</OaKCeIe9>`
+  const items = [];
+  if (goodSinsal.length > 0) {
+    items.push(
+      `<span style="color:#4caf50;">길신: ${goodSinsal
+        .map((s) => s.name)
+        .join(', ')}</span>`
     );
   }
-  if (MSgbrQY9.DFImMboA > 0) {
-    AwufVxQN.d28SWfl8(
-      `<OaKCeIe9 style="HkF8konD:#AovKXqH1;">흉신: ${MSgbrQY9
-        .Sq4eP5Ja((s) => s.iUd3UmGA)
-        .npzBTJNh(', ')}</OaKCeIe9>`
+  if (badSinsal.length > 0) {
+    items.push(
+      `<span style="color:#f44336;">흉신: ${badSinsal
+        .map((s) => s.name)
+        .join(', ')}</span>`
     );
   }
 
-  if (AwufVxQN.DFImMboA > 0) {
-    z0MYnRzG += `<qZojOiNG style="MSF8VRSk-l3dSJNbg:700;HkF8konD:#5e35b1;MSF8VRSk-QFYeY4ME:0.9em;">十二神殺: <OaKCeIe9 style="MSF8VRSk-QFYeY4ME:0.9em;MSF8VRSk-l3dSJNbg:400;">${AwufVxQN.npzBTJNh(
+  if (items.length > 0) {
+    html += `<div style="font-weight:700;color:#5e35b1;font-size:0.9em;">十二神殺: <span style="font-size:0.9em;font-weight:400;">${items.join(
       ' / '
-    )}</OaKCeIe9></qZojOiNG>`;
+    )}</span></div>`;
   }
 
-  z0MYnRzG += '</qZojOiNG>';
-  return z0MYnRzG;
+  html += '</div>';
+  return html;
 }
 
+/**
+ * 길신류 요약 생성
+ */
+function generateGilsinSummary(gilsin) {
+  let html = '<div style="margin-top:5px;">';
 
-function zadKTT9F(Hic5DRbS) {
-  let z0MYnRzG = '<qZojOiNG style="MW0RkjO2-bGrBuWte:5px;">';
+  const names = gilsin.map((g) => g.name).join(', ');
+  html += `<div style="font-weight:700;color:#f57f17;font-size:0.9em;">吉神類: <span style="color:#f9a825;font-size:0.9em;font-weight:400;">${names}</span></div>`;
 
-  const kQ5r1UbX = Hic5DRbS.Sq4eP5Ja((g) => g.iUd3UmGA).npzBTJNh(', ');
-  z0MYnRzG += `<qZojOiNG style="MSF8VRSk-l3dSJNbg:700;HkF8konD:#pVpKbzNX;MSF8VRSk-QFYeY4ME:0.9em;">吉神類: <OaKCeIe9 style="HkF8konD:#ki7ThZm8;MSF8VRSk-QFYeY4ME:0.9em;MSF8VRSk-l3dSJNbg:400;">${kQ5r1UbX}</OaKCeIe9></qZojOiNG>`;
-
-  z0MYnRzG += '</qZojOiNG>';
-  return z0MYnRzG;
+  html += '</div>';
+  return html;
 }
 
+/**
+ * 그외 신살 요약 생성
+ */
+function generateExtraSinsalSummary(extraSinsal) {
+  const goodSinsal = extraSinsal.filter((s) => s.type === 'good');
+  const warningSinsal = extraSinsal.filter((s) => s.type === 'warning');
+  const badSinsal = extraSinsal.filter((s) => s.type === 'bad');
 
-function a15Crnix(n3sjfcAe) {
-  const jQSFHOya = n3sjfcAe.FI0mpC7U((s) => s.duqzFZjL === 'ysxK3Ued');
-  const HW3Or8kN = n3sjfcAe.FI0mpC7U((s) => s.duqzFZjL === 'mDHRcYkx');
-  const MSgbrQY9 = n3sjfcAe.FI0mpC7U((s) => s.duqzFZjL === 'ywdZqTq0');
+  let html = '<div style="margin-top:5px;">';
 
-  let z0MYnRzG = '<qZojOiNG style="MW0RkjO2-bGrBuWte:5px;">';
-
-  const AwufVxQN = [];
-  if (jQSFHOya.DFImMboA > 0) {
-    AwufVxQN.d28SWfl8(
-      `<OaKCeIe9 style="HkF8konD:#4caf50;">긍정: ${jQSFHOya
-        .Sq4eP5Ja((s) => s.iUd3UmGA)
-        .npzBTJNh(', ')}</OaKCeIe9>`
+  const items = [];
+  if (goodSinsal.length > 0) {
+    items.push(
+      `<span style="color:#4caf50;">긍정: ${goodSinsal
+        .map((s) => s.name)
+        .join(', ')}</span>`
     );
   }
-  if (HW3Or8kN.DFImMboA > 0) {
-    AwufVxQN.d28SWfl8(
-      `<OaKCeIe9 style="HkF8konD:#a1VHClsX;">주의: ${HW3Or8kN
-        .Sq4eP5Ja((s) => s.iUd3UmGA)
-        .npzBTJNh(', ')}</OaKCeIe9>`
+  if (warningSinsal.length > 0) {
+    items.push(
+      `<span style="color:#ff9800;">주의: ${warningSinsal
+        .map((s) => s.name)
+        .join(', ')}</span>`
     );
   }
-  if (MSgbrQY9.DFImMboA > 0) {
-    AwufVxQN.d28SWfl8(
-      `<OaKCeIe9 style="HkF8konD:#AovKXqH1;">부정: ${MSgbrQY9
-        .Sq4eP5Ja((s) => s.iUd3UmGA)
-        .npzBTJNh(', ')}</OaKCeIe9>`
+  if (badSinsal.length > 0) {
+    items.push(
+      `<span style="color:#f44336;">부정: ${badSinsal
+        .map((s) => s.name)
+        .join(', ')}</span>`
     );
   }
 
-  if (AwufVxQN.DFImMboA > 0) {
-    z0MYnRzG += `<qZojOiNG style="MSF8VRSk-l3dSJNbg:700;HkF8konD:#0288d1;MSF8VRSk-QFYeY4ME:0.9em;">其他神殺: <OaKCeIe9 style="MSF8VRSk-QFYeY4ME:0.9em;MSF8VRSk-l3dSJNbg:400;">${AwufVxQN.npzBTJNh(
+  if (items.length > 0) {
+    html += `<div style="font-weight:700;color:#0288d1;font-size:0.9em;">其他神殺: <span style="font-size:0.9em;font-weight:400;">${items.join(
       ' / '
-    )}</OaKCeIe9></qZojOiNG>`;
+    )}</span></div>`;
   }
 
-  z0MYnRzG += '</qZojOiNG>';
-  return z0MYnRzG;
+  html += '</div>';
+  return html;
 }
 
+// ========================================
+// 확장 신살 표시 함수들
+// ========================================
 
+/**
+ * 십이신살 표시
+ */
+function displaySibiSinsal(sibiSinsal) {
+  const container = document.getElementById('sibi-sinsal-analysis');
 
-
-
-
-function aHFvl1H4(uRkeWWcQ) {
-  const kKYCBUrG = document.getElementById('mz5L9iBY-bfgQkUBn-xB2spD4H');
-
-  if (!uRkeWWcQ || uRkeWWcQ.DFImMboA === 0) {
-    kKYCBUrG.innerHTML = `
-      <qZojOiNG style="UJyWhVPr-ib1rwzJf:POHNCWPm;Xse8owrK:30px;agSaZYEV:#uO0skDyT;mq0x0xuF-dQJ4zoC8:12px;">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;HkF8konD:#666;">사주에 십이신살이 없습니다.</qZojOiNG>
-      </qZojOiNG>
+  if (!sibiSinsal || sibiSinsal.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:30px;background:#f5f5f5;border-radius:12px;">
+        <div style="font-size:1.1em;color:#666;">사주에 십이신살이 없습니다.</div>
+      </div>
     `;
     return;
   }
 
-  
-  const jQSFHOya = uRkeWWcQ.FI0mpC7U((s) => s.duqzFZjL === 'ysxK3Ued');
-  const MSgbrQY9 = uRkeWWcQ.FI0mpC7U((s) => s.duqzFZjL === 'ywdZqTq0');
+  // 길신과 흉신 분류
+  const goodSinsal = sibiSinsal.filter((s) => s.type === 'good');
+  const badSinsal = sibiSinsal.filter((s) => s.type === 'bad');
 
-  let z0MYnRzG = `
-    <qZojOiNG style="agSaZYEV:#LEtIwwjC;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:20px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #1976d2;">
-      <qZojOiNG style="MSF8VRSk-l3dSJNbg:700;HkF8konD:#0d47a1;MW0RkjO2-USwWzAgn:8px;">
+  let html = `
+    <div style="background:#e3f2fd;padding:15px;border-radius:10px;margin-bottom:20px;border-left:4px solid #1976d2;">
+      <div style="font-weight:700;color:#0d47a1;margin-bottom:8px;">
         💡 십이신살은 일지(日支)를 기준으로 사주 내 다른 지지와의 관계로 판단합니다.
-      </qZojOiNG>
-      <qZojOiNG style="HkF8konD:#1565c0;MSF8VRSk-QFYeY4ME:0.95em;">
-        총 ${uRkeWWcQ.DFImMboA}개 발견 (길신 ${jQSFHOya.DFImMboA}개, 흉신 ${MSgbrQY9.DFImMboA}개)
-      </qZojOiNG>
-    </qZojOiNG>
+      </div>
+      <div style="color:#1565c0;font-size:0.95em;">
+        총 ${sibiSinsal.length}개 발견 (길신 ${goodSinsal.length}개, 흉신 ${badSinsal.length}개)
+      </div>
+    </div>
   `;
 
-  
-  if (jQSFHOya.DFImMboA > 0) {
-    z0MYnRzG += `
-      <qZojOiNG style="MW0RkjO2-USwWzAgn:25px;agSaZYEV:EP7RnItk;Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.3em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#388e3c;MW0RkjO2-USwWzAgn:15px;mq0x0xuF-USwWzAgn:3px oyABhJdC #388e3c;Xse8owrK-USwWzAgn:10px;">
+  // 길신 표시
+  if (goodSinsal.length > 0) {
+    html += `
+      <div style="margin-bottom:25px;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div style="font-size:1.3em;font-weight:700;color:#388e3c;margin-bottom:15px;border-bottom:3px solid #388e3c;padding-bottom:10px;">
           🌟 길신(吉神)
-        </qZojOiNG>
-        ${jQSFHOya
-          .Sq4eP5Ja(
+        </div>
+        ${goodSinsal
+          .map(
             (s) => `
-          <qZojOiNG style="agSaZYEV:#CsREf9xG;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:12px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #388e3c;">
-            <qZojOiNG style="erwK6stq:HFr8aVaG;thpMrT0V-kvqUaG6N:Vj3WhnK5-QYO2LXpb;ib1rwzJf-AwufVxQN:POHNCWPm;MW0RkjO2-USwWzAgn:8px;">
-              <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#1b5e20;">${s.iUd3UmGA}</qZojOiNG>
-              <qZojOiNG style="agSaZYEV:#4caf50;HkF8konD:EP7RnItk;Xse8owrK:4px 12px;mq0x0xuF-dQJ4zoC8:20px;MSF8VRSk-QFYeY4ME:0.85em;">
-                ${s.LIFdNFRd}
-              </qZojOiNG>
-            </qZojOiNG>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;">${s.TQmvGOur}</qZojOiNG>
-          </qZojOiNG>
+          <div style="background:#e8f5e9;padding:15px;border-radius:10px;margin-bottom:12px;border-left:4px solid #388e3c;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div style="font-size:1.1em;font-weight:700;color:#1b5e20;">${s.name}</div>
+              <div style="background:#4caf50;color:white;padding:4px 12px;border-radius:20px;font-size:0.85em;">
+                ${s.position}
+              </div>
+            </div>
+            <div style="font-size:0.95em;color:#555;">${s.desc}</div>
+          </div>
         `
           )
-          .npzBTJNh('')}
-      </qZojOiNG>
+          .join('')}
+      </div>
     `;
   }
 
-  
-  if (MSgbrQY9.DFImMboA > 0) {
-    z0MYnRzG += `
-      <qZojOiNG style="MW0RkjO2-USwWzAgn:25px;agSaZYEV:EP7RnItk;Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.3em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#E20GBKa1;MW0RkjO2-USwWzAgn:15px;mq0x0xuF-USwWzAgn:3px oyABhJdC #E20GBKa1;Xse8owrK-USwWzAgn:10px;">
+  // 흉신 표시
+  if (badSinsal.length > 0) {
+    html += `
+      <div style="margin-bottom:25px;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div style="font-size:1.3em;font-weight:700;color:#d32f2f;margin-bottom:15px;border-bottom:3px solid #d32f2f;padding-bottom:10px;">
           ⚠️ 흉신(凶神)
-        </qZojOiNG>
-        ${MSgbrQY9
-          .Sq4eP5Ja(
+        </div>
+        ${badSinsal
+          .map(
             (s) => `
-          <qZojOiNG style="agSaZYEV:#Ahb2NSUV;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:12px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #E20GBKa1;">
-            <qZojOiNG style="erwK6stq:HFr8aVaG;thpMrT0V-kvqUaG6N:Vj3WhnK5-QYO2LXpb;ib1rwzJf-AwufVxQN:POHNCWPm;MW0RkjO2-USwWzAgn:8px;">
-              <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#XbpyA3Bg;">${s.iUd3UmGA}</qZojOiNG>
-              <qZojOiNG style="agSaZYEV:#AovKXqH1;HkF8konD:EP7RnItk;Xse8owrK:4px 12px;mq0x0xuF-dQJ4zoC8:20px;MSF8VRSk-QFYeY4ME:0.85em;">
-                ${s.LIFdNFRd}
-              </qZojOiNG>
-            </qZojOiNG>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;">${s.TQmvGOur}</qZojOiNG>
-          </qZojOiNG>
+          <div style="background:#ffebee;padding:15px;border-radius:10px;margin-bottom:12px;border-left:4px solid #d32f2f;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div style="font-size:1.1em;font-weight:700;color:#b71c1c;">${s.name}</div>
+              <div style="background:#f44336;color:white;padding:4px 12px;border-radius:20px;font-size:0.85em;">
+                ${s.position}
+              </div>
+            </div>
+            <div style="font-size:0.95em;color:#555;">${s.desc}</div>
+          </div>
         `
           )
-          .npzBTJNh('')}
-      </qZojOiNG>
+          .join('')}
+      </div>
     `;
   }
 
-  kKYCBUrG.innerHTML = z0MYnRzG;
+  container.innerHTML = html;
 }
 
+/**
+ * 길신류 표시
+ */
+function displayGilsin(gilsin) {
+  const container = document.getElementById('gilsin-analysis');
 
-function P1K9xuky(Hic5DRbS) {
-  const kKYCBUrG = document.getElementById('Hic5DRbS-xB2spD4H');
-
-  if (!Hic5DRbS || Hic5DRbS.DFImMboA === 0) {
-    kKYCBUrG.innerHTML = `
-      <qZojOiNG style="UJyWhVPr-ib1rwzJf:POHNCWPm;Xse8owrK:30px;agSaZYEV:#uO0skDyT;mq0x0xuF-dQJ4zoC8:12px;">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;HkF8konD:#666;">사주에 특별한 길신이 없습니다.</qZojOiNG>
-      </qZojOiNG>
+  if (!gilsin || gilsin.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:30px;background:#f5f5f5;border-radius:12px;">
+        <div style="font-size:1.1em;color:#666;">사주에 특별한 길신이 없습니다.</div>
+      </div>
     `;
     return;
   }
 
-  let z0MYnRzG = `
-    <qZojOiNG style="agSaZYEV:#xavOck69;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:20px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC#LOZxFfjF;">
-      <qZojOiNG style="MSF8VRSk-l3dSJNbg:700;HkF8konD:#pVpKbzNX;MW0RkjO2-USwWzAgn:8px;">
+  let html = `
+    <div style="background:#fff9c4;padding:15px;border-radius:10px;margin-bottom:20px;border-left:4px solid#fbc02d;">
+      <div style="font-weight:700;color:#f57f17;margin-bottom:8px;">
         ⭐ 길신류는 일간(日干) 또는 월지(月支)를 기준으로 판단하는 특별한 귀인성(貴人星)입니다.
-      </qZojOiNG>
-      <qZojOiNG style="HkF8konD:#ki7ThZm8;MSF8VRSk-QFYeY4ME:0.95em;">
-        총 ${Hic5DRbS.DFImMboA}개의 길신이 발견되었습니다. 이는 복록과 귀인의 도움을 의미합니다.
-      </qZojOiNG>
-    </qZojOiNG>
+      </div>
+      <div style="color:#f9a825;font-size:0.95em;">
+        총 ${gilsin.length}개의 길신이 발견되었습니다. 이는 복록과 귀인의 도움을 의미합니다.
+      </div>
+    </div>
   `;
 
-  z0MYnRzG += `
-    <qZojOiNG style="erwK6stq:pyQ38Qr0;pyQ38Qr0-Zkrwt17g-oyIXfG5W:L6QRsK7q(guXSQNFx-x8a04qfK,PvtNS36h(300px,1fr));KZQyUHjD:15px;">
-      ${Hic5DRbS
-        .Sq4eP5Ja(
+  html += `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:15px;">
+      ${gilsin
+        .map(
           (g) => `
-        <qZojOiNG style="agSaZYEV:DL3nDv9L-xEXyiNb2(135deg,#itWTqpR7 0%,#DyGz8Zwv 100%);Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);mq0x0xuF:2px oyABhJdC #ceJOQRsD;">
-          <qZojOiNG style="erwK6stq:HFr8aVaG;thpMrT0V-kvqUaG6N:Vj3WhnK5-QYO2LXpb;ib1rwzJf-AwufVxQN:POHNCWPm;MW0RkjO2-USwWzAgn:12px;">
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.2em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#tq60nxnG;">✨ ${g.iUd3UmGA}</qZojOiNG>
-            <qZojOiNG style="agSaZYEV:#ceJOQRsD;HkF8konD:#KzZb5etn;Xse8owrK:5px 12px;mq0x0xuF-dQJ4zoC8:20px;MSF8VRSk-QFYeY4ME:0.85em;MSF8VRSk-l3dSJNbg:600;">
-              ${g.LIFdNFRd}
-            </qZojOiNG>
-          </qZojOiNG>
-          <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;NBnoE0PG-KXZdsU0k:1.6;">${g.TQmvGOur}</qZojOiNG>
-        </qZojOiNG>
+        <div style="background:linear-gradient(135deg,#fff9e6 0%,#fffbf0 100%);padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);border:2px solid #ffc107;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div style="font-size:1.2em;font-weight:700;color:#e65100;">✨ ${g.name}</div>
+            <div style="background:#ffc107;color:#fff;padding:5px 12px;border-radius:20px;font-size:0.85em;font-weight:600;">
+              ${g.position}
+            </div>
+          </div>
+          <div style="font-size:0.95em;color:#555;line-height:1.6;">${g.desc}</div>
+        </div>
       `
         )
-        .npzBTJNh('')}
-    </qZojOiNG>
+        .join('')}
+    </div>
   `;
 
-  kKYCBUrG.innerHTML = z0MYnRzG;
+  container.innerHTML = html;
 }
 
+/**
+ * 그외 신살 표시
+ */
+function displayExtraSinsal(extraSinsal) {
+  const container = document.getElementById('extra-sinsal-analysis');
 
-function jpM18VG2(n3sjfcAe) {
-  const kKYCBUrG = document.getElementById('qxeXi74m-bfgQkUBn-xB2spD4H');
-
-  if (!n3sjfcAe || n3sjfcAe.DFImMboA === 0) {
-    kKYCBUrG.innerHTML = `
-      <qZojOiNG style="UJyWhVPr-ib1rwzJf:POHNCWPm;Xse8owrK:30px;agSaZYEV:#uO0skDyT;mq0x0xuF-dQJ4zoC8:12px;">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;HkF8konD:#666;">사주에 추가 신살이 없습니다.</qZojOiNG>
-      </qZojOiNG>
+  if (!extraSinsal || extraSinsal.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:30px;background:#f5f5f5;border-radius:12px;">
+        <div style="font-size:1.1em;color:#666;">사주에 추가 신살이 없습니다.</div>
+      </div>
     `;
     return;
   }
 
-  
-  const jQSFHOya = n3sjfcAe.FI0mpC7U((s) => s.duqzFZjL === 'ysxK3Ued');
-  const HW3Or8kN = n3sjfcAe.FI0mpC7U((s) => s.duqzFZjL === 'mDHRcYkx');
-  const MSgbrQY9 = n3sjfcAe.FI0mpC7U((s) => s.duqzFZjL === 'ywdZqTq0');
+  // 타입별 분류
+  const goodSinsal = extraSinsal.filter((s) => s.type === 'good');
+  const warningSinsal = extraSinsal.filter((s) => s.type === 'warning');
+  const badSinsal = extraSinsal.filter((s) => s.type === 'bad');
 
-  let z0MYnRzG = `
-    <qZojOiNG style="agSaZYEV:#gyO8xb6E;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:20px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #0288d1;">
-      <qZojOiNG style="MSF8VRSk-l3dSJNbg:700;HkF8konD:#01579b;MW0RkjO2-USwWzAgn:8px;">
+  let html = `
+    <div style="background:#e1f5fe;padding:15px;border-radius:10px;margin-bottom:20px;border-left:4px solid #0288d1;">
+      <div style="font-weight:700;color:#01579b;margin-bottom:8px;">
         📌 그외 신살은 사주의 특수한 작용과 영향을 나타냅니다.
-      </qZojOiNG>
-      <qZojOiNG style="HkF8konD:#0277bd;MSF8VRSk-QFYeY4ME:0.95em;">
-        총 ${n3sjfcAe.DFImMboA}개 발견 (길신 ${jQSFHOya.DFImMboA}개, 주의 ${HW3Or8kN.DFImMboA}개, 흉신 ${MSgbrQY9.DFImMboA}개)
-      </qZojOiNG>
-    </qZojOiNG>
+      </div>
+      <div style="color:#0277bd;font-size:0.95em;">
+        총 ${extraSinsal.length}개 발견 (길신 ${goodSinsal.length}개, 주의 ${warningSinsal.length}개, 흉신 ${badSinsal.length}개)
+      </div>
+    </div>
   `;
 
-  
-  if (jQSFHOya.DFImMboA > 0) {
-    z0MYnRzG += `
-      <qZojOiNG style="MW0RkjO2-USwWzAgn:25px;agSaZYEV:EP7RnItk;Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.3em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#388e3c;MW0RkjO2-USwWzAgn:15px;mq0x0xuF-USwWzAgn:3px oyABhJdC #388e3c;Xse8owrK-USwWzAgn:10px;">
+  // 길신
+  if (goodSinsal.length > 0) {
+    html += `
+      <div style="margin-bottom:25px;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div style="font-size:1.3em;font-weight:700;color:#388e3c;margin-bottom:15px;border-bottom:3px solid #388e3c;padding-bottom:10px;">
           ✅ 긍정적 신살
-        </qZojOiNG>
-        ${jQSFHOya
-          .Sq4eP5Ja(
+        </div>
+        ${goodSinsal
+          .map(
             (s) => `
-          <qZojOiNG style="agSaZYEV:#CsREf9xG;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:12px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #388e3c;">
-            <qZojOiNG style="erwK6stq:HFr8aVaG;thpMrT0V-kvqUaG6N:Vj3WhnK5-QYO2LXpb;ib1rwzJf-AwufVxQN:POHNCWPm;MW0RkjO2-USwWzAgn:8px;">
-              <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#1b5e20;">${s.iUd3UmGA}</qZojOiNG>
-              <qZojOiNG style="agSaZYEV:#4caf50;HkF8konD:EP7RnItk;Xse8owrK:4px 12px;mq0x0xuF-dQJ4zoC8:20px;MSF8VRSk-QFYeY4ME:0.85em;">
-                ${s.LIFdNFRd}
-              </qZojOiNG>
-            </qZojOiNG>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;">${s.TQmvGOur}</qZojOiNG>
-          </qZojOiNG>
+          <div style="background:#e8f5e9;padding:15px;border-radius:10px;margin-bottom:12px;border-left:4px solid #388e3c;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div style="font-size:1.1em;font-weight:700;color:#1b5e20;">${s.name}</div>
+              <div style="background:#4caf50;color:white;padding:4px 12px;border-radius:20px;font-size:0.85em;">
+                ${s.position}
+              </div>
+            </div>
+            <div style="font-size:0.95em;color:#555;">${s.desc}</div>
+          </div>
         `
           )
-          .npzBTJNh('')}
-      </qZojOiNG>
+          .join('')}
+      </div>
     `;
   }
 
-  
-  if (HW3Or8kN.DFImMboA > 0) {
-    z0MYnRzG += `
-      <qZojOiNG style="MW0RkjO2-USwWzAgn:25px;agSaZYEV:EP7RnItk;Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.3em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#pfTrYmld;MW0RkjO2-USwWzAgn:15px;mq0x0xuF-USwWzAgn:3px oyABhJdC #pfTrYmld;Xse8owrK-USwWzAgn:10px;">
+  // 주의 신살
+  if (warningSinsal.length > 0) {
+    html += `
+      <div style="margin-bottom:25px;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div style="font-size:1.3em;font-weight:700;color:#f57c00;margin-bottom:15px;border-bottom:3px solid #f57c00;padding-bottom:10px;">
           ⚠️ 주의해야 할 신살
-        </qZojOiNG>
-        ${HW3Or8kN
-          .Sq4eP5Ja(
+        </div>
+        ${warningSinsal
+          .map(
             (s) => `
-          <qZojOiNG style="agSaZYEV:#YsGTnlI3;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:12px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #pfTrYmld;">
-            <qZojOiNG style="erwK6stq:HFr8aVaG;thpMrT0V-kvqUaG6N:Vj3WhnK5-QYO2LXpb;ib1rwzJf-AwufVxQN:POHNCWPm;MW0RkjO2-USwWzAgn:8px;">
-              <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#tq60nxnG;">${s.iUd3UmGA}</qZojOiNG>
-              <qZojOiNG style="agSaZYEV:#a1VHClsX;HkF8konD:EP7RnItk;Xse8owrK:4px 12px;mq0x0xuF-dQJ4zoC8:20px;MSF8VRSk-QFYeY4ME:0.85em;">
-                ${s.LIFdNFRd}
-              </qZojOiNG>
-            </qZojOiNG>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;">${s.TQmvGOur}</qZojOiNG>
-          </qZojOiNG>
+          <div style="background:#fff3e0;padding:15px;border-radius:10px;margin-bottom:12px;border-left:4px solid #f57c00;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div style="font-size:1.1em;font-weight:700;color:#e65100;">${s.name}</div>
+              <div style="background:#ff9800;color:white;padding:4px 12px;border-radius:20px;font-size:0.85em;">
+                ${s.position}
+              </div>
+            </div>
+            <div style="font-size:0.95em;color:#555;">${s.desc}</div>
+          </div>
         `
           )
-          .npzBTJNh('')}
-      </qZojOiNG>
+          .join('')}
+      </div>
     `;
   }
 
-  
-  if (MSgbrQY9.DFImMboA > 0) {
-    z0MYnRzG += `
-      <qZojOiNG style="MW0RkjO2-USwWzAgn:25px;agSaZYEV:EP7RnItk;Xse8owrK:20px;mq0x0xuF-dQJ4zoC8:12px;x5EMmYXR-Q0MMuhrN:0 4px 12px wj5MkFlR(0,0,0,0.1);">
-        <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.3em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#E20GBKa1;MW0RkjO2-USwWzAgn:15px;mq0x0xuF-USwWzAgn:3px oyABhJdC #E20GBKa1;Xse8owrK-USwWzAgn:10px;">
+  // 흉신
+  if (badSinsal.length > 0) {
+    html += `
+      <div style="margin-bottom:25px;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <div style="font-size:1.3em;font-weight:700;color:#d32f2f;margin-bottom:15px;border-bottom:3px solid #d32f2f;padding-bottom:10px;">
           🚫 부정적 신살
-        </qZojOiNG>
-        ${MSgbrQY9
-          .Sq4eP5Ja(
+        </div>
+        ${badSinsal
+          .map(
             (s) => `
-          <qZojOiNG style="agSaZYEV:#Ahb2NSUV;Xse8owrK:15px;mq0x0xuF-dQJ4zoC8:10px;MW0RkjO2-USwWzAgn:12px;mq0x0xuF-dy0UJ5N0:4px oyABhJdC #E20GBKa1;">
-            <qZojOiNG style="erwK6stq:HFr8aVaG;thpMrT0V-kvqUaG6N:Vj3WhnK5-QYO2LXpb;ib1rwzJf-AwufVxQN:POHNCWPm;MW0RkjO2-USwWzAgn:8px;">
-              <qZojOiNG style="MSF8VRSk-QFYeY4ME:1.1em;MSF8VRSk-l3dSJNbg:700;HkF8konD:#XbpyA3Bg;">${s.iUd3UmGA}</qZojOiNG>
-              <qZojOiNG style="agSaZYEV:#AovKXqH1;HkF8konD:EP7RnItk;Xse8owrK:4px 12px;mq0x0xuF-dQJ4zoC8:20px;MSF8VRSk-QFYeY4ME:0.85em;">
-                ${s.LIFdNFRd}
-              </qZojOiNG>
-            </qZojOiNG>
-            <qZojOiNG style="MSF8VRSk-QFYeY4ME:0.95em;HkF8konD:#555;">${s.TQmvGOur}</qZojOiNG>
-          </qZojOiNG>
+          <div style="background:#ffebee;padding:15px;border-radius:10px;margin-bottom:12px;border-left:4px solid #d32f2f;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div style="font-size:1.1em;font-weight:700;color:#b71c1c;">${s.name}</div>
+              <div style="background:#f44336;color:white;padding:4px 12px;border-radius:20px;font-size:0.85em;">
+                ${s.position}
+              </div>
+            </div>
+            <div style="font-size:0.95em;color:#555;">${s.desc}</div>
+          </div>
         `
           )
-          .npzBTJNh('')}
-      </qZojOiNG>
+          .join('')}
+      </div>
     `;
   }
 
-  kKYCBUrG.innerHTML = z0MYnRzG;
+  container.innerHTML = html;
 }

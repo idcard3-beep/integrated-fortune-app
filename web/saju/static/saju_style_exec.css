@@ -1,4 +1,4 @@
-
+/* 한 줄 입력 컬럼 정렬 개선 */
 .input-row-inline {
   display: flex;
   align-items: center;
@@ -6,9 +6,11 @@
   flex-wrap: wrap;
   margin-bottom: 12px;
 }
+/* ========================================
+   사주팔자 완전 분석 시스템 - 컴팩트 디자인
+   ======================================== */
 
-
-
+/* 전역 설정 */
 * {
   margin: 0;
   padding: 0;
@@ -25,7 +27,7 @@ body {
   font-size: 13px;
 }
 
-
+/* Utility Classes */
 .hidden {
   display: none;
 }
@@ -39,7 +41,7 @@ body {
   overflow: hidden;
 }
 
-
+/* 헤더 - 컴팩트 */
 .header {
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   color: white;
@@ -59,7 +61,7 @@ body {
   line-height: 1.3;
 }
 
-
+/* 입력 섹션 - 컴팩트 */
 .input-section {
   padding: 10px 8px;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -107,7 +109,7 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-
+/* 라디오 버튼 - 컴팩트 */
 .radio-group {
   display: flex;
   gap: 12px;
@@ -126,7 +128,7 @@ select:focus {
   margin-right: 5px;
 }
 
-
+/* 버튼 - 컴팩트 */
 .analyze-button {
   width: 100%;
   padding: 8px;
@@ -150,7 +152,7 @@ select:focus {
   transform: translateY(0);
 }
 
-
+/* 안내 메시지 - 컴팩트 */
 .info-box {
   background: #e8f4fd;
   border-left: 4px solid #2196f3;
@@ -170,7 +172,7 @@ select:focus {
   line-height: 1.4;
 }
 
-
+/* 결과 섹션 */
 .result-section {
   padding: 8px;
 }
@@ -179,7 +181,7 @@ select:focus {
   display: none;
 }
 
-
+/* 분석 섹션 - 컴팩트 */
 .analysis-section {
   margin-bottom: 8px;
 }
@@ -212,7 +214,7 @@ select:focus {
   border-bottom: 2px solid #e8f4fd;
 }
 
-
+/* 사주 기둥 - 컴팩트 & 반응형 */
 .pillars-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
@@ -246,7 +248,7 @@ select:focus {
   margin: 4px 0;
 }
 
-
+/* 십성 라벨 */
 .sipseong-label {
   font-size: 0.7em;
   font-weight: 600;
@@ -274,7 +276,7 @@ select:focus {
   transform: scale(1.05);
 }
 
-
+/* 오행 색상 */
 .wood {
   background: #4caf50;
   color: white;
@@ -296,7 +298,7 @@ select:focus {
   color: white;
 }
 
-
+/* 지장간 표시 - 컴팩트 */
 .jijanggans {
   margin-top: 8px;
   padding-top: 8px;
@@ -312,7 +314,7 @@ select:focus {
   font-size: 0.7em;
 }
 
-
+/* 요약 정보 - 컴팩트 */
 .summary-box {
   background: #f8f9fa;
   border-radius: 8px;
@@ -339,7 +341,7 @@ select:focus {
   color: #333;
 }
 
-
+/* 대운 - 세로 배치 (이미지 스타일) */
 .daeun-scroll {
   display: flex;
   overflow-x: auto;
@@ -391,7 +393,7 @@ select:focus {
   font-weight: 700;
 }
 
-
+/* 연운 - 천간 위, 지지 아래 */
 .yeonun-scroll {
   display: flex;
   overflow-x: auto;
@@ -450,7 +452,7 @@ select:focus {
   font-size: 0.9em;
 }
 
-
+/* 월운 */
 .wolun-scroll {
   display: flex;
   overflow-x: auto;
@@ -486,7 +488,7 @@ select:focus {
   border-color: #667eea;
 }
 
-
+/* 십성/십이운성 - 컴팩트 그리드 */
 .sipseong-grid,
 .sibiun-grid {
   display: grid;
@@ -495,7 +497,7 @@ select:focus {
   margin-top: 10px;
 }
 
-
+/* 십성 그룹 (10가지 세분화) */
 .sipseong-group {
   background: #ffffff;
   border: 2px solid #d1d5db;
@@ -550,7 +552,7 @@ select:focus {
   color: #666;
 }
 
-
+/* 태그 스타일 - 컴팩트 */
 .tag {
   display: inline-block;
   padding: 4px 8px;
@@ -581,7 +583,7 @@ select:focus {
   border: 1px solid #ffb74d;
 }
 
-
+/* 합/충/형/파/해 표시 - 컴팩트 */
 .relation-item {
   display: inline-block;
   margin: 4px;
@@ -598,7 +600,7 @@ select:focus {
   margin-right: 6px;
 }
 
-
+/* 개운법 - 컴팩트 */
 .gaewun-section {
   background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
   border: 2px solid #ffb74d;
@@ -631,7 +633,7 @@ select:focus {
   font-size: 0.8em;
 }
 
-
+/* 중요 카드 강조 */
 .critical-card {
   border: 3px solid #f44336;
   box-shadow: 0 4px 12px rgba(244, 67, 54, 0.2);
@@ -641,7 +643,7 @@ select:focus {
   width: 100%;
 }
 
-
+/* 태블릿 (768px 이상) */
 @media (min-width: 768px) {
   body {
     padding: 15px;
@@ -702,7 +704,7 @@ select:focus {
   }
 }
 
-
+/* 데스크탑 (1024px 이상) */
 @media (min-width: 1024px) {
   body {
     font-size: 15px;
@@ -751,7 +753,7 @@ select:focus {
   }
 }
 
-
+/* 프린트 최적화 */
 @media print {
   body {
     background: white;
@@ -772,7 +774,7 @@ select:focus {
   }
 }
 
-
+/* 유틸리티 클래스 */
 .text-center {
   text-align: center;
 }
@@ -789,7 +791,7 @@ select:focus {
   padding: 10px;
 }
 
-
+/* 1라인 입력 스타일 */
 .input-row-inline {
   display: flex;
   align-items: center;
@@ -818,7 +820,7 @@ select:focus {
   flex-wrap: wrap;
 }
 
-
+/* 간지 입력 섹션 스타일 */
 .ganji-input-section {
   margin-bottom: 12px;
 }
@@ -855,7 +857,7 @@ select:focus {
   font-style: italic;
 }
 
-
+/* 윤달(閏月) 체크박스 글자 크기 조절 */
 .checkbox-label span {
-  font-size: 0.9em; 
+  font-size: 0.9em; /* 필요시 0.9em, 14px 등으로 조절 */
 }

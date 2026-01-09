@@ -2240,14 +2240,11 @@
             <h3 style="margin-top:0;color:#333;text-align:center;">📤 공유 방법 선택</h3>
             <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
               ${isMobile ? `
-                <button id="shareKakaoBtn" style="padding:15px;font-size:16px;border:2px solid #FEE500;background:#FEE500;color:#000;border-radius:8px;cursor:pointer;font-weight:600;">
-                  💬 카카오톡으로 공유
-                </button>
                 <button id="shareSMSBtn" style="padding:15px;font-size:16px;border:2px solid #FF9800;background:#FF9800;color:white;border-radius:8px;cursor:pointer;font-weight:600;">
                   💬 문자(SMS)로 공유
                 </button>
                 <button id="shareWebBtn" style="padding:15px;font-size:16px;border:2px solid #2196F3;background:#2196F3;color:white;border-radius:8px;cursor:pointer;font-weight:600;">
-                  🌐 기타 앱으로 공유
+                  🌐 카톡등 기타 앱으로 공유
                 </button>
               ` : ''}
               <button id="copyTextBtn" style="padding:15px;font-size:16px;border:2px solid #4CAF50;background:#4CAF50;color:white;border-radius:8px;cursor:pointer;font-weight:600;">
@@ -2270,11 +2267,6 @@
           
           // 모바일 전용 버튼들
           if (isMobile) {
-            document.getElementById('shareKakaoBtn').addEventListener('click', () => {
-              window['shareToKakao'](text);
-              document.body.removeChild(modal);
-            });
-            
             document.getElementById('shareSMSBtn').addEventListener('click', () => {
               window['shareToSMS'](text);
               document.body.removeChild(modal);

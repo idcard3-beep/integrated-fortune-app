@@ -1456,7 +1456,7 @@
                   detailItems.forEach(item => {
                     const itemText = item.textContent.trim()
                       .replace(/\s+/g, ' ')
-                      .replace(/\
+                      .replace(/\//g, '\n  ');
                     if (itemText && !itemText.includes('없음') && itemText.length > 5) {
                       contentText += itemText + `\n`;
                     }
@@ -1841,8 +1841,8 @@
                 const detailItems = detailsDiv.querySelectorAll('div[style*="margin-bottom"]');
                 detailItems.forEach(item => {
                   const itemText = item.textContent.trim()
-                    .replace(/\s+/g, ' ')
-                    .replace(/\
+                     .replace(/\s+/g, ' ')
+                    .replace(/\//g, '\n  ');
                   if (itemText && !itemText.includes('없음')) {
                     text += itemText + '\n';
                   }

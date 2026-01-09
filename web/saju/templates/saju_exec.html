@@ -25,7 +25,7 @@
       <div class="input-section">
         <h2>사주 정보 입력</h2>
 
-
+        <!-- 성명 입력 -->
         <div class="input-row-inline">
           <label for="name">성명 (姓名)</label>
           <input
@@ -36,7 +36,7 @@
           />
         </div>
 
-
+        <!-- 성별 선택 -->
         <div class="input-row-inline">
           <label>성별 (性別)</label>
           <div class="radio-group" style="flex: 1; display: flex; gap: 20px">
@@ -51,7 +51,7 @@
           </div>
         </div>
 
-
+        <!-- 역법 선택 -->
         <div class="input-row-inline">
           <label>역법 (曆法)</label>
           <div class="radio-group" style="flex: 1; display: flex; gap: 20px; align-items: center;">
@@ -63,7 +63,7 @@
               <input type="radio" name="calendar" value="lunar" />
               <span>음력 (陰曆)</span>
             </label>
-
+            <!-- 윤달 체크 (음력일 때만 표시) -->
             <label class="checkbox-label" id="yundal-section" style="display: none; margin-left: 10px;">
               <input type="checkbox" id="yundal" name="yundal" />
               <span>윤달 (閏月)</span>
@@ -71,7 +71,7 @@
           </div>
         </div>
 
-
+        <!-- 생년월일 입력 (한 줄) -->
         <div
           class="input-row-inline"
           style="gap: 0; display: flex; align-items: center"
@@ -114,7 +114,7 @@
           >
         </div>
 
-
+        <!-- 출생시각 입력 방식 선택 -->
         <div class="input-row-inline">
           <label>출생시각 입력 방식</label>
           <div class="radio-group" style="flex: 1; display: flex; gap: 20px">
@@ -129,6 +129,7 @@
           </div>
         </div>
 
+        <!-- 시각 직접 입력 -->
         <div id="time-input-section" class="time-input-section">
           <div class="input-row-inline">
             <label>출생시각 (時刻)</label>
@@ -157,7 +158,7 @@
           </div>
         </div>
 
-
+        <!-- 간지 선택 입력 -->
         <div
           id="ganji-input-section"
           class="ganji-input-section"
@@ -222,12 +223,24 @@
           <button class="analyze-btn" id="db-view-btn" style="background-color: #28a745; border-color: #28a745;">📊 DB보기</button>
         </div>
 
+        <!-- <div class="input-notice"> -->
+        <!--  <p>📌 <strong>입력 안내:</strong></p> -->
+        <!--  <ul> -->
+        <!--    <li>정확한 사주 분석을 위해 올바른 정보를 입력해주세요</li> -->
+        <!--    <li>음력의 경우 윤달 여부를 정확히 체크해주세요</li> -->
+        <!--    <li> -->
+        <!--      시각을 모르시면 시주 분석이 제외되지만, 나머지 분석은 가능합니다 -->
+        <!--    </li> -->
+        <!--  </ul> -->
+        <!--</div> -->
       </div>
 
       <div id="result-section" class="result-section hidden">
-
+        <!-- STEP 1: 사주팔자 기본 구조 -->
         <section class="analysis-section">
-
+          <!--<h2 class="section-title"> -->
+          <!--  📊 STEP 1. 四柱八字 (사주팔자) 기본 구조 -->
+          <!--</h2> -->
           <div class="pillars-container">
             <div class="pillar-card">
               <div class="pillar-title">時柱 (시주)</div>
@@ -283,7 +296,7 @@
             </div>
           </div>
 
-
+          <!-- 오행 집계 -->
           <div
             id="pillar-element-summary"
             style="
@@ -299,15 +312,18 @@
           ></div>
         </section>
 
+        <!-- STEP 17: 대운 분석 (위치 이동) -->
         <section class="analysis-section">
           <div class="analysis-card full-width">
-
+            <!-- <h3 style="display: none"> -->
+            <!--   🌊 STEP 17. 大運 (대운) 흐름 - 10년 주기 -->
+            <!-- </h3> -->
             <div id="daeun-chart" class="daeun-chart"></div>
             <div id="daeun-summary"></div>
           </div>
         </section>
 
-
+        <!-- STEP 2: 일간 분석 -->
         <section class="analysis-section">
           <h2 class="section-title">🎯 2.日干 (일간)</h2>
           <div class="analysis-card critical-card">
@@ -315,7 +331,7 @@
           </div>
         </section>
 
-
+        <!-- STEP 3: 사주 강약 판단 -->
         <section class="analysis-section">
           <h2 class="section-title">⚖️ 3.四柱强弱 (사주 강약)</h2>
           <div class="analysis-card critical-card">
@@ -323,7 +339,7 @@
           </div>
         </section>
 
-
+        <!-- STEP 4: 격국 분석 -->
         <section class="analysis-section">
           <h2 class="section-title">👑 4.格局 (격국)</h2>
           <div class="analysis-card important-card">
@@ -331,7 +347,7 @@
           </div>
         </section>
 
-
+        <!-- STEP 5: 용신·희신·기신 분석 -->
         <section class="analysis-section">
           <h2 class="section-title">🔑 5.用神·喜神·忌神 (용신·희신·기신)</h2>
           <div class="analysis-card critical-card">
@@ -340,103 +356,106 @@
         </section>
 
         <div class="analysis-grid">
-
+          <!-- STEP 6: 오행 분석 -->
           <div class="analysis-card">
             <h3>📊 6.五行 (오행) 분포도</h3>
             <div id="element-chart" class="element-chart"></div>
             <div id="element-summary" class="element-summary"></div>
           </div>
 
-
+          <!-- STEP 7: 음양 분석 -->
           <div class="analysis-card">
             <h3>☯️ 7.陰陽 (음양) 균형</h3>
             <div id="yinyang-chart" class="yinyang-chart"></div>
             <div id="yinyang-summary" class="yinyang-summary"></div>
           </div>
 
-
+          <!-- STEP 8: 지장간 분석 -->
           <div class="analysis-card full-width">
             <h3>🌿 8.地藏干 (지장간)</h3>
             <div id="jijanggan-analysis" class="jijanggan-analysis"></div>
           </div>
 
-
+          <!-- STEP 9: 십성 분석 -->
           <div class="analysis-card full-width">
             <h3>⭐ 9.十星 (십성)</h3>
             <div id="sipseong-analysis" class="sipseong-analysis"></div>
             <div id="sipseong-summary" class="sipseong-summary"></div>
           </div>
 
-
+          <!-- STEP 10: 십이운성 분석 -->
           <div class="analysis-card full-width">
             <h3>🔄 10.十二運星 (십이운성)</h3>
             <div id="sibiun-detail-analysis"></div>
           </div>
 
+          <!-- STEP 11: 육친 분석 -->
           <div class="analysis-card full-width important-card">
             <h3>👨‍👩‍👧‍👦 11.六親 (육친) - 인간관계</h3>
             <div id="yukchin-analysis"></div>
           </div>
 
-
+          <!-- STEP 12: 합 분석 -->
           <div class="analysis-card full-width">
             <h3>🤝 12.合 (합)</h3>
             <div id="hap-analysis"></div>
           </div>
 
-
+          <!-- STEP 13: 형충파해 분석 (강화 버전) -->
           <div class="analysis-card full-width warning-card">
             <h3>⚡ 13.刑沖破害 (형충파해)</h3>
             <div id="hyungchung-analysis"></div>
           </div>
 
-
+          <!-- STEP 14: 신살 분석 -->
           <div class="analysis-card full-width">
             <h3>✨ 14.신살(神殺) - 특수 길흉</h3>
             <div id="sinsal-analysis"></div>
           </div>
 
-
+          <!-- STEP 21: 십이신살 분석 -->
           <div class="analysis-card full-width">
             <h3>🔮 21.十二神殺 (십이신살)</h3>
             <div id="sibi-sinsal-analysis"></div>
           </div>
 
-
+          <!-- STEP 22: 길신류 분석 -->
           <div class="analysis-card full-width">
             <h3>🌟 22.吉神類 (길신류)</h3>
             <div id="gilsin-analysis"></div>
           </div>
 
-
+          <!-- STEP 23: 그외 신살 분석 -->
           <div class="analysis-card full-width">
             <h3>⭐ 23.其他神殺 (그외 신살)</h3>
             <div id="extra-sinsal-analysis"></div>
           </div>
 
-
+          <!-- STEP 15: 공망 상세 분석 -->
           <div class="analysis-card full-width">
             <h3>🕳️ 15.공망(空亡)</h3>
             <div id="gongmang-detail-analysis"></div>
           </div>
 
+          <!-- STEP 16: 특수 신살 -->
           <div class="analysis-card full-width">
             <h3>🔮 16.특수 신살</h3>
             <div id="special-sinsal-analysis"></div>
           </div>
 
-
+          <!-- STEP 18: 세운 분석 -->
           <div class="analysis-card full-width">
             <h3>📅 18.歲運 (세운)/ 17.大運 (대운) 흐름(위에참조)</h3>
             <div id="sewun-analysis"></div>
           </div>
 
-
+          <!-- STEP 19: 종합 해석 -->
           <div class="analysis-card full-width final-card">
             <h3>📖 19.綜合命理 (종합 명리)</h3>
             <div id="comprehensive-analysis"></div>
           </div>
 
+          <!-- STEP 20: 개운 방법 -->
           <div class="analysis-card full-width action-card">
             <h3>🎁 20.개운(開運) 방법 및 실천 사항</h3>
             <div id="gaewun-guide"></div>
@@ -447,7 +466,8 @@
         <section id="resultWrap" class="card result-card hidden">
           <div id="sajuDisplay" class="saju-grid"></div>
           <div id="gwaeBlock" class="gwae-block"></div>
-
+          <div id="disclaimer" class="disclaimer">
+            <!-- 하단 SEO 설명 영역 <section class="seo-description"> -->
             <h2>사주풀이 무료보기</h2>
             <p>
             ※ 사주풀이는 태어난 연·월·일·시를 기준으로 오행과 십성을 분석하여
@@ -471,12 +491,13 @@
     <script src="{{ url_for('static', filename='saju_sinsal_extended.js') }}"></script>
     <script src="{{ url_for('static', filename='saju_script_exec.js') }}"></script>
 
-
-
+    <!-- 회원 세션 전역 변수 (공통 파일) -->
+    <script src="{{ url_for('common_static', filename='member_session.js') }}"></script>
+    <!-- 관리자 세션 전역 변수 관리 (공통 파일) -->
     <script src="{{ url_for('common_static', filename='admin_session.js') }}"></script>
-
+    <!-- 서버 세션 데이터로 전역 변수 초기화 -->
     <script>
-
+      // 서버에서 전달받은 세션 데이터로 전역 변수 초기화
       console.log('🔧 서버 세션 초기화 시작');
       {% if member_session %}
       console.log('✅ member_session 존재:', {{ member_session | tojson }});
@@ -497,18 +518,18 @@
       }
       {% endif %}
     </script>
-
+    <!-- 복사방지 세션 전역 변수 관리 -->
     <script src="{{ url_for('common_static', filename='security.js') }}"></script>
     <script>
-
+      // ticket_id를 저장할 전역 변수
       let currentTicketId = null;
       
-
+      // URL에서 ticket_id 파라미터 읽기
       function getTicketIdFromUrl() {
         const urlParams = new URLSearchParams(window.location.search);
         let ticketId = urlParams.get('ticket_id');
         
-
+        // URL에 ticket_id가 없으면 pendingTicketId 확인 (로그인 후 돌아온 경우)
         if (!ticketId) {
           const pendingTicketId = sessionStorage.getItem('pendingTicketId');
           if (pendingTicketId) {
@@ -521,7 +542,7 @@
         return ticketId;
       }
       
-
+      // 페이지 로드 시 ticket_id 확인 및 데이터 로드/복원
       window.addEventListener('DOMContentLoaded', function() {
         console.log('🚀 DOMContentLoaded - 페이지 초기화 시작');
         
@@ -537,27 +558,27 @@
           currentTicketId = ticketId;
           console.log('✅ ticket_id 존재 - 티켓 데이터 로드:', currentTicketId);
           
-
+          // ticket_id가 있으면 바로 데이터 로드 (인증은 API에서 처리)
           window['loadTicketData'](ticketId);
         } else if (returnAfterLogin === 'true' && hasSajuFormData) {
-
+          // 로그인 후 돌아온 경우 데이터만 복원 (자동 실행 안 함)
           console.log('🔄 로그인 후 돌아옴 - 데이터 복원만 수행');
           
-
+          // 약간의 지연 후 복원 (DOM이 완전히 준비되도록)
           setTimeout(() => {
             console.log('⏰ 데이터 복원 실행');
             
-
+            // 데이터 복원
             const restored = restoreFormData();
             
             if (restored) {
               console.log('✅ 데이터 복원 완료');
               console.log('ℹ️  이제 로그인된 상태이므로 원하는 버튼을 클릭하세요.');
               
-
+              // sessionStorage 클리어
               sessionStorage.removeItem('returnAfterLogin');
               
-
+              // 사용자에게 알림
               alert('✅ 로그인 성공!\n\n입력하신 데이터가 복원되었습니다.\n"사주보기" 버튼을 클릭하여 다시 분석하신 후\n원하는 작업(DB저장, 보내기, DB보기)을 수행하세요.');
             } else {
               console.error('❌ 데이터 복원 실패');

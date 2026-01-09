@@ -25,7 +25,7 @@
       <div class="input-section">
         <h2>사주 정보 입력</h2>
 
-        
+
         <div class="input-row-inline">
           <label for="name">성명 (姓名)</label>
           <input
@@ -36,7 +36,7 @@
           />
         </div>
 
-        
+
         <div class="input-row-inline">
           <label>성별 (性別)</label>
           <div class="radio-group" style="flex: 1; display: flex; gap: 20px">
@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        
+
         <div class="input-row-inline">
           <label>역법 (曆法)</label>
           <div class="radio-group" style="flex: 1; display: flex; gap: 20px; align-items: center;">
@@ -63,7 +63,7 @@
               <input type="radio" name="calendar" value="lunar" />
               <span>음력 (陰曆)</span>
             </label>
-            
+
             <label class="checkbox-label" id="yundal-section" style="display: none; margin-left: 10px;">
               <input type="checkbox" id="yundal" name="yundal" />
               <span>윤달 (閏月)</span>
@@ -71,7 +71,7 @@
           </div>
         </div>
 
-        
+
         <div
           class="input-row-inline"
           style="gap: 0; display: flex; align-items: center"
@@ -114,7 +114,7 @@
           >
         </div>
 
-        
+
         <div class="input-row-inline">
           <label>출생시각 입력 방식</label>
           <div class="radio-group" style="flex: 1; display: flex; gap: 20px">
@@ -129,7 +129,6 @@
           </div>
         </div>
 
-        
         <div id="time-input-section" class="time-input-section">
           <div class="input-row-inline">
             <label>출생시각 (時刻)</label>
@@ -158,7 +157,7 @@
           </div>
         </div>
 
-        
+
         <div
           id="ganji-input-section"
           class="ganji-input-section"
@@ -223,24 +222,12 @@
           <button class="analyze-btn" id="db-view-btn" style="background-color: #28a745; border-color: #28a745;">📊 DB보기</button>
         </div>
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
       </div>
 
       <div id="result-section" class="result-section hidden">
-        
+
         <section class="analysis-section">
-          
-          
-          
+
           <div class="pillars-container">
             <div class="pillar-card">
               <div class="pillar-title">時柱 (시주)</div>
@@ -296,7 +283,7 @@
             </div>
           </div>
 
-          
+
           <div
             id="pillar-element-summary"
             style="
@@ -312,18 +299,15 @@
           ></div>
         </section>
 
-        
         <section class="analysis-section">
           <div class="analysis-card full-width">
-            
-            
-            
+
             <div id="daeun-chart" class="daeun-chart"></div>
             <div id="daeun-summary"></div>
           </div>
         </section>
 
-        
+
         <section class="analysis-section">
           <h2 class="section-title">🎯 2.日干 (일간)</h2>
           <div class="analysis-card critical-card">
@@ -331,7 +315,7 @@
           </div>
         </section>
 
-        
+
         <section class="analysis-section">
           <h2 class="section-title">⚖️ 3.四柱强弱 (사주 강약)</h2>
           <div class="analysis-card critical-card">
@@ -339,7 +323,7 @@
           </div>
         </section>
 
-        
+
         <section class="analysis-section">
           <h2 class="section-title">👑 4.格局 (격국)</h2>
           <div class="analysis-card important-card">
@@ -347,7 +331,7 @@
           </div>
         </section>
 
-        
+
         <section class="analysis-section">
           <h2 class="section-title">🔑 5.用神·喜神·忌神 (용신·희신·기신)</h2>
           <div class="analysis-card critical-card">
@@ -356,106 +340,103 @@
         </section>
 
         <div class="analysis-grid">
-          
+
           <div class="analysis-card">
             <h3>📊 6.五行 (오행) 분포도</h3>
             <div id="element-chart" class="element-chart"></div>
             <div id="element-summary" class="element-summary"></div>
           </div>
 
-          
+
           <div class="analysis-card">
             <h3>☯️ 7.陰陽 (음양) 균형</h3>
             <div id="yinyang-chart" class="yinyang-chart"></div>
             <div id="yinyang-summary" class="yinyang-summary"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width">
             <h3>🌿 8.地藏干 (지장간)</h3>
             <div id="jijanggan-analysis" class="jijanggan-analysis"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width">
             <h3>⭐ 9.十星 (십성)</h3>
             <div id="sipseong-analysis" class="sipseong-analysis"></div>
             <div id="sipseong-summary" class="sipseong-summary"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width">
             <h3>🔄 10.十二運星 (십이운성)</h3>
             <div id="sibiun-detail-analysis"></div>
           </div>
 
-          
           <div class="analysis-card full-width important-card">
             <h3>👨‍👩‍👧‍👦 11.六親 (육친) - 인간관계</h3>
             <div id="yukchin-analysis"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width">
             <h3>🤝 12.合 (합)</h3>
             <div id="hap-analysis"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width warning-card">
             <h3>⚡ 13.刑沖破害 (형충파해)</h3>
             <div id="hyungchung-analysis"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width">
             <h3>✨ 14.신살(神殺) - 특수 길흉</h3>
             <div id="sinsal-analysis"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width">
             <h3>🔮 21.十二神殺 (십이신살)</h3>
             <div id="sibi-sinsal-analysis"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width">
             <h3>🌟 22.吉神類 (길신류)</h3>
             <div id="gilsin-analysis"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width">
             <h3>⭐ 23.其他神殺 (그외 신살)</h3>
             <div id="extra-sinsal-analysis"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width">
             <h3>🕳️ 15.공망(空亡)</h3>
             <div id="gongmang-detail-analysis"></div>
           </div>
 
-          
           <div class="analysis-card full-width">
             <h3>🔮 16.특수 신살</h3>
             <div id="special-sinsal-analysis"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width">
             <h3>📅 18.歲運 (세운)/ 17.大運 (대운) 흐름(위에참조)</h3>
             <div id="sewun-analysis"></div>
           </div>
 
-          
+
           <div class="analysis-card full-width final-card">
             <h3>📖 19.綜合命理 (종합 명리)</h3>
             <div id="comprehensive-analysis"></div>
           </div>
 
-          
           <div class="analysis-card full-width action-card">
             <h3>🎁 20.개운(開運) 방법 및 실천 사항</h3>
             <div id="gaewun-guide"></div>
@@ -466,8 +447,7 @@
         <section id="resultWrap" class="card result-card hidden">
           <div id="sajuDisplay" class="saju-grid"></div>
           <div id="gwaeBlock" class="gwae-block"></div>
-          <div id="disclaimer" class="disclaimer">
-            
+
             <h2>사주풀이 무료보기</h2>
             <p>
             ※ 사주풀이는 태어난 연·월·일·시를 기준으로 오행과 십성을 분석하여
@@ -487,17 +467,16 @@
         
     
 
-    <script></script>
-    <script></script>
-    <script></script>
+    <script src="{{ url_for('static', filename='saju_api_exec.js') }}"></script>
+    <script src="{{ url_for('static', filename='saju_sinsal_extended.js') }}"></script>
+    <script src="{{ url_for('static', filename='saju_script_exec.js') }}"></script>
 
-    
-    <script></script>
-    
-    <script></script>
-    
+
+
+    <script src="{{ url_for('common_static', filename='admin_session.js') }}"></script>
+
     <script>
-      
+
       console.log('🔧 서버 세션 초기화 시작');
       {% if member_session %}
       console.log('✅ member_session 존재:', {{ member_session | tojson }});
@@ -518,18 +497,18 @@
       }
       {% endif %}
     </script>
-    
-    <script></script>
+
+    <script src="{{ url_for('common_static', filename='security.js') }}"></script>
     <script>
-      
+
       let currentTicketId = null;
       
-      
+
       function getTicketIdFromUrl() {
         const urlParams = new URLSearchParams(window.location.search);
         let ticketId = urlParams.get('ticket_id');
         
-        
+
         if (!ticketId) {
           const pendingTicketId = sessionStorage.getItem('pendingTicketId');
           if (pendingTicketId) {
@@ -542,7 +521,7 @@
         return ticketId;
       }
       
-      
+
       window.addEventListener('DOMContentLoaded', function() {
         console.log('🚀 DOMContentLoaded - 페이지 초기화 시작');
         
@@ -558,27 +537,27 @@
           currentTicketId = ticketId;
           console.log('✅ ticket_id 존재 - 티켓 데이터 로드:', currentTicketId);
           
-          
+
           window['loadTicketData'](ticketId);
         } else if (returnAfterLogin === 'true' && hasSajuFormData) {
-          
+
           console.log('🔄 로그인 후 돌아옴 - 데이터 복원만 수행');
           
-          
+
           setTimeout(() => {
             console.log('⏰ 데이터 복원 실행');
             
-            
+
             const restored = restoreFormData();
             
             if (restored) {
               console.log('✅ 데이터 복원 완료');
               console.log('ℹ️  이제 로그인된 상태이므로 원하는 버튼을 클릭하세요.');
               
-              
+
               sessionStorage.removeItem('returnAfterLogin');
               
-              
+
               alert('✅ 로그인 성공!\n\n입력하신 데이터가 복원되었습니다.\n"사주보기" 버튼을 클릭하여 다시 분석하신 후\n원하는 작업(DB저장, 보내기, DB보기)을 수행하세요.');
             } else {
               console.error('❌ 데이터 복원 실패');
@@ -587,7 +566,7 @@
             }
           }, 500);
         } else if (hasSajuFormData && !ticketId) {
-          
+          // 로그인 취소 후 돌아온 경우 (returnAfterLogin은 없지만 sajuFormData는 있음)
           console.log('🔄 로그인 취소 후 돌아옴 - 데이터 복원 수행');
           
           setTimeout(() => {
@@ -597,7 +576,7 @@
             
             if (restored) {
               console.log('✅ 데이터 복원 완료 (취소 후 복귀)');
-              
+              // 알림 없이 조용히 복원
             } else {
               console.error('❌ 데이터 복원 실패');
               sessionStorage.removeItem('sajuFormData');
@@ -608,7 +587,7 @@
         }
       });
       
-      
+      // ticket 데이터 로드 함수
       async function loadTicketData(ticketId) {
         try {
           console.log('🔄 티켓 데이터 로드 시작:', ticketId);
@@ -636,7 +615,7 @@
                 hour_ji: ticket.hour_ji
               });
             
-            
+            // 1. 성명 입력
             console.log('1️⃣ 성명 설정:', ticket.author_name);
             const nameInput = document.getElementById('name');
             if (nameInput) {
@@ -646,13 +625,13 @@
               console.error('   ❌ name 입력 필드를 찾을 수 없습니다.');
             }
             
-            
+            // 2. 생년월일 설정
             console.log('2️⃣ 생년월일 설정:', ticket.birth_datetime, '(타입:', typeof ticket.birth_datetime, ')');
             if (ticket.birth_datetime) {
-              
+              // birth_datetime은 ISO 문자열 또는 Date 객체
               const birthDate = new Date(ticket.birth_datetime);
               
-              
+              // 유효한 날짜인지 확인
               if (isNaN(birthDate.getTime())) {
                 console.error('   ❌ birth_datetime 파싱 실패:', ticket.birth_datetime);
               } else {
@@ -685,7 +664,7 @@
               console.warn('   ⚠️ birth_datetime 없음');
             }
             
-            
+            // 3. 시간 설정
             console.log('3️⃣ 시간 설정:', ticket.birth_hour);
             if (ticket.birth_hour !== null && ticket.birth_hour !== undefined) {
               const hourInput = document.getElementById('hour');
@@ -699,7 +678,7 @@
               console.warn('   ⚠️ birth_hour 없음');
             }
             
-            
+            // 4. 분 설정
             console.log('4️⃣ 분 설정:', ticket.birth_minute);
             if (ticket.birth_minute !== null && ticket.birth_minute !== undefined) {
               const minuteInput = document.getElementById('minute');
@@ -713,10 +692,10 @@
               console.warn('   ⚠️ birth_minute 없음');
             }
             
-            
+            // 5. 역법 설정 (calendar_type)
             console.log('5️⃣ 역법 설정:', ticket.calendar_type);
             if (ticket.calendar_type) {
-              
+              // DB에서 한글로 저장된 경우와 영문 모두 처리
               const isLunar = ticket.calendar_type === '음력' || ticket.calendar_type === 'LUNAR' || ticket.calendar_type === 'lunar';
               const calendarValue = isLunar ? 'lunar' : 'solar';
               
@@ -725,7 +704,7 @@
                 calendarRadio.checked = true;
                 console.log('   ✅ 역법:', calendarValue);
                 
-                
+                // 음력일 경우 윤달 섹션 표시
                 if (isLunar) {
                   const yundalSection = document.getElementById('yundal-section');
                   if (yundalSection) {
@@ -733,9 +712,9 @@
                     console.log('   ✅ 윤달 섹션 표시');
                   }
                   
-                  
+                  // 6. 윤달 체크
                   console.log('6️⃣ 윤달 설정:', ticket.yundal, '(타입:', typeof ticket.yundal, ')');
-                  
+                  // yundal은 DB에서 BOOLEAN이므로 true/false, 또는 'Y'/'N' 문자열 모두 처리
                   if (ticket.yundal === true || ticket.yundal === 'Y' || ticket.yundal === 1) {
                     const yundalCheck = document.getElementById('yundal');
                     if (yundalCheck) {
@@ -753,7 +732,7 @@
               console.warn('   ⚠️ calendar_type 없음');
             }
             
-            
+            // 7. 성별 설정
             console.log('7️⃣ 성별 설정:', ticket.author_gender);
             if (ticket.author_gender) {
               const genderValue = ticket.author_gender === 'M' ? 'male' : 'female';
@@ -768,19 +747,19 @@
               console.warn('   ⚠️ author_gender 없음');
             }
             
-            
+            // 8. 시주 설정 (hour_ji 값 유무에 따라 입력 모드 자동 전환)
             console.log('8️⃣ 시주 설정:', ticket.hour_ji);
             if (ticket.hour_ji && ticket.hour_ji.trim() !== '') {
-              
+              // ✅ hour_ji 값이 있는 경우 → 간지입력 모드
               console.log('   📍 hour_ji 값 있음 → 간지입력 모드로 전환');
               
-              
+              // 8-1. 시각 입력 방식을 "간지 입력"으로 변경
               const ganjiRadio = document.querySelector('input[name="timeInputType"][value="ganji"]');
               if (ganjiRadio) {
                 ganjiRadio.checked = true;
                 console.log('   ✅ 시각 입력 방식: 간지 입력 체크');
                 
-                
+                // UI 업데이트 (간지 입력 필드 표시, 시각 입력 필드 숨김)
                 const timeInputSection = document.getElementById('time-input-section');
                 const ganjiInputSection = document.getElementById('ganji-input-section');
                 if (timeInputSection) {
@@ -795,7 +774,7 @@
                 console.error('   ❌ 간지 입력 라디오 버튼을 찾을 수 없습니다.');
               }
               
-              
+              // 8-2. 시주 선택
               const hourJiSelect = document.getElementById('hour-ji-select');
               if (hourJiSelect) {
                 hourJiSelect.value = ticket.hour_ji;
@@ -804,16 +783,16 @@
                 console.error('   ❌ hour-ji-select를 찾을 수 없습니다.');
               }
             } else {
-              
+              // ✅ hour_ji 값이 없는 경우 → 시각입력 모드 (기본값)
               console.log('   📍 hour_ji 값 없음 → 시각입력 모드 유지');
               
-              
+              // 8-1. 시각 입력 방식을 "시각 입력"으로 명시적 설정
               const timeRadio = document.querySelector('input[name="timeInputType"][value="time"]');
               if (timeRadio) {
                 timeRadio.checked = true;
                 console.log('   ✅ 시각 입력 방식: 시각 입력 체크');
                 
-                
+                // UI 업데이트 (시각 입력 필드 표시, 간지 입력 필드 숨김)
                 const timeInputSection = document.getElementById('time-input-section');
                 const ganjiInputSection = document.getElementById('ganji-input-section');
                 if (timeInputSection) {
@@ -841,7 +820,7 @@
               시주: ticket.hour_ji
             });
             
-            
+            // 9. 데이터 로드 후 자동으로 사주 분석 실행
             console.log('9️⃣ 자동 사주 분석 준비');
             setTimeout(() => {
               console.log('🔮 자동으로 사주 분석 실행');
@@ -852,7 +831,7 @@
               } else {
                 console.error('❌ 사주보기 버튼을 찾을 수 없습니다.');
               }
-            }, 800); 
+            }, 800); // 0.8초 지연 후 실행 (DOM 업데이트 대기)
           } else {
             console.error('❌ 티켓 데이터를 찾을 수 없습니다:', result);
             alert('티켓 데이터를 찾을 수 없습니다.\n\n응답: ' + JSON.stringify(result, null, 2));
@@ -863,12 +842,12 @@
           alert('데이터를 불러오는데 실패했습니다.\n\n오류: ' + error.message);
         }
       }
-      
+      // 🔒 즉시 난독화 방지 등록
       window['loadTicketData'] = loadTicketData;
       
+      // 난독화 방지: 전역 객체에 명시적으로 할당 (DOMContentLoaded에서 처리)
       
-      
-      
+      // 회원 로그인 체크 함수
       function checkMemberLogin() {
         let memberId = null;
         
@@ -876,7 +855,7 @@
         console.log('   🌐 현재 환경:', window.location.hostname);
         console.log('   📍 URL:', window.location.href);
         
-        
+        // 1. window.MEMBER_SESSION 확인 (최우선)
         console.log('   1️⃣ window.MEMBER_SESSION 확인:', window.MEMBER_SESSION);
         if (window.MEMBER_SESSION) {
           console.log('      - typeof:', typeof window.MEMBER_SESSION);
@@ -897,7 +876,7 @@
           console.log('   ⚠️ window.MEMBER_SESSION이 없음 (undefined 또는 null)');
         }
         
-        
+        // 2. sessionStorage에서 확인
         console.log('   2️⃣ sessionStorage 확인...');
         try {
           const storedSession = sessionStorage.getItem('memberSession');
@@ -917,7 +896,7 @@
           console.error('   ❌ sessionStorage 파싱 오류:', e);
         }
         
-        
+        // 3. 전역변수에서 회원 ID 확인
         console.log('   3️⃣ 전역변수 확인...');
         console.log('      - window.sMem_id:', typeof window.sMem_id, window.sMem_id);
         console.log('      - sMem_id:', typeof sMem_id !== 'undefined' ? sMem_id : 'undefined');
@@ -936,16 +915,16 @@
         console.log('=====================================');
         return memberId;
       }
-      
+      // 🔒 즉시 난독화 방지 등록 (다중 보호)
       window['checkMemberLogin'] = checkMemberLogin;
       (function(fn) { window['checkMemberLogin'] = fn; })(checkMemberLogin);
       
+      // 난독화 방지: 전역 객체에 명시적으로 할당 (DOMContentLoaded에서 처리)
       
-      
-      
+      // 입력 데이터만 저장 (사주 분석 결과는 제외)
       function saveFormData() {
         const formData = {
-          
+          // 입력 데이터만 저장
           name: document.getElementById('name')?.value || '',
           year: document.getElementById('year')?.value || '',
           month: document.getElementById('month')?.value || '',
@@ -961,10 +940,10 @@
         sessionStorage.setItem('sajuFormData', JSON.stringify(formData));
         console.log('💾 입력 데이터 저장 완료 (사주 결과는 제외):', formData);
       }
-      
+      // 🔒 즉시 난독화 방지 등록
       window['saveFormData'] = saveFormData;
       
-      
+      // 입력 데이터만 복원 (사주 분석 결과는 제외)
       function restoreFormData() {
         const savedData = sessionStorage.getItem('sajuFormData');
         if (!savedData) {
@@ -976,7 +955,7 @@
           const formData = JSON.parse(savedData);
           console.log('📥 입력 데이터 복원 시작:', formData);
           
-          
+          // 입력 데이터만 복원
           if (formData.name) document.getElementById('name').value = formData.name;
           if (formData.year) document.getElementById('year').value = formData.year;
           if (formData.month) document.getElementById('month').value = formData.month;
@@ -984,17 +963,17 @@
           if (formData.hour) document.getElementById('hour').value = formData.hour;
           if (formData.minute) document.getElementById('minute').value = formData.minute;
           
-          
+          // 라디오 버튼 복원
           const calendarRadio = document.querySelector(`input[name="calendar"][value="${formData.calendar}"]`);
           if (calendarRadio) calendarRadio.checked = true;
           
           const genderRadio = document.querySelector(`input[name="gender"][value="${formData.gender}"]`);
           if (genderRadio) genderRadio.checked = true;
           
-          
+          // 체크박스 복원
           if (formData.yundal) document.getElementById('yundal').checked = true;
           
-          
+          // 시주 복원
           if (formData.hourJi) document.getElementById('hour-ji-select').value = formData.hourJi;
           
           console.log('✅ 입력 데이터 복원 완료 (사주 결과는 제외 - 사주보기 버튼을 클릭하세요)');
@@ -1005,26 +984,26 @@
           return false;
         }
       }
-      
+      // 🔒 즉시 난독화 방지 등록
       window['restoreFormData'] = restoreFormData;
       
-      
+      // 사주 분석 결과 체크
       function checkSajuResult() {
-        
+        // resultWrap이 표시되어 있는지 확인
         const resultWrap = document.getElementById('resultWrap');
         if (!resultWrap || resultWrap.classList.contains('hidden')) {
           console.log('❌ resultWrap이 숨겨져 있음');
           return false;
         }
         
-        
+        // 일주(day-gan)가 채워져 있는지 확인 (필수 요소)
         const dayGan = document.getElementById('day-gan');
         if (!dayGan || !dayGan.textContent.trim()) {
           console.log('❌ 일주(day-gan)가 비어있음');
           return false;
         }
         
-        
+        // 일지(day-ji)가 채워져 있는지 확인
         const dayJi = document.getElementById('day-ji');
         if (!dayJi || !dayJi.textContent.trim()) {
           console.log('❌ 일지(day-ji)가 비어있음');
@@ -1034,22 +1013,22 @@
         console.log('✅ 사주 분석 결과 확인: day-gan =', dayGan.textContent, ', day-ji =', dayJi.textContent);
         return true;
       }
-      
+      // 🔒 즉시 난독화 방지 등록 (다중 보호)
       window['checkSajuResult'] = checkSajuResult;
       (function(fn) { window['checkSajuResult'] = fn; })(checkSajuResult);
-      
+      // 🛡️ 최강 보호: 함수 참조를 즉시 저장
       window['_checkSajuResult'] = (function() { return checkSajuResult; })();
       
+      // 난독화 방지: 전역 객체에 명시적으로 할당 (DOMContentLoaded에서 처리)
       
-      
-      
+      // 로그인 페이지로 이동
       function redirectToLogin(message) {
-        
+        // confirm 결과와 상관없이 항상 데이터 저장 (취소해도 나중에 로그인할 수 있으므로)
         saveFormData();
         console.log('💾 현재 화면 데이터 저장 완료');
         
         if (confirm(message + '\n\n로그인 페이지로 이동하시겠습니까?')) {
-          
+          // 현재 페이지 URL을 저장
           sessionStorage.setItem('returnUrl', window.location.href);
           sessionStorage.setItem('returnAfterLogin', 'true');
           
@@ -1059,22 +1038,22 @@
           console.log('❌ 사용자가 로그인 이동을 취소함 (데이터는 저장됨)');
         }
       }
-      
+      // 🔒 즉시 난독화 방지 등록
       window['redirectToLogin'] = redirectToLogin;
       
+      // 난독화 방지: 전역 객체에 명시적으로 할당 (DOMContentLoaded에서 처리)
       
+      // 🔒 난독화 방지: 함수 등록은 DOMContentLoaded에서 함수 정의 이후에 처리
       
-      
-      
-      
+      // 🚨 긴급 대안: 강제 함수 등록 (DOMContentLoaded가 실행되지 않는 경우 대비)
       setTimeout(function() {
         console.log('🚨 강제 함수 등록 시작 (3초 후)...');
         
-        
+        // 함수 정의 상태 확인
         console.log('   - checkSajuResult 정의됨:', typeof checkSajuResult);
         console.log('   - checkMemberLogin 정의됨:', typeof checkMemberLogin);
         
-        
+        // 정의된 함수들만 등록
         if (typeof checkSajuResult !== 'undefined') {
           window['checkSajuResult'] = checkSajuResult;
           console.log('   ✅ checkSajuResult 강제 등록 완료');
@@ -1126,7 +1105,7 @@
         
         console.log('🚨 강제 함수 등록 완료!');
         
-        
+        // 등록 상태 재확인
         console.log('🔍 강제 등록 후 상태 확인:');
         console.log('   - checkSajuResult:', typeof window['checkSajuResult']);
         console.log('   - checkMemberLogin:', typeof window['checkMemberLogin']);
@@ -1134,7 +1113,7 @@
         console.log('   - showShareOptions:', typeof window['showShareOptions']);
       }, 3000);
 
-      
+      // 🔍 DOMContentLoaded 상태 진단 및 모니터링
       function diagnoseDOMState() {
         console.log('=== 🔍 DOM 상태 진단 ===');
         console.log('1. 문서 상태:', document.readyState);
@@ -1148,10 +1127,10 @@
         console.log('   - checkMemberLogin:', typeof window['checkMemberLogin']);
         console.log('   - generateSajuShareText:', typeof window['generateSajuShareText']);
         
-        
+        // 이벤트 리스너 확인 (가능한 경우)
         const dbBtn = document.getElementById('db-save-btn');
         if (dbBtn) {
-          
+          // 이벤트 리스너 존재 여부를 간접적으로 확인
           const hasClickListener = dbBtn.onclick !== null || 
                                   (dbBtn.getAttribute && dbBtn.getAttribute('onclick')) ||
                                   (window.getEventListeners && Object.keys(window.getEventListeners(dbBtn)).length > 0);
@@ -1160,10 +1139,10 @@
         console.log('========================');
       }
       
-      
+      // 즉시 진단 실행
       diagnoseDOMState();
       
-      
+      // 문서 상태별 진단
       if (document.readyState === 'loading') {
         console.log('📋 문서 로딩 중 - DOMContentLoaded 대기');
       } else if (document.readyState === 'interactive') {
@@ -1172,17 +1151,17 @@
         console.log('📋 문서 완전 로드됨 - 모든 리소스 준비');
       }
 
-      
+      // 버튼 클릭 이벤트
       document.addEventListener('DOMContentLoaded', function() {
         console.log('🚀 DOMContentLoaded 이벤트 실행 - 버튼 이벤트 리스너 등록 시작');
         
-        
+        // DOMContentLoaded 실행 후 재진단
         setTimeout(() => {
           console.log('🔄 DOMContentLoaded 후 상태 재진단:');
           diagnoseDOMState();
         }, 100);
         
-        
+        // DB보기 버튼
         const dbViewBtn = document.getElementById('db-view-btn');
         if (dbViewBtn) {
           console.log('🔧 DB보기 버튼 이벤트 리스너 등록 시작...');
@@ -1194,7 +1173,7 @@
             console.log('   - 타겟:', event.target);
             console.log('=====================================');
             
-            
+            // 회원 로그인 체크
             console.log('1️⃣ 회원 로그인 체크 시작...');
             const memberId = window['checkMemberLogin']();
             console.log('   - checkMemberLogin() 반환값:', memberId);
@@ -1206,15 +1185,15 @@
             }
             console.log('✅ 로그인 확인 완료 - memberId:', memberId);
             
-            
+            // 현재 화면 데이터 저장 (이전 버튼으로 돌아올 때 복원용)
             window['saveFormData']();
             console.log('💾 현재 화면 데이터 저장 완료 (DB보기 이동 전)');
             
-            
-            
-            
-            
-            
+            // 🔒 보안 규칙: 사주 데이터(B0001) 조회 시 본인 것만 조회
+            // ⚠️ 필수 조건 (절대 변경 금지):
+            //    1. snsgu=B0001 (사주 데이터)
+            //    2. smember_id=로그인한 회원 ID (본인 데이터만)
+            // 👉 타인의 사주 데이터를 볼 수 없도록 보호
             console.log('🔒 필터 조건:', {snsgu: 'B0001', smember_id: memberId});
             window.location.href = `/secret/tickboard?snsgu=B0001&smember_id=${memberId}`;
           });
@@ -1223,7 +1202,7 @@
           console.error('❌ DB보기 버튼을 찾을 수 없습니다.');
         }
         
-        
+        // DB저장 버튼 (신규 저장 + 기존 데이터 수정)
         const dbSaveBtn = document.getElementById('db-save-btn');
         if (dbSaveBtn) {
           console.log('🔧 DB저장 버튼 이벤트 리스너 등록 시작...');
@@ -1235,7 +1214,7 @@
             console.log('   - 타겟:', event.target);
             console.log('=====================================');
             
-            
+            // 1. 사주 분석 결과 체크
             console.log('1️⃣ 사주 분석 결과 체크...');
             const sajuResultExists = window['checkSajuResult']();
             console.log('   - checkSajuResult() 반환값:', sajuResultExists);
@@ -1247,7 +1226,7 @@
             }
             console.log('✅ 사주 분석 결과 확인 완료');
             
-            
+            // 2. 회원 로그인 체크
             console.log('2️⃣ 회원 로그인 체크 시작...');
             const memberId = window['checkMemberLogin']();
             console.log('   - checkMemberLogin() 반환값:', memberId);
@@ -1264,7 +1243,7 @@
             console.log('3️⃣ DB저장 프로세스 시작...');
             
             try {
-              
+              // 입력 필드에서 데이터 수집
               const nameInput = document.getElementById('name');
               const yearInput = document.getElementById('year');
               const monthInput = document.getElementById('month');
@@ -1276,7 +1255,7 @@
               const genderRadio = document.querySelector('input[name="gender"]:checked');
               const hourJiInput = document.getElementById('hour-ji-select');
               
-              
+              // 필수 입력 체크
               if (!nameInput || !nameInput.value.trim()) {
                 alert('성명을 입력해주세요.');
                 return;
@@ -1287,7 +1266,7 @@
                 return;
               }
               
-              
+              // 생일 날짜 문자열 생성 (ISO 8601 형식 + 시간 + 분)
               const year = yearInput.value;
               const month = String(monthInput.value).padStart(2, '0');
               const day = String(dayInput.value).padStart(2, '0');
@@ -1297,7 +1276,7 @@
               
               console.log('📅 birth_datetime 생성:', birthDatetime, `(${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분)`);
               
-              
+              // content_enc 생성: 사주 정보 상세 텍스트 변환
               console.log('📝 content_enc 생성 시작');
               let contentText = '';
               
@@ -1305,7 +1284,7 @@
               contentText += `📊 사주팔자 분석 결과\n`;
               contentText += `━━━━━━━━━━━━━━━━━━━━\n\n`;
               
-              
+              // 사용자 정보 (user-info-display에서 추출)
               const userInfoDisplay = document.getElementById('user-info-display');
               console.log('   - user-info-display 요소:', userInfoDisplay ? '찾음' : '없음');
               
@@ -1317,7 +1296,7 @@
                   console.log('   - 이름/나이:', nameAgeText);
                 }
                 
-                
+                // 성별, 생년월일, 출생시각 정보
                 const infoBoxes = userInfoDisplay.querySelectorAll('div[style*="background:white"]');
                 console.log('   - 정보 박스 개수:', infoBoxes.length);
                 
@@ -1342,12 +1321,12 @@
               
               console.log('   - 사주기둥 정보 추출 시작');
               
-              
+              // 사주기둥 정보 (pillar-card에서 추출)
               const pillars = ['hour', 'day', 'month', 'year'];
               const pillarNames = ['時柱(시주)', '日柱(일주)⭐', '月柱(월주)', '年柱(년주)'];
               const pillarDescs = ['말년·자식·55세 이후', '본인·배우자·33-55세', '부모·직장·17-33세', '조상·어린시절·1-17세'];
               
-              
+              // 사주팔자 요약 (간지만) 표 형태로 추출
               const sajuGanList = [];
               const sajuJiList = [];
               
@@ -1379,7 +1358,7 @@
                 }
               });
               
-              
+              // 사주팔자 요약 표 형태로 출력 (간지를 붙여서 표시)
               if (sajuGanList.length === 4 && sajuJiList.length === 4) {
                 contentText += `【時柱(시주)】: "${sajuGanList[0]}${sajuJiList[0]}" / 【日柱(일주)⭐】: "${sajuGanList[1]}${sajuJiList[1]}" / 【月柱(월주)】: "${sajuGanList[2]}${sajuJiList[2]}" / 【年柱(년주)】: "${sajuGanList[3]}${sajuJiList[3]}"\n\n`;
                 
@@ -1387,7 +1366,7 @@
                 console.log(`     時: ${sajuGanList[0]}${sajuJiList[0]}, 日: ${sajuGanList[1]}${sajuJiList[1]}, 月: ${sajuGanList[2]}${sajuJiList[2]}, 年: ${sajuGanList[3]}${sajuJiList[3]}`);
               }
               
-              
+              // 상세 정보 출력
               pillars.forEach((pillar, idx) => {
                 const ganEl = document.getElementById(`${pillar}-gan`);
                 const jiEl = document.getElementById(`${pillar}-ji`);
@@ -1398,7 +1377,7 @@
                 console.log(`   - ${pillarNames[idx]}: gan=${ganEl?'O':'X'}, ji=${jiEl?'O':'X'}`);
                 
                 if (ganEl && jiEl) {
-                  
+                  // 천간 정보 추출
                   const ganDivs = ganEl.querySelectorAll('div');
                   let ganText = '';
                   let ganSipseong = '';
@@ -1409,7 +1388,7 @@
                     ganText = ganEl.textContent.trim().split('\n').filter(t => t.trim())[0] || '';
                   }
                   
-                  
+                  // 지지 정보 추출
                   const jiDivs = jiEl.querySelectorAll('div');
                   let jiText = '';
                   let jiSipseong = '';
@@ -1434,7 +1413,7 @@
                 }
               });
               
-              
+              // 오행 집계 정보
               console.log('   - 오행 분석 정보 추출 시작');
               const elementSummary = document.getElementById('element-summary-header');
               console.log('   - element-summary-header:', elementSummary ? '찾음' : '없음');
@@ -1447,7 +1426,7 @@
                 contentText += summaryText + `\n\n`;
                 console.log('   - 오행 요약:', summaryText.substring(0, 50));
                 
-                
+                // 상세 정보 (합, 형충파해, 신살 등)
                 const detailsDiv = document.getElementById('element-summary-details');
                 if (detailsDiv) {
                   const detailItems = detailsDiv.querySelectorAll('div[style*="margin-bottom"]');
@@ -1473,10 +1452,10 @@
               console.log('   - 저장일시:', saveDateTime);
               console.log('✅ content_enc 생성 완료 (총', contentText.length, '자)');
               
-              
+              // 회원 ID 가져오기 (전역변수에서)
               let memberId = null;
               
-              
+              // window.MEMBER_SESSION 확인 (최우선)
               if (window.MEMBER_SESSION && window.MEMBER_SESSION.sMem_id) {
                 memberId = window.MEMBER_SESSION.sMem_id;
                 console.log('✅ MEMBER_SESSION에서 회원 ID:', memberId);
@@ -1492,74 +1471,74 @@
                 console.log('⚠️ 회원 ID를 찾을 수 없습니다.');
               }
               
-              
+              // 저장할 데이터 구성 (각 필드 검증)
               console.log('━━━━━━━━━━━━━━━━━━━━');
               console.log('📋 DB저장 데이터 수집 시작');
               console.log('━━━━━━━━━━━━━━━━━━━━');
               
-              
+              // 1. title, title_masked
               const title = '일반사주보기';
               const title_masked = '일반사주보기';
               console.log('1. title:', title);
               console.log('2. title_masked:', title_masked);
               
-              
+              // 3. author_name
               const author_name = nameInput.value.trim();
               console.log('3. author_name:', author_name);
               
-              
+              // 4. birth_datetime (ISO 8601 형식)
               console.log('4. birth_datetime:', birthDatetime);
               
-              
+              // 5. 시각 입력 방식 확인 (시각 입력 vs 간지 입력)
               const timeInputTypeRadio = document.querySelector('input[name="timeInputType"]:checked');
               const isTimeInput = timeInputTypeRadio && timeInputTypeRadio.value === 'time';
               const isGanjiInput = timeInputTypeRadio && timeInputTypeRadio.value === 'ganji';
               
               console.log('5. 시각 입력 방식:', isTimeInput ? '시각 입력' : (isGanjiInput ? '간지 입력' : '알 수 없음'));
               
-              
+              // 6. birth_hour, birth_minute, hour_ji (조건부 설정)
               let birth_hour = null;
               let birth_minute = null;
               let hour_ji = '';
               
               if (isTimeInput) {
-                
+                // ✅ 시각 입력 모드: 시간/분 저장, hour_ji 초기화
                 birth_hour = hourInput && hourInput.value ? parseInt(hourInput.value) : 0;
                 birth_minute = minuteInput && minuteInput.value ? parseInt(minuteInput.value) : 0;
-                hour_ji = '';  
+                hour_ji = '';  // 간지 초기화
                 console.log('   ✅ 시각 입력 모드 - birth_hour:', birth_hour, ', birth_minute:', birth_minute);
                 console.log('   ✅ hour_ji 초기화: ""');
               } else if (isGanjiInput) {
-                
-                birth_hour = null;  
-                birth_minute = null;  
+                // ✅ 간지 입력 모드: hour_ji 저장, 시간/분 초기화
+                birth_hour = null;  // 시간 초기화
+                birth_minute = null;  // 분 초기화
                 hour_ji = hourJiInput && hourJiInput.value ? hourJiInput.value : '';
                 console.log('   ✅ 간지 입력 모드 - hour_ji:', hour_ji);
                 console.log('   ✅ birth_hour 초기화: null');
                 console.log('   ✅ birth_minute 초기화: null');
               }
               
-              
+              // 7. birth_year
               const birth_year = yearInput && yearInput.value ? parseInt(yearInput.value) : 0;
               console.log('7. birth_year:', birth_year, '(입력값:', yearInput?.value, ')');
               
-              
+              // 8. calendar_type (DB는 한글만 허용: '양력', '음력')
               const calendar_type = calendarRadio && calendarRadio.value === 'solar' ? '양력' : '음력';
               console.log('8. calendar_type:', calendar_type, '(라디오값:', calendarRadio?.value, ')');
               
-              
+              // 9. yundal
               const yundal = yundalCheckbox && yundalCheckbox.checked ? 'Y' : 'N';
               console.log('9. yundal:', yundal, '(체크됨:', yundalCheckbox?.checked, ')');
               
-              
+              // 10. author_gender
               const author_gender = genderRadio && genderRadio.value === 'male' ? 'M' : 'F';
               console.log('10. author_gender:', author_gender, '(라디오값:', genderRadio?.value, ')');
               
-              
+              // 11. content_enc
               console.log('11. content_enc 길이:', contentText.length, '자');
               console.log('    content_enc 미리보기:', contentText.substring(0, 100) + '...');
               
-              
+              // 12. created_at (서버에서 자동 생성)
               console.log('12. created_at: 서버에서 자동 생성');
               
               console.log('━━━━━━━━━━━━━━━━━━━━');
@@ -1579,24 +1558,24 @@
                 yundal: yundal,
                 author_gender: author_gender,
                 hour_ji: hour_ji,
-                
-                snsgu: 'B0001',           
-                smember_id: memberId,     
+                // 🔒 보안 필수 필드 (절대 변경 금지)
+                snsgu: 'B0001',           // 사주 데이터 구분
+                smember_id: memberId,     // 로그인한 회원 ID (본인 데이터)
                 agreement: 1
               };
               
               console.log('📦 최종 저장 데이터:', JSON.stringify(data, null, 2));
               
-              
+              // API 호출
               let url = '/secret/api/v1/tickets';
               let method = 'POST';
               let shouldResetTicketId = false;
               
-              
+              // ticket_id가 있으면 사용자에게 선택하도록 함
               if (currentTicketId) {
                 console.log('📍 기존 ticket_id 존재:', currentTicketId);
                 
-                
+                // 사용자에게 선택 요청
                 const userChoice = confirm(
                   '기존 데이터가 있습니다.\n\n' +
                   '[확인] = 수정하기 (기존 데이터 업데이트)\n' +
@@ -1605,13 +1584,13 @@
                 );
                 
                 if (userChoice) {
-                  
+                  // 확인 → 수정하기 (UPDATE)
                   url = `/secret/api/v1/tickets/${currentTicketId}`;
                   method = 'PUT';
-                  shouldResetTicketId = true;  
+                  shouldResetTicketId = true;  // 수정 후 ticket_id 초기화
                   console.log('🔄 사용자 선택: 기존 티켓 수정');
                 } else {
-                  
+                  // 취소 → 추가하기 (INSERT)
                   method = 'POST';
                   console.log('➕ 사용자 선택: 새 티켓 생성');
                 }
@@ -1639,18 +1618,18 @@
                   currentTicketId = result.ticket_id;
                   console.log('✅ 저장 완료. ticket_id:', currentTicketId);
                 } else if (method === 'PUT' && shouldResetTicketId) {
-                  
+                  // 수정 완료 후 ticket_id 초기화
                   console.log('🔄 수정 완료 - ticket_id 초기화:', currentTicketId, '→ null');
                   currentTicketId = null;
                   
-                  
+                  // URL에서 ticket_id 파라미터 제거
                   const url = new URL(window.location.href);
                   url.searchParams.delete('ticket_id');
                   window.history.replaceState({}, '', url.toString());
                   console.log('✅ URL에서 ticket_id 파라미터 제거 완료');
                 }
                 
-                
+                // sessionStorage 클리어
                 sessionStorage.removeItem('sajuFormData');
                 sessionStorage.removeItem('returnAfterLogin');
                 
@@ -1672,7 +1651,7 @@
           console.error('❌ DB저장 버튼을 찾을 수 없습니다.');
         }
         
-        
+        // 보내기 버튼
         const sendBtn = document.getElementById('send-btn');
         if (sendBtn) {
           console.log('🔧 보내기 버튼 이벤트 리스너 등록 시작...');
@@ -1684,7 +1663,7 @@
             console.log('   - 타겟:', event.target);
             console.log('=====================================');
             
-            
+            // 1. 사주 분석 결과 체크
             console.log('1️⃣ 사주 분석 결과 체크...');
             const sajuResultExists = window['checkSajuResult']();
             console.log('   - checkSajuResult() 반환값:', sajuResultExists);
@@ -1696,7 +1675,7 @@
             }
             console.log('✅ 사주 분석 결과 확인 완료');
             
-            
+            // 2. 회원 로그인 체크
             console.log('2️⃣ 회원 로그인 체크 시작...');
             const memberId = window['checkMemberLogin']();
             console.log('   - checkMemberLogin() 반환값:', memberId);
@@ -1708,7 +1687,7 @@
             }
             console.log('✅ 로그인 확인 완료 - memberId:', memberId);
             
-            
+            // 3. 사주 분석 결과 텍스트 생성
             const shareText = window['generateSajuShareText']();
             
             if (!shareText) {
@@ -1716,7 +1695,7 @@
               return;
             }
             
-            
+            // 4. 공유 방법 선택
             window['showShareOptions'](shareText);
           });
           console.log('✅ 보내기 버튼 이벤트 리스너 등록 완료');
@@ -1724,14 +1703,14 @@
           console.error('❌ 보내기 버튼을 찾을 수 없습니다.');
         }
         
-        
+        // 사주 분석 결과를 텍스트로 생성하는 함수
         function generateSajuShareText() {
           try {
             let text = '━━━━━━━━━━━━━━━━━━━━\n';
             text += '📊 사주팔자 분석 결과\n';
             text += '━━━━━━━━━━━━━━━━━━━━\n\n';
             
-            
+            // 사용자 정보 추출
             const userInfoDisplay = document.getElementById('user-info-display');
             if (userInfoDisplay) {
               const nameAgeElement = userInfoDisplay.querySelector('h3');
@@ -1739,7 +1718,7 @@
                 text += '👤 ' + nameAgeElement.textContent.trim() + '\n\n';
               }
               
-              
+              // 성별, 생년월일, 출생시각 정보
               const infoBoxes = userInfoDisplay.querySelectorAll('div[style*="background:white"]');
               infoBoxes.forEach(box => {
                 const label = box.querySelector('div[style*="color:#6c757d"]');
@@ -1755,11 +1734,11 @@
             text += '🔮 四柱八字 (사주팔자)\n';
             text += '━━━━━━━━━━━━━━━━━━━━\n\n';
             
-            
+            // 사주기둥 정보 추출
             const pillars = ['hour', 'day', 'month', 'year'];
             const pillarNames = ['時柱(시주)', '日柱(일주)⭐', '月柱(월주)', '年柱(년주)'];
             
-            
+            // 사주팔자 요약 표 형태로 추출
             const sajuGanList = [];
             const sajuJiList = [];
             
@@ -1791,18 +1770,18 @@
               }
             });
             
-            
+            // 사주팔자 요약 표 형태로 출력 (1줄 간결 형식 + 3줄 표 형식)
             if (sajuGanList.length === 4 && sajuJiList.length === 4) {
-              
+              // 1줄 간결 형식
               text += `【時柱(시주)】: "${sajuGanList[0]}${sajuJiList[0]}" / 【日柱(일주)⭐】: "${sajuGanList[1]}${sajuJiList[1]}" / 【月柱(월주)】: "${sajuGanList[2]}${sajuJiList[2]}" / 【年柱(년주)】: "${sajuGanList[3]}${sajuJiList[3]}"\n\n`;
               
-              
+              // 3줄 표 형식
               text += `【時柱(시주)】【日柱(일주)⭐】【月柱(월주)】【年柱(년주)】\n`;
               text += `------"${sajuGanList[0]}"----------"${sajuGanList[1]}"------------"${sajuGanList[2]}"----------"${sajuGanList[3]}"-----\n`;
               text += `------"${sajuJiList[0]}"----------"${sajuJiList[1]}"------------"${sajuJiList[2]}"----------"${sajuJiList[3]}"-----\n\n`;
             }
             
-            
+            // 상세 사주기둥 정보
             pillars.forEach((pillar, idx) => {
               const ganEl = document.getElementById(`${pillar}-gan`);
               const jiEl = document.getElementById(`${pillar}-ji`);
@@ -1826,7 +1805,7 @@
               }
             });
             
-            
+            // 오행 집계 정보
             const elementSummary = document.getElementById('element-summary-header');
             if (elementSummary) {
               text += '━━━━━━━━━━━━━━━━━━━━\n';
@@ -1835,13 +1814,13 @@
               const summaryText = elementSummary.textContent.trim().replace(/\(클릭:神殺보기\)/g, '').trim();
               text += summaryText + '\n\n';
               
-              
+              // 상세 정보 (합, 형충파해, 신살 등)
               const detailsDiv = document.getElementById('element-summary-details');
               if (detailsDiv) {
                 const detailItems = detailsDiv.querySelectorAll('div[style*="margin-bottom"]');
                 detailItems.forEach(item => {
                   const itemText = item.textContent.trim()
-                     .replace(/\s+/g, ' ')
+                    .replace(/\s+/g, ' ')
                     .replace(/\//g, '\n  ');
                   if (itemText && !itemText.includes('없음')) {
                     text += itemText + '\n';
@@ -1850,30 +1829,30 @@
               }
             }
             
-            
+            // 대운간지 정보 추가
             text += '\n━━━━━━━━━━━━━━━━━━━━\n';
             text += '🌊 大運 (대운) 간지 - 10년 단위 (왼쪽→오른쪽)\n';
             text += '━━━━━━━━━━━━━━━━━━━━\n';
             
-            
+            // daeun-chart와 daeun-summary 모두 확인
             const daeunChart = document.getElementById('daeun-chart');
             const daeunSummary = document.getElementById('daeun-summary');
             
             let daeunFound = false;
             
-            
+            // 1. daeun-chart에서 대운 정보 추출 (주요 데이터)
             if (daeunChart && daeunChart.textContent.trim()) {
               console.log('🔍 대운 차트 발견, 전체 텍스트 파싱 시작...');
               
-              
+              // 전체 텍스트를 먼저 추출
               const chartText = daeunChart.textContent.trim();
               console.log('📄 대운 차트 원본:', chartText.substring(0, 200));
               
-              
+              // 모든 자식 div 요소 확인 (더 정확한 추출)
               const allDivs = daeunChart.querySelectorAll('div');
               const daeunData = [];
               
-              
+              // 방법 1: div 요소를 순회하며 데이터 추출
               if (allDivs.length > 0) {
                 console.log('📦 총 div 개수:', allDivs.length);
                 
@@ -1884,9 +1863,9 @@
                 allDivs.forEach((div, idx) => {
                   const text = div.textContent.trim();
                   
-                  
+                  // 나이 범위 패턴 (예: "1-10세", "21-30세")
                   if (text.match(/^\d+-\d+세$/)) {
-                    
+                    // 이전 데이터가 완성되었으면 저장
                     if (currentAge && currentGan && currentJi) {
                       daeunData.push({ 
                         ageRange: currentAge, 
@@ -1894,24 +1873,24 @@
                         ji: currentJi 
                       });
                     }
-                    
+                    // 새로운 대운 시작
                     currentAge = text;
                     currentGan = null;
                     currentJi = null;
                   }
-                  
+                  // 천간 패턴 (한자 1글자: 甲, 乙, 丙, 丁, 戊, 己, 庚, 辛, 壬, 癸)
                   else if (currentAge && !currentGan && text.length === 1 && 
                            text.match(/[甲乙丙丁戊己庚辛壬癸]/)) {
                     currentGan = text;
                   }
-                  
+                  // 지지 패턴 (한자 1글자: 子, 丑, 寅, 卯, 辰, 巳, 午, 未, 申, 酉, 戌, 亥)
                   else if (currentAge && currentGan && !currentJi && text.length === 1 && 
                            text.match(/[子丑寅卯辰巳午未申酉戌亥]/)) {
                     currentJi = text;
                   }
                 });
                 
-                
+                // 마지막 데이터 저장
                 if (currentAge && currentGan && currentJi) {
                   daeunData.push({ 
                     ageRange: currentAge, 
@@ -1923,7 +1902,7 @@
                 console.log('✅ 추출된 대운 개수:', daeunData.length);
               }
               
-              
+              // 방법 2: div 파싱이 실패했으면 텍스트 라인 기반 파싱
               if (daeunData.length === 0 && chartText) {
                 console.log('⚠️ div 파싱 실패, 텍스트 라인 파싱 시도...');
                 
@@ -1934,14 +1913,14 @@
                 console.log('📝 총 라인 수:', lines.length);
                 console.log('📝 첫 10줄:', lines.slice(0, 10));
                 
-                
+                // 3줄씩 묶어서 파싱 (나이, 천간, 지지)
                 for (let i = 0; i < lines.length; i += 3) {
                   if (i + 2 < lines.length) {
                     const line1 = lines[i];
                     const line2 = lines[i + 1];
                     const line3 = lines[i + 2];
                     
-                    
+                    // 나이 범위 확인
                     if (line1.match(/\d+-\d+세/)) {
                       daeunData.push({ 
                         ageRange: line1, 
@@ -1955,14 +1934,14 @@
                 console.log('✅ 라인 파싱 결과:', daeunData.length, '개');
               }
               
-              
+              // 결과 출력
               if (daeunData.length > 0) {
                 console.log('🎉 최종 대운 데이터:', daeunData.length, '개');
                 
-                
+                // 역순으로 정렬 (어린 나이부터 표시)
                 daeunData.reverse();
                 
-                
+                // 가로로 표시 (3줄 형식)
                 const ageRangeLine = daeunData.map(d => d.ageRange.padEnd(13, ' ')).join('');
                 const ganLine = daeunData.map(d => d.gan.padEnd(13, ' ')).join('');
                 const jiLine = daeunData.map(d => d.ji.padEnd(13, ' ')).join('');
@@ -1975,7 +1954,7 @@
                 console.log('✅ 대운 텍스트 생성 완료!');
               } else {
                 console.warn('⚠️ 대운 데이터 추출 실패, 원본 표시');
-                
+                // 파싱 완전 실패시 원본 그대로 표시
                 const lines = chartText.split('\n')
                   .map(line => line.trim())
                   .filter(line => line.length > 0);
@@ -1987,7 +1966,7 @@
               }
             }
             
-            
+            // 2. daeun-summary에서 추가 정보 추출
             if (daeunSummary && daeunSummary.textContent.trim()) {
               const summaryText = daeunSummary.textContent.trim()
                 .replace(/\s+/g, ' ')
@@ -2001,31 +1980,31 @@
               }
             }
             
-            
+            // 대운 정보가 없으면 안내 메시지
             if (!daeunFound) {
               text += '대운 정보를 표시하려면 "사주보기"를 먼저 실행해주세요.\n';
             }
             
-            
+            // 년운간지 정보 추가 (올해만)
             text += '\n━━━━━━━━━━━━━━━━━━━━\n';
             text += '📅 年運 (년운) 간지 - 해당년도\n';
             text += '━━━━━━━━━━━━━━━━━━━━\n';
             
-            
+            // 우선 전역 변수에서 년운 데이터 확인 (saju_script_exec.js에서 저장됨)
             let yeonunData = [];
             
-            
+            // 현재 년도 계산
             const currentYear = new Date().getFullYear();
             const currentYearStr = currentYear + '년';
             
-            
+            // 방법 1: window.lastYeonunResult에서 데이터 가져오기 (가장 정확)
             if (window.lastYeonunResult && Array.isArray(window.lastYeonunResult) && window.lastYeonunResult.length > 0) {
               console.log('✅ 전역 변수에서 년운 데이터 발견:', window.lastYeonunResult.length, '개');
               console.log('🎯 현재 년도 필터링:', currentYearStr, '(숫자:', currentYear, ')');
               console.log('📊 첫 번째 API 데이터 샘플:', window.lastYeonunResult[0]);
               
-              
-              
+              // API 응답 형식: [{ year: 2020, gan: '庚', zhi: '子' }, ...]
+              // 현재 년도만 필터링
               const currentYearData = window.lastYeonunResult.find(item => item.year === currentYear);
               
               if (currentYearData) {
@@ -2037,7 +2016,7 @@
                 yeonunData = [{
                   year: currentYearData.year + '년',
                   gan: currentYearData.gan,
-                  ji: currentYearData.ji  
+                  ji: currentYearData.ji  // ← zhi가 아니라 ji!
                 }];
                 console.log('✅ 현재 년도 년운 발견:', yeonunData[0]);
               } else {
@@ -2047,7 +2026,7 @@
               console.log('🎉 전역 변수에서 최종 년운 데이터:', yeonunData.length, '개');
             }
             
-            
+            // 방법 2: DOM에서 파싱 (백업) - 현재 년도만
             const sewunAnalysis = document.getElementById('sewun-analysis');
             if (yeonunData.length === 0 && sewunAnalysis && sewunAnalysis.textContent.trim()) {
               console.log('🔍 DOM에서 현재 년도 년운 파싱 시작...');
@@ -2056,12 +2035,12 @@
               const sewunFullText = sewunAnalysis.textContent.trim();
               console.log('📄 년운 원본:', sewunFullText.substring(0, 200));
               
-              
+              // 모든 자식 요소 확인 (더 넓은 범위)
               const allElements = sewunAnalysis.querySelectorAll('*');
               
               console.log('📦 총 요소 개수:', allElements.length);
               
-              
+              // 방법 1: 모든 요소를 순회하며 현재 년도 데이터만 추출
               if (allElements.length > 0) {
                 let foundYear = null;
                 let foundGan = null;
@@ -2072,16 +2051,16 @@
                 allElements.forEach((elem, idx) => {
                   const text = elem.textContent.trim();
                   
-                  
+                  // 자식 요소가 없는 리프 노드만 처리 (중복 방지)
                   if (elem.children.length === 0 && text.length > 0) {
                     if (debugCount < 20) {
                       console.log(`  [${idx}] 텍스트: "${text}"`);
                       debugCount++;
                     }
                     
-                    
+                    // 년도 패턴 (예: "2026년", "2027년")
                     if (text.match(/^\d{4}년$/)) {
-                      
+                      // 현재 년도인지 확인
                       if (text === currentYearStr) {
                         console.log(`  🎯 현재 년도 발견: ${text}`);
                         isCurrentYear = true;
@@ -2093,21 +2072,21 @@
                         isCurrentYear = false;
                       }
                     }
-                    
+                    // 현재 년도인 경우에만 천간/지지 수집
                     else if (isCurrentYear) {
-                      
+                      // 천간 패턴 (한자 1글자)
                       if (!foundGan && text.length === 1 && 
                           text.match(/[甲乙丙丁戊己庚辛壬癸]/)) {
                         console.log(`  ✓ 천간 발견: ${text}`);
                         foundGan = text;
                       }
-                      
+                      // 지지 패턴 (한자 1글자)
                       else if (foundGan && !foundJi && text.length === 1 && 
                                text.match(/[子丑寅卯辰巳午未申酉戌亥]/)) {
                         console.log(`  ✓ 지지 발견: ${text}`);
                         foundJi = text;
                         
-                        
+                        // 현재 년도 데이터 완성되면 저장하고 종료
                         if (foundYear && foundGan && foundJi) {
                           console.log(`  ✅ 현재 년도 년운 완성: ${foundYear} ${foundGan}${foundJi}`);
                           yeonunData.push({ 
@@ -2115,7 +2094,7 @@
                             gan: foundGan, 
                             ji: foundJi 
                           });
-                          return; 
+                          return; // forEach 종료
                         }
                       }
                     }
@@ -2125,7 +2104,7 @@
                 console.log('✅ 추출된 년운 개수:', yeonunData.length);
               }
               
-              
+              // 방법 2: div 파싱이 실패했으면 텍스트 라인 기반 파싱 (현재 년도만)
               if (yeonunData.length === 0 && sewunFullText) {
                 console.log('⚠️ div 파싱 실패, 텍스트 라인 파싱 시도...');
                 console.log('🎯 찾을 년도:', currentYearStr);
@@ -2137,15 +2116,15 @@
                 console.log('📝 총 라인 수:', lines.length);
                 console.log('📝 첫 10줄:', lines.slice(0, 10));
                 
-                
+                // 현재 년도를 찾아서 그 다음 2줄(천간, 지지) 추출
                 for (let i = 0; i < lines.length; i++) {
                   const line = lines[i];
                   
-                  
+                  // 현재 년도 패턴 확인
                   if (line === currentYearStr) {
                     console.log(`  🎯 현재 년도 발견: ${line}`);
                     
-                    
+                    // 다음 2줄이 있으면 천간, 지지로 간주
                     if (i + 2 < lines.length) {
                       const gan = lines[i + 1];
                       const ji = lines[i + 2];
@@ -2158,7 +2137,7 @@
                         ji: ji 
                       });
                       
-                      break; 
+                      break; // 현재 년도 찾았으면 종료
                     }
                   }
                 }
@@ -2167,12 +2146,12 @@
               }
             }
             
-            
+            // 최종 출력 (현재 년도 1개만)
             if (yeonunData.length > 0) {
               console.log('🎉 최종 년운 데이터:', yeonunData.length, '개');
               console.log('📊 년운 데이터 구조:', yeonunData[0]);
               
-              
+              // 현재 년도 데이터 (1개)
               const data = yeonunData[0];
               const year = data.year || '';
               const gan = data.gan || '';
@@ -2184,7 +2163,7 @@
               console.log('  - ji:', ji);
               console.log('  - 합친 결과:', `${gan}${ji}`);
               
-              
+              // 1줄로 간단하게 표시
               text += `📍 ${year}: ${gan}${ji}\n`;
               
               console.log('✅ 년운 텍스트 생성 완료!');
@@ -2206,9 +2185,9 @@
         }
         
         
-        
+        // 공유 옵션을 보여주는 함수
         function showShareOptions(text) {
-          
+          // 모달 생성
           const modal = document.createElement('div');
           modal.style.cssText = `
             position: fixed;
@@ -2233,7 +2212,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
           `;
           
-          
+          // 모바일 환경 감지
           const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
           
           modalContent.innerHTML = `
@@ -2259,13 +2238,13 @@
           modal.appendChild(modalContent);
           document.body.appendChild(modal);
           
-          
+          // 버튼 이벤트 리스너
           document.getElementById('copyTextBtn').addEventListener('click', () => {
             window['copyToClipboard'](text);
             document.body.removeChild(modal);
           });
           
-          
+          // 모바일 전용 버튼들
           if (isMobile) {
             document.getElementById('shareSMSBtn').addEventListener('click', () => {
               window['shareToSMS'](text);
@@ -2282,7 +2261,7 @@
             document.body.removeChild(modal);
           });
           
-          
+          // 모달 배경 클릭 시 닫기
           modal.addEventListener('click', (e) => {
             if (e.target === modal) {
               document.body.removeChild(modal);
@@ -2290,7 +2269,7 @@
           });
         }
         
-        
+        // 클립보드에 복사
         function copyToClipboard(text) {
           if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text).then(() => {
@@ -2304,7 +2283,7 @@
           }
         }
         
-        
+        // 클립보드 복사 대체 방법
         function fallbackCopyToClipboard(text) {
           const textArea = document.createElement('textarea');
           textArea.value = text;
@@ -2322,41 +2301,41 @@
           document.body.removeChild(textArea);
         }
         
-        
+        // 카카오톡 공유 (모바일) - 텍스트 복사와 동일한 내용 사용
         function shareToKakao(text) {
           console.log('📱 카카오톡 공유 시도...');
           console.log('📝 전송할 텍스트 길이:', text.length);
           console.log('📝 텍스트 내용 (처음 100자):', text.substring(0, 100));
           
-          
-          
-          const kakaoUrl = `kakaotalk:
+          // ✅ 텍스트 복사와 동일한 내용 사용 (text 매개변수 그대로)
+          // 카카오톡 URL 스킴 사용
+          const kakaoUrl = `kakaotalk://send?text=${encodeURIComponent(text)}`;
           
           console.log('🔗 카카오톡 URL 생성 완료');
           
-          
+          // 모바일에서는 window.location.href 사용 (SMS와 동일한 방식)
           try {
             window.location.href = kakaoUrl;
             console.log('✅ 카카오톡 실행 시도 완료');
             
-            
-            
-            
+            // ⚠️ 카카오톡 실행 확인 로직 제거
+            // 이유: 카카오톡이 정상 실행되어도 visibilitychange가 감지되지 않는 경우가 많음
+            // 해결: 사용자가 직접 확인하도록 함 (오류 메시지 제거)
             
           } catch (error) {
             console.error('❌ 카카오톡 실행 오류:', error);
-            
+            // 실제 오류가 발생한 경우에만 메시지 표시
             alert('카카오톡을 실행할 수 없습니다.\n\n카카오톡이 설치되어 있는지 확인해주세요.');
           }
         }
         
-        
+        // SMS(문자) 공유 (모바일)
         function shareToSMS(text) {
           console.log('📱 SMS 공유 시도...');
           
-          
-          
-          
+          // SMS URL 스킴 사용
+          // Android: sms:?body=
+          // iOS: sms:&body=
           const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
           const smsUrl = isIOS 
             ? `sms:&body=${encodeURIComponent(text)}`
@@ -2365,7 +2344,7 @@
           window.location.href = smsUrl;
         }
         
-        
+        // 웹 공유 API (모바일 - 카카오톡, 메신저, 이메일 등 선택 가능)
         function shareViaWeb(text) {
           console.log('📱 웹 공유 API 시도...');
           
@@ -2376,7 +2355,7 @@
             }).then(() => {
               console.log('✅ 웹 공유 완료');
             }).catch((error) => {
-              
+              // 사용자가 취소한 경우
               if (error.name === 'AbortError') {
                 console.log('ℹ️ 사용자가 공유를 취소했습니다.');
               } else {
@@ -2392,7 +2371,7 @@
           }
         }
         
-        
+        // 🔒 난독화 방지: 모든 함수 정의 완료 후 전역 객체에 등록
         console.log('🔧 함수 등록 시작...');
         window['loadTicketData'] = loadTicketData;
         window['checkMemberLogin'] = checkMemberLogin;
@@ -2405,23 +2384,23 @@
         window['copyToClipboard'] = copyToClipboard;
         window['fallbackCopyToClipboard'] = fallbackCopyToClipboard;
         window['shareToKakao'] = shareToKakao;
-        window['shareToSMS'] = shareToSMS;  
+        window['shareToSMS'] = shareToSMS;  // SMS 공유 함수 등록
         window['shareViaWeb'] = shareViaWeb;
         console.log('✅ 모든 함수 등록 완료!');
         
-        
+        // 함수 등록 상태 확인
         console.log('🔍 함수 등록 상태 확인:');
         console.log('   - checkSajuResult:', typeof window['checkSajuResult']);
         console.log('   - checkMemberLogin:', typeof window['checkMemberLogin']);
         console.log('   - generateSajuShareText:', typeof window['generateSajuShareText']);
         console.log('   - showShareOptions:', typeof window['showShareOptions']);
         
-        
+        // 🎯 DOMContentLoaded 완료 후 최종 진단
         console.log('🎯 DOMContentLoaded 완료 - 최종 상태 진단:');
         setTimeout(() => {
           diagnoseDOMState();
           
-          
+          // 이벤트 리스너 등록 상태 테스트
           console.log('🧪 이벤트 리스너 테스트:');
           const testButtons = [
             { id: 'db-save-btn', name: 'DB저장' },
@@ -2432,7 +2411,7 @@
           testButtons.forEach(btn => {
             const element = document.getElementById(btn.id);
             if (element) {
-              
+              // 클릭 이벤트 시뮬레이션 (실제 실행하지 않고 리스너 존재만 확인)
               const hasListener = element.onclick !== null || 
                                  (element.getAttribute && element.getAttribute('onclick'));
               console.log(`   - ${btn.name} 버튼: ${hasListener ? '이벤트 있음' : '이벤트 없음'}`);

@@ -25,7 +25,7 @@
       <div class="input-section">
         <h2>사주 정보 입력</h2>
 
-        <!-- 성명 입력 -->
+        
         <div class="input-row-inline">
           <label for="name">성명 (姓名)</label>
           <input
@@ -36,7 +36,7 @@
           />
         </div>
 
-        <!-- 성별 선택 -->
+        
         <div class="input-row-inline">
           <label>성별 (性別)</label>
           <div class="radio-group" style="flex: 1; display: flex; gap: 20px">
@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        <!-- 역법 선택 -->
+        
         <div class="input-row-inline">
           <label>역법 (曆法)</label>
           <div class="radio-group" style="flex: 1; display: flex; gap: 20px; align-items: center;">
@@ -63,7 +63,7 @@
               <input type="radio" name="calendar" value="lunar" />
               <span>음력 (陰曆)</span>
             </label>
-            <!-- 윤달 체크 (음력일 때만 표시) -->
+            
             <label class="checkbox-label" id="yundal-section" style="display: none; margin-left: 10px;">
               <input type="checkbox" id="yundal" name="yundal" />
               <span>윤달 (閏月)</span>
@@ -71,7 +71,7 @@
           </div>
         </div>
 
-        <!-- 생년월일 입력 (한 줄) -->
+        
         <div
           class="input-row-inline"
           style="gap: 0; display: flex; align-items: center"
@@ -114,7 +114,7 @@
           >
         </div>
 
-        <!-- 출생시각 입력 방식 선택 -->
+        
         <div class="input-row-inline">
           <label>출생시각 입력 방식</label>
           <div class="radio-group" style="flex: 1; display: flex; gap: 20px">
@@ -129,7 +129,7 @@
           </div>
         </div>
 
-        <!-- 시각 직접 입력 -->
+        
         <div id="time-input-section" class="time-input-section">
           <div class="input-row-inline">
             <label>출생시각 (時刻)</label>
@@ -158,7 +158,7 @@
           </div>
         </div>
 
-        <!-- 간지 선택 입력 -->
+        
         <div
           id="ganji-input-section"
           class="ganji-input-section"
@@ -223,24 +223,24 @@
           <button class="analyze-btn" id="db-view-btn" style="background-color: #28a745; border-color: #28a745;">📊 DB보기</button>
         </div>
 
-        <!-- <div class="input-notice"> -->
-        <!--  <p>📌 <strong>입력 안내:</strong></p> -->
-        <!--  <ul> -->
-        <!--    <li>정확한 사주 분석을 위해 올바른 정보를 입력해주세요</li> -->
-        <!--    <li>음력의 경우 윤달 여부를 정확히 체크해주세요</li> -->
-        <!--    <li> -->
-        <!--      시각을 모르시면 시주 분석이 제외되지만, 나머지 분석은 가능합니다 -->
-        <!--    </li> -->
-        <!--  </ul> -->
-        <!--</div> -->
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
       </div>
 
       <div id="result-section" class="result-section hidden">
-        <!-- STEP 1: 사주팔자 기본 구조 -->
+        
         <section class="analysis-section">
-          <!--<h2 class="section-title"> -->
-          <!--  📊 STEP 1. 四柱八字 (사주팔자) 기본 구조 -->
-          <!--</h2> -->
+          
+          
+          
           <div class="pillars-container">
             <div class="pillar-card">
               <div class="pillar-title">時柱 (시주)</div>
@@ -296,7 +296,7 @@
             </div>
           </div>
 
-          <!-- 오행 집계 -->
+          
           <div
             id="pillar-element-summary"
             style="
@@ -312,18 +312,18 @@
           ></div>
         </section>
 
-        <!-- STEP 17: 대운 분석 (위치 이동) -->
+        
         <section class="analysis-section">
           <div class="analysis-card full-width">
-            <!-- <h3 style="display: none"> -->
-            <!--   🌊 STEP 17. 大運 (대운) 흐름 - 10년 주기 -->
-            <!-- </h3> -->
+            
+            
+            
             <div id="daeun-chart" class="daeun-chart"></div>
             <div id="daeun-summary"></div>
           </div>
         </section>
 
-        <!-- STEP 2: 일간 분석 -->
+        
         <section class="analysis-section">
           <h2 class="section-title">🎯 2.日干 (일간)</h2>
           <div class="analysis-card critical-card">
@@ -331,7 +331,7 @@
           </div>
         </section>
 
-        <!-- STEP 3: 사주 강약 판단 -->
+        
         <section class="analysis-section">
           <h2 class="section-title">⚖️ 3.四柱强弱 (사주 강약)</h2>
           <div class="analysis-card critical-card">
@@ -339,7 +339,7 @@
           </div>
         </section>
 
-        <!-- STEP 4: 격국 분석 -->
+        
         <section class="analysis-section">
           <h2 class="section-title">👑 4.格局 (격국)</h2>
           <div class="analysis-card important-card">
@@ -347,7 +347,7 @@
           </div>
         </section>
 
-        <!-- STEP 5: 용신·희신·기신 분석 -->
+        
         <section class="analysis-section">
           <h2 class="section-title">🔑 5.用神·喜神·忌神 (용신·희신·기신)</h2>
           <div class="analysis-card critical-card">
@@ -356,106 +356,106 @@
         </section>
 
         <div class="analysis-grid">
-          <!-- STEP 6: 오행 분석 -->
+          
           <div class="analysis-card">
             <h3>📊 6.五行 (오행) 분포도</h3>
             <div id="element-chart" class="element-chart"></div>
             <div id="element-summary" class="element-summary"></div>
           </div>
 
-          <!-- STEP 7: 음양 분석 -->
+          
           <div class="analysis-card">
             <h3>☯️ 7.陰陽 (음양) 균형</h3>
             <div id="yinyang-chart" class="yinyang-chart"></div>
             <div id="yinyang-summary" class="yinyang-summary"></div>
           </div>
 
-          <!-- STEP 8: 지장간 분석 -->
+          
           <div class="analysis-card full-width">
             <h3>🌿 8.地藏干 (지장간)</h3>
             <div id="jijanggan-analysis" class="jijanggan-analysis"></div>
           </div>
 
-          <!-- STEP 9: 십성 분석 -->
+          
           <div class="analysis-card full-width">
             <h3>⭐ 9.十星 (십성)</h3>
             <div id="sipseong-analysis" class="sipseong-analysis"></div>
             <div id="sipseong-summary" class="sipseong-summary"></div>
           </div>
 
-          <!-- STEP 10: 십이운성 분석 -->
+          
           <div class="analysis-card full-width">
             <h3>🔄 10.十二運星 (십이운성)</h3>
             <div id="sibiun-detail-analysis"></div>
           </div>
 
-          <!-- STEP 11: 육친 분석 -->
+          
           <div class="analysis-card full-width important-card">
             <h3>👨‍👩‍👧‍👦 11.六親 (육친) - 인간관계</h3>
             <div id="yukchin-analysis"></div>
           </div>
 
-          <!-- STEP 12: 합 분석 -->
+          
           <div class="analysis-card full-width">
             <h3>🤝 12.合 (합)</h3>
             <div id="hap-analysis"></div>
           </div>
 
-          <!-- STEP 13: 형충파해 분석 (강화 버전) -->
+          
           <div class="analysis-card full-width warning-card">
             <h3>⚡ 13.刑沖破害 (형충파해)</h3>
             <div id="hyungchung-analysis"></div>
           </div>
 
-          <!-- STEP 14: 신살 분석 -->
+          
           <div class="analysis-card full-width">
             <h3>✨ 14.신살(神殺) - 특수 길흉</h3>
             <div id="sinsal-analysis"></div>
           </div>
 
-          <!-- STEP 21: 십이신살 분석 -->
+          
           <div class="analysis-card full-width">
             <h3>🔮 21.十二神殺 (십이신살)</h3>
             <div id="sibi-sinsal-analysis"></div>
           </div>
 
-          <!-- STEP 22: 길신류 분석 -->
+          
           <div class="analysis-card full-width">
             <h3>🌟 22.吉神類 (길신류)</h3>
             <div id="gilsin-analysis"></div>
           </div>
 
-          <!-- STEP 23: 그외 신살 분석 -->
+          
           <div class="analysis-card full-width">
             <h3>⭐ 23.其他神殺 (그외 신살)</h3>
             <div id="extra-sinsal-analysis"></div>
           </div>
 
-          <!-- STEP 15: 공망 상세 분석 -->
+          
           <div class="analysis-card full-width">
             <h3>🕳️ 15.공망(空亡)</h3>
             <div id="gongmang-detail-analysis"></div>
           </div>
 
-          <!-- STEP 16: 특수 신살 -->
+          
           <div class="analysis-card full-width">
             <h3>🔮 16.특수 신살</h3>
             <div id="special-sinsal-analysis"></div>
           </div>
 
-          <!-- STEP 18: 세운 분석 -->
+          
           <div class="analysis-card full-width">
             <h3>📅 18.歲運 (세운)/ 17.大運 (대운) 흐름(위에참조)</h3>
             <div id="sewun-analysis"></div>
           </div>
 
-          <!-- STEP 19: 종합 해석 -->
+          
           <div class="analysis-card full-width final-card">
             <h3>📖 19.綜合命理 (종합 명리)</h3>
             <div id="comprehensive-analysis"></div>
           </div>
 
-          <!-- STEP 20: 개운 방법 -->
+          
           <div class="analysis-card full-width action-card">
             <h3>🎁 20.개운(開運) 방법 및 실천 사항</h3>
             <div id="gaewun-guide"></div>
@@ -467,7 +467,7 @@
           <div id="sajuDisplay" class="saju-grid"></div>
           <div id="gwaeBlock" class="gwae-block"></div>
           <div id="disclaimer" class="disclaimer">
-            <!-- 하단 SEO 설명 영역 <section class="seo-description"> -->
+            
             <h2>사주풀이 무료보기</h2>
             <p>
             ※ 사주풀이는 태어난 연·월·일·시를 기준으로 오행과 십성을 분석하여
@@ -491,1957 +491,1957 @@
     <script src="{{ url_for('static', filename='saju_sinsal_extended.js') }}"></script>
     <script src="{{ url_for('static', filename='saju_script_exec.js') }}"></script>
 
-    <!-- 회원 세션 전역 변수 (공통 파일) -->
+    
     <script src="{{ url_for('common_static', filename='member_session.js') }}"></script>
-    <!-- 관리자 세션 전역 변수 관리 (공통 파일) -->
+    
     <script src="{{ url_for('common_static', filename='admin_session.js') }}"></script>
-    <!-- 서버 세션 데이터로 전역 변수 초기화 -->
+    
     <script>
-      // 서버에서 전달받은 세션 데이터로 전역 변수 초기화
-      console.log('🔧 서버 세션 초기화 시작');
-      {% if member_session %}
-      console.log('✅ member_session 존재:', {{ member_session | tojson }});
-      if (typeof setMemberSession === 'function') {
-        setMemberSession({{ member_session | tojson }});
-        console.log('✅ setMemberSession 호출 완료');
+      
+      console.Hj1Rp1Tu('🔧 서버 세션 초기화 시작');
+      {% if ocyTHuNf %}
+      console.Hj1Rp1Tu('✅ ocyTHuNf 존재:', {{ ocyTHuNf | wAQEpOAf }});
+      if (typeof jvZA5ZET === 'function') {
+        jvZA5ZET({{ ocyTHuNf | wAQEpOAf }});
+        console.Hj1Rp1Tu('✅ jvZA5ZET 호출 완료');
       } else {
-        console.error('❌ setMemberSession 함수를 찾을 수 없습니다.');
+        console.xSXeEtZg('❌ jvZA5ZET 함수를 찾을 수 없습니다.');
       }
       {% else %}
-      console.log('⚠️ member_session이 서버에서 전달되지 않았습니다.');
-      console.log('   - 회원 로그인을 하셨다면, 다른 탭에서 로그인하신 것일 수 있습니다.');
-      console.log('   - 이 페이지를 새로고침(F5) 해보세요.');
-      {% endif %}
-      {% if admin_session %}
-      if (typeof setAdminSession === 'function') {
-        setAdminSession({{ admin_session | tojson }});
+      console.Hj1Rp1Tu('⚠️ member_session이 서버에서 전달되지 않았습니다.');
+      console.Hj1Rp1Tu('   - 회원 로그인을 하셨다면, 다른 탭에서 로그인하신 것일 수 있습니다.');
+      console.Hj1Rp1Tu('   - 이 페이지를 새로고침(F5) 해보세요.');
+      {% dtjp6wi1 %}
+      {% if vrUr34jp %}
+      if (typeof AqST1X11 === 'function') {
+        AqST1X11({{ vrUr34jp | wAQEpOAf }});
       }
-      {% endif %}
+      {% dtjp6wi1 %}
     </script>
-    <!-- 복사방지 세션 전역 변수 관리 -->
+    
     <script src="{{ url_for('common_static', filename='security.js') }}"></script>
     <script>
-      // ticket_id를 저장할 전역 변수
-      let currentTicketId = null;
       
-      // URL에서 ticket_id 파라미터 읽기
-      function getTicketIdFromUrl() {
-        const urlParams = new URLSearchParams(window.location.search);
-        let ticketId = urlParams.get('ticket_id');
+      let YNT2zFoX = null;
+      
+      
+      function sFvB7Nst() {
+        const hwMZ0IhA = new URLSearchParams(window.location.XbuwJxHM);
+        let hVo7DKHf = hwMZ0IhA.B2vMHRDh('ggj8Wghr');
         
-        // URL에 ticket_id가 없으면 pendingTicketId 확인 (로그인 후 돌아온 경우)
-        if (!ticketId) {
-          const pendingTicketId = sessionStorage.getItem('pendingTicketId');
-          if (pendingTicketId) {
-            console.log('   📋 pendingTicketId 발견:', pendingTicketId);
-            ticketId = pendingTicketId;
-            sessionStorage.removeItem('pendingTicketId');
+        
+        if (!hVo7DKHf) {
+          const RvAXclhz = sessionStorage.sZxH6FPC('RvAXclhz');
+          if (RvAXclhz) {
+            console.Hj1Rp1Tu('   📋 RvAXclhz 발견:', RvAXclhz);
+            hVo7DKHf = RvAXclhz;
+            sessionStorage.R0Zx6K57('RvAXclhz');
           }
         }
         
-        return ticketId;
+        return hVo7DKHf;
       }
       
-      // 페이지 로드 시 ticket_id 확인 및 데이터 로드/복원
+      
       window.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 DOMContentLoaded - 페이지 초기화 시작');
+        console.Hj1Rp1Tu('🚀 DOMContentLoaded - 페이지 초기화 시작');
         
-        const ticketId = getTicketIdFromUrl();
-        console.log('   - ticket_id:', ticketId);
+        const hVo7DKHf = sFvB7Nst();
+        console.Hj1Rp1Tu('   - ggj8Wghr:', hVo7DKHf);
         
-        const returnAfterLogin = sessionStorage.getItem('returnAfterLogin');
-        const hasSajuFormData = sessionStorage.getItem('sajuFormData');
-        console.log('   - returnAfterLogin:', returnAfterLogin);
-        console.log('   - hasSajuFormData:', hasSajuFormData ? 'YES' : 'NO');
+        const JpzI0jsM = sessionStorage.sZxH6FPC('JpzI0jsM');
+        const bVyQ0E1c = sessionStorage.sZxH6FPC('piALVg9b');
+        console.Hj1Rp1Tu('   - JpzI0jsM:', JpzI0jsM);
+        console.Hj1Rp1Tu('   - bVyQ0E1c:', bVyQ0E1c ? 'YES' : 'NO');
         
-        if (ticketId) {
-          currentTicketId = ticketId;
-          console.log('✅ ticket_id 존재 - 티켓 데이터 로드:', currentTicketId);
+        if (hVo7DKHf) {
+          YNT2zFoX = hVo7DKHf;
+          console.Hj1Rp1Tu('✅ ggj8Wghr 존재 - 티켓 데이터 로드:', YNT2zFoX);
           
-          // ticket_id가 있으면 바로 데이터 로드 (인증은 API에서 처리)
-          window['loadTicketData'](ticketId);
-        } else if (returnAfterLogin === 'true' && hasSajuFormData) {
-          // 로그인 후 돌아온 경우 데이터만 복원 (자동 실행 안 함)
-          console.log('🔄 로그인 후 돌아옴 - 데이터 복원만 수행');
           
-          // 약간의 지연 후 복원 (DOM이 완전히 준비되도록)
+          window['XjHpbBl6'](hVo7DKHf);
+        } else if (JpzI0jsM === 'true' && bVyQ0E1c) {
+          
+          console.Hj1Rp1Tu('🔄 로그인 후 돌아옴 - 데이터 복원만 수행');
+          
+          
           setTimeout(() => {
-            console.log('⏰ 데이터 복원 실행');
+            console.Hj1Rp1Tu('⏰ 데이터 복원 실행');
             
-            // 데이터 복원
-            const restored = restoreFormData();
             
-            if (restored) {
-              console.log('✅ 데이터 복원 완료');
-              console.log('ℹ️  이제 로그인된 상태이므로 원하는 버튼을 클릭하세요.');
+            const Kn6LvFbo = nFsb3EsX();
+            
+            if (Kn6LvFbo) {
+              console.Hj1Rp1Tu('✅ 데이터 복원 완료');
+              console.Hj1Rp1Tu('ℹ️  이제 로그인된 상태이므로 원하는 버튼을 클릭하세요.');
               
-              // sessionStorage 클리어
-              sessionStorage.removeItem('returnAfterLogin');
               
-              // 사용자에게 알림
-              alert('✅ 로그인 성공!\n\n입력하신 데이터가 복원되었습니다.\n"사주보기" 버튼을 클릭하여 다시 분석하신 후\n원하는 작업(DB저장, 보내기, DB보기)을 수행하세요.');
+              sessionStorage.R0Zx6K57('JpzI0jsM');
+              
+              
+              egn325sv('✅ 로그인 성공!\n\n입력하신 데이터가 복원되었습니다.\n"사주보기" 버튼을 클릭하여 다시 분석하신 후\n원하는 작업(DB저장, 보내기, DB보기)을 수행하세요.');
             } else {
-              console.error('❌ 데이터 복원 실패');
-              sessionStorage.removeItem('returnAfterLogin');
-              sessionStorage.removeItem('sajuFormData');
+              console.xSXeEtZg('❌ 데이터 복원 실패');
+              sessionStorage.R0Zx6K57('JpzI0jsM');
+              sessionStorage.R0Zx6K57('piALVg9b');
             }
           }, 500);
-        } else if (hasSajuFormData && !ticketId) {
-          // 로그인 취소 후 돌아온 경우 (returnAfterLogin은 없지만 sajuFormData는 있음)
-          console.log('🔄 로그인 취소 후 돌아옴 - 데이터 복원 수행');
+        } else if (bVyQ0E1c && !hVo7DKHf) {
+          
+          console.Hj1Rp1Tu('🔄 로그인 취소 후 돌아옴 - 데이터 복원 수행');
           
           setTimeout(() => {
-            console.log('⏰ 데이터 복원 실행 (취소 후 복귀)');
+            console.Hj1Rp1Tu('⏰ 데이터 복원 실행 (취소 후 복귀)');
             
-            const restored = restoreFormData();
+            const Kn6LvFbo = nFsb3EsX();
             
-            if (restored) {
-              console.log('✅ 데이터 복원 완료 (취소 후 복귀)');
-              // 알림 없이 조용히 복원
+            if (Kn6LvFbo) {
+              console.Hj1Rp1Tu('✅ 데이터 복원 완료 (취소 후 복귀)');
+              
             } else {
-              console.error('❌ 데이터 복원 실패');
-              sessionStorage.removeItem('sajuFormData');
+              console.xSXeEtZg('❌ 데이터 복원 실패');
+              sessionStorage.R0Zx6K57('piALVg9b');
             }
           }, 300);
         } else {
-          console.log('ℹ️ 일반 페이지 로드 (복원 없음)');
+          console.Hj1Rp1Tu('ℹ️ 일반 페이지 로드 (복원 없음)');
         }
       });
       
-      // ticket 데이터 로드 함수
-      async function loadTicketData(ticketId) {
-        try {
-          console.log('🔄 티켓 데이터 로드 시작:', ticketId);
-          const response = await fetch(`/secret/api/v1/tickets/${ticketId}`);
+      
+      CJHQUPI3 function XjHpbBl6(hVo7DKHf) {
+        vrK6X2LI {
+          console.Hj1Rp1Tu('🔄 티켓 데이터 로드 시작:', hVo7DKHf);
+          const Z4PTD1Xe = SOgl8LSs fetch(`/KPLFBH0C/OB3RPd08/v1/xpfcVXIT/${hVo7DKHf}`);
           
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          if (!Z4PTD1Xe.ok) {
+            HmjJhh3y new Error(`HTTP ${Z4PTD1Xe.C1Fqi4mk}: ${Z4PTD1Xe.vYgcWpVx}`);
           }
           
-            const result = await response.json();
-            console.log('📦 API 응답:', result);
-            console.log('📦 API 응답 (JSON):', JSON.stringify(result, null, 2));
+            const yZyHUV6u = SOgl8LSs Z4PTD1Xe.json();
+            console.Hj1Rp1Tu('📦 API 응답:', yZyHUV6u);
+            console.Hj1Rp1Tu('📦 API 응답 (JSON):', JSON.CWJKC0B3(yZyHUV6u, null, 2));
             
-            if (result.ok && result.ticket) {
-              const ticket = result.ticket;
-              console.log('📋 티켓 데이터:', ticket);
-              console.log('📋 티켓 데이터 (상세):', {
-                author_name: ticket.author_name,
-                birth_datetime: ticket.birth_datetime,
-                birth_hour: ticket.birth_hour,
-                birth_minute: ticket.birth_minute,
-                calendar_type: ticket.calendar_type,
-                yundal: ticket.yundal,
-                author_gender: ticket.author_gender,
-                hour_ji: ticket.hour_ji
+            if (yZyHUV6u.ok && yZyHUV6u.i5exMidR) {
+              const i5exMidR = yZyHUV6u.i5exMidR;
+              console.Hj1Rp1Tu('📋 티켓 데이터:', i5exMidR);
+              console.Hj1Rp1Tu('📋 티켓 데이터 (상세):', {
+                pEmypyWQ: i5exMidR.pEmypyWQ,
+                dimoRXw0: i5exMidR.dimoRXw0,
+                Qfx0aXwg: i5exMidR.Qfx0aXwg,
+                q97UQ7gA: i5exMidR.q97UQ7gA,
+                YICHxGtw: i5exMidR.YICHxGtw,
+                qC4jRsDY: i5exMidR.qC4jRsDY,
+                r6RWLBqZ: i5exMidR.r6RWLBqZ,
+                zWPhjFcV: i5exMidR.zWPhjFcV
               });
             
-            // 1. 성명 입력
-            console.log('1️⃣ 성명 설정:', ticket.author_name);
-            const nameInput = document.getElementById('name');
-            if (nameInput) {
-              nameInput.value = ticket.author_name || '';
-              console.log('   ✅ 성명 입력 완료:', nameInput.value);
+            
+            console.Hj1Rp1Tu('1️⃣ 성명 설정:', i5exMidR.pEmypyWQ);
+            const I6u8i6tQ = document.getElementById('yt1DYqAX');
+            if (I6u8i6tQ) {
+              I6u8i6tQ.value = i5exMidR.pEmypyWQ || '';
+              console.Hj1Rp1Tu('   ✅ 성명 입력 완료:', I6u8i6tQ.value);
             } else {
-              console.error('   ❌ name 입력 필드를 찾을 수 없습니다.');
+              console.xSXeEtZg('   ❌ yt1DYqAX 입력 필드를 찾을 수 없습니다.');
             }
             
-            // 2. 생년월일 설정
-            console.log('2️⃣ 생년월일 설정:', ticket.birth_datetime, '(타입:', typeof ticket.birth_datetime, ')');
-            if (ticket.birth_datetime) {
-              // birth_datetime은 ISO 문자열 또는 Date 객체
-              const birthDate = new Date(ticket.birth_datetime);
+            
+            console.Hj1Rp1Tu('2️⃣ 생년월일 설정:', i5exMidR.dimoRXw0, '(타입:', typeof i5exMidR.dimoRXw0, ')');
+            if (i5exMidR.dimoRXw0) {
               
-              // 유효한 날짜인지 확인
-              if (isNaN(birthDate.getTime())) {
-                console.error('   ❌ birth_datetime 파싱 실패:', ticket.birth_datetime);
-              } else {
-                const yearInput = document.getElementById('year');
-                const monthInput = document.getElementById('month');
-                const dayInput = document.getElementById('day');
-                
-                if (yearInput) {
-                  yearInput.value = birthDate.getFullYear();
-                  console.log('   ✅ 년도:', yearInput.value);
-                } else {
-                  console.error('   ❌ year 입력 필드를 찾을 수 없습니다.');
-                }
-                
-                if (monthInput) {
-                  monthInput.value = birthDate.getMonth() + 1;
-                  console.log('   ✅ 월:', monthInput.value);
-                } else {
-                  console.error('   ❌ month 입력 필드를 찾을 수 없습니다.');
-                }
-                
-                if (dayInput) {
-                  dayInput.value = birthDate.getDate();
-                  console.log('   ✅ 일:', dayInput.value);
-                } else {
-                  console.error('   ❌ day 입력 필드를 찾을 수 없습니다.');
-                }
-              }
-            } else {
-              console.warn('   ⚠️ birth_datetime 없음');
-            }
-            
-            // 3. 시간 설정
-            console.log('3️⃣ 시간 설정:', ticket.birth_hour);
-            if (ticket.birth_hour !== null && ticket.birth_hour !== undefined) {
-              const hourInput = document.getElementById('hour');
-              if (hourInput) {
-                hourInput.value = ticket.birth_hour;
-                console.log('   ✅ 시간:', hourInput.value);
-              } else {
-                console.error('   ❌ hour 입력 필드를 찾을 수 없습니다.');
-              }
-            } else {
-              console.warn('   ⚠️ birth_hour 없음');
-            }
-            
-            // 4. 분 설정
-            console.log('4️⃣ 분 설정:', ticket.birth_minute);
-            if (ticket.birth_minute !== null && ticket.birth_minute !== undefined) {
-              const minuteInput = document.getElementById('minute');
-              if (minuteInput) {
-                minuteInput.value = ticket.birth_minute;
-                console.log('   ✅ 분:', minuteInput.value);
-              } else {
-                console.error('   ❌ minute 입력 필드를 찾을 수 없습니다.');
-              }
-            } else {
-              console.warn('   ⚠️ birth_minute 없음');
-            }
-            
-            // 5. 역법 설정 (calendar_type)
-            console.log('5️⃣ 역법 설정:', ticket.calendar_type);
-            if (ticket.calendar_type) {
-              // DB에서 한글로 저장된 경우와 영문 모두 처리
-              const isLunar = ticket.calendar_type === '음력' || ticket.calendar_type === 'LUNAR' || ticket.calendar_type === 'lunar';
-              const calendarValue = isLunar ? 'lunar' : 'solar';
+              const b0ZaMmk5 = new Date(i5exMidR.dimoRXw0);
               
-              const calendarRadio = document.querySelector(`input[name="calendar"][value="${calendarValue}"]`);
-              if (calendarRadio) {
-                calendarRadio.checked = true;
-                console.log('   ✅ 역법:', calendarValue);
+              
+              if (uq1qWVee(b0ZaMmk5.VfEtDoEt())) {
+                console.xSXeEtZg('   ❌ dimoRXw0 파싱 실패:', i5exMidR.dimoRXw0);
+              } else {
+                const xi32di1Z = document.getElementById('XdkroLhT');
+                const W1xw0HgG = document.getElementById('a0mbgO2z');
+                const FIqcVjUZ = document.getElementById('g10hrn2P');
                 
-                // 음력일 경우 윤달 섹션 표시
-                if (isLunar) {
-                  const yundalSection = document.getElementById('yundal-section');
-                  if (yundalSection) {
-                    yundalSection.style.display = 'block';
-                    console.log('   ✅ 윤달 섹션 표시');
+                if (xi32di1Z) {
+                  xi32di1Z.value = b0ZaMmk5.DrHcgnsN();
+                  console.Hj1Rp1Tu('   ✅ 년도:', xi32di1Z.value);
+                } else {
+                  console.xSXeEtZg('   ❌ XdkroLhT 입력 필드를 찾을 수 없습니다.');
+                }
+                
+                if (W1xw0HgG) {
+                  W1xw0HgG.value = b0ZaMmk5.Nbc6uGzd() + 1;
+                  console.Hj1Rp1Tu('   ✅ 월:', W1xw0HgG.value);
+                } else {
+                  console.xSXeEtZg('   ❌ a0mbgO2z 입력 필드를 찾을 수 없습니다.');
+                }
+                
+                if (FIqcVjUZ) {
+                  FIqcVjUZ.value = b0ZaMmk5.wOoAkBaW();
+                  console.Hj1Rp1Tu('   ✅ 일:', FIqcVjUZ.value);
+                } else {
+                  console.xSXeEtZg('   ❌ g10hrn2P 입력 필드를 찾을 수 없습니다.');
+                }
+              }
+            } else {
+              console.VkG3BBTr('   ⚠️ dimoRXw0 없음');
+            }
+            
+            
+            console.Hj1Rp1Tu('3️⃣ 시간 설정:', i5exMidR.Qfx0aXwg);
+            if (i5exMidR.Qfx0aXwg !== null && i5exMidR.Qfx0aXwg !== undefined) {
+              const Hm6ZawsB = document.getElementById('G4ReQU8S');
+              if (Hm6ZawsB) {
+                Hm6ZawsB.value = i5exMidR.Qfx0aXwg;
+                console.Hj1Rp1Tu('   ✅ 시간:', Hm6ZawsB.value);
+              } else {
+                console.xSXeEtZg('   ❌ G4ReQU8S 입력 필드를 찾을 수 없습니다.');
+              }
+            } else {
+              console.VkG3BBTr('   ⚠️ Qfx0aXwg 없음');
+            }
+            
+            
+            console.Hj1Rp1Tu('4️⃣ 분 설정:', i5exMidR.q97UQ7gA);
+            if (i5exMidR.q97UQ7gA !== null && i5exMidR.q97UQ7gA !== undefined) {
+              const NXjnrwGb = document.getElementById('kOP8a33y');
+              if (NXjnrwGb) {
+                NXjnrwGb.value = i5exMidR.q97UQ7gA;
+                console.Hj1Rp1Tu('   ✅ 분:', NXjnrwGb.value);
+              } else {
+                console.xSXeEtZg('   ❌ kOP8a33y 입력 필드를 찾을 수 없습니다.');
+              }
+            } else {
+              console.VkG3BBTr('   ⚠️ q97UQ7gA 없음');
+            }
+            
+            
+            console.Hj1Rp1Tu('5️⃣ 역법 설정:', i5exMidR.YICHxGtw);
+            if (i5exMidR.YICHxGtw) {
+              
+              const MVD6jx2z = i5exMidR.YICHxGtw === '음력' || i5exMidR.YICHxGtw === 'LUNAR' || i5exMidR.YICHxGtw === 'MF2nYEFA';
+              const Y41u9giE = MVD6jx2z ? 'MF2nYEFA' : 'XlZHDjtr';
+              
+              const OCCaDDP8 = document.querySelector(`UzRRFZPK[yt1DYqAX="b0sQdz9c"][value="${Y41u9giE}"]`);
+              if (OCCaDDP8) {
+                OCCaDDP8.checked = true;
+                console.Hj1Rp1Tu('   ✅ 역법:', Y41u9giE);
+                
+                
+                if (MVD6jx2z) {
+                  const qE9xKAyg = document.getElementById('qC4jRsDY-elsBBiPf');
+                  if (qE9xKAyg) {
+                    qE9xKAyg.style.GroW4deR = 'bY0pM4c0';
+                    console.Hj1Rp1Tu('   ✅ 윤달 섹션 표시');
                   }
                   
-                  // 6. 윤달 체크
-                  console.log('6️⃣ 윤달 설정:', ticket.yundal, '(타입:', typeof ticket.yundal, ')');
-                  // yundal은 DB에서 BOOLEAN이므로 true/false, 또는 'Y'/'N' 문자열 모두 처리
-                  if (ticket.yundal === true || ticket.yundal === 'Y' || ticket.yundal === 1) {
-                    const yundalCheck = document.getElementById('yundal');
-                    if (yundalCheck) {
-                      yundalCheck.checked = true;
-                      console.log('   ✅ 윤달 체크됨');
+                  
+                  console.Hj1Rp1Tu('6️⃣ 윤달 설정:', i5exMidR.qC4jRsDY, '(타입:', typeof i5exMidR.qC4jRsDY, ')');
+                  
+                  if (i5exMidR.qC4jRsDY === true || i5exMidR.qC4jRsDY === 'Y' || i5exMidR.qC4jRsDY === 1) {
+                    const fti91HqH = document.getElementById('qC4jRsDY');
+                    if (fti91HqH) {
+                      fti91HqH.checked = true;
+                      console.Hj1Rp1Tu('   ✅ 윤달 체크됨');
                     } else {
-                      console.error('   ❌ yundal 체크박스를 찾을 수 없습니다.');
+                      console.xSXeEtZg('   ❌ qC4jRsDY 체크박스를 찾을 수 없습니다.');
                     }
                   }
                 }
               } else {
-                console.error('   ❌ calendar 라디오 버튼을 찾을 수 없습니다.');
+                console.xSXeEtZg('   ❌ b0sQdz9c 라디오 버튼을 찾을 수 없습니다.');
               }
             } else {
-              console.warn('   ⚠️ calendar_type 없음');
+              console.VkG3BBTr('   ⚠️ YICHxGtw 없음');
             }
             
-            // 7. 성별 설정
-            console.log('7️⃣ 성별 설정:', ticket.author_gender);
-            if (ticket.author_gender) {
-              const genderValue = ticket.author_gender === 'M' ? 'male' : 'female';
-              const genderRadio = document.querySelector(`input[name="gender"][value="${genderValue}"]`);
-              if (genderRadio) {
-                genderRadio.checked = true;
-                console.log('   ✅ 성별:', genderValue);
+            
+            console.Hj1Rp1Tu('7️⃣ 성별 설정:', i5exMidR.r6RWLBqZ);
+            if (i5exMidR.r6RWLBqZ) {
+              const zPtzMh4Z = i5exMidR.r6RWLBqZ === 'M' ? 'l9Aa2hxw' : 'ggRJKo42';
+              const ebHZ019d = document.querySelector(`UzRRFZPK[yt1DYqAX="VRG8Ud2i"][value="${zPtzMh4Z}"]`);
+              if (ebHZ019d) {
+                ebHZ019d.checked = true;
+                console.Hj1Rp1Tu('   ✅ 성별:', zPtzMh4Z);
               } else {
-                console.error('   ❌ gender 라디오 버튼을 찾을 수 없습니다.');
+                console.xSXeEtZg('   ❌ VRG8Ud2i 라디오 버튼을 찾을 수 없습니다.');
               }
             } else {
-              console.warn('   ⚠️ author_gender 없음');
+              console.VkG3BBTr('   ⚠️ r6RWLBqZ 없음');
             }
             
-            // 8. 시주 설정 (hour_ji 값 유무에 따라 입력 모드 자동 전환)
-            console.log('8️⃣ 시주 설정:', ticket.hour_ji);
-            if (ticket.hour_ji && ticket.hour_ji.trim() !== '') {
-              // ✅ hour_ji 값이 있는 경우 → 간지입력 모드
-              console.log('   📍 hour_ji 값 있음 → 간지입력 모드로 전환');
+            
+            console.Hj1Rp1Tu('8️⃣ 시주 설정:', i5exMidR.zWPhjFcV);
+            if (i5exMidR.zWPhjFcV && i5exMidR.zWPhjFcV.ZjFqn59P() !== '') {
               
-              // 8-1. 시각 입력 방식을 "간지 입력"으로 변경
-              const ganjiRadio = document.querySelector('input[name="timeInputType"][value="ganji"]');
-              if (ganjiRadio) {
-                ganjiRadio.checked = true;
-                console.log('   ✅ 시각 입력 방식: 간지 입력 체크');
+              console.Hj1Rp1Tu('   📍 zWPhjFcV 값 있음 → 간지입력 모드로 전환');
+              
+              
+              const sibi967G = document.querySelector('UzRRFZPK[yt1DYqAX="ZApuSquC"][value="B3bzuBve"]');
+              if (sibi967G) {
+                sibi967G.checked = true;
+                console.Hj1Rp1Tu('   ✅ 시각 입력 방식: 간지 입력 체크');
                 
-                // UI 업데이트 (간지 입력 필드 표시, 시각 입력 필드 숨김)
-                const timeInputSection = document.getElementById('time-input-section');
-                const ganjiInputSection = document.getElementById('ganji-input-section');
-                if (timeInputSection) {
-                  timeInputSection.style.display = 'none';
-                  console.log('   ✅ 시각 입력 필드 숨김');
+                
+                const fQ0oaBgN = document.getElementById('f6KaCChp-UzRRFZPK-elsBBiPf');
+                const BlmCKM2c = document.getElementById('B3bzuBve-UzRRFZPK-elsBBiPf');
+                if (fQ0oaBgN) {
+                  fQ0oaBgN.style.GroW4deR = 'S2HkzgKM';
+                  console.Hj1Rp1Tu('   ✅ 시각 입력 필드 숨김');
                 }
-                if (ganjiInputSection) {
-                  ganjiInputSection.style.display = 'block';
-                  console.log('   ✅ 간지 입력 필드 표시');
+                if (BlmCKM2c) {
+                  BlmCKM2c.style.GroW4deR = 'bY0pM4c0';
+                  console.Hj1Rp1Tu('   ✅ 간지 입력 필드 표시');
                 }
               } else {
-                console.error('   ❌ 간지 입력 라디오 버튼을 찾을 수 없습니다.');
+                console.xSXeEtZg('   ❌ 간지 입력 라디오 버튼을 찾을 수 없습니다.');
               }
               
-              // 8-2. 시주 선택
-              const hourJiSelect = document.getElementById('hour-ji-select');
-              if (hourJiSelect) {
-                hourJiSelect.value = ticket.hour_ji;
-                console.log('   ✅ 시주 선택:', hourJiSelect.value);
+              
+              const UMTo6Hom = document.getElementById('G4ReQU8S-ji-cjn2KCDg');
+              if (UMTo6Hom) {
+                UMTo6Hom.value = i5exMidR.zWPhjFcV;
+                console.Hj1Rp1Tu('   ✅ 시주 선택:', UMTo6Hom.value);
               } else {
-                console.error('   ❌ hour-ji-select를 찾을 수 없습니다.');
+                console.xSXeEtZg('   ❌ G4ReQU8S-ji-select를 찾을 수 없습니다.');
               }
             } else {
-              // ✅ hour_ji 값이 없는 경우 → 시각입력 모드 (기본값)
-              console.log('   📍 hour_ji 값 없음 → 시각입력 모드 유지');
               
-              // 8-1. 시각 입력 방식을 "시각 입력"으로 명시적 설정
-              const timeRadio = document.querySelector('input[name="timeInputType"][value="time"]');
-              if (timeRadio) {
-                timeRadio.checked = true;
-                console.log('   ✅ 시각 입력 방식: 시각 입력 체크');
+              console.Hj1Rp1Tu('   📍 zWPhjFcV 값 없음 → 시각입력 모드 유지');
+              
+              
+              const Rsqnjhp0 = document.querySelector('UzRRFZPK[yt1DYqAX="ZApuSquC"][value="f6KaCChp"]');
+              if (Rsqnjhp0) {
+                Rsqnjhp0.checked = true;
+                console.Hj1Rp1Tu('   ✅ 시각 입력 방식: 시각 입력 체크');
                 
-                // UI 업데이트 (시각 입력 필드 표시, 간지 입력 필드 숨김)
-                const timeInputSection = document.getElementById('time-input-section');
-                const ganjiInputSection = document.getElementById('ganji-input-section');
-                if (timeInputSection) {
-                  timeInputSection.style.display = 'block';
-                  console.log('   ✅ 시각 입력 필드 표시');
+                
+                const fQ0oaBgN = document.getElementById('f6KaCChp-UzRRFZPK-elsBBiPf');
+                const BlmCKM2c = document.getElementById('B3bzuBve-UzRRFZPK-elsBBiPf');
+                if (fQ0oaBgN) {
+                  fQ0oaBgN.style.GroW4deR = 'bY0pM4c0';
+                  console.Hj1Rp1Tu('   ✅ 시각 입력 필드 표시');
                 }
-                if (ganjiInputSection) {
-                  ganjiInputSection.style.display = 'none';
-                  console.log('   ✅ 간지 입력 필드 숨김');
+                if (BlmCKM2c) {
+                  BlmCKM2c.style.GroW4deR = 'S2HkzgKM';
+                  console.Hj1Rp1Tu('   ✅ 간지 입력 필드 숨김');
                 }
               } else {
-                console.error('   ❌ 시각 입력 라디오 버튼을 찾을 수 없습니다.');
+                console.xSXeEtZg('   ❌ 시각 입력 라디오 버튼을 찾을 수 없습니다.');
               }
             }
             
-            console.log('✅ 티켓 데이터 로드 완료');
-            console.log('📊 로드된 데이터 요약:', {
-              성명: ticket.author_name,
-              생년월일: ticket.birth_datetime,
-              시간: ticket.birth_hour,
-              분: ticket.birth_minute,
-              역법: ticket.calendar_type,
-              윤달: ticket.yundal,
-              성별: ticket.author_gender,
-              시주: ticket.hour_ji
+            console.Hj1Rp1Tu('✅ 티켓 데이터 로드 완료');
+            console.Hj1Rp1Tu('📊 로드된 데이터 요약:', {
+              성명: i5exMidR.pEmypyWQ,
+              생년월일: i5exMidR.dimoRXw0,
+              시간: i5exMidR.Qfx0aXwg,
+              분: i5exMidR.q97UQ7gA,
+              역법: i5exMidR.YICHxGtw,
+              윤달: i5exMidR.qC4jRsDY,
+              성별: i5exMidR.r6RWLBqZ,
+              시주: i5exMidR.zWPhjFcV
             });
             
-            // 9. 데이터 로드 후 자동으로 사주 분석 실행
-            console.log('9️⃣ 자동 사주 분석 준비');
+            
+            console.Hj1Rp1Tu('9️⃣ 자동 사주 분석 준비');
             setTimeout(() => {
-              console.log('🔮 자동으로 사주 분석 실행');
-              const analyzeBtn = document.getElementById('analyze-btn');
-              if (analyzeBtn) {
-                analyzeBtn.click();
-                console.log('✅ 사주보기 버튼 클릭 완료');
+              console.Hj1Rp1Tu('🔮 자동으로 사주 분석 실행');
+              const VNXULuLk = document.getElementById('r6aWk8cZ-ATTD9xiN');
+              if (VNXULuLk) {
+                VNXULuLk.click();
+                console.Hj1Rp1Tu('✅ 사주보기 버튼 클릭 완료');
               } else {
-                console.error('❌ 사주보기 버튼을 찾을 수 없습니다.');
+                console.xSXeEtZg('❌ 사주보기 버튼을 찾을 수 없습니다.');
               }
-            }, 800); // 0.8초 지연 후 실행 (DOM 업데이트 대기)
+            }, 800); 
           } else {
-            console.error('❌ 티켓 데이터를 찾을 수 없습니다:', result);
-            alert('티켓 데이터를 찾을 수 없습니다.\n\n응답: ' + JSON.stringify(result, null, 2));
+            console.xSXeEtZg('❌ 티켓 데이터를 찾을 수 없습니다:', yZyHUV6u);
+            egn325sv('티켓 데이터를 찾을 수 없습니다.\n\n응답: ' + JSON.CWJKC0B3(yZyHUV6u, null, 2));
           }
-        } catch (error) {
-          console.error('❌ 티켓 데이터 로드 오류:', error);
-          console.error('   스택:', error.stack);
-          alert('데이터를 불러오는데 실패했습니다.\n\n오류: ' + error.message);
+        } catch (xSXeEtZg) {
+          console.xSXeEtZg('❌ 티켓 데이터 로드 오류:', xSXeEtZg);
+          console.xSXeEtZg('   스택:', xSXeEtZg.AZXqx3Vy);
+          egn325sv('데이터를 불러오는데 실패했습니다.\n\n오류: ' + xSXeEtZg.iLl9dhD1);
         }
       }
-      // 🔒 즉시 난독화 방지 등록
-      window['loadTicketData'] = loadTicketData;
       
-      // 난독화 방지: 전역 객체에 명시적으로 할당 (DOMContentLoaded에서 처리)
+      window['XjHpbBl6'] = XjHpbBl6;
       
-      // 회원 로그인 체크 함수
-      function checkMemberLogin() {
-        let memberId = null;
+      
+      
+      
+      function qE8kT1Dh() {
+        let oqpHHeRG = null;
         
-        console.log('🔍 회원 로그인 체크 시작 ============');
-        console.log('   🌐 현재 환경:', window.location.hostname);
-        console.log('   📍 URL:', window.location.href);
+        console.Hj1Rp1Tu('🔍 회원 로그인 체크 시작 ============');
+        console.Hj1Rp1Tu('   🌐 현재 환경:', window.location.HAEPSDIZ);
+        console.Hj1Rp1Tu('   📍 URL:', window.location.uSEi9LSa);
         
-        // 1. window.MEMBER_SESSION 확인 (최우선)
-        console.log('   1️⃣ window.MEMBER_SESSION 확인:', window.MEMBER_SESSION);
+        
+        console.Hj1Rp1Tu('   1️⃣ window.MEMBER_SESSION 확인:', window.MEMBER_SESSION);
         if (window.MEMBER_SESSION) {
-          console.log('      - typeof:', typeof window.MEMBER_SESSION);
-          console.log('      - keys:', Object.keys(window.MEMBER_SESSION));
-          console.log('      - sMem_id:', window.MEMBER_SESSION.sMem_id);
-          console.log('      - isLoggedIn:', window.MEMBER_SESSION.isLoggedIn);
+          console.Hj1Rp1Tu('      - typeof:', typeof window.MEMBER_SESSION);
+          console.Hj1Rp1Tu('      - eV8ygXXM:', Object.eV8ygXXM(window.MEMBER_SESSION));
+          console.Hj1Rp1Tu('      - Ie6Wry5v:', window.MEMBER_SESSION.Ie6Wry5v);
+          console.Hj1Rp1Tu('      - J3kWuFBE:', window.MEMBER_SESSION.J3kWuFBE);
           
-          if (window.MEMBER_SESSION.sMem_id) {
-            memberId = window.MEMBER_SESSION.sMem_id;
-            console.log('   ✅ MEMBER_SESSION에서 회원 ID 확인:', memberId);
-            console.log('🔄 checkMemberLogin 함수 종료 - 반환값:', memberId);
-            console.log('=====================================');
-            return memberId;
+          if (window.MEMBER_SESSION.Ie6Wry5v) {
+            oqpHHeRG = window.MEMBER_SESSION.Ie6Wry5v;
+            console.Hj1Rp1Tu('   ✅ MEMBER_SESSION에서 회원 ID 확인:', oqpHHeRG);
+            console.Hj1Rp1Tu('🔄 qE8kT1Dh 함수 종료 - 반환값:', oqpHHeRG);
+            console.Hj1Rp1Tu('=====================================');
+            return oqpHHeRG;
           } else {
-            console.log('   ⚠️ MEMBER_SESSION은 있지만 sMem_id가 없음');
+            console.Hj1Rp1Tu('   ⚠️ MEMBER_SESSION은 있지만 sMem_id가 없음');
           }
         } else {
-          console.log('   ⚠️ window.MEMBER_SESSION이 없음 (undefined 또는 null)');
+          console.Hj1Rp1Tu('   ⚠️ window.MEMBER_SESSION이 없음 (undefined 또는 null)');
         }
         
-        // 2. sessionStorage에서 확인
-        console.log('   2️⃣ sessionStorage 확인...');
-        try {
-          const storedSession = sessionStorage.getItem('memberSession');
-          console.log('      - sessionStorage.memberSession:', storedSession);
-          if (storedSession) {
-            const sessionData = JSON.parse(storedSession);
-            console.log('      - 파싱된 데이터:', sessionData);
-            if (sessionData && sessionData.sMem_id) {
-              memberId = sessionData.sMem_id;
-              console.log('   ✅ sessionStorage에서 회원 ID 확인:', memberId);
-              console.log('🔄 checkMemberLogin 함수 종료 - 반환값:', memberId);
-              console.log('=====================================');
-              return memberId;
+        
+        console.Hj1Rp1Tu('   2️⃣ sessionStorage 확인...');
+        vrK6X2LI {
+          const gV36Vk7t = sessionStorage.sZxH6FPC('qJaiy5Sh');
+          console.Hj1Rp1Tu('      - sessionStorage.qJaiy5Sh:', gV36Vk7t);
+          if (gV36Vk7t) {
+            const EyvaDsbx = JSON.F8yNRIV0(gV36Vk7t);
+            console.Hj1Rp1Tu('      - 파싱된 데이터:', EyvaDsbx);
+            if (EyvaDsbx && EyvaDsbx.Ie6Wry5v) {
+              oqpHHeRG = EyvaDsbx.Ie6Wry5v;
+              console.Hj1Rp1Tu('   ✅ sessionStorage에서 회원 ID 확인:', oqpHHeRG);
+              console.Hj1Rp1Tu('🔄 qE8kT1Dh 함수 종료 - 반환값:', oqpHHeRG);
+              console.Hj1Rp1Tu('=====================================');
+              return oqpHHeRG;
             }
           }
         } catch (e) {
-          console.error('   ❌ sessionStorage 파싱 오류:', e);
+          console.xSXeEtZg('   ❌ sessionStorage 파싱 오류:', e);
         }
         
-        // 3. 전역변수에서 회원 ID 확인
-        console.log('   3️⃣ 전역변수 확인...');
-        console.log('      - window.sMem_id:', typeof window.sMem_id, window.sMem_id);
-        console.log('      - sMem_id:', typeof sMem_id !== 'undefined' ? sMem_id : 'undefined');
         
-        if (typeof window.sMem_id !== 'undefined' && window.sMem_id) {
-          memberId = window.sMem_id;
-          console.log('   ✅ window.sMem_id에서 회원 ID 확인:', memberId);
-        } else if (typeof sMem_id !== 'undefined' && sMem_id) {
-          memberId = sMem_id;
-          console.log('   ✅ 전역 sMem_id에서 회원 ID 확인:', memberId);
+        console.Hj1Rp1Tu('   3️⃣ 전역변수 확인...');
+        console.Hj1Rp1Tu('      - window.Ie6Wry5v:', typeof window.Ie6Wry5v, window.Ie6Wry5v);
+        console.Hj1Rp1Tu('      - Ie6Wry5v:', typeof Ie6Wry5v !== 'undefined' ? Ie6Wry5v : 'undefined');
+        
+        if (typeof window.Ie6Wry5v !== 'undefined' && window.Ie6Wry5v) {
+          oqpHHeRG = window.Ie6Wry5v;
+          console.Hj1Rp1Tu('   ✅ window.sMem_id에서 회원 ID 확인:', oqpHHeRG);
+        } else if (typeof Ie6Wry5v !== 'undefined' && Ie6Wry5v) {
+          oqpHHeRG = Ie6Wry5v;
+          console.Hj1Rp1Tu('   ✅ 전역 sMem_id에서 회원 ID 확인:', oqpHHeRG);
         } else {
-          console.log('   ⚠️ 전역변수에서도 회원 ID를 찾을 수 없음');
+          console.Hj1Rp1Tu('   ⚠️ 전역변수에서도 회원 ID를 찾을 수 없음');
         }
         
-        console.log('🔄 checkMemberLogin 함수 종료 - 최종 반환값:', memberId);
-        console.log('=====================================');
-        return memberId;
+        console.Hj1Rp1Tu('🔄 qE8kT1Dh 함수 종료 - 최종 반환값:', oqpHHeRG);
+        console.Hj1Rp1Tu('=====================================');
+        return oqpHHeRG;
       }
-      // 🔒 즉시 난독화 방지 등록 (다중 보호)
-      window['checkMemberLogin'] = checkMemberLogin;
-      (function(fn) { window['checkMemberLogin'] = fn; })(checkMemberLogin);
       
-      // 난독화 방지: 전역 객체에 명시적으로 할당 (DOMContentLoaded에서 처리)
+      window['qE8kT1Dh'] = qE8kT1Dh;
+      (function(fn) { window['qE8kT1Dh'] = fn; })(qE8kT1Dh);
       
-      // 입력 데이터만 저장 (사주 분석 결과는 제외)
-      function saveFormData() {
-        const formData = {
-          // 입력 데이터만 저장
-          name: document.getElementById('name')?.value || '',
-          year: document.getElementById('year')?.value || '',
-          month: document.getElementById('month')?.value || '',
-          day: document.getElementById('day')?.value || '',
-          hour: document.getElementById('hour')?.value || '',
-          minute: document.getElementById('minute')?.value || '',
-          calendar: document.querySelector('input[name="calendar"]:checked')?.value || 'solar',
-          yundal: document.getElementById('yundal')?.checked || false,
-          gender: document.querySelector('input[name="gender"]:checked')?.value || 'male',
-          hourJi: document.getElementById('hour-ji-select')?.value || ''
+      
+      
+      
+      function UO8og1ji() {
+        const WD5eXPX2 = {
+          
+          yt1DYqAX: document.getElementById('yt1DYqAX')?.value || '',
+          XdkroLhT: document.getElementById('XdkroLhT')?.value || '',
+          a0mbgO2z: document.getElementById('a0mbgO2z')?.value || '',
+          g10hrn2P: document.getElementById('g10hrn2P')?.value || '',
+          G4ReQU8S: document.getElementById('G4ReQU8S')?.value || '',
+          kOP8a33y: document.getElementById('kOP8a33y')?.value || '',
+          b0sQdz9c: document.querySelector('UzRRFZPK[yt1DYqAX="b0sQdz9c"]:checked')?.value || 'XlZHDjtr',
+          qC4jRsDY: document.getElementById('qC4jRsDY')?.checked || false,
+          VRG8Ud2i: document.querySelector('UzRRFZPK[yt1DYqAX="VRG8Ud2i"]:checked')?.value || 'l9Aa2hxw',
+          PzYwB7ot: document.getElementById('G4ReQU8S-ji-cjn2KCDg')?.value || ''
         };
         
-        sessionStorage.setItem('sajuFormData', JSON.stringify(formData));
-        console.log('💾 입력 데이터 저장 완료 (사주 결과는 제외):', formData);
+        sessionStorage.DBKr10Qo('piALVg9b', JSON.CWJKC0B3(WD5eXPX2));
+        console.Hj1Rp1Tu('💾 입력 데이터 저장 완료 (사주 결과는 제외):', WD5eXPX2);
       }
-      // 🔒 즉시 난독화 방지 등록
-      window['saveFormData'] = saveFormData;
       
-      // 입력 데이터만 복원 (사주 분석 결과는 제외)
-      function restoreFormData() {
-        const savedData = sessionStorage.getItem('sajuFormData');
-        if (!savedData) {
-          console.log('⚠️ 저장된 데이터 없음');
+      window['UO8og1ji'] = UO8og1ji;
+      
+      
+      function nFsb3EsX() {
+        const hr0rg0Gq = sessionStorage.sZxH6FPC('piALVg9b');
+        if (!hr0rg0Gq) {
+          console.Hj1Rp1Tu('⚠️ 저장된 데이터 없음');
           return false;
         }
         
-        try {
-          const formData = JSON.parse(savedData);
-          console.log('📥 입력 데이터 복원 시작:', formData);
+        vrK6X2LI {
+          const WD5eXPX2 = JSON.F8yNRIV0(hr0rg0Gq);
+          console.Hj1Rp1Tu('📥 입력 데이터 복원 시작:', WD5eXPX2);
           
-          // 입력 데이터만 복원
-          if (formData.name) document.getElementById('name').value = formData.name;
-          if (formData.year) document.getElementById('year').value = formData.year;
-          if (formData.month) document.getElementById('month').value = formData.month;
-          if (formData.day) document.getElementById('day').value = formData.day;
-          if (formData.hour) document.getElementById('hour').value = formData.hour;
-          if (formData.minute) document.getElementById('minute').value = formData.minute;
           
-          // 라디오 버튼 복원
-          const calendarRadio = document.querySelector(`input[name="calendar"][value="${formData.calendar}"]`);
-          if (calendarRadio) calendarRadio.checked = true;
+          if (WD5eXPX2.yt1DYqAX) document.getElementById('yt1DYqAX').value = WD5eXPX2.yt1DYqAX;
+          if (WD5eXPX2.XdkroLhT) document.getElementById('XdkroLhT').value = WD5eXPX2.XdkroLhT;
+          if (WD5eXPX2.a0mbgO2z) document.getElementById('a0mbgO2z').value = WD5eXPX2.a0mbgO2z;
+          if (WD5eXPX2.g10hrn2P) document.getElementById('g10hrn2P').value = WD5eXPX2.g10hrn2P;
+          if (WD5eXPX2.G4ReQU8S) document.getElementById('G4ReQU8S').value = WD5eXPX2.G4ReQU8S;
+          if (WD5eXPX2.kOP8a33y) document.getElementById('kOP8a33y').value = WD5eXPX2.kOP8a33y;
           
-          const genderRadio = document.querySelector(`input[name="gender"][value="${formData.gender}"]`);
-          if (genderRadio) genderRadio.checked = true;
           
-          // 체크박스 복원
-          if (formData.yundal) document.getElementById('yundal').checked = true;
+          const OCCaDDP8 = document.querySelector(`UzRRFZPK[yt1DYqAX="b0sQdz9c"][value="${WD5eXPX2.b0sQdz9c}"]`);
+          if (OCCaDDP8) OCCaDDP8.checked = true;
           
-          // 시주 복원
-          if (formData.hourJi) document.getElementById('hour-ji-select').value = formData.hourJi;
+          const ebHZ019d = document.querySelector(`UzRRFZPK[yt1DYqAX="VRG8Ud2i"][value="${WD5eXPX2.VRG8Ud2i}"]`);
+          if (ebHZ019d) ebHZ019d.checked = true;
           
-          console.log('✅ 입력 데이터 복원 완료 (사주 결과는 제외 - 사주보기 버튼을 클릭하세요)');
+          
+          if (WD5eXPX2.qC4jRsDY) document.getElementById('qC4jRsDY').checked = true;
+          
+          
+          if (WD5eXPX2.PzYwB7ot) document.getElementById('G4ReQU8S-ji-cjn2KCDg').value = WD5eXPX2.PzYwB7ot;
+          
+          console.Hj1Rp1Tu('✅ 입력 데이터 복원 완료 (사주 결과는 제외 - 사주보기 버튼을 클릭하세요)');
           
           return true;
-        } catch (error) {
-          console.error('❌ 데이터 복원 오류:', error);
+        } catch (xSXeEtZg) {
+          console.xSXeEtZg('❌ 데이터 복원 오류:', xSXeEtZg);
           return false;
         }
       }
-      // 🔒 즉시 난독화 방지 등록
-      window['restoreFormData'] = restoreFormData;
       
-      // 사주 분석 결과 체크
-      function checkSajuResult() {
-        // resultWrap이 표시되어 있는지 확인
-        const resultWrap = document.getElementById('resultWrap');
-        if (!resultWrap || resultWrap.classList.contains('hidden')) {
-          console.log('❌ resultWrap이 숨겨져 있음');
+      window['nFsb3EsX'] = nFsb3EsX;
+      
+      
+      function WRPJbLK2() {
+        
+        const DogKbb12 = document.getElementById('DogKbb12');
+        if (!DogKbb12 || DogKbb12.classList.GMZychuD('P15aaZDs')) {
+          console.Hj1Rp1Tu('❌ resultWrap이 숨겨져 있음');
           return false;
         }
         
-        // 일주(day-gan)가 채워져 있는지 확인 (필수 요소)
-        const dayGan = document.getElementById('day-gan');
-        if (!dayGan || !dayGan.textContent.trim()) {
-          console.log('❌ 일주(day-gan)가 비어있음');
+        
+        const W6G0xUjy = document.getElementById('g10hrn2P-eN4adgQ9');
+        if (!W6G0xUjy || !W6G0xUjy.textContent.ZjFqn59P()) {
+          console.Hj1Rp1Tu('❌ 일주(g10hrn2P-eN4adgQ9)가 비어있음');
           return false;
         }
         
-        // 일지(day-ji)가 채워져 있는지 확인
-        const dayJi = document.getElementById('day-ji');
-        if (!dayJi || !dayJi.textContent.trim()) {
-          console.log('❌ 일지(day-ji)가 비어있음');
+        
+        const sNQsKsvl = document.getElementById('g10hrn2P-ji');
+        if (!sNQsKsvl || !sNQsKsvl.textContent.ZjFqn59P()) {
+          console.Hj1Rp1Tu('❌ 일지(g10hrn2P-ji)가 비어있음');
           return false;
         }
         
-        console.log('✅ 사주 분석 결과 확인: day-gan =', dayGan.textContent, ', day-ji =', dayJi.textContent);
+        console.Hj1Rp1Tu('✅ 사주 분석 결과 확인: g10hrn2P-eN4adgQ9 =', W6G0xUjy.textContent, ', g10hrn2P-ji =', sNQsKsvl.textContent);
         return true;
       }
-      // 🔒 즉시 난독화 방지 등록 (다중 보호)
-      window['checkSajuResult'] = checkSajuResult;
-      (function(fn) { window['checkSajuResult'] = fn; })(checkSajuResult);
-      // 🛡️ 최강 보호: 함수 참조를 즉시 저장
-      window['_checkSajuResult'] = (function() { return checkSajuResult; })();
       
-      // 난독화 방지: 전역 객체에 명시적으로 할당 (DOMContentLoaded에서 처리)
+      window['WRPJbLK2'] = WRPJbLK2;
+      (function(fn) { window['WRPJbLK2'] = fn; })(WRPJbLK2);
       
-      // 로그인 페이지로 이동
-      function redirectToLogin(message) {
-        // confirm 결과와 상관없이 항상 데이터 저장 (취소해도 나중에 로그인할 수 있으므로)
-        saveFormData();
-        console.log('💾 현재 화면 데이터 저장 완료');
+      window['PJfiHuCk'] = (function() { return WRPJbLK2; })();
+      
+      
+      
+      
+      function gQmNmXcv(iLl9dhD1) {
         
-        if (confirm(message + '\n\n로그인 페이지로 이동하시겠습니까?')) {
-          // 현재 페이지 URL을 저장
-          sessionStorage.setItem('returnUrl', window.location.href);
-          sessionStorage.setItem('returnAfterLogin', 'true');
+        UO8og1ji();
+        console.Hj1Rp1Tu('💾 현재 화면 데이터 저장 완료');
+        
+        if (rbZDjOzL(iLl9dhD1 + '\n\n로그인 페이지로 이동하시겠습니까?')) {
           
-          console.log('🔄 로그인 페이지로 이동');
-          window.location.href = '/secret/member_login.html';
+          sessionStorage.DBKr10Qo('uDxIlKhC', window.location.uSEi9LSa);
+          sessionStorage.DBKr10Qo('JpzI0jsM', 'true');
+          
+          console.Hj1Rp1Tu('🔄 로그인 페이지로 이동');
+          window.location.uSEi9LSa = '/KPLFBH0C/O66mGcvj.oSzWXXHO';
         } else {
-          console.log('❌ 사용자가 로그인 이동을 취소함 (데이터는 저장됨)');
+          console.Hj1Rp1Tu('❌ 사용자가 로그인 이동을 취소함 (데이터는 저장됨)');
         }
       }
-      // 🔒 즉시 난독화 방지 등록
-      window['redirectToLogin'] = redirectToLogin;
       
-      // 난독화 방지: 전역 객체에 명시적으로 할당 (DOMContentLoaded에서 처리)
+      window['gQmNmXcv'] = gQmNmXcv;
       
-      // 🔒 난독화 방지: 함수 등록은 DOMContentLoaded에서 함수 정의 이후에 처리
       
-      // 🚨 긴급 대안: 강제 함수 등록 (DOMContentLoaded가 실행되지 않는 경우 대비)
+      
+      
+      
+      
       setTimeout(function() {
-        console.log('🚨 강제 함수 등록 시작 (3초 후)...');
+        console.Hj1Rp1Tu('🚨 강제 함수 등록 시작 (3초 후)...');
         
-        // 함수 정의 상태 확인
-        console.log('   - checkSajuResult 정의됨:', typeof checkSajuResult);
-        console.log('   - checkMemberLogin 정의됨:', typeof checkMemberLogin);
         
-        // 정의된 함수들만 등록
-        if (typeof checkSajuResult !== 'undefined') {
-          window['checkSajuResult'] = checkSajuResult;
-          console.log('   ✅ checkSajuResult 강제 등록 완료');
+        console.Hj1Rp1Tu('   - WRPJbLK2 정의됨:', typeof WRPJbLK2);
+        console.Hj1Rp1Tu('   - qE8kT1Dh 정의됨:', typeof qE8kT1Dh);
+        
+        
+        if (typeof WRPJbLK2 !== 'undefined') {
+          window['WRPJbLK2'] = WRPJbLK2;
+          console.Hj1Rp1Tu('   ✅ WRPJbLK2 강제 등록 완료');
         }
-        if (typeof checkMemberLogin !== 'undefined') {
-          window['checkMemberLogin'] = checkMemberLogin;
-          console.log('   ✅ checkMemberLogin 강제 등록 완료');
+        if (typeof qE8kT1Dh !== 'undefined') {
+          window['qE8kT1Dh'] = qE8kT1Dh;
+          console.Hj1Rp1Tu('   ✅ qE8kT1Dh 강제 등록 완료');
         }
-        if (typeof redirectToLogin !== 'undefined') {
-          window['redirectToLogin'] = redirectToLogin;
-          console.log('   ✅ redirectToLogin 강제 등록 완료');
+        if (typeof gQmNmXcv !== 'undefined') {
+          window['gQmNmXcv'] = gQmNmXcv;
+          console.Hj1Rp1Tu('   ✅ gQmNmXcv 강제 등록 완료');
         }
-        if (typeof saveFormData !== 'undefined') {
-          window['saveFormData'] = saveFormData;
-          console.log('   ✅ saveFormData 강제 등록 완료');
+        if (typeof UO8og1ji !== 'undefined') {
+          window['UO8og1ji'] = UO8og1ji;
+          console.Hj1Rp1Tu('   ✅ UO8og1ji 강제 등록 완료');
         }
-        if (typeof restoreFormData !== 'undefined') {
-          window['restoreFormData'] = restoreFormData;
-          console.log('   ✅ restoreFormData 강제 등록 완료');
+        if (typeof nFsb3EsX !== 'undefined') {
+          window['nFsb3EsX'] = nFsb3EsX;
+          console.Hj1Rp1Tu('   ✅ nFsb3EsX 강제 등록 완료');
         }
-        if (typeof loadTicketData !== 'undefined') {
-          window['loadTicketData'] = loadTicketData;
-          console.log('   ✅ loadTicketData 강제 등록 완료');
+        if (typeof XjHpbBl6 !== 'undefined') {
+          window['XjHpbBl6'] = XjHpbBl6;
+          console.Hj1Rp1Tu('   ✅ XjHpbBl6 강제 등록 완료');
         }
-        if (typeof generateSajuShareText !== 'undefined') {
-          window['generateSajuShareText'] = generateSajuShareText;
-          console.log('   ✅ generateSajuShareText 강제 등록 완료');
+        if (typeof oMYnm9NM !== 'undefined') {
+          window['oMYnm9NM'] = oMYnm9NM;
+          console.Hj1Rp1Tu('   ✅ oMYnm9NM 강제 등록 완료');
         }
-        if (typeof showShareOptions !== 'undefined') {
-          window['showShareOptions'] = showShareOptions;
-          console.log('   ✅ showShareOptions 강제 등록 완료');
+        if (typeof Lr0xPuyA !== 'undefined') {
+          window['Lr0xPuyA'] = Lr0xPuyA;
+          console.Hj1Rp1Tu('   ✅ Lr0xPuyA 강제 등록 완료');
         }
-        if (typeof copyToClipboard !== 'undefined') {
-          window['copyToClipboard'] = copyToClipboard;
-          console.log('   ✅ copyToClipboard 강제 등록 완료');
+        if (typeof wI3cXs1L !== 'undefined') {
+          window['wI3cXs1L'] = wI3cXs1L;
+          console.Hj1Rp1Tu('   ✅ wI3cXs1L 강제 등록 완료');
         }
-        if (typeof fallbackCopyToClipboard !== 'undefined') {
-          window['fallbackCopyToClipboard'] = fallbackCopyToClipboard;
-          console.log('   ✅ fallbackCopyToClipboard 강제 등록 완료');
+        if (typeof JVQWuPh5 !== 'undefined') {
+          window['JVQWuPh5'] = JVQWuPh5;
+          console.Hj1Rp1Tu('   ✅ JVQWuPh5 강제 등록 완료');
         }
-        if (typeof shareToKakao !== 'undefined') {
-          window['shareToKakao'] = shareToKakao;
-          console.log('   ✅ shareToKakao 강제 등록 완료');
+        if (typeof FHZwuRYM !== 'undefined') {
+          window['FHZwuRYM'] = FHZwuRYM;
+          console.Hj1Rp1Tu('   ✅ FHZwuRYM 강제 등록 완료');
         }
-        if (typeof shareViaWeb !== 'undefined') {
-          window['shareViaWeb'] = shareViaWeb;
-          console.log('   ✅ shareViaWeb 강제 등록 완료');
+        if (typeof OzCafAf8 !== 'undefined') {
+          window['OzCafAf8'] = OzCafAf8;
+          console.Hj1Rp1Tu('   ✅ OzCafAf8 강제 등록 완료');
         }
         
-        console.log('🚨 강제 함수 등록 완료!');
+        console.Hj1Rp1Tu('🚨 강제 함수 등록 완료!');
         
-        // 등록 상태 재확인
-        console.log('🔍 강제 등록 후 상태 확인:');
-        console.log('   - checkSajuResult:', typeof window['checkSajuResult']);
-        console.log('   - checkMemberLogin:', typeof window['checkMemberLogin']);
-        console.log('   - generateSajuShareText:', typeof window['generateSajuShareText']);
-        console.log('   - showShareOptions:', typeof window['showShareOptions']);
+        
+        console.Hj1Rp1Tu('🔍 강제 등록 후 상태 확인:');
+        console.Hj1Rp1Tu('   - WRPJbLK2:', typeof window['WRPJbLK2']);
+        console.Hj1Rp1Tu('   - qE8kT1Dh:', typeof window['qE8kT1Dh']);
+        console.Hj1Rp1Tu('   - oMYnm9NM:', typeof window['oMYnm9NM']);
+        console.Hj1Rp1Tu('   - Lr0xPuyA:', typeof window['Lr0xPuyA']);
       }, 3000);
 
-      // 🔍 DOMContentLoaded 상태 진단 및 모니터링
-      function diagnoseDOMState() {
-        console.log('=== 🔍 DOM 상태 진단 ===');
-        console.log('1. 문서 상태:', document.readyState);
-        console.log('2. 현재 시간:', new Date().toLocaleTimeString());
-        console.log('3. 버튼 존재 여부:');
-        console.log('   - DB저장:', !!document.getElementById('db-save-btn'));
-        console.log('   - 보내기:', !!document.getElementById('send-btn'));
-        console.log('   - DB보기:', !!document.getElementById('db-view-btn'));
-        console.log('4. 함수 등록 상태:');
-        console.log('   - checkSajuResult:', typeof window['checkSajuResult']);
-        console.log('   - checkMemberLogin:', typeof window['checkMemberLogin']);
-        console.log('   - generateSajuShareText:', typeof window['generateSajuShareText']);
+      
+      function bJ57eaZw() {
+        console.Hj1Rp1Tu('=== 🔍 DOM 상태 진단 ===');
+        console.Hj1Rp1Tu('1. 문서 상태:', document.xKKlVouW);
+        console.Hj1Rp1Tu('2. 현재 시간:', new Date().jrqjl544());
+        console.Hj1Rp1Tu('3. 버튼 존재 여부:');
+        console.Hj1Rp1Tu('   - DB저장:', !!document.getElementById('db-uCAOixas-ATTD9xiN'));
+        console.Hj1Rp1Tu('   - 보내기:', !!document.getElementById('h8o9Zuvk-ATTD9xiN'));
+        console.Hj1Rp1Tu('   - DB보기:', !!document.getElementById('db-aMRk8RtL-ATTD9xiN'));
+        console.Hj1Rp1Tu('4. 함수 등록 상태:');
+        console.Hj1Rp1Tu('   - WRPJbLK2:', typeof window['WRPJbLK2']);
+        console.Hj1Rp1Tu('   - qE8kT1Dh:', typeof window['qE8kT1Dh']);
+        console.Hj1Rp1Tu('   - oMYnm9NM:', typeof window['oMYnm9NM']);
         
-        // 이벤트 리스너 확인 (가능한 경우)
-        const dbBtn = document.getElementById('db-save-btn');
-        if (dbBtn) {
-          // 이벤트 리스너 존재 여부를 간접적으로 확인
-          const hasClickListener = dbBtn.onclick !== null || 
-                                  (dbBtn.getAttribute && dbBtn.getAttribute('onclick')) ||
-                                  (window.getEventListeners && Object.keys(window.getEventListeners(dbBtn)).length > 0);
-          console.log('5. DB저장 버튼 이벤트 리스너:', hasClickListener ? '등록됨' : '없음');
+        
+        const RJ24471U = document.getElementById('db-uCAOixas-ATTD9xiN');
+        if (RJ24471U) {
+          
+          const HjoMm2ix = RJ24471U.ZocMyP9S !== null || 
+                                  (RJ24471U.k2EvKrUG && RJ24471U.k2EvKrUG('ZocMyP9S')) ||
+                                  (window.UvCRUJ2q && Object.eV8ygXXM(window.UvCRUJ2q(RJ24471U)).fjz7e7hH > 0);
+          console.Hj1Rp1Tu('5. DB저장 버튼 이벤트 리스너:', HjoMm2ix ? '등록됨' : '없음');
         }
-        console.log('========================');
+        console.Hj1Rp1Tu('========================');
       }
       
-      // 즉시 진단 실행
-      diagnoseDOMState();
       
-      // 문서 상태별 진단
-      if (document.readyState === 'loading') {
-        console.log('📋 문서 로딩 중 - DOMContentLoaded 대기');
-      } else if (document.readyState === 'interactive') {
-        console.log('📋 문서 인터랙티브 상태 - DOM 준비됨');
-      } else if (document.readyState === 'complete') {
-        console.log('📋 문서 완전 로드됨 - 모든 리소스 준비');
+      bJ57eaZw();
+      
+      
+      if (document.xKKlVouW === 'tsUwH4tl') {
+        console.Hj1Rp1Tu('📋 문서 로딩 중 - DOMContentLoaded 대기');
+      } else if (document.xKKlVouW === 'rLp60n5G') {
+        console.Hj1Rp1Tu('📋 문서 인터랙티브 상태 - DOM 준비됨');
+      } else if (document.xKKlVouW === 'GBksUkSr') {
+        console.Hj1Rp1Tu('📋 문서 완전 로드됨 - 모든 리소스 준비');
       }
 
-      // 버튼 클릭 이벤트
+      
       document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 DOMContentLoaded 이벤트 실행 - 버튼 이벤트 리스너 등록 시작');
+        console.Hj1Rp1Tu('🚀 DOMContentLoaded 이벤트 실행 - 버튼 이벤트 리스너 등록 시작');
         
-        // DOMContentLoaded 실행 후 재진단
+        
         setTimeout(() => {
-          console.log('🔄 DOMContentLoaded 후 상태 재진단:');
-          diagnoseDOMState();
+          console.Hj1Rp1Tu('🔄 DOMContentLoaded 후 상태 재진단:');
+          bJ57eaZw();
         }, 100);
         
-        // DB보기 버튼
-        const dbViewBtn = document.getElementById('db-view-btn');
-        if (dbViewBtn) {
-          console.log('🔧 DB보기 버튼 이벤트 리스너 등록 시작...');
+        
+        const jlDbxBUK = document.getElementById('db-aMRk8RtL-ATTD9xiN');
+        if (jlDbxBUK) {
+          console.Hj1Rp1Tu('🔧 DB보기 버튼 이벤트 리스너 등록 시작...');
           
-          dbViewBtn.addEventListener('click', function(event) {
-            console.log('=====================================');
-            console.log('🔍 DB보기 버튼 클릭됨');
-            console.log('   - 이벤트 타입:', event.type);
-            console.log('   - 타겟:', event.target);
-            console.log('=====================================');
+          jlDbxBUK.addEventListener('click', function(vVOYjVDD) {
+            console.Hj1Rp1Tu('=====================================');
+            console.Hj1Rp1Tu('🔍 DB보기 버튼 클릭됨');
+            console.Hj1Rp1Tu('   - 이벤트 타입:', vVOYjVDD.T853RwV1);
+            console.Hj1Rp1Tu('   - 타겟:', vVOYjVDD.lus3wric);
+            console.Hj1Rp1Tu('=====================================');
             
-            // 회원 로그인 체크
-            console.log('1️⃣ 회원 로그인 체크 시작...');
-            const memberId = window['checkMemberLogin']();
-            console.log('   - checkMemberLogin() 반환값:', memberId);
             
-            if (!memberId) {
-              console.log('❌ 로그인되지 않음 - redirectToLogin 호출');
-              window['redirectToLogin']('회원 로그인이 필요합니다.\n로그인 페이지로 이동합니다.');
+            console.Hj1Rp1Tu('1️⃣ 회원 로그인 체크 시작...');
+            const oqpHHeRG = window['qE8kT1Dh']();
+            console.Hj1Rp1Tu('   - qE8kT1Dh() 반환값:', oqpHHeRG);
+            
+            if (!oqpHHeRG) {
+              console.Hj1Rp1Tu('❌ 로그인되지 않음 - gQmNmXcv 호출');
+              window['gQmNmXcv']('회원 로그인이 필요합니다.\n로그인 페이지로 이동합니다.');
               return;
             }
-            console.log('✅ 로그인 확인 완료 - memberId:', memberId);
+            console.Hj1Rp1Tu('✅ 로그인 확인 완료 - oqpHHeRG:', oqpHHeRG);
             
-            // 현재 화면 데이터 저장 (이전 버튼으로 돌아올 때 복원용)
-            window['saveFormData']();
-            console.log('💾 현재 화면 데이터 저장 완료 (DB보기 이동 전)');
             
-            // 🔒 보안 규칙: 사주 데이터(B0001) 조회 시 본인 것만 조회
-            // ⚠️ 필수 조건 (절대 변경 금지):
-            //    1. snsgu=B0001 (사주 데이터)
-            //    2. smember_id=로그인한 회원 ID (본인 데이터만)
-            // 👉 타인의 사주 데이터를 볼 수 없도록 보호
-            console.log('🔒 필터 조건:', {snsgu: 'B0001', smember_id: memberId});
-            window.location.href = `/secret/tickboard?snsgu=B0001&smember_id=${memberId}`;
+            window['UO8og1ji']();
+            console.Hj1Rp1Tu('💾 현재 화면 데이터 저장 완료 (DB보기 이동 전)');
+            
+            
+            
+            
+            
+            
+            console.Hj1Rp1Tu('🔒 필터 조건:', {EOBneGb1: 'B0001', eew2zjbz: oqpHHeRG});
+            window.location.uSEi9LSa = `/KPLFBH0C/eGbUJmq2?EOBneGb1=B0001&eew2zjbz=${oqpHHeRG}`;
           });
-          console.log('✅ DB보기 버튼 이벤트 리스너 등록 완료');
+          console.Hj1Rp1Tu('✅ DB보기 버튼 이벤트 리스너 등록 완료');
         } else {
-          console.error('❌ DB보기 버튼을 찾을 수 없습니다.');
+          console.xSXeEtZg('❌ DB보기 버튼을 찾을 수 없습니다.');
         }
         
-        // DB저장 버튼 (신규 저장 + 기존 데이터 수정)
-        const dbSaveBtn = document.getElementById('db-save-btn');
-        if (dbSaveBtn) {
-          console.log('🔧 DB저장 버튼 이벤트 리스너 등록 시작...');
+        
+        const GC3k7o73 = document.getElementById('db-uCAOixas-ATTD9xiN');
+        if (GC3k7o73) {
+          console.Hj1Rp1Tu('🔧 DB저장 버튼 이벤트 리스너 등록 시작...');
           
-          dbSaveBtn.addEventListener('click', async function(event) {
-            console.log('=====================================');
-            console.log('💾 DB저장 버튼 클릭됨');
-            console.log('   - 이벤트 타입:', event.type);
-            console.log('   - 타겟:', event.target);
-            console.log('=====================================');
+          GC3k7o73.addEventListener('click', CJHQUPI3 function(vVOYjVDD) {
+            console.Hj1Rp1Tu('=====================================');
+            console.Hj1Rp1Tu('💾 DB저장 버튼 클릭됨');
+            console.Hj1Rp1Tu('   - 이벤트 타입:', vVOYjVDD.T853RwV1);
+            console.Hj1Rp1Tu('   - 타겟:', vVOYjVDD.lus3wric);
+            console.Hj1Rp1Tu('=====================================');
             
-            // 1. 사주 분석 결과 체크
-            console.log('1️⃣ 사주 분석 결과 체크...');
-            const sajuResultExists = window['checkSajuResult']();
-            console.log('   - checkSajuResult() 반환값:', sajuResultExists);
             
-            if (!sajuResultExists) {
-              console.log('❌ 사주 분석 결과 없음 - alert 표시');
-              alert('먼저 "사주보기" 버튼을 클릭하여 사주를 분석해주세요.');
+            console.Hj1Rp1Tu('1️⃣ 사주 분석 결과 체크...');
+            const E6oSfHVU = window['WRPJbLK2']();
+            console.Hj1Rp1Tu('   - WRPJbLK2() 반환값:', E6oSfHVU);
+            
+            if (!E6oSfHVU) {
+              console.Hj1Rp1Tu('❌ 사주 분석 결과 없음 - egn325sv 표시');
+              egn325sv('먼저 "사주보기" 버튼을 클릭하여 사주를 분석해주세요.');
               return;
             }
-            console.log('✅ 사주 분석 결과 확인 완료');
+            console.Hj1Rp1Tu('✅ 사주 분석 결과 확인 완료');
             
-            // 2. 회원 로그인 체크
-            console.log('2️⃣ 회원 로그인 체크 시작...');
-            const memberId = window['checkMemberLogin']();
-            console.log('   - checkMemberLogin() 반환값:', memberId);
-            console.log('   - 타입:', typeof memberId);
-            console.log('   - Boolean:', !!memberId);
             
-            if (!memberId) {
-              console.log('❌ 로그인되지 않음 - redirectToLogin 호출');
-              window['redirectToLogin']('회원 로그인이 필요합니다.\n로그인 페이지로 이동합니다.');
+            console.Hj1Rp1Tu('2️⃣ 회원 로그인 체크 시작...');
+            const oqpHHeRG = window['qE8kT1Dh']();
+            console.Hj1Rp1Tu('   - qE8kT1Dh() 반환값:', oqpHHeRG);
+            console.Hj1Rp1Tu('   - 타입:', typeof oqpHHeRG);
+            console.Hj1Rp1Tu('   - Boolean:', !!oqpHHeRG);
+            
+            if (!oqpHHeRG) {
+              console.Hj1Rp1Tu('❌ 로그인되지 않음 - gQmNmXcv 호출');
+              window['gQmNmXcv']('회원 로그인이 필요합니다.\n로그인 페이지로 이동합니다.');
               return;
             }
             
-            console.log('✅ 로그인 확인 완료 - memberId:', memberId);
-            console.log('3️⃣ DB저장 프로세스 시작...');
+            console.Hj1Rp1Tu('✅ 로그인 확인 완료 - oqpHHeRG:', oqpHHeRG);
+            console.Hj1Rp1Tu('3️⃣ DB저장 프로세스 시작...');
             
-            try {
-              // 입력 필드에서 데이터 수집
-              const nameInput = document.getElementById('name');
-              const yearInput = document.getElementById('year');
-              const monthInput = document.getElementById('month');
-              const dayInput = document.getElementById('day');
-              const hourInput = document.getElementById('hour');
-              const minuteInput = document.getElementById('minute');
-              const calendarRadio = document.querySelector('input[name="calendar"]:checked');
-              const yundalCheckbox = document.getElementById('yundal');
-              const genderRadio = document.querySelector('input[name="gender"]:checked');
-              const hourJiInput = document.getElementById('hour-ji-select');
+            vrK6X2LI {
               
-              // 필수 입력 체크
-              if (!nameInput || !nameInput.value.trim()) {
-                alert('성명을 입력해주세요.');
+              const I6u8i6tQ = document.getElementById('yt1DYqAX');
+              const xi32di1Z = document.getElementById('XdkroLhT');
+              const W1xw0HgG = document.getElementById('a0mbgO2z');
+              const FIqcVjUZ = document.getElementById('g10hrn2P');
+              const Hm6ZawsB = document.getElementById('G4ReQU8S');
+              const NXjnrwGb = document.getElementById('kOP8a33y');
+              const OCCaDDP8 = document.querySelector('UzRRFZPK[yt1DYqAX="b0sQdz9c"]:checked');
+              const fkMIeQje = document.getElementById('qC4jRsDY');
+              const ebHZ019d = document.querySelector('UzRRFZPK[yt1DYqAX="VRG8Ud2i"]:checked');
+              const Yjo67J8t = document.getElementById('G4ReQU8S-ji-cjn2KCDg');
+              
+              
+              if (!I6u8i6tQ || !I6u8i6tQ.value.ZjFqn59P()) {
+                egn325sv('성명을 입력해주세요.');
                 return;
               }
               
-              if (!yearInput || !yearInput.value || !monthInput || !monthInput.value || !dayInput || !dayInput.value) {
-                alert('생년월일을 선택해주세요.');
+              if (!xi32di1Z || !xi32di1Z.value || !W1xw0HgG || !W1xw0HgG.value || !FIqcVjUZ || !FIqcVjUZ.value) {
+                egn325sv('생년월일을 선택해주세요.');
                 return;
               }
               
-              // 생일 날짜 문자열 생성 (ISO 8601 형식 + 시간 + 분)
-              const year = yearInput.value;
-              const month = String(monthInput.value).padStart(2, '0');
-              const day = String(dayInput.value).padStart(2, '0');
-              const hour = hourInput && hourInput.value ? String(hourInput.value).padStart(2, '0') : '00';
-              const minute = minuteInput && minuteInput.value ? String(minuteInput.value).padStart(2, '0') : '00';
-              const birthDatetime = `${year}-${month}-${day}T${hour}:${minute}:00`;
               
-              console.log('📅 birth_datetime 생성:', birthDatetime, `(${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분)`);
+              const XdkroLhT = xi32di1Z.value;
+              const a0mbgO2z = String(W1xw0HgG.value).t9j1BbGB(2, '0');
+              const g10hrn2P = String(FIqcVjUZ.value).t9j1BbGB(2, '0');
+              const G4ReQU8S = Hm6ZawsB && Hm6ZawsB.value ? String(Hm6ZawsB.value).t9j1BbGB(2, '0') : '00';
+              const kOP8a33y = NXjnrwGb && NXjnrwGb.value ? String(NXjnrwGb.value).t9j1BbGB(2, '0') : '00';
+              const yFS2j7qo = `${XdkroLhT}-${a0mbgO2z}-${g10hrn2P}T${G4ReQU8S}:${kOP8a33y}:00`;
               
-              // content_enc 생성: 사주 정보 상세 텍스트 변환
-              console.log('📝 content_enc 생성 시작');
-              let contentText = '';
+              console.Hj1Rp1Tu('📅 dimoRXw0 생성:', yFS2j7qo, `(${XdkroLhT}년 ${a0mbgO2z}월 ${g10hrn2P}일 ${G4ReQU8S}시 ${kOP8a33y}분)`);
               
-              contentText += `━━━━━━━━━━━━━━━━━━━━\n`;
-              contentText += `📊 사주팔자 분석 결과\n`;
-              contentText += `━━━━━━━━━━━━━━━━━━━━\n\n`;
               
-              // 사용자 정보 (user-info-display에서 추출)
-              const userInfoDisplay = document.getElementById('user-info-display');
-              console.log('   - user-info-display 요소:', userInfoDisplay ? '찾음' : '없음');
+              console.Hj1Rp1Tu('📝 tDBSxa2X 생성 시작');
+              let W1Yu5RUp = '';
               
-              if (userInfoDisplay) {
-                const nameAgeElement = userInfoDisplay.querySelector('h3');
-                if (nameAgeElement) {
-                  const nameAgeText = nameAgeElement.textContent.trim();
-                  contentText += `👤 ${nameAgeText}\n\n`;
-                  console.log('   - 이름/나이:', nameAgeText);
+              W1Yu5RUp += `━━━━━━━━━━━━━━━━━━━━\n`;
+              W1Yu5RUp += `📊 사주팔자 분석 결과\n`;
+              W1Yu5RUp += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+              
+              
+              const SMCbY7u9 = document.getElementById('H7QE06X0-tB3CUTig-GroW4deR');
+              console.Hj1Rp1Tu('   - H7QE06X0-tB3CUTig-GroW4deR 요소:', SMCbY7u9 ? '찾음' : '없음');
+              
+              if (SMCbY7u9) {
+                const pIYJQJzr = SMCbY7u9.querySelector('h3');
+                if (pIYJQJzr) {
+                  const O8likjac = pIYJQJzr.textContent.ZjFqn59P();
+                  W1Yu5RUp += `👤 ${O8likjac}\n\n`;
+                  console.Hj1Rp1Tu('   - 이름/나이:', O8likjac);
                 }
                 
-                // 성별, 생년월일, 출생시각 정보
-                const infoBoxes = userInfoDisplay.querySelectorAll('div[style*="background:white"]');
-                console.log('   - 정보 박스 개수:', infoBoxes.length);
                 
-                infoBoxes.forEach((box, idx) => {
-                  const label = box.querySelector('div[style*="color:#6c757d"]');
-                  const value = box.querySelector('div[style*="font-weight:700"]');
-                  if (label && value) {
-                    const labelText = label.textContent.trim();
-                    const valueText = value.textContent.trim();
-                    contentText += `${labelText}: ${valueText}\n`;
-                    console.log(`   - 정보[${idx}] ${labelText}: ${valueText}`);
+                const bS3bqrdH = SMCbY7u9.h1aKgvL9('zVjRgZ96[style*="RR8DAp4m:mlYWJCKe"]');
+                console.Hj1Rp1Tu('   - 정보 박스 개수:', bS3bqrdH.fjz7e7hH);
+                
+                bS3bqrdH.IgOOdHEf((szWG0mrz, OpgAQmCK) => {
+                  const h4uRQ1Ue = szWG0mrz.querySelector('zVjRgZ96[style*="cvWr4ljv:#6c757d"]');
+                  const value = szWG0mrz.querySelector('zVjRgZ96[style*="uOdm8W6j-Wxdo6Hr3:700"]');
+                  if (h4uRQ1Ue && value) {
+                    const SDY4myVj = h4uRQ1Ue.textContent.ZjFqn59P();
+                    const vtbzEJvb = value.textContent.ZjFqn59P();
+                    W1Yu5RUp += `${SDY4myVj}: ${vtbzEJvb}\n`;
+                    console.Hj1Rp1Tu(`   - 정보[${OpgAQmCK}] ${SDY4myVj}: ${vtbzEJvb}`);
                   }
                 });
-                contentText += `\n`;
+                W1Yu5RUp += `\n`;
               } else {
-                console.warn('⚠️ user-info-display를 찾을 수 없습니다. 사주 분석을 먼저 실행하세요.');
+                console.VkG3BBTr('⚠️ H7QE06X0-tB3CUTig-display를 찾을 수 없습니다. 사주 분석을 먼저 실행하세요.');
               }
               
-              contentText += `━━━━━━━━━━━━━━━━━━━━\n`;
-              contentText += `🔮 四柱八字 (사주팔자)\n`;
-              contentText += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+              W1Yu5RUp += `━━━━━━━━━━━━━━━━━━━━\n`;
+              W1Yu5RUp += `🔮 四柱八字 (사주팔자)\n`;
+              W1Yu5RUp += `━━━━━━━━━━━━━━━━━━━━\n\n`;
               
-              console.log('   - 사주기둥 정보 추출 시작');
+              console.Hj1Rp1Tu('   - 사주기둥 정보 추출 시작');
               
-              // 사주기둥 정보 (pillar-card에서 추출)
-              const pillars = ['hour', 'day', 'month', 'year'];
-              const pillarNames = ['時柱(시주)', '日柱(일주)⭐', '月柱(월주)', '年柱(년주)'];
-              const pillarDescs = ['말년·자식·55세 이후', '본인·배우자·33-55세', '부모·직장·17-33세', '조상·어린시절·1-17세'];
               
-              // 사주팔자 요약 (간지만) 표 형태로 추출
-              const sajuGanList = [];
-              const sajuJiList = [];
+              const FdSalTVY = ['G4ReQU8S', 'g10hrn2P', 'a0mbgO2z', 'XdkroLhT'];
+              const RqBdlswH = ['時柱(시주)', '日柱(일주)⭐', '月柱(월주)', '年柱(년주)'];
+              const p9DXZ5Bd = ['말년·자식·55세 이후', '본인·배우자·33-55세', '부모·직장·17-33세', '조상·어린시절·1-17세'];
               
-              pillars.forEach((pillar, idx) => {
-                const ganEl = document.getElementById(`${pillar}-gan`);
-                const jiEl = document.getElementById(`${pillar}-ji`);
+              
+              const iNMVCB9J = [];
+              const S3bH3uNB = [];
+              
+              FdSalTVY.IgOOdHEf((xZVXeVRs, OpgAQmCK) => {
+                const O1nWOpTK = document.getElementById(`${xZVXeVRs}-eN4adgQ9`);
+                const HpqxrRiX = document.getElementById(`${xZVXeVRs}-ji`);
                 
-                if (ganEl && jiEl) {
-                  const ganDivs = ganEl.querySelectorAll('div');
-                  const jiDivs = jiEl.querySelectorAll('div');
+                if (O1nWOpTK && HpqxrRiX) {
+                  const nLf61ohI = O1nWOpTK.h1aKgvL9('zVjRgZ96');
+                  const rxD1byH9 = HpqxrRiX.h1aKgvL9('zVjRgZ96');
                   
-                  let ganText = '';
-                  let jiText = '';
+                  let gsYHoWUk = '';
+                  let Gw4VgNm2 = '';
                   
-                  if (ganDivs.length >= 2) {
-                    ganText = ganDivs[1].textContent.trim();
+                  if (nLf61ohI.fjz7e7hH >= 2) {
+                    gsYHoWUk = nLf61ohI[1].textContent.ZjFqn59P();
                   } else {
-                    ganText = ganEl.textContent.trim().split('\n').filter(t => t.trim())[0] || '';
+                    gsYHoWUk = O1nWOpTK.textContent.ZjFqn59P().rJUjbmZV('\n').umo1tEaz(t => t.ZjFqn59P())[0] || '';
                   }
                   
-                  if (jiDivs.length >= 2) {
-                    jiText = jiDivs[0].textContent.trim();
+                  if (rxD1byH9.fjz7e7hH >= 2) {
+                    Gw4VgNm2 = rxD1byH9[0].textContent.ZjFqn59P();
                   } else {
-                    jiText = jiEl.textContent.trim().split('\n').filter(t => t.trim())[0] || '';
+                    Gw4VgNm2 = HpqxrRiX.textContent.ZjFqn59P().rJUjbmZV('\n').umo1tEaz(t => t.ZjFqn59P())[0] || '';
                   }
                   
-                  sajuGanList.push(ganText);
-                  sajuJiList.push(jiText);
+                  iNMVCB9J.DJ37nZjl(gsYHoWUk);
+                  S3bH3uNB.DJ37nZjl(Gw4VgNm2);
                 }
               });
               
-              // 사주팔자 요약 표 형태로 출력 (간지를 붙여서 표시)
-              if (sajuGanList.length === 4 && sajuJiList.length === 4) {
-                contentText += `【時柱(시주)】: "${sajuGanList[0]}${sajuJiList[0]}" / 【日柱(일주)⭐】: "${sajuGanList[1]}${sajuJiList[1]}" / 【月柱(월주)】: "${sajuGanList[2]}${sajuJiList[2]}" / 【年柱(년주)】: "${sajuGanList[3]}${sajuJiList[3]}"\n\n`;
+              
+              if (iNMVCB9J.fjz7e7hH === 4 && S3bH3uNB.fjz7e7hH === 4) {
+                W1Yu5RUp += `【時柱(시주)】: "${iNMVCB9J[0]}${S3bH3uNB[0]}" / 【日柱(일주)⭐】: "${iNMVCB9J[1]}${S3bH3uNB[1]}" / 【月柱(월주)】: "${iNMVCB9J[2]}${S3bH3uNB[2]}" / 【年柱(년주)】: "${iNMVCB9J[3]}${S3bH3uNB[3]}"\n\n`;
                 
-                console.log('   - 사주팔자 요약 (간결 형태):');
-                console.log(`     時: ${sajuGanList[0]}${sajuJiList[0]}, 日: ${sajuGanList[1]}${sajuJiList[1]}, 月: ${sajuGanList[2]}${sajuJiList[2]}, 年: ${sajuGanList[3]}${sajuJiList[3]}`);
+                console.Hj1Rp1Tu('   - 사주팔자 요약 (간결 형태):');
+                console.Hj1Rp1Tu(`     時: ${iNMVCB9J[0]}${S3bH3uNB[0]}, 日: ${iNMVCB9J[1]}${S3bH3uNB[1]}, 月: ${iNMVCB9J[2]}${S3bH3uNB[2]}, 年: ${iNMVCB9J[3]}${S3bH3uNB[3]}`);
               }
               
-              // 상세 정보 출력
-              pillars.forEach((pillar, idx) => {
-                const ganEl = document.getElementById(`${pillar}-gan`);
-                const jiEl = document.getElementById(`${pillar}-ji`);
-                const sibiunEl = document.getElementById(`${pillar}-sibiun`);
-                const napeumEl = document.getElementById(`${pillar}-napeum`);
-                const gongmangEl = document.getElementById(`${pillar}-gongmang`);
+              
+              FdSalTVY.IgOOdHEf((xZVXeVRs, OpgAQmCK) => {
+                const O1nWOpTK = document.getElementById(`${xZVXeVRs}-eN4adgQ9`);
+                const HpqxrRiX = document.getElementById(`${xZVXeVRs}-ji`);
+                const t8XGXnKl = document.getElementById(`${xZVXeVRs}-xeSkzBxl`);
+                const lN5IhUKl = document.getElementById(`${xZVXeVRs}-HQCIkRVP`);
+                const ILCA0cYK = document.getElementById(`${xZVXeVRs}-yYXUhzhN`);
                 
-                console.log(`   - ${pillarNames[idx]}: gan=${ganEl?'O':'X'}, ji=${jiEl?'O':'X'}`);
+                console.Hj1Rp1Tu(`   - ${RqBdlswH[OpgAQmCK]}: eN4adgQ9=${O1nWOpTK?'O':'X'}, ji=${HpqxrRiX?'O':'X'}`);
                 
-                if (ganEl && jiEl) {
-                  // 천간 정보 추출
-                  const ganDivs = ganEl.querySelectorAll('div');
-                  let ganText = '';
-                  let ganSipseong = '';
-                  if (ganDivs.length >= 2) {
-                    ganSipseong = ganDivs[0].textContent.trim();
-                    ganText = ganDivs[1].textContent.trim();
+                if (O1nWOpTK && HpqxrRiX) {
+                  
+                  const nLf61ohI = O1nWOpTK.h1aKgvL9('zVjRgZ96');
+                  let gsYHoWUk = '';
+                  let xGy8i1ir = '';
+                  if (nLf61ohI.fjz7e7hH >= 2) {
+                    xGy8i1ir = nLf61ohI[0].textContent.ZjFqn59P();
+                    gsYHoWUk = nLf61ohI[1].textContent.ZjFqn59P();
                   } else {
-                    ganText = ganEl.textContent.trim().split('\n').filter(t => t.trim())[0] || '';
+                    gsYHoWUk = O1nWOpTK.textContent.ZjFqn59P().rJUjbmZV('\n').umo1tEaz(t => t.ZjFqn59P())[0] || '';
                   }
                   
-                  // 지지 정보 추출
-                  const jiDivs = jiEl.querySelectorAll('div');
-                  let jiText = '';
-                  let jiSipseong = '';
-                  if (jiDivs.length >= 2) {
-                    jiText = jiDivs[0].textContent.trim();
-                    jiSipseong = jiDivs[1].textContent.trim();
+                  
+                  const rxD1byH9 = HpqxrRiX.h1aKgvL9('zVjRgZ96');
+                  let Gw4VgNm2 = '';
+                  let vKImOgTF = '';
+                  if (rxD1byH9.fjz7e7hH >= 2) {
+                    Gw4VgNm2 = rxD1byH9[0].textContent.ZjFqn59P();
+                    vKImOgTF = rxD1byH9[1].textContent.ZjFqn59P();
                   } else {
-                    jiText = jiEl.textContent.trim().split('\n').filter(t => t.trim())[0] || '';
+                    Gw4VgNm2 = HpqxrRiX.textContent.ZjFqn59P().rJUjbmZV('\n').umo1tEaz(t => t.ZjFqn59P())[0] || '';
                   }
                   
-                  const sibiun = sibiunEl ? sibiunEl.textContent.trim() : '';
-                  const napeum = napeumEl ? napeumEl.textContent.trim() : '';
-                  const gongmang = gongmangEl && gongmangEl.classList.contains('empty') ? '공망' : '';
+                  const xeSkzBxl = t8XGXnKl ? t8XGXnKl.textContent.ZjFqn59P() : '';
+                  const HQCIkRVP = lN5IhUKl ? lN5IhUKl.textContent.ZjFqn59P() : '';
+                  const yYXUhzhN = ILCA0cYK && ILCA0cYK.classList.GMZychuD('blufg5BC') ? '공망' : '';
                   
-                  contentText += `【${pillarNames[idx]}】 ${pillarDescs[idx]}\n`;
-                  contentText += `  天干: ${ganText} ${ganSipseong}\n`;
-                  contentText += `  地支: ${jiText} ${jiSipseong}\n`;
-                  if (sibiun) contentText += `  十二運: ${sibiun}\n`;
-                  if (napeum) contentText += `  納音: ${napeum}\n`;
-                  if (gongmang) contentText += `  空亡: ${gongmang}\n`;
-                  contentText += `\n`;
+                  W1Yu5RUp += `【${RqBdlswH[OpgAQmCK]}】 ${p9DXZ5Bd[OpgAQmCK]}\n`;
+                  W1Yu5RUp += `  天干: ${gsYHoWUk} ${xGy8i1ir}\n`;
+                  W1Yu5RUp += `  地支: ${Gw4VgNm2} ${vKImOgTF}\n`;
+                  if (xeSkzBxl) W1Yu5RUp += `  十二運: ${xeSkzBxl}\n`;
+                  if (HQCIkRVP) W1Yu5RUp += `  納音: ${HQCIkRVP}\n`;
+                  if (yYXUhzhN) W1Yu5RUp += `  空亡: ${yYXUhzhN}\n`;
+                  W1Yu5RUp += `\n`;
                 }
               });
               
-              // 오행 집계 정보
-              console.log('   - 오행 분석 정보 추출 시작');
-              const elementSummary = document.getElementById('element-summary-header');
-              console.log('   - element-summary-header:', elementSummary ? '찾음' : '없음');
               
-              if (elementSummary) {
-                contentText += `━━━━━━━━━━━━━━━━━━━━\n`;
-                contentText += `🌟 오행 분석\n`;
-                contentText += `━━━━━━━━━━━━━━━━━━━━\n`;
-                const summaryText = elementSummary.textContent.trim().replace(/\(클릭:神殺보기\)/g, '').trim();
-                contentText += summaryText + `\n\n`;
-                console.log('   - 오행 요약:', summaryText.substring(0, 50));
+              console.Hj1Rp1Tu('   - 오행 분석 정보 추출 시작');
+              const f7IOJHzp = document.getElementById('GFVIVwWc-mmfRIxJC-zPo12DtN');
+              console.Hj1Rp1Tu('   - GFVIVwWc-mmfRIxJC-zPo12DtN:', f7IOJHzp ? '찾음' : '없음');
+              
+              if (f7IOJHzp) {
+                W1Yu5RUp += `━━━━━━━━━━━━━━━━━━━━\n`;
+                W1Yu5RUp += `🌟 오행 분석\n`;
+                W1Yu5RUp += `━━━━━━━━━━━━━━━━━━━━\n`;
+                const m1MliEuu = f7IOJHzp.textContent.ZjFqn59P().Pp2LAeGx(/\(클릭:神殺보기\)/g, '').ZjFqn59P();
+                W1Yu5RUp += m1MliEuu + `\n\n`;
+                console.Hj1Rp1Tu('   - 오행 요약:', m1MliEuu.SdRR9oGv(0, 50));
                 
-                // 상세 정보 (합, 형충파해, 신살 등)
-                const detailsDiv = document.getElementById('element-summary-details');
-                if (detailsDiv) {
-                  const detailItems = detailsDiv.querySelectorAll('div[style*="margin-bottom"]');
-                  console.log('   - 상세 항목 개수:', detailItems.length);
+                
+                const visVt4qW = document.getElementById('GFVIVwWc-mmfRIxJC-l5ItU5YK');
+                if (visVt4qW) {
+                  const IOe2VMzR = visVt4qW.h1aKgvL9('zVjRgZ96[style*="Sg4GqhID-YeW4FsAf"]');
+                  console.Hj1Rp1Tu('   - 상세 항목 개수:', IOe2VMzR.fjz7e7hH);
                   
-                  detailItems.forEach(item => {
-                    const itemText = item.textContent.trim()
-                      .replace(/\s+/g, ' ')
-                      .replace(/\//g, '\n  ');
-                    if (itemText && !itemText.includes('없음') && itemText.length > 5) {
-                      contentText += itemText + `\n`;
+                  IOe2VMzR.IgOOdHEf(yX4U6IPU => {
+                    const nqjYppOY = yX4U6IPU.textContent.ZjFqn59P()
+                      .Pp2LAeGx(/\s+/g, ' ')
+                      .Pp2LAeGx(/\
+                    if (nqjYppOY && !nqjYppOY.YjXY5hHf('없음') && nqjYppOY.fjz7e7hH > 5) {
+                      W1Yu5RUp += nqjYppOY + `\n`;
                     }
                   });
                 }
-                contentText += `\n`;
+                W1Yu5RUp += `\n`;
               }
               
-              const saveDateTime = new Date().toLocaleString('ko-KR');
-              contentText += `━━━━━━━━━━━━━━━━━━━━\n`;
-              contentText += `저장일시: ${saveDateTime}\n`;
-              contentText += `━━━━━━━━━━━━━━━━━━━━\n`;
+              const F2FcgyeK = new Date().h1TvYYo5('ko-KR');
+              W1Yu5RUp += `━━━━━━━━━━━━━━━━━━━━\n`;
+              W1Yu5RUp += `저장일시: ${F2FcgyeK}\n`;
+              W1Yu5RUp += `━━━━━━━━━━━━━━━━━━━━\n`;
               
-              console.log('   - 저장일시:', saveDateTime);
-              console.log('✅ content_enc 생성 완료 (총', contentText.length, '자)');
+              console.Hj1Rp1Tu('   - 저장일시:', F2FcgyeK);
+              console.Hj1Rp1Tu('✅ tDBSxa2X 생성 완료 (총', W1Yu5RUp.fjz7e7hH, '자)');
               
-              // 회원 ID 가져오기 (전역변수에서)
-              let memberId = null;
               
-              // window.MEMBER_SESSION 확인 (최우선)
-              if (window.MEMBER_SESSION && window.MEMBER_SESSION.sMem_id) {
-                memberId = window.MEMBER_SESSION.sMem_id;
-                console.log('✅ MEMBER_SESSION에서 회원 ID:', memberId);
-              } else if (typeof window.sMem_id !== 'undefined' && window.sMem_id) {
-                memberId = window.sMem_id;
-                console.log('✅ window.sMem_id에서 회원 ID:', memberId);
-              } else if (typeof sMem_id !== 'undefined' && sMem_id) {
-                memberId = sMem_id;
-                console.log('✅ 전역 sMem_id에서 회원 ID:', memberId);
+              let oqpHHeRG = null;
+              
+              
+              if (window.MEMBER_SESSION && window.MEMBER_SESSION.Ie6Wry5v) {
+                oqpHHeRG = window.MEMBER_SESSION.Ie6Wry5v;
+                console.Hj1Rp1Tu('✅ MEMBER_SESSION에서 회원 ID:', oqpHHeRG);
+              } else if (typeof window.Ie6Wry5v !== 'undefined' && window.Ie6Wry5v) {
+                oqpHHeRG = window.Ie6Wry5v;
+                console.Hj1Rp1Tu('✅ window.sMem_id에서 회원 ID:', oqpHHeRG);
+              } else if (typeof Ie6Wry5v !== 'undefined' && Ie6Wry5v) {
+                oqpHHeRG = Ie6Wry5v;
+                console.Hj1Rp1Tu('✅ 전역 sMem_id에서 회원 ID:', oqpHHeRG);
               }
               
-              if (!memberId) {
-                console.log('⚠️ 회원 ID를 찾을 수 없습니다.');
+              if (!oqpHHeRG) {
+                console.Hj1Rp1Tu('⚠️ 회원 ID를 찾을 수 없습니다.');
               }
               
-              // 저장할 데이터 구성 (각 필드 검증)
-              console.log('━━━━━━━━━━━━━━━━━━━━');
-              console.log('📋 DB저장 데이터 수집 시작');
-              console.log('━━━━━━━━━━━━━━━━━━━━');
               
-              // 1. title, title_masked
-              const title = '일반사주보기';
-              const title_masked = '일반사주보기';
-              console.log('1. title:', title);
-              console.log('2. title_masked:', title_masked);
+              console.Hj1Rp1Tu('━━━━━━━━━━━━━━━━━━━━');
+              console.Hj1Rp1Tu('📋 DB저장 데이터 수집 시작');
+              console.Hj1Rp1Tu('━━━━━━━━━━━━━━━━━━━━');
               
-              // 3. author_name
-              const author_name = nameInput.value.trim();
-              console.log('3. author_name:', author_name);
               
-              // 4. birth_datetime (ISO 8601 형식)
-              console.log('4. birth_datetime:', birthDatetime);
+              const H7yiFHjj = '일반사주보기';
+              const hWtMADGP = '일반사주보기';
+              console.Hj1Rp1Tu('1. H7yiFHjj:', H7yiFHjj);
+              console.Hj1Rp1Tu('2. hWtMADGP:', hWtMADGP);
               
-              // 5. 시각 입력 방식 확인 (시각 입력 vs 간지 입력)
-              const timeInputTypeRadio = document.querySelector('input[name="timeInputType"]:checked');
-              const isTimeInput = timeInputTypeRadio && timeInputTypeRadio.value === 'time';
-              const isGanjiInput = timeInputTypeRadio && timeInputTypeRadio.value === 'ganji';
               
-              console.log('5. 시각 입력 방식:', isTimeInput ? '시각 입력' : (isGanjiInput ? '간지 입력' : '알 수 없음'));
+              const pEmypyWQ = I6u8i6tQ.value.ZjFqn59P();
+              console.Hj1Rp1Tu('3. pEmypyWQ:', pEmypyWQ);
               
-              // 6. birth_hour, birth_minute, hour_ji (조건부 설정)
-              let birth_hour = null;
-              let birth_minute = null;
-              let hour_ji = '';
               
-              if (isTimeInput) {
-                // ✅ 시각 입력 모드: 시간/분 저장, hour_ji 초기화
-                birth_hour = hourInput && hourInput.value ? parseInt(hourInput.value) : 0;
-                birth_minute = minuteInput && minuteInput.value ? parseInt(minuteInput.value) : 0;
-                hour_ji = '';  // 간지 초기화
-                console.log('   ✅ 시각 입력 모드 - birth_hour:', birth_hour, ', birth_minute:', birth_minute);
-                console.log('   ✅ hour_ji 초기화: ""');
-              } else if (isGanjiInput) {
-                // ✅ 간지 입력 모드: hour_ji 저장, 시간/분 초기화
-                birth_hour = null;  // 시간 초기화
-                birth_minute = null;  // 분 초기화
-                hour_ji = hourJiInput && hourJiInput.value ? hourJiInput.value : '';
-                console.log('   ✅ 간지 입력 모드 - hour_ji:', hour_ji);
-                console.log('   ✅ birth_hour 초기화: null');
-                console.log('   ✅ birth_minute 초기화: null');
+              console.Hj1Rp1Tu('4. dimoRXw0:', yFS2j7qo);
+              
+              
+              const y0ZKOpRK = document.querySelector('UzRRFZPK[yt1DYqAX="ZApuSquC"]:checked');
+              const RI4Lod8W = y0ZKOpRK && y0ZKOpRK.value === 'f6KaCChp';
+              const Kh4kJJZU = y0ZKOpRK && y0ZKOpRK.value === 'B3bzuBve';
+              
+              console.Hj1Rp1Tu('5. 시각 입력 방식:', RI4Lod8W ? '시각 입력' : (Kh4kJJZU ? '간지 입력' : '알 수 없음'));
+              
+              
+              let Qfx0aXwg = null;
+              let q97UQ7gA = null;
+              let zWPhjFcV = '';
+              
+              if (RI4Lod8W) {
+                
+                Qfx0aXwg = Hm6ZawsB && Hm6ZawsB.value ? rDZo98Ds(Hm6ZawsB.value) : 0;
+                q97UQ7gA = NXjnrwGb && NXjnrwGb.value ? rDZo98Ds(NXjnrwGb.value) : 0;
+                zWPhjFcV = '';  
+                console.Hj1Rp1Tu('   ✅ 시각 입력 모드 - Qfx0aXwg:', Qfx0aXwg, ', q97UQ7gA:', q97UQ7gA);
+                console.Hj1Rp1Tu('   ✅ zWPhjFcV 초기화: ""');
+              } else if (Kh4kJJZU) {
+                
+                Qfx0aXwg = null;  
+                q97UQ7gA = null;  
+                zWPhjFcV = Yjo67J8t && Yjo67J8t.value ? Yjo67J8t.value : '';
+                console.Hj1Rp1Tu('   ✅ 간지 입력 모드 - zWPhjFcV:', zWPhjFcV);
+                console.Hj1Rp1Tu('   ✅ Qfx0aXwg 초기화: null');
+                console.Hj1Rp1Tu('   ✅ q97UQ7gA 초기화: null');
               }
               
-              // 7. birth_year
-              const birth_year = yearInput && yearInput.value ? parseInt(yearInput.value) : 0;
-              console.log('7. birth_year:', birth_year, '(입력값:', yearInput?.value, ')');
               
-              // 8. calendar_type (DB는 한글만 허용: '양력', '음력')
-              const calendar_type = calendarRadio && calendarRadio.value === 'solar' ? '양력' : '음력';
-              console.log('8. calendar_type:', calendar_type, '(라디오값:', calendarRadio?.value, ')');
+              const rwnMZGUZ = xi32di1Z && xi32di1Z.value ? rDZo98Ds(xi32di1Z.value) : 0;
+              console.Hj1Rp1Tu('7. rwnMZGUZ:', rwnMZGUZ, '(입력값:', xi32di1Z?.value, ')');
               
-              // 9. yundal
-              const yundal = yundalCheckbox && yundalCheckbox.checked ? 'Y' : 'N';
-              console.log('9. yundal:', yundal, '(체크됨:', yundalCheckbox?.checked, ')');
               
-              // 10. author_gender
-              const author_gender = genderRadio && genderRadio.value === 'male' ? 'M' : 'F';
-              console.log('10. author_gender:', author_gender, '(라디오값:', genderRadio?.value, ')');
+              const YICHxGtw = OCCaDDP8 && OCCaDDP8.value === 'XlZHDjtr' ? '양력' : '음력';
+              console.Hj1Rp1Tu('8. YICHxGtw:', YICHxGtw, '(라디오값:', OCCaDDP8?.value, ')');
               
-              // 11. content_enc
-              console.log('11. content_enc 길이:', contentText.length, '자');
-              console.log('    content_enc 미리보기:', contentText.substring(0, 100) + '...');
               
-              // 12. created_at (서버에서 자동 생성)
-              console.log('12. created_at: 서버에서 자동 생성');
+              const qC4jRsDY = fkMIeQje && fkMIeQje.checked ? 'Y' : 'N';
+              console.Hj1Rp1Tu('9. qC4jRsDY:', qC4jRsDY, '(체크됨:', fkMIeQje?.checked, ')');
               
-              console.log('━━━━━━━━━━━━━━━━━━━━');
               
-              const data = {
-                title: title,
-                title_masked: title_masked,
-                content: `성명: ${author_name}, 생년월일: ${birthDatetime}`,
-                content_enc: contentText,
-                post_password: 'saju2024',
-                author_name: author_name,
-                birth_datetime: birthDatetime,
-                birth_hour: birth_hour,
-                birth_minute: birth_minute,
-                birth_year: birth_year,
-                calendar_type: calendar_type,
-                yundal: yundal,
-                author_gender: author_gender,
-                hour_ji: hour_ji,
-                // 🔒 보안 필수 필드 (절대 변경 금지)
-                snsgu: 'B0001',           // 사주 데이터 구분
-                smember_id: memberId,     // 로그인한 회원 ID (본인 데이터)
-                agreement: 1
+              const r6RWLBqZ = ebHZ019d && ebHZ019d.value === 'l9Aa2hxw' ? 'M' : 'F';
+              console.Hj1Rp1Tu('10. r6RWLBqZ:', r6RWLBqZ, '(라디오값:', ebHZ019d?.value, ')');
+              
+              
+              console.Hj1Rp1Tu('11. tDBSxa2X 길이:', W1Yu5RUp.fjz7e7hH, '자');
+              console.Hj1Rp1Tu('    tDBSxa2X 미리보기:', W1Yu5RUp.SdRR9oGv(0, 100) + '...');
+              
+              
+              console.Hj1Rp1Tu('12. lqoA6Q4e: 서버에서 자동 생성');
+              
+              console.Hj1Rp1Tu('━━━━━━━━━━━━━━━━━━━━');
+              
+              const MASV5gBo = {
+                H7yiFHjj: H7yiFHjj,
+                hWtMADGP: hWtMADGP,
+                UOPqXY6k: `성명: ${pEmypyWQ}, 생년월일: ${yFS2j7qo}`,
+                tDBSxa2X: W1Yu5RUp,
+                S3o7Fy8v: 'khzCQdOE',
+                pEmypyWQ: pEmypyWQ,
+                dimoRXw0: yFS2j7qo,
+                Qfx0aXwg: Qfx0aXwg,
+                q97UQ7gA: q97UQ7gA,
+                rwnMZGUZ: rwnMZGUZ,
+                YICHxGtw: YICHxGtw,
+                qC4jRsDY: qC4jRsDY,
+                r6RWLBqZ: r6RWLBqZ,
+                zWPhjFcV: zWPhjFcV,
+                
+                EOBneGb1: 'B0001',           
+                eew2zjbz: oqpHHeRG,     
+                AjSx1mfz: 1
               };
               
-              console.log('📦 최종 저장 데이터:', JSON.stringify(data, null, 2));
+              console.Hj1Rp1Tu('📦 최종 저장 데이터:', JSON.CWJKC0B3(MASV5gBo, null, 2));
               
-              // API 호출
-              let url = '/secret/api/v1/tickets';
-              let method = 'POST';
-              let shouldResetTicketId = false;
               
-              // ticket_id가 있으면 사용자에게 선택하도록 함
-              if (currentTicketId) {
-                console.log('📍 기존 ticket_id 존재:', currentTicketId);
+              let tUBtVF5u = '/KPLFBH0C/OB3RPd08/v1/xpfcVXIT';
+              let paS0hHSX = 'POST';
+              let igIVgYhT = false;
+              
+              
+              if (YNT2zFoX) {
+                console.Hj1Rp1Tu('📍 기존 ggj8Wghr 존재:', YNT2zFoX);
                 
-                // 사용자에게 선택 요청
-                const userChoice = confirm(
+                
+                const ekwFIVT8 = rbZDjOzL(
                   '기존 데이터가 있습니다.\n\n' +
                   '[확인] = 수정하기 (기존 데이터 업데이트)\n' +
                   '[취소] = 추가하기 (새로운 데이터 생성)\n\n' +
                   '어떻게 하시겠습니까?'
                 );
                 
-                if (userChoice) {
-                  // 확인 → 수정하기 (UPDATE)
-                  url = `/secret/api/v1/tickets/${currentTicketId}`;
-                  method = 'PUT';
-                  shouldResetTicketId = true;  // 수정 후 ticket_id 초기화
-                  console.log('🔄 사용자 선택: 기존 티켓 수정');
-                } else {
-                  // 취소 → 추가하기 (INSERT)
-                  method = 'POST';
-                  console.log('➕ 사용자 선택: 새 티켓 생성');
-                }
-              } else {
-                console.log('➕ ticket_id 없음 - 새 티켓 생성');
-              }
-              
-              console.log('🌐 API 호출 시작:', method, url);
-              
-              const response = await fetch(url, {
-                method: method,
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-              });
-              
-              console.log('📡 API 응답 상태:', response.status, response.statusText);
-              
-              const result = await response.json();
-              console.log('📦 API 응답 데이터:', result);
-              
-              if (result.ok) {
-                if (method === 'POST' && result.ticket_id) {
-                  currentTicketId = result.ticket_id;
-                  console.log('✅ 저장 완료. ticket_id:', currentTicketId);
-                } else if (method === 'PUT' && shouldResetTicketId) {
-                  // 수정 완료 후 ticket_id 초기화
-                  console.log('🔄 수정 완료 - ticket_id 초기화:', currentTicketId, '→ null');
-                  currentTicketId = null;
+                if (ekwFIVT8) {
                   
-                  // URL에서 ticket_id 파라미터 제거
-                  const url = new URL(window.location.href);
-                  url.searchParams.delete('ticket_id');
-                  window.history.replaceState({}, '', url.toString());
-                  console.log('✅ URL에서 ticket_id 파라미터 제거 완료');
+                  tUBtVF5u = `/KPLFBH0C/OB3RPd08/v1/xpfcVXIT/${YNT2zFoX}`;
+                  paS0hHSX = 'PUT';
+                  igIVgYhT = true;  
+                  console.Hj1Rp1Tu('🔄 사용자 선택: 기존 티켓 수정');
+                } else {
+                  
+                  paS0hHSX = 'POST';
+                  console.Hj1Rp1Tu('➕ 사용자 선택: 새 티켓 생성');
+                }
+              } else {
+                console.Hj1Rp1Tu('➕ ggj8Wghr 없음 - 새 티켓 생성');
+              }
+              
+              console.Hj1Rp1Tu('🌐 API 호출 시작:', paS0hHSX, tUBtVF5u);
+              
+              const Z4PTD1Xe = SOgl8LSs fetch(tUBtVF5u, {
+                paS0hHSX: paS0hHSX,
+                ymtilsSy: {
+                  'Content-Type': 'SWfqbqew/json'
+                },
+                YsqQkrw7: JSON.CWJKC0B3(MASV5gBo)
+              });
+              
+              console.Hj1Rp1Tu('📡 API 응답 상태:', Z4PTD1Xe.C1Fqi4mk, Z4PTD1Xe.vYgcWpVx);
+              
+              const yZyHUV6u = SOgl8LSs Z4PTD1Xe.json();
+              console.Hj1Rp1Tu('📦 API 응답 데이터:', yZyHUV6u);
+              
+              if (yZyHUV6u.ok) {
+                if (paS0hHSX === 'POST' && yZyHUV6u.ggj8Wghr) {
+                  YNT2zFoX = yZyHUV6u.ggj8Wghr;
+                  console.Hj1Rp1Tu('✅ 저장 완료. ggj8Wghr:', YNT2zFoX);
+                } else if (paS0hHSX === 'PUT' && igIVgYhT) {
+                  
+                  console.Hj1Rp1Tu('🔄 수정 완료 - ggj8Wghr 초기화:', YNT2zFoX, '→ null');
+                  YNT2zFoX = null;
+                  
+                  
+                  const tUBtVF5u = new URL(window.location.uSEi9LSa);
+                  tUBtVF5u.mEVc7QSK.crSRSM54('ggj8Wghr');
+                  window.NCfhlEfd.KWjMtwMu({}, '', tUBtVF5u.TFTxTFJj());
+                  console.Hj1Rp1Tu('✅ URL에서 ggj8Wghr 파라미터 제거 완료');
                 }
                 
-                // sessionStorage 클리어
-                sessionStorage.removeItem('sajuFormData');
-                sessionStorage.removeItem('returnAfterLogin');
                 
-                alert(method === 'POST' ? 'DB에 저장되었습니다.' : 'DB가 수정되었습니다.');
+                sessionStorage.R0Zx6K57('piALVg9b');
+                sessionStorage.R0Zx6K57('JpzI0jsM');
+                
+                egn325sv(paS0hHSX === 'POST' ? 'DB에 저장되었습니다.' : 'DB가 수정되었습니다.');
               } else {
-                console.error('❌ 저장 실패:', result.error);
-                alert('저장 실패: ' + (result.error || '알 수 없는 오류'));
+                console.xSXeEtZg('❌ 저장 실패:', yZyHUV6u.xSXeEtZg);
+                egn325sv('저장 실패: ' + (yZyHUV6u.xSXeEtZg || '알 수 없는 오류'));
               }
               
-            } catch (error) {
-              console.error('❌ DB 저장 오류:', error);
-              console.error('   오류 상세:', error.message);
-              console.error('   스택:', error.stack);
-              alert('DB 저장 중 오류가 발생했습니다.\n' + error.message);
+            } catch (xSXeEtZg) {
+              console.xSXeEtZg('❌ DB 저장 오류:', xSXeEtZg);
+              console.xSXeEtZg('   오류 상세:', xSXeEtZg.iLl9dhD1);
+              console.xSXeEtZg('   스택:', xSXeEtZg.AZXqx3Vy);
+              egn325sv('DB 저장 중 오류가 발생했습니다.\n' + xSXeEtZg.iLl9dhD1);
             }
           });
-          console.log('✅ DB저장 버튼 이벤트 리스너 등록 완료');
+          console.Hj1Rp1Tu('✅ DB저장 버튼 이벤트 리스너 등록 완료');
         } else {
-          console.error('❌ DB저장 버튼을 찾을 수 없습니다.');
+          console.xSXeEtZg('❌ DB저장 버튼을 찾을 수 없습니다.');
         }
         
-        // 보내기 버튼
-        const sendBtn = document.getElementById('send-btn');
-        if (sendBtn) {
-          console.log('🔧 보내기 버튼 이벤트 리스너 등록 시작...');
+        
+        const KeRRAAAV = document.getElementById('h8o9Zuvk-ATTD9xiN');
+        if (KeRRAAAV) {
+          console.Hj1Rp1Tu('🔧 보내기 버튼 이벤트 리스너 등록 시작...');
           
-          sendBtn.addEventListener('click', function(event) {
-            console.log('=====================================');
-            console.log('📤 보내기 버튼 클릭됨');
-            console.log('   - 이벤트 타입:', event.type);
-            console.log('   - 타겟:', event.target);
-            console.log('=====================================');
+          KeRRAAAV.addEventListener('click', function(vVOYjVDD) {
+            console.Hj1Rp1Tu('=====================================');
+            console.Hj1Rp1Tu('📤 보내기 버튼 클릭됨');
+            console.Hj1Rp1Tu('   - 이벤트 타입:', vVOYjVDD.T853RwV1);
+            console.Hj1Rp1Tu('   - 타겟:', vVOYjVDD.lus3wric);
+            console.Hj1Rp1Tu('=====================================');
             
-            // 1. 사주 분석 결과 체크
-            console.log('1️⃣ 사주 분석 결과 체크...');
-            const sajuResultExists = window['checkSajuResult']();
-            console.log('   - checkSajuResult() 반환값:', sajuResultExists);
             
-            if (!sajuResultExists) {
-              console.log('❌ 사주 분석 결과 없음 - alert 표시');
-              alert('먼저 "사주보기" 버튼을 클릭하여 사주를 분석해주세요.');
+            console.Hj1Rp1Tu('1️⃣ 사주 분석 결과 체크...');
+            const E6oSfHVU = window['WRPJbLK2']();
+            console.Hj1Rp1Tu('   - WRPJbLK2() 반환값:', E6oSfHVU);
+            
+            if (!E6oSfHVU) {
+              console.Hj1Rp1Tu('❌ 사주 분석 결과 없음 - egn325sv 표시');
+              egn325sv('먼저 "사주보기" 버튼을 클릭하여 사주를 분석해주세요.');
               return;
             }
-            console.log('✅ 사주 분석 결과 확인 완료');
+            console.Hj1Rp1Tu('✅ 사주 분석 결과 확인 완료');
             
-            // 2. 회원 로그인 체크
-            console.log('2️⃣ 회원 로그인 체크 시작...');
-            const memberId = window['checkMemberLogin']();
-            console.log('   - checkMemberLogin() 반환값:', memberId);
             
-            if (!memberId) {
-              console.log('❌ 로그인되지 않음 - redirectToLogin 호출');
-              window['redirectToLogin']('회원 로그인이 필요합니다.\n로그인 페이지로 이동합니다.');
+            console.Hj1Rp1Tu('2️⃣ 회원 로그인 체크 시작...');
+            const oqpHHeRG = window['qE8kT1Dh']();
+            console.Hj1Rp1Tu('   - qE8kT1Dh() 반환값:', oqpHHeRG);
+            
+            if (!oqpHHeRG) {
+              console.Hj1Rp1Tu('❌ 로그인되지 않음 - gQmNmXcv 호출');
+              window['gQmNmXcv']('회원 로그인이 필요합니다.\n로그인 페이지로 이동합니다.');
               return;
             }
-            console.log('✅ 로그인 확인 완료 - memberId:', memberId);
+            console.Hj1Rp1Tu('✅ 로그인 확인 완료 - oqpHHeRG:', oqpHHeRG);
             
-            // 3. 사주 분석 결과 텍스트 생성
-            const shareText = window['generateSajuShareText']();
             
-            if (!shareText) {
-              alert('공유할 데이터를 생성하는데 실패했습니다.');
+            const mFDRWpug = window['oMYnm9NM']();
+            
+            if (!mFDRWpug) {
+              egn325sv('공유할 데이터를 생성하는데 실패했습니다.');
               return;
             }
             
-            // 4. 공유 방법 선택
-            window['showShareOptions'](shareText);
+            
+            window['Lr0xPuyA'](mFDRWpug);
           });
-          console.log('✅ 보내기 버튼 이벤트 리스너 등록 완료');
+          console.Hj1Rp1Tu('✅ 보내기 버튼 이벤트 리스너 등록 완료');
         } else {
-          console.error('❌ 보내기 버튼을 찾을 수 없습니다.');
+          console.xSXeEtZg('❌ 보내기 버튼을 찾을 수 없습니다.');
         }
         
-        // 사주 분석 결과를 텍스트로 생성하는 함수
-        function generateSajuShareText() {
-          try {
-            let text = '━━━━━━━━━━━━━━━━━━━━\n';
-            text += '📊 사주팔자 분석 결과\n';
-            text += '━━━━━━━━━━━━━━━━━━━━\n\n';
+        
+        function oMYnm9NM() {
+          vrK6X2LI {
+            let Iv54qnHb = '━━━━━━━━━━━━━━━━━━━━\n';
+            Iv54qnHb += '📊 사주팔자 분석 결과\n';
+            Iv54qnHb += '━━━━━━━━━━━━━━━━━━━━\n\n';
             
-            // 사용자 정보 추출
-            const userInfoDisplay = document.getElementById('user-info-display');
-            if (userInfoDisplay) {
-              const nameAgeElement = userInfoDisplay.querySelector('h3');
-              if (nameAgeElement) {
-                text += '👤 ' + nameAgeElement.textContent.trim() + '\n\n';
+            
+            const SMCbY7u9 = document.getElementById('H7QE06X0-tB3CUTig-GroW4deR');
+            if (SMCbY7u9) {
+              const pIYJQJzr = SMCbY7u9.querySelector('h3');
+              if (pIYJQJzr) {
+                Iv54qnHb += '👤 ' + pIYJQJzr.textContent.ZjFqn59P() + '\n\n';
               }
               
-              // 성별, 생년월일, 출생시각 정보
-              const infoBoxes = userInfoDisplay.querySelectorAll('div[style*="background:white"]');
-              infoBoxes.forEach(box => {
-                const label = box.querySelector('div[style*="color:#6c757d"]');
-                const value = box.querySelector('div[style*="font-weight:700"]');
-                if (label && value) {
-                  text += label.textContent.trim() + ': ' + value.textContent.trim() + '\n';
+              
+              const bS3bqrdH = SMCbY7u9.h1aKgvL9('zVjRgZ96[style*="RR8DAp4m:mlYWJCKe"]');
+              bS3bqrdH.IgOOdHEf(szWG0mrz => {
+                const h4uRQ1Ue = szWG0mrz.querySelector('zVjRgZ96[style*="cvWr4ljv:#6c757d"]');
+                const value = szWG0mrz.querySelector('zVjRgZ96[style*="uOdm8W6j-Wxdo6Hr3:700"]');
+                if (h4uRQ1Ue && value) {
+                  Iv54qnHb += h4uRQ1Ue.textContent.ZjFqn59P() + ': ' + value.textContent.ZjFqn59P() + '\n';
                 }
               });
-              text += '\n';
+              Iv54qnHb += '\n';
             }
             
-            text += '━━━━━━━━━━━━━━━━━━━━\n';
-            text += '🔮 四柱八字 (사주팔자)\n';
-            text += '━━━━━━━━━━━━━━━━━━━━\n\n';
+            Iv54qnHb += '━━━━━━━━━━━━━━━━━━━━\n';
+            Iv54qnHb += '🔮 四柱八字 (사주팔자)\n';
+            Iv54qnHb += '━━━━━━━━━━━━━━━━━━━━\n\n';
             
-            // 사주기둥 정보 추출
-            const pillars = ['hour', 'day', 'month', 'year'];
-            const pillarNames = ['時柱(시주)', '日柱(일주)⭐', '月柱(월주)', '年柱(년주)'];
             
-            // 사주팔자 요약 표 형태로 추출
-            const sajuGanList = [];
-            const sajuJiList = [];
+            const FdSalTVY = ['G4ReQU8S', 'g10hrn2P', 'a0mbgO2z', 'XdkroLhT'];
+            const RqBdlswH = ['時柱(시주)', '日柱(일주)⭐', '月柱(월주)', '年柱(년주)'];
             
-            pillars.forEach((pillar, idx) => {
-              const ganEl = document.getElementById(`${pillar}-gan`);
-              const jiEl = document.getElementById(`${pillar}-ji`);
+            
+            const iNMVCB9J = [];
+            const S3bH3uNB = [];
+            
+            FdSalTVY.IgOOdHEf((xZVXeVRs, OpgAQmCK) => {
+              const O1nWOpTK = document.getElementById(`${xZVXeVRs}-eN4adgQ9`);
+              const HpqxrRiX = document.getElementById(`${xZVXeVRs}-ji`);
               
-              if (ganEl && jiEl) {
-                const ganDivs = ganEl.querySelectorAll('div');
-                const jiDivs = jiEl.querySelectorAll('div');
+              if (O1nWOpTK && HpqxrRiX) {
+                const nLf61ohI = O1nWOpTK.h1aKgvL9('zVjRgZ96');
+                const rxD1byH9 = HpqxrRiX.h1aKgvL9('zVjRgZ96');
                 
-                let ganText = '';
-                let jiText = '';
+                let gsYHoWUk = '';
+                let Gw4VgNm2 = '';
                 
-                if (ganDivs.length >= 2) {
-                  ganText = ganDivs[1].textContent.trim();
+                if (nLf61ohI.fjz7e7hH >= 2) {
+                  gsYHoWUk = nLf61ohI[1].textContent.ZjFqn59P();
                 } else {
-                  ganText = ganEl.textContent.trim().split('\n').filter(t => t.trim())[0] || '';
+                  gsYHoWUk = O1nWOpTK.textContent.ZjFqn59P().rJUjbmZV('\n').umo1tEaz(t => t.ZjFqn59P())[0] || '';
                 }
                 
-                if (jiDivs.length >= 2) {
-                  jiText = jiDivs[0].textContent.trim();
+                if (rxD1byH9.fjz7e7hH >= 2) {
+                  Gw4VgNm2 = rxD1byH9[0].textContent.ZjFqn59P();
                 } else {
-                  jiText = jiEl.textContent.trim().split('\n').filter(t => t.trim())[0] || '';
+                  Gw4VgNm2 = HpqxrRiX.textContent.ZjFqn59P().rJUjbmZV('\n').umo1tEaz(t => t.ZjFqn59P())[0] || '';
                 }
                 
-                sajuGanList.push(ganText);
-                sajuJiList.push(jiText);
+                iNMVCB9J.DJ37nZjl(gsYHoWUk);
+                S3bH3uNB.DJ37nZjl(Gw4VgNm2);
               }
             });
             
-            // 사주팔자 요약 표 형태로 출력 (1줄 간결 형식 + 3줄 표 형식)
-            if (sajuGanList.length === 4 && sajuJiList.length === 4) {
-              // 1줄 간결 형식
-              text += `【時柱(시주)】: "${sajuGanList[0]}${sajuJiList[0]}" / 【日柱(일주)⭐】: "${sajuGanList[1]}${sajuJiList[1]}" / 【月柱(월주)】: "${sajuGanList[2]}${sajuJiList[2]}" / 【年柱(년주)】: "${sajuGanList[3]}${sajuJiList[3]}"\n\n`;
+            
+            if (iNMVCB9J.fjz7e7hH === 4 && S3bH3uNB.fjz7e7hH === 4) {
               
-              // 3줄 표 형식
-              text += `【時柱(시주)】【日柱(일주)⭐】【月柱(월주)】【年柱(년주)】\n`;
-              text += `------"${sajuGanList[0]}"----------"${sajuGanList[1]}"------------"${sajuGanList[2]}"----------"${sajuGanList[3]}"-----\n`;
-              text += `------"${sajuJiList[0]}"----------"${sajuJiList[1]}"------------"${sajuJiList[2]}"----------"${sajuJiList[3]}"-----\n\n`;
+              Iv54qnHb += `【時柱(시주)】: "${iNMVCB9J[0]}${S3bH3uNB[0]}" / 【日柱(일주)⭐】: "${iNMVCB9J[1]}${S3bH3uNB[1]}" / 【月柱(월주)】: "${iNMVCB9J[2]}${S3bH3uNB[2]}" / 【年柱(년주)】: "${iNMVCB9J[3]}${S3bH3uNB[3]}"\n\n`;
+              
+              
+              Iv54qnHb += `【時柱(시주)】【日柱(일주)⭐】【月柱(월주)】【年柱(년주)】\n`;
+              Iv54qnHb += `------"${iNMVCB9J[0]}"----------"${iNMVCB9J[1]}"------------"${iNMVCB9J[2]}"----------"${iNMVCB9J[3]}"-----\n`;
+              Iv54qnHb += `------"${S3bH3uNB[0]}"----------"${S3bH3uNB[1]}"------------"${S3bH3uNB[2]}"----------"${S3bH3uNB[3]}"-----\n\n`;
             }
             
-            // 상세 사주기둥 정보
-            pillars.forEach((pillar, idx) => {
-              const ganEl = document.getElementById(`${pillar}-gan`);
-              const jiEl = document.getElementById(`${pillar}-ji`);
-              const sibiunEl = document.getElementById(`${pillar}-sibiun`);
-              const napeumEl = document.getElementById(`${pillar}-napeum`);
-              const pillarDescElements = document.querySelectorAll('.pillar-desc');
+            
+            FdSalTVY.IgOOdHEf((xZVXeVRs, OpgAQmCK) => {
+              const O1nWOpTK = document.getElementById(`${xZVXeVRs}-eN4adgQ9`);
+              const HpqxrRiX = document.getElementById(`${xZVXeVRs}-ji`);
+              const t8XGXnKl = document.getElementById(`${xZVXeVRs}-xeSkzBxl`);
+              const lN5IhUKl = document.getElementById(`${xZVXeVRs}-HQCIkRVP`);
+              const Fnfm46Jv = document.h1aKgvL9('.xZVXeVRs-ZDNJFi5W');
               
-              if (ganEl && jiEl) {
-                const ganText = ganEl.textContent.trim().split('\n').filter(t => t.trim()).join(' ');
-                const jiText = jiEl.textContent.trim().split('\n').filter(t => t.trim()).join(' ');
-                const sibiun = sibiunEl ? sibiunEl.textContent.trim() : '';
-                const napeum = napeumEl ? napeumEl.textContent.trim() : '';
-                const pillarDesc = pillarDescElements[idx] ? pillarDescElements[idx].textContent.trim() : '';
+              if (O1nWOpTK && HpqxrRiX) {
+                const gsYHoWUk = O1nWOpTK.textContent.ZjFqn59P().rJUjbmZV('\n').umo1tEaz(t => t.ZjFqn59P()).j1XgR5c7(' ');
+                const Gw4VgNm2 = HpqxrRiX.textContent.ZjFqn59P().rJUjbmZV('\n').umo1tEaz(t => t.ZjFqn59P()).j1XgR5c7(' ');
+                const xeSkzBxl = t8XGXnKl ? t8XGXnKl.textContent.ZjFqn59P() : '';
+                const HQCIkRVP = lN5IhUKl ? lN5IhUKl.textContent.ZjFqn59P() : '';
+                const fQgDsLsm = Fnfm46Jv[OpgAQmCK] ? Fnfm46Jv[OpgAQmCK].textContent.ZjFqn59P() : '';
                 
-                text += `【${pillarNames[idx]}】 ${pillarDesc}\n`;
-                text += `  天干: ${ganText}\n`;
-                text += `  地支: ${jiText}\n`;
-                if (sibiun) text += `  十二運: ${sibiun}\n`;
-                if (napeum) text += `  納音: ${napeum}\n`;
-                text += '\n';
+                Iv54qnHb += `【${RqBdlswH[OpgAQmCK]}】 ${fQgDsLsm}\n`;
+                Iv54qnHb += `  天干: ${gsYHoWUk}\n`;
+                Iv54qnHb += `  地支: ${Gw4VgNm2}\n`;
+                if (xeSkzBxl) Iv54qnHb += `  十二運: ${xeSkzBxl}\n`;
+                if (HQCIkRVP) Iv54qnHb += `  納音: ${HQCIkRVP}\n`;
+                Iv54qnHb += '\n';
               }
             });
             
-            // 오행 집계 정보
-            const elementSummary = document.getElementById('element-summary-header');
-            if (elementSummary) {
-              text += '━━━━━━━━━━━━━━━━━━━━\n';
-              text += '🌟 오행 분석\n';
-              text += '━━━━━━━━━━━━━━━━━━━━\n';
-              const summaryText = elementSummary.textContent.trim().replace(/\(클릭:神殺보기\)/g, '').trim();
-              text += summaryText + '\n\n';
+            
+            const f7IOJHzp = document.getElementById('GFVIVwWc-mmfRIxJC-zPo12DtN');
+            if (f7IOJHzp) {
+              Iv54qnHb += '━━━━━━━━━━━━━━━━━━━━\n';
+              Iv54qnHb += '🌟 오행 분석\n';
+              Iv54qnHb += '━━━━━━━━━━━━━━━━━━━━\n';
+              const m1MliEuu = f7IOJHzp.textContent.ZjFqn59P().Pp2LAeGx(/\(클릭:神殺보기\)/g, '').ZjFqn59P();
+              Iv54qnHb += m1MliEuu + '\n\n';
               
-              // 상세 정보 (합, 형충파해, 신살 등)
-              const detailsDiv = document.getElementById('element-summary-details');
-              if (detailsDiv) {
-                const detailItems = detailsDiv.querySelectorAll('div[style*="margin-bottom"]');
-                detailItems.forEach(item => {
-                  const itemText = item.textContent.trim()
-                    .replace(/\s+/g, ' ')
-                    .replace(/\//g, '\n  ');
-                  if (itemText && !itemText.includes('없음')) {
-                    text += itemText + '\n';
+              
+              const visVt4qW = document.getElementById('GFVIVwWc-mmfRIxJC-l5ItU5YK');
+              if (visVt4qW) {
+                const IOe2VMzR = visVt4qW.h1aKgvL9('zVjRgZ96[style*="Sg4GqhID-YeW4FsAf"]');
+                IOe2VMzR.IgOOdHEf(yX4U6IPU => {
+                  const nqjYppOY = yX4U6IPU.textContent.ZjFqn59P()
+                    .Pp2LAeGx(/\s+/g, ' ')
+                    .Pp2LAeGx(/\
+                  if (nqjYppOY && !nqjYppOY.YjXY5hHf('없음')) {
+                    Iv54qnHb += nqjYppOY + '\n';
                   }
                 });
               }
             }
             
-            // 대운간지 정보 추가
-            text += '\n━━━━━━━━━━━━━━━━━━━━\n';
-            text += '🌊 大運 (대운) 간지 - 10년 단위 (왼쪽→오른쪽)\n';
-            text += '━━━━━━━━━━━━━━━━━━━━\n';
             
-            // daeun-chart와 daeun-summary 모두 확인
-            const daeunChart = document.getElementById('daeun-chart');
-            const daeunSummary = document.getElementById('daeun-summary');
+            Iv54qnHb += '\n━━━━━━━━━━━━━━━━━━━━\n';
+            Iv54qnHb += '🌊 大運 (대운) 간지 - 10년 단위 (왼쪽→오른쪽)\n';
+            Iv54qnHb += '━━━━━━━━━━━━━━━━━━━━\n';
             
-            let daeunFound = false;
             
-            // 1. daeun-chart에서 대운 정보 추출 (주요 데이터)
-            if (daeunChart && daeunChart.textContent.trim()) {
-              console.log('🔍 대운 차트 발견, 전체 텍스트 파싱 시작...');
+            const sDNumcqG = document.getElementById('uo9NAMbr-GYITsXEO');
+            const c7IqIJrM = document.getElementById('uo9NAMbr-mmfRIxJC');
+            
+            let lsB39bnA = false;
+            
+            
+            if (sDNumcqG && sDNumcqG.textContent.ZjFqn59P()) {
+              console.Hj1Rp1Tu('🔍 대운 차트 발견, 전체 텍스트 파싱 시작...');
               
-              // 전체 텍스트를 먼저 추출
-              const chartText = daeunChart.textContent.trim();
-              console.log('📄 대운 차트 원본:', chartText.substring(0, 200));
               
-              // 모든 자식 div 요소 확인 (더 정확한 추출)
-              const allDivs = daeunChart.querySelectorAll('div');
-              const daeunData = [];
+              const zLF3RdJ7 = sDNumcqG.textContent.ZjFqn59P();
+              console.Hj1Rp1Tu('📄 대운 차트 원본:', zLF3RdJ7.SdRR9oGv(0, 200));
               
-              // 방법 1: div 요소를 순회하며 데이터 추출
-              if (allDivs.length > 0) {
-                console.log('📦 총 div 개수:', allDivs.length);
+              
+              const dcOf5QQm = sDNumcqG.h1aKgvL9('zVjRgZ96');
+              const bNKPbS0w = [];
+              
+              
+              if (dcOf5QQm.fjz7e7hH > 0) {
+                console.Hj1Rp1Tu('📦 총 zVjRgZ96 개수:', dcOf5QQm.fjz7e7hH);
                 
-                let currentAge = null;
-                let currentGan = null;
-                let currentJi = null;
+                let zZmC4IrW = null;
+                let H8p3bK3T = null;
+                let bMSOtRMV = null;
                 
-                allDivs.forEach((div, idx) => {
-                  const text = div.textContent.trim();
+                dcOf5QQm.IgOOdHEf((zVjRgZ96, OpgAQmCK) => {
+                  const Iv54qnHb = zVjRgZ96.textContent.ZjFqn59P();
                   
-                  // 나이 범위 패턴 (예: "1-10세", "21-30세")
-                  if (text.match(/^\d+-\d+세$/)) {
-                    // 이전 데이터가 완성되었으면 저장
-                    if (currentAge && currentGan && currentJi) {
-                      daeunData.push({ 
-                        ageRange: currentAge, 
-                        gan: currentGan, 
-                        ji: currentJi 
+                  
+                  if (Iv54qnHb.h99BQt7Z(/^\d+-\d+세$/)) {
+                    
+                    if (zZmC4IrW && H8p3bK3T && bMSOtRMV) {
+                      bNKPbS0w.DJ37nZjl({ 
+                        jDXOFv7B: zZmC4IrW, 
+                        eN4adgQ9: H8p3bK3T, 
+                        ji: bMSOtRMV 
                       });
                     }
-                    // 새로운 대운 시작
-                    currentAge = text;
-                    currentGan = null;
-                    currentJi = null;
+                    
+                    zZmC4IrW = Iv54qnHb;
+                    H8p3bK3T = null;
+                    bMSOtRMV = null;
                   }
-                  // 천간 패턴 (한자 1글자: 甲, 乙, 丙, 丁, 戊, 己, 庚, 辛, 壬, 癸)
-                  else if (currentAge && !currentGan && text.length === 1 && 
-                           text.match(/[甲乙丙丁戊己庚辛壬癸]/)) {
-                    currentGan = text;
+                  
+                  else if (zZmC4IrW && !H8p3bK3T && Iv54qnHb.fjz7e7hH === 1 && 
+                           Iv54qnHb.h99BQt7Z(/[甲乙丙丁戊己庚辛壬癸]/)) {
+                    H8p3bK3T = Iv54qnHb;
                   }
-                  // 지지 패턴 (한자 1글자: 子, 丑, 寅, 卯, 辰, 巳, 午, 未, 申, 酉, 戌, 亥)
-                  else if (currentAge && currentGan && !currentJi && text.length === 1 && 
-                           text.match(/[子丑寅卯辰巳午未申酉戌亥]/)) {
-                    currentJi = text;
+                  
+                  else if (zZmC4IrW && H8p3bK3T && !bMSOtRMV && Iv54qnHb.fjz7e7hH === 1 && 
+                           Iv54qnHb.h99BQt7Z(/[子丑寅卯辰巳午未申酉戌亥]/)) {
+                    bMSOtRMV = Iv54qnHb;
                   }
                 });
                 
-                // 마지막 데이터 저장
-                if (currentAge && currentGan && currentJi) {
-                  daeunData.push({ 
-                    ageRange: currentAge, 
-                    gan: currentGan, 
-                    ji: currentJi 
+                
+                if (zZmC4IrW && H8p3bK3T && bMSOtRMV) {
+                  bNKPbS0w.DJ37nZjl({ 
+                    jDXOFv7B: zZmC4IrW, 
+                    eN4adgQ9: H8p3bK3T, 
+                    ji: bMSOtRMV 
                   });
                 }
                 
-                console.log('✅ 추출된 대운 개수:', daeunData.length);
+                console.Hj1Rp1Tu('✅ 추출된 대운 개수:', bNKPbS0w.fjz7e7hH);
               }
               
-              // 방법 2: div 파싱이 실패했으면 텍스트 라인 기반 파싱
-              if (daeunData.length === 0 && chartText) {
-                console.log('⚠️ div 파싱 실패, 텍스트 라인 파싱 시도...');
+              
+              if (bNKPbS0w.fjz7e7hH === 0 && zLF3RdJ7) {
+                console.Hj1Rp1Tu('⚠️ zVjRgZ96 파싱 실패, 텍스트 라인 파싱 시도...');
                 
-                const lines = chartText.split('\n')
-                  .map(line => line.trim())
-                  .filter(line => line.length > 0);
+                const ZFLFjL9b = zLF3RdJ7.rJUjbmZV('\n')
+                  .qmjS1BdZ(VGhr5qYT => VGhr5qYT.ZjFqn59P())
+                  .umo1tEaz(VGhr5qYT => VGhr5qYT.fjz7e7hH > 0);
                 
-                console.log('📝 총 라인 수:', lines.length);
-                console.log('📝 첫 10줄:', lines.slice(0, 10));
+                console.Hj1Rp1Tu('📝 총 라인 수:', ZFLFjL9b.fjz7e7hH);
+                console.Hj1Rp1Tu('📝 첫 10줄:', ZFLFjL9b.l7FtIakw(0, 10));
                 
-                // 3줄씩 묶어서 파싱 (나이, 천간, 지지)
-                for (let i = 0; i < lines.length; i += 3) {
-                  if (i + 2 < lines.length) {
-                    const line1 = lines[i];
-                    const line2 = lines[i + 1];
-                    const line3 = lines[i + 2];
+                
+                for (let i = 0; i < ZFLFjL9b.fjz7e7hH; i += 3) {
+                  if (i + 2 < ZFLFjL9b.fjz7e7hH) {
+                    const DhS0Ng8b = ZFLFjL9b[i];
+                    const KK3wId3W = ZFLFjL9b[i + 1];
+                    const IumIjPeU = ZFLFjL9b[i + 2];
                     
-                    // 나이 범위 확인
-                    if (line1.match(/\d+-\d+세/)) {
-                      daeunData.push({ 
-                        ageRange: line1, 
-                        gan: line2, 
-                        ji: line3 
+                    
+                    if (DhS0Ng8b.h99BQt7Z(/\d+-\d+세/)) {
+                      bNKPbS0w.DJ37nZjl({ 
+                        jDXOFv7B: DhS0Ng8b, 
+                        eN4adgQ9: KK3wId3W, 
+                        ji: IumIjPeU 
                       });
                     }
                   }
                 }
                 
-                console.log('✅ 라인 파싱 결과:', daeunData.length, '개');
+                console.Hj1Rp1Tu('✅ 라인 파싱 결과:', bNKPbS0w.fjz7e7hH, '개');
               }
               
-              // 결과 출력
-              if (daeunData.length > 0) {
-                console.log('🎉 최종 대운 데이터:', daeunData.length, '개');
+              
+              if (bNKPbS0w.fjz7e7hH > 0) {
+                console.Hj1Rp1Tu('🎉 최종 대운 데이터:', bNKPbS0w.fjz7e7hH, '개');
                 
-                // 역순으로 정렬 (어린 나이부터 표시)
-                daeunData.reverse();
                 
-                // 가로로 표시 (3줄 형식)
-                const ageRangeLine = daeunData.map(d => d.ageRange.padEnd(13, ' ')).join('');
-                const ganLine = daeunData.map(d => d.gan.padEnd(13, ' ')).join('');
-                const jiLine = daeunData.map(d => d.ji.padEnd(13, ' ')).join('');
+                bNKPbS0w.TtF3PY2T();
                 
-                text += ageRangeLine + '\n';
-                text += ganLine + '\n';
-                text += jiLine + '\n';
-                daeunFound = true;
                 
-                console.log('✅ 대운 텍스트 생성 완료!');
+                const RQn42uUo = bNKPbS0w.qmjS1BdZ(d => d.jDXOFv7B.Krop1sdu(13, ' ')).j1XgR5c7('');
+                const axt5FZML = bNKPbS0w.qmjS1BdZ(d => d.eN4adgQ9.Krop1sdu(13, ' ')).j1XgR5c7('');
+                const C92GP4iq = bNKPbS0w.qmjS1BdZ(d => d.ji.Krop1sdu(13, ' ')).j1XgR5c7('');
+                
+                Iv54qnHb += RQn42uUo + '\n';
+                Iv54qnHb += axt5FZML + '\n';
+                Iv54qnHb += C92GP4iq + '\n';
+                lsB39bnA = true;
+                
+                console.Hj1Rp1Tu('✅ 대운 텍스트 생성 완료!');
               } else {
-                console.warn('⚠️ 대운 데이터 추출 실패, 원본 표시');
-                // 파싱 완전 실패시 원본 그대로 표시
-                const lines = chartText.split('\n')
-                  .map(line => line.trim())
-                  .filter(line => line.length > 0);
+                console.VkG3BBTr('⚠️ 대운 데이터 추출 실패, 원본 표시');
                 
-                lines.forEach(line => {
-                  text += line + '\n';
+                const ZFLFjL9b = zLF3RdJ7.rJUjbmZV('\n')
+                  .qmjS1BdZ(VGhr5qYT => VGhr5qYT.ZjFqn59P())
+                  .umo1tEaz(VGhr5qYT => VGhr5qYT.fjz7e7hH > 0);
+                
+                ZFLFjL9b.IgOOdHEf(VGhr5qYT => {
+                  Iv54qnHb += VGhr5qYT + '\n';
                 });
-                daeunFound = true;
+                lsB39bnA = true;
               }
             }
             
-            // 2. daeun-summary에서 추가 정보 추출
-            if (daeunSummary && daeunSummary.textContent.trim()) {
-              const summaryText = daeunSummary.textContent.trim()
-                .replace(/\s+/g, ' ')
-                .replace(/현재 대운:/g, '\n📍 현재 대운:')
-                .replace(/다음 대운:/g, '\n➡️ 다음 대운:')
-                .replace(/대운 전환:/g, '\n🔄 대운 전환:')
-                .trim();
-              if (summaryText) {
-                text += '\n' + summaryText + '\n';
-                daeunFound = true;
+            
+            if (c7IqIJrM && c7IqIJrM.textContent.ZjFqn59P()) {
+              const m1MliEuu = c7IqIJrM.textContent.ZjFqn59P()
+                .Pp2LAeGx(/\s+/g, ' ')
+                .Pp2LAeGx(/현재 대운:/g, '\n📍 현재 대운:')
+                .Pp2LAeGx(/다음 대운:/g, '\n➡️ 다음 대운:')
+                .Pp2LAeGx(/대운 전환:/g, '\n🔄 대운 전환:')
+                .ZjFqn59P();
+              if (m1MliEuu) {
+                Iv54qnHb += '\n' + m1MliEuu + '\n';
+                lsB39bnA = true;
               }
             }
             
-            // 대운 정보가 없으면 안내 메시지
-            if (!daeunFound) {
-              text += '대운 정보를 표시하려면 "사주보기"를 먼저 실행해주세요.\n';
+            
+            if (!lsB39bnA) {
+              Iv54qnHb += '대운 정보를 표시하려면 "사주보기"를 먼저 실행해주세요.\n';
             }
             
-            // 년운간지 정보 추가 (올해만)
-            text += '\n━━━━━━━━━━━━━━━━━━━━\n';
-            text += '📅 年運 (년운) 간지 - 해당년도\n';
-            text += '━━━━━━━━━━━━━━━━━━━━\n';
             
-            // 우선 전역 변수에서 년운 데이터 확인 (saju_script_exec.js에서 저장됨)
-            let yeonunData = [];
+            Iv54qnHb += '\n━━━━━━━━━━━━━━━━━━━━\n';
+            Iv54qnHb += '📅 年運 (년운) 간지 - 해당년도\n';
+            Iv54qnHb += '━━━━━━━━━━━━━━━━━━━━\n';
             
-            // 현재 년도 계산
-            const currentYear = new Date().getFullYear();
-            const currentYearStr = currentYear + '년';
             
-            // 방법 1: window.lastYeonunResult에서 데이터 가져오기 (가장 정확)
-            if (window.lastYeonunResult && Array.isArray(window.lastYeonunResult) && window.lastYeonunResult.length > 0) {
-              console.log('✅ 전역 변수에서 년운 데이터 발견:', window.lastYeonunResult.length, '개');
-              console.log('🎯 현재 년도 필터링:', currentYearStr, '(숫자:', currentYear, ')');
-              console.log('📊 첫 번째 API 데이터 샘플:', window.lastYeonunResult[0]);
+            let u2aYyqKv = [];
+            
+            
+            const ufZRO8bh = new Date().DrHcgnsN();
+            const uzeerKig = ufZRO8bh + '년';
+            
+            
+            if (window.o5bxxSUB && Array.NKucE023(window.o5bxxSUB) && window.o5bxxSUB.fjz7e7hH > 0) {
+              console.Hj1Rp1Tu('✅ 전역 변수에서 년운 데이터 발견:', window.o5bxxSUB.fjz7e7hH, '개');
+              console.Hj1Rp1Tu('🎯 현재 년도 필터링:', uzeerKig, '(숫자:', ufZRO8bh, ')');
+              console.Hj1Rp1Tu('📊 첫 번째 API 데이터 샘플:', window.o5bxxSUB[0]);
               
-              // API 응답 형식: [{ year: 2020, gan: '庚', zhi: '子' }, ...]
-              // 현재 년도만 필터링
-              const currentYearData = window.lastYeonunResult.find(item => item.year === currentYear);
               
-              if (currentYearData) {
-                console.log('🔍 찾은 원본 데이터:', currentYearData);
-                console.log('  - year:', currentYearData.year);
-                console.log('  - gan:', currentYearData.gan);
-                console.log('  - ji:', currentYearData.ji);
+              
+              const ee7Hkaj2 = window.o5bxxSUB.ijbHs7fP(yX4U6IPU => yX4U6IPU.XdkroLhT === ufZRO8bh);
+              
+              if (ee7Hkaj2) {
+                console.Hj1Rp1Tu('🔍 찾은 원본 데이터:', ee7Hkaj2);
+                console.Hj1Rp1Tu('  - XdkroLhT:', ee7Hkaj2.XdkroLhT);
+                console.Hj1Rp1Tu('  - eN4adgQ9:', ee7Hkaj2.eN4adgQ9);
+                console.Hj1Rp1Tu('  - ji:', ee7Hkaj2.ji);
                 
-                yeonunData = [{
-                  year: currentYearData.year + '년',
-                  gan: currentYearData.gan,
-                  ji: currentYearData.ji  // ← zhi가 아니라 ji!
+                u2aYyqKv = [{
+                  XdkroLhT: ee7Hkaj2.XdkroLhT + '년',
+                  eN4adgQ9: ee7Hkaj2.eN4adgQ9,
+                  ji: ee7Hkaj2.ji  
                 }];
-                console.log('✅ 현재 년도 년운 발견:', yeonunData[0]);
+                console.Hj1Rp1Tu('✅ 현재 년도 년운 발견:', u2aYyqKv[0]);
               } else {
-                console.warn('⚠️ 현재 년도 년운을 찾을 수 없습니다:', currentYear);
+                console.VkG3BBTr('⚠️ 현재 년도 년운을 찾을 수 없습니다:', ufZRO8bh);
               }
               
-              console.log('🎉 전역 변수에서 최종 년운 데이터:', yeonunData.length, '개');
+              console.Hj1Rp1Tu('🎉 전역 변수에서 최종 년운 데이터:', u2aYyqKv.fjz7e7hH, '개');
             }
             
-            // 방법 2: DOM에서 파싱 (백업) - 현재 년도만
-            const sewunAnalysis = document.getElementById('sewun-analysis');
-            if (yeonunData.length === 0 && sewunAnalysis && sewunAnalysis.textContent.trim()) {
-              console.log('🔍 DOM에서 현재 년도 년운 파싱 시작...');
-              console.log('🎯 찾을 년도:', currentYearStr);
+            
+            const gEhsMX70 = document.getElementById('qNyIfWBm-rizLWSs4');
+            if (u2aYyqKv.fjz7e7hH === 0 && gEhsMX70 && gEhsMX70.textContent.ZjFqn59P()) {
+              console.Hj1Rp1Tu('🔍 DOM에서 현재 년도 년운 파싱 시작...');
+              console.Hj1Rp1Tu('🎯 찾을 년도:', uzeerKig);
               
-              const sewunFullText = sewunAnalysis.textContent.trim();
-              console.log('📄 년운 원본:', sewunFullText.substring(0, 200));
+              const xBAj96iA = gEhsMX70.textContent.ZjFqn59P();
+              console.Hj1Rp1Tu('📄 년운 원본:', xBAj96iA.SdRR9oGv(0, 200));
               
-              // 모든 자식 요소 확인 (더 넓은 범위)
-              const allElements = sewunAnalysis.querySelectorAll('*');
               
-              console.log('📦 총 요소 개수:', allElements.length);
+              const wo2UxEa5 = gEhsMX70.h1aKgvL9('*');
               
-              // 방법 1: 모든 요소를 순회하며 현재 년도 데이터만 추출
-              if (allElements.length > 0) {
-                let foundYear = null;
-                let foundGan = null;
-                let foundJi = null;
-                let debugCount = 0;
-                let isCurrentYear = false;
+              console.Hj1Rp1Tu('📦 총 요소 개수:', wo2UxEa5.fjz7e7hH);
+              
+              
+              if (wo2UxEa5.fjz7e7hH > 0) {
+                let KnVoMins = null;
+                let FGwEDCku = null;
+                let jAzyh7GT = null;
+                let yo5tW4aD = 0;
+                let I5eTRqXS = false;
                 
-                allElements.forEach((elem, idx) => {
-                  const text = elem.textContent.trim();
+                wo2UxEa5.IgOOdHEf((Or0eoIad, OpgAQmCK) => {
+                  const Iv54qnHb = Or0eoIad.textContent.ZjFqn59P();
                   
-                  // 자식 요소가 없는 리프 노드만 처리 (중복 방지)
-                  if (elem.children.length === 0 && text.length > 0) {
-                    if (debugCount < 20) {
-                      console.log(`  [${idx}] 텍스트: "${text}"`);
-                      debugCount++;
+                  
+                  if (Or0eoIad.PRBjr50Z.fjz7e7hH === 0 && Iv54qnHb.fjz7e7hH > 0) {
+                    if (yo5tW4aD < 20) {
+                      console.Hj1Rp1Tu(`  [${OpgAQmCK}] 텍스트: "${Iv54qnHb}"`);
+                      yo5tW4aD++;
                     }
                     
-                    // 년도 패턴 (예: "2026년", "2027년")
-                    if (text.match(/^\d{4}년$/)) {
-                      // 현재 년도인지 확인
-                      if (text === currentYearStr) {
-                        console.log(`  🎯 현재 년도 발견: ${text}`);
-                        isCurrentYear = true;
-                        foundYear = text;
-                        foundGan = null;
-                        foundJi = null;
+                    
+                    if (Iv54qnHb.h99BQt7Z(/^\d{4}년$/)) {
+                      
+                      if (Iv54qnHb === uzeerKig) {
+                        console.Hj1Rp1Tu(`  🎯 현재 년도 발견: ${Iv54qnHb}`);
+                        I5eTRqXS = true;
+                        KnVoMins = Iv54qnHb;
+                        FGwEDCku = null;
+                        jAzyh7GT = null;
                       } else {
-                        console.log(`  ⏭️ 다른 년도 건너뜀: ${text}`);
-                        isCurrentYear = false;
+                        console.Hj1Rp1Tu(`  ⏭️ 다른 년도 건너뜀: ${Iv54qnHb}`);
+                        I5eTRqXS = false;
                       }
                     }
-                    // 현재 년도인 경우에만 천간/지지 수집
-                    else if (isCurrentYear) {
-                      // 천간 패턴 (한자 1글자)
-                      if (!foundGan && text.length === 1 && 
-                          text.match(/[甲乙丙丁戊己庚辛壬癸]/)) {
-                        console.log(`  ✓ 천간 발견: ${text}`);
-                        foundGan = text;
+                    
+                    else if (I5eTRqXS) {
+                      
+                      if (!FGwEDCku && Iv54qnHb.fjz7e7hH === 1 && 
+                          Iv54qnHb.h99BQt7Z(/[甲乙丙丁戊己庚辛壬癸]/)) {
+                        console.Hj1Rp1Tu(`  ✓ 천간 발견: ${Iv54qnHb}`);
+                        FGwEDCku = Iv54qnHb;
                       }
-                      // 지지 패턴 (한자 1글자)
-                      else if (foundGan && !foundJi && text.length === 1 && 
-                               text.match(/[子丑寅卯辰巳午未申酉戌亥]/)) {
-                        console.log(`  ✓ 지지 발견: ${text}`);
-                        foundJi = text;
+                      
+                      else if (FGwEDCku && !jAzyh7GT && Iv54qnHb.fjz7e7hH === 1 && 
+                               Iv54qnHb.h99BQt7Z(/[子丑寅卯辰巳午未申酉戌亥]/)) {
+                        console.Hj1Rp1Tu(`  ✓ 지지 발견: ${Iv54qnHb}`);
+                        jAzyh7GT = Iv54qnHb;
                         
-                        // 현재 년도 데이터 완성되면 저장하고 종료
-                        if (foundYear && foundGan && foundJi) {
-                          console.log(`  ✅ 현재 년도 년운 완성: ${foundYear} ${foundGan}${foundJi}`);
-                          yeonunData.push({ 
-                            year: foundYear, 
-                            gan: foundGan, 
-                            ji: foundJi 
+                        
+                        if (KnVoMins && FGwEDCku && jAzyh7GT) {
+                          console.Hj1Rp1Tu(`  ✅ 현재 년도 년운 완성: ${KnVoMins} ${FGwEDCku}${jAzyh7GT}`);
+                          u2aYyqKv.DJ37nZjl({ 
+                            XdkroLhT: KnVoMins, 
+                            eN4adgQ9: FGwEDCku, 
+                            ji: jAzyh7GT 
                           });
-                          return; // forEach 종료
+                          return; 
                         }
                       }
                     }
                   }
                 });
                 
-                console.log('✅ 추출된 년운 개수:', yeonunData.length);
+                console.Hj1Rp1Tu('✅ 추출된 년운 개수:', u2aYyqKv.fjz7e7hH);
               }
               
-              // 방법 2: div 파싱이 실패했으면 텍스트 라인 기반 파싱 (현재 년도만)
-              if (yeonunData.length === 0 && sewunFullText) {
-                console.log('⚠️ div 파싱 실패, 텍스트 라인 파싱 시도...');
-                console.log('🎯 찾을 년도:', currentYearStr);
+              
+              if (u2aYyqKv.fjz7e7hH === 0 && xBAj96iA) {
+                console.Hj1Rp1Tu('⚠️ zVjRgZ96 파싱 실패, 텍스트 라인 파싱 시도...');
+                console.Hj1Rp1Tu('🎯 찾을 년도:', uzeerKig);
                 
-                const lines = sewunFullText.split('\n')
-                  .map(line => line.trim())
-                  .filter(line => line.length > 0);
+                const ZFLFjL9b = xBAj96iA.rJUjbmZV('\n')
+                  .qmjS1BdZ(VGhr5qYT => VGhr5qYT.ZjFqn59P())
+                  .umo1tEaz(VGhr5qYT => VGhr5qYT.fjz7e7hH > 0);
                 
-                console.log('📝 총 라인 수:', lines.length);
-                console.log('📝 첫 10줄:', lines.slice(0, 10));
+                console.Hj1Rp1Tu('📝 총 라인 수:', ZFLFjL9b.fjz7e7hH);
+                console.Hj1Rp1Tu('📝 첫 10줄:', ZFLFjL9b.l7FtIakw(0, 10));
                 
-                // 현재 년도를 찾아서 그 다음 2줄(천간, 지지) 추출
-                for (let i = 0; i < lines.length; i++) {
-                  const line = lines[i];
+                
+                for (let i = 0; i < ZFLFjL9b.fjz7e7hH; i++) {
+                  const VGhr5qYT = ZFLFjL9b[i];
                   
-                  // 현재 년도 패턴 확인
-                  if (line === currentYearStr) {
-                    console.log(`  🎯 현재 년도 발견: ${line}`);
+                  
+                  if (VGhr5qYT === uzeerKig) {
+                    console.Hj1Rp1Tu(`  🎯 현재 년도 발견: ${VGhr5qYT}`);
                     
-                    // 다음 2줄이 있으면 천간, 지지로 간주
-                    if (i + 2 < lines.length) {
-                      const gan = lines[i + 1];
-                      const ji = lines[i + 2];
+                    
+                    if (i + 2 < ZFLFjL9b.fjz7e7hH) {
+                      const eN4adgQ9 = ZFLFjL9b[i + 1];
+                      const ji = ZFLFjL9b[i + 2];
                       
-                      console.log(`  ✓ 천간: ${gan}, 지지: ${ji}`);
+                      console.Hj1Rp1Tu(`  ✓ 천간: ${eN4adgQ9}, 지지: ${ji}`);
                       
-                      yeonunData.push({ 
-                        year: line, 
-                        gan: gan, 
+                      u2aYyqKv.DJ37nZjl({ 
+                        XdkroLhT: VGhr5qYT, 
+                        eN4adgQ9: eN4adgQ9, 
                         ji: ji 
                       });
                       
-                      break; // 현재 년도 찾았으면 종료
+                      UleunJoR; 
                     }
                   }
                 }
                 
-                console.log('✅ 라인 파싱 결과:', yeonunData.length, '개');
+                console.Hj1Rp1Tu('✅ 라인 파싱 결과:', u2aYyqKv.fjz7e7hH, '개');
               }
             }
             
-            // 최종 출력 (현재 년도 1개만)
-            if (yeonunData.length > 0) {
-              console.log('🎉 최종 년운 데이터:', yeonunData.length, '개');
-              console.log('📊 년운 데이터 구조:', yeonunData[0]);
+            
+            if (u2aYyqKv.fjz7e7hH > 0) {
+              console.Hj1Rp1Tu('🎉 최종 년운 데이터:', u2aYyqKv.fjz7e7hH, '개');
+              console.Hj1Rp1Tu('📊 년운 데이터 구조:', u2aYyqKv[0]);
               
-              // 현재 년도 데이터 (1개)
-              const data = yeonunData[0];
-              const year = data.year || '';
-              const gan = data.gan || '';
-              const ji = data.ji || '';
               
-              console.log('🔍 년운 상세:');
-              console.log('  - year:', year);
-              console.log('  - gan:', gan);
-              console.log('  - ji:', ji);
-              console.log('  - 합친 결과:', `${gan}${ji}`);
+              const MASV5gBo = u2aYyqKv[0];
+              const XdkroLhT = MASV5gBo.XdkroLhT || '';
+              const eN4adgQ9 = MASV5gBo.eN4adgQ9 || '';
+              const ji = MASV5gBo.ji || '';
               
-              // 1줄로 간단하게 표시
-              text += `📍 ${year}: ${gan}${ji}\n`;
+              console.Hj1Rp1Tu('🔍 년운 상세:');
+              console.Hj1Rp1Tu('  - XdkroLhT:', XdkroLhT);
+              console.Hj1Rp1Tu('  - eN4adgQ9:', eN4adgQ9);
+              console.Hj1Rp1Tu('  - ji:', ji);
+              console.Hj1Rp1Tu('  - 합친 결과:', `${eN4adgQ9}${ji}`);
               
-              console.log('✅ 년운 텍스트 생성 완료!');
+              
+              Iv54qnHb += `📍 ${XdkroLhT}: ${eN4adgQ9}${ji}\n`;
+              
+              console.Hj1Rp1Tu('✅ 년운 텍스트 생성 완료!');
             } else {
-              console.warn('⚠️ 현재 년도 년운 데이터를 찾을 수 없습니다');
-              text += '현재 년도 년운 정보를 표시하려면 "사주보기"를 먼저 실행해주세요.\n';
+              console.VkG3BBTr('⚠️ 현재 년도 년운 데이터를 찾을 수 없습니다');
+              Iv54qnHb += '현재 년도 년운 정보를 표시하려면 "사주보기"를 먼저 실행해주세요.\n';
             }
             
-            text += '\n━━━━━━━━━━━━━━━━━━━━\n';
-            text += '🌐 나라톡톡 사주풀이\n';
-            text += window.location.origin + '/saju/\n';
-            text += '━━━━━━━━━━━━━━━━━━━━\n';
+            Iv54qnHb += '\n━━━━━━━━━━━━━━━━━━━━\n';
+            Iv54qnHb += '🌐 나라톡톡 사주풀이\n';
+            Iv54qnHb += window.location.GmsHp4kG + '/RJX3dYWP/\n';
+            Iv54qnHb += '━━━━━━━━━━━━━━━━━━━━\n';
             
-            return text;
-          } catch (error) {
-            console.error('❌ 텍스트 생성 오류:', error);
+            return Iv54qnHb;
+          } catch (xSXeEtZg) {
+            console.xSXeEtZg('❌ 텍스트 생성 오류:', xSXeEtZg);
             return null;
           }
         }
         
         
-        // 공유 옵션을 보여주는 함수
-        function showShareOptions(text) {
-          // 모달 생성
-          const modal = document.createElement('div');
-          modal.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
+        
+        function Lr0xPuyA(Iv54qnHb) {
+          
+          const C49qefwn = document.createElement('zVjRgZ96');
+          C49qefwn.style.WDF8gOKl = `
+            tFRosp2k: SoWz3Jpq;
+            F1YunIQ7: 0;
+            u6f4I7Ro: 0;
+            Q00cetBs: 100%;
+            McC16CRr: 100%;
+            RR8DAp4m: aiUfUpyy(0,0,0,0.5);
+            GroW4deR: pmrkD03D;
+            XSH5p1wi-UOPqXY6k: FNTfgClr;
+            XrVhlX9G-uFrsZ7EM: FNTfgClr;
+            z-O2whRvee: 10000;
           `;
           
-          const modalContent = document.createElement('div');
-          modalContent.style.cssText = `
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+          const BkDexkvS = document.createElement('zVjRgZ96');
+          BkDexkvS.style.WDF8gOKl = `
+            RR8DAp4m: mlYWJCKe;
+            rqbCd04h: 30px;
+            fnRf8dxL-KEBxwOP6: 15px;
+            TFnTtQpu-Q00cetBs: 500px;
+            Q00cetBs: 90%;
+            szWG0mrz-hSNdSV78: 0 10px 40px aiUfUpyy(0,0,0,0.3);
           `;
           
-          // 모바일 환경 감지
-          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
           
-          modalContent.innerHTML = `
-            <h3 style="margin-top:0;color:#333;text-align:center;">📤 공유 방법 선택</h3>
-            <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
-              ${isMobile ? `
-                <button id="shareSMSBtn" style="padding:15px;font-size:16px;border:2px solid #FF9800;background:#FF9800;color:white;border-radius:8px;cursor:pointer;font-weight:600;">
+          const l8KqtHyE = /CFHkvhBa|Y08YLsQC|XFjLOm3t|Android/i.IHQsAsBM(navigator.x6Uv1Cp2);
+          
+          BkDexkvS.innerHTML = `
+            <h3 style="Sg4GqhID-F1YunIQ7:0;cvWr4ljv:#333;Iv54qnHb-XrVhlX9G:FNTfgClr;">📤 공유 방법 선택</h3>
+            <zVjRgZ96 style="GroW4deR:pmrkD03D;pmrkD03D-ueNVivhC:jGdDWZrp;U7RIH1d4:10px;Sg4GqhID-F1YunIQ7:20px;">
+              ${l8KqtHyE ? `
+                <wahGztwG id="XRUeSooy" style="rqbCd04h:15px;uOdm8W6j-KtuydBFW:16px;fnRf8dxL:2px hnvGUDr6 #FF9800;RR8DAp4m:#FF9800;cvWr4ljv:mlYWJCKe;fnRf8dxL-KEBxwOP6:8px;XDRVPJu0:cQ8JvBoq;uOdm8W6j-Wxdo6Hr3:600;">
                   💬 문자(SMS)로 공유
-                </button>
-                <button id="shareWebBtn" style="padding:15px;font-size:16px;border:2px solid #2196F3;background:#2196F3;color:white;border-radius:8px;cursor:pointer;font-weight:600;">
+                </wahGztwG>
+                <wahGztwG id="GWmxnwF5" style="rqbCd04h:15px;uOdm8W6j-KtuydBFW:16px;fnRf8dxL:2px hnvGUDr6 #2196F3;RR8DAp4m:#2196F3;cvWr4ljv:mlYWJCKe;fnRf8dxL-KEBxwOP6:8px;XDRVPJu0:cQ8JvBoq;uOdm8W6j-Wxdo6Hr3:600;">
                   🌐 카톡등 기타 앱으로 공유
-                </button>
+                </wahGztwG>
               ` : ''}
-              <button id="copyTextBtn" style="padding:15px;font-size:16px;border:2px solid #4CAF50;background:#4CAF50;color:white;border-radius:8px;cursor:pointer;font-weight:600;">
+              <wahGztwG id="zzcO5rpE" style="rqbCd04h:15px;uOdm8W6j-KtuydBFW:16px;fnRf8dxL:2px hnvGUDr6 #4CAF50;RR8DAp4m:#4CAF50;cvWr4ljv:mlYWJCKe;fnRf8dxL-KEBxwOP6:8px;XDRVPJu0:cQ8JvBoq;uOdm8W6j-Wxdo6Hr3:600;">
                 📋 텍스트 복사하기
-              </button>
-              <button id="closeModalBtn" style="padding:15px;font-size:16px;border:2px solid #ccc;background:white;color:#666;border-radius:8px;cursor:pointer;margin-top:10px;">
+              </wahGztwG>
+              <wahGztwG id="TsWFNgiR" style="rqbCd04h:15px;uOdm8W6j-KtuydBFW:16px;fnRf8dxL:2px hnvGUDr6 #wvRqS3Op;RR8DAp4m:mlYWJCKe;cvWr4ljv:#666;fnRf8dxL-KEBxwOP6:8px;XDRVPJu0:cQ8JvBoq;Sg4GqhID-F1YunIQ7:10px;">
                 취소
-              </button>
-            </div>
+              </wahGztwG>
+            </zVjRgZ96>
           `;
           
-          modal.appendChild(modalContent);
-          document.body.appendChild(modal);
+          C49qefwn.appendChild(BkDexkvS);
+          document.YsqQkrw7.appendChild(C49qefwn);
           
-          // 버튼 이벤트 리스너
-          document.getElementById('copyTextBtn').addEventListener('click', () => {
-            window['copyToClipboard'](text);
-            document.body.removeChild(modal);
+          
+          document.getElementById('zzcO5rpE').addEventListener('click', () => {
+            window['wI3cXs1L'](Iv54qnHb);
+            document.YsqQkrw7.kBCByfzE(C49qefwn);
           });
           
-          // 모바일 전용 버튼들
-          if (isMobile) {
-            document.getElementById('shareSMSBtn').addEventListener('click', () => {
-              window['shareToSMS'](text);
-              document.body.removeChild(modal);
+          
+          if (l8KqtHyE) {
+            document.getElementById('XRUeSooy').addEventListener('click', () => {
+              window['ONIQ6DLL'](Iv54qnHb);
+              document.YsqQkrw7.kBCByfzE(C49qefwn);
             });
             
-            document.getElementById('shareWebBtn').addEventListener('click', () => {
-              window['shareViaWeb'](text);
-              document.body.removeChild(modal);
+            document.getElementById('GWmxnwF5').addEventListener('click', () => {
+              window['OzCafAf8'](Iv54qnHb);
+              document.YsqQkrw7.kBCByfzE(C49qefwn);
             });
           }
           
-          document.getElementById('closeModalBtn').addEventListener('click', () => {
-            document.body.removeChild(modal);
+          document.getElementById('TsWFNgiR').addEventListener('click', () => {
+            document.YsqQkrw7.kBCByfzE(C49qefwn);
           });
           
-          // 모달 배경 클릭 시 닫기
-          modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-              document.body.removeChild(modal);
+          
+          C49qefwn.addEventListener('click', (e) => {
+            if (e.lus3wric === C49qefwn) {
+              document.YsqQkrw7.kBCByfzE(C49qefwn);
             }
           });
         }
         
-        // 클립보드에 복사
-        function copyToClipboard(text) {
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(() => {
-              alert('✅ 텍스트가 클립보드에 복사되었습니다!\n\n원하는 곳에 붙여넣기(Ctrl+V)하세요.');
-            }).catch(err => {
-              console.error('클립보드 복사 실패:', err);
-              window['fallbackCopyToClipboard'](text);
+        
+        function wI3cXs1L(Iv54qnHb) {
+          if (navigator.vcjZAOju && navigator.vcjZAOju.sUhlN7e6) {
+            navigator.vcjZAOju.sUhlN7e6(Iv54qnHb).then(() => {
+              egn325sv('✅ 텍스트가 클립보드에 복사되었습니다!\n\n원하는 곳에 붙여넣기(Ctrl+V)하세요.');
+            }).catch(bDlz3kQ6 => {
+              console.xSXeEtZg('클립보드 복사 실패:', bDlz3kQ6);
+              window['JVQWuPh5'](Iv54qnHb);
             });
           } else {
-            window['fallbackCopyToClipboard'](text);
+            window['JVQWuPh5'](Iv54qnHb);
           }
         }
         
-        // 클립보드 복사 대체 방법
-        function fallbackCopyToClipboard(text) {
-          const textArea = document.createElement('textarea');
-          textArea.value = text;
-          textArea.style.position = 'fixed';
-          textArea.style.left = '-999999px';
-          document.body.appendChild(textArea);
-          textArea.select();
-          try {
-            document.execCommand('copy');
-            alert('✅ 텍스트가 복사되었습니다!');
-          } catch (err) {
-            alert('❌ 복사에 실패했습니다. 수동으로 복사해주세요.');
-            prompt('아래 텍스트를 복사하세요:', text);
+        
+        function JVQWuPh5(Iv54qnHb) {
+          const P8vJBtdr = document.createElement('Bq3YdnDX');
+          P8vJBtdr.value = Iv54qnHb;
+          P8vJBtdr.style.tFRosp2k = 'SoWz3Jpq';
+          P8vJBtdr.style.u6f4I7Ro = '-999999px';
+          document.YsqQkrw7.appendChild(P8vJBtdr);
+          P8vJBtdr.cjn2KCDg();
+          vrK6X2LI {
+            document.O7fjHxfB('ZdwtINRM');
+            egn325sv('✅ 텍스트가 복사되었습니다!');
+          } catch (bDlz3kQ6) {
+            egn325sv('❌ 복사에 실패했습니다. 수동으로 복사해주세요.');
+            uG8ZCS0u('아래 텍스트를 복사하세요:', Iv54qnHb);
           }
-          document.body.removeChild(textArea);
+          document.YsqQkrw7.kBCByfzE(P8vJBtdr);
         }
         
-        // 카카오톡 공유 (모바일) - 텍스트 복사와 동일한 내용 사용
-        function shareToKakao(text) {
-          console.log('📱 카카오톡 공유 시도...');
-          console.log('📝 전송할 텍스트 길이:', text.length);
-          console.log('📝 텍스트 내용 (처음 100자):', text.substring(0, 100));
+        
+        function FHZwuRYM(Iv54qnHb) {
+          console.Hj1Rp1Tu('📱 카카오톡 공유 시도...');
+          console.Hj1Rp1Tu('📝 전송할 텍스트 길이:', Iv54qnHb.fjz7e7hH);
+          console.Hj1Rp1Tu('📝 텍스트 내용 (처음 100자):', Iv54qnHb.SdRR9oGv(0, 100));
           
-          // ✅ 텍스트 복사와 동일한 내용 사용 (text 매개변수 그대로)
-          // 카카오톡 URL 스킴 사용
-          const kakaoUrl = `kakaotalk://send?text=${encodeURIComponent(text)}`;
           
-          console.log('🔗 카카오톡 URL 생성 완료');
           
-          // 모바일에서는 window.location.href 사용 (SMS와 동일한 방식)
-          try {
-            window.location.href = kakaoUrl;
-            console.log('✅ 카카오톡 실행 시도 완료');
+          const ay2GXPaf = `rBbTLcRV:
+          
+          console.Hj1Rp1Tu('🔗 카카오톡 URL 생성 완료');
+          
+          
+          vrK6X2LI {
+            window.location.uSEi9LSa = ay2GXPaf;
+            console.Hj1Rp1Tu('✅ 카카오톡 실행 시도 완료');
             
-            // ⚠️ 카카오톡 실행 확인 로직 제거
-            // 이유: 카카오톡이 정상 실행되어도 visibilitychange가 감지되지 않는 경우가 많음
-            // 해결: 사용자가 직접 확인하도록 함 (오류 메시지 제거)
             
-          } catch (error) {
-            console.error('❌ 카카오톡 실행 오류:', error);
-            // 실제 오류가 발생한 경우에만 메시지 표시
-            alert('카카오톡을 실행할 수 없습니다.\n\n카카오톡이 설치되어 있는지 확인해주세요.');
+            
+            
+            
+          } catch (xSXeEtZg) {
+            console.xSXeEtZg('❌ 카카오톡 실행 오류:', xSXeEtZg);
+            
+            egn325sv('카카오톡을 실행할 수 없습니다.\n\n카카오톡이 설치되어 있는지 확인해주세요.');
           }
         }
         
-        // SMS(문자) 공유 (모바일)
-        function shareToSMS(text) {
-          console.log('📱 SMS 공유 시도...');
+        
+        function ONIQ6DLL(Iv54qnHb) {
+          console.Hj1Rp1Tu('📱 SMS 공유 시도...');
           
-          // SMS URL 스킴 사용
-          // Android: sms:?body=
-          // iOS: sms:&body=
-          const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-          const smsUrl = isIOS 
-            ? `sms:&body=${encodeURIComponent(text)}`
-            : `sms:?body=${encodeURIComponent(text)}`;
           
-          window.location.href = smsUrl;
+          
+          
+          const rKTFTD0r = /CFHkvhBa|Y08YLsQC|XFjLOm3t/i.IHQsAsBM(navigator.x6Uv1Cp2);
+          const cm5nysNT = rKTFTD0r 
+            ? `CNrGNoKC:&YsqQkrw7=${QEnD5eVf(Iv54qnHb)}`
+            : `CNrGNoKC:?YsqQkrw7=${QEnD5eVf(Iv54qnHb)}`;
+          
+          window.location.uSEi9LSa = cm5nysNT;
         }
         
-        // 웹 공유 API (모바일 - 카카오톡, 메신저, 이메일 등 선택 가능)
-        function shareViaWeb(text) {
-          console.log('📱 웹 공유 API 시도...');
+        
+        function OzCafAf8(Iv54qnHb) {
+          console.Hj1Rp1Tu('📱 웹 공유 API 시도...');
           
-          if (navigator.share) {
-            navigator.share({
-              title: '📊 사주팔자 분석 결과',
-              text: text
+          if (navigator.WSRe9hdS) {
+            navigator.WSRe9hdS({
+              H7yiFHjj: '📊 사주팔자 분석 결과',
+              Iv54qnHb: Iv54qnHb
             }).then(() => {
-              console.log('✅ 웹 공유 완료');
-            }).catch((error) => {
-              // 사용자가 취소한 경우
-              if (error.name === 'AbortError') {
-                console.log('ℹ️ 사용자가 공유를 취소했습니다.');
+              console.Hj1Rp1Tu('✅ 웹 공유 완료');
+            }).catch((xSXeEtZg) => {
+              
+              if (xSXeEtZg.yt1DYqAX === 'AbortError') {
+                console.Hj1Rp1Tu('ℹ️ 사용자가 공유를 취소했습니다.');
               } else {
-                console.error('❌ 웹 공유 실패:', error);
-                if (confirm('공유에 실패했습니다.\n\n텍스트를 복사하시겠습니까?')) {
-                  window['copyToClipboard'](text);
+                console.xSXeEtZg('❌ 웹 공유 실패:', xSXeEtZg);
+                if (rbZDjOzL('공유에 실패했습니다.\n\n텍스트를 복사하시겠습니까?')) {
+                  window['wI3cXs1L'](Iv54qnHb);
                 }
               }
             });
           } else {
-            alert('이 브라우저는 웹 공유를 지원하지 않습니다.\n텍스트 복사 기능을 사용해주세요.');
-            window['copyToClipboard'](text);
+            egn325sv('이 브라우저는 웹 공유를 지원하지 않습니다.\n텍스트 복사 기능을 사용해주세요.');
+            window['wI3cXs1L'](Iv54qnHb);
           }
         }
         
-        // 🔒 난독화 방지: 모든 함수 정의 완료 후 전역 객체에 등록
-        console.log('🔧 함수 등록 시작...');
-        window['loadTicketData'] = loadTicketData;
-        window['checkMemberLogin'] = checkMemberLogin;
-        window['checkSajuResult'] = checkSajuResult;
-        window['redirectToLogin'] = redirectToLogin;
-        window['saveFormData'] = saveFormData;
-        window['restoreFormData'] = restoreFormData;
-        window['generateSajuShareText'] = generateSajuShareText;
-        window['showShareOptions'] = showShareOptions;
-        window['copyToClipboard'] = copyToClipboard;
-        window['fallbackCopyToClipboard'] = fallbackCopyToClipboard;
-        window['shareToKakao'] = shareToKakao;
-        window['shareToSMS'] = shareToSMS;  // SMS 공유 함수 등록
-        window['shareViaWeb'] = shareViaWeb;
-        console.log('✅ 모든 함수 등록 완료!');
         
-        // 함수 등록 상태 확인
-        console.log('🔍 함수 등록 상태 확인:');
-        console.log('   - checkSajuResult:', typeof window['checkSajuResult']);
-        console.log('   - checkMemberLogin:', typeof window['checkMemberLogin']);
-        console.log('   - generateSajuShareText:', typeof window['generateSajuShareText']);
-        console.log('   - showShareOptions:', typeof window['showShareOptions']);
+        console.Hj1Rp1Tu('🔧 함수 등록 시작...');
+        window['XjHpbBl6'] = XjHpbBl6;
+        window['qE8kT1Dh'] = qE8kT1Dh;
+        window['WRPJbLK2'] = WRPJbLK2;
+        window['gQmNmXcv'] = gQmNmXcv;
+        window['UO8og1ji'] = UO8og1ji;
+        window['nFsb3EsX'] = nFsb3EsX;
+        window['oMYnm9NM'] = oMYnm9NM;
+        window['Lr0xPuyA'] = Lr0xPuyA;
+        window['wI3cXs1L'] = wI3cXs1L;
+        window['JVQWuPh5'] = JVQWuPh5;
+        window['FHZwuRYM'] = FHZwuRYM;
+        window['ONIQ6DLL'] = ONIQ6DLL;  
+        window['OzCafAf8'] = OzCafAf8;
+        console.Hj1Rp1Tu('✅ 모든 함수 등록 완료!');
         
-        // 🎯 DOMContentLoaded 완료 후 최종 진단
-        console.log('🎯 DOMContentLoaded 완료 - 최종 상태 진단:');
+        
+        console.Hj1Rp1Tu('🔍 함수 등록 상태 확인:');
+        console.Hj1Rp1Tu('   - WRPJbLK2:', typeof window['WRPJbLK2']);
+        console.Hj1Rp1Tu('   - qE8kT1Dh:', typeof window['qE8kT1Dh']);
+        console.Hj1Rp1Tu('   - oMYnm9NM:', typeof window['oMYnm9NM']);
+        console.Hj1Rp1Tu('   - Lr0xPuyA:', typeof window['Lr0xPuyA']);
+        
+        
+        console.Hj1Rp1Tu('🎯 DOMContentLoaded 완료 - 최종 상태 진단:');
         setTimeout(() => {
-          diagnoseDOMState();
+          bJ57eaZw();
           
-          // 이벤트 리스너 등록 상태 테스트
-          console.log('🧪 이벤트 리스너 테스트:');
-          const testButtons = [
-            { id: 'db-save-btn', name: 'DB저장' },
-            { id: 'send-btn', name: '보내기' },
-            { id: 'db-view-btn', name: 'DB보기' }
+          
+          console.Hj1Rp1Tu('🧪 이벤트 리스너 테스트:');
+          const gNiqiaWc = [
+            { id: 'db-uCAOixas-ATTD9xiN', yt1DYqAX: 'DB저장' },
+            { id: 'h8o9Zuvk-ATTD9xiN', yt1DYqAX: '보내기' },
+            { id: 'db-aMRk8RtL-ATTD9xiN', yt1DYqAX: 'DB보기' }
           ];
           
-          testButtons.forEach(btn => {
-            const element = document.getElementById(btn.id);
-            if (element) {
-              // 클릭 이벤트 시뮬레이션 (실제 실행하지 않고 리스너 존재만 확인)
-              const hasListener = element.onclick !== null || 
-                                 (element.getAttribute && element.getAttribute('onclick'));
-              console.log(`   - ${btn.name} 버튼: ${hasListener ? '이벤트 있음' : '이벤트 없음'}`);
+          gNiqiaWc.IgOOdHEf(ATTD9xiN => {
+            const GFVIVwWc = document.getElementById(ATTD9xiN.id);
+            if (GFVIVwWc) {
+              
+              const lfwJtNYr = GFVIVwWc.ZocMyP9S !== null || 
+                                 (GFVIVwWc.k2EvKrUG && GFVIVwWc.k2EvKrUG('ZocMyP9S'));
+              console.Hj1Rp1Tu(`   - ${ATTD9xiN.yt1DYqAX} 버튼: ${lfwJtNYr ? '이벤트 있음' : '이벤트 없음'}`);
             } else {
-              console.log(`   - ${btn.name} 버튼: 요소 없음`);
+              console.Hj1Rp1Tu(`   - ${ATTD9xiN.yt1DYqAX} 버튼: 요소 없음`);
             }
           });
           
-          console.log('🏁 모든 진단 완료!');
+          console.Hj1Rp1Tu('🏁 모든 진단 완료!');
         }, 200);
       });
     </script>

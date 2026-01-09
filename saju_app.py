@@ -27,6 +27,11 @@ from mainpillar import (
 #app = Flask(__name__, static_folder='static')
 #app = Flask(__name__, static_folder='.', template_folder='.')
 app = Flask(__name__, template_folder='web/saju/templates', static_folder='web/saju/static')
+
+# 템플릿 캐시 비활성화 (개발 환경)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
 CORS(app)  # CORS 허용
 
 # 공통 static 파일 서빙 라우트 추가

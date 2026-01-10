@@ -112,7 +112,7 @@ document.getElementById('ticketForm').addEventListener('submit', (e) => {
     if (savedSession) {
       const sessionData = JSON.parse(savedSession);
       // sMem_id(대문자) 또는 smem_id(소문자) 모두 확인하고 smem_id로 정규화
-      smember_id = sessionData.smem_id || sessionData.smem_id || null;
+      smember_id = sessionData.smem_id || sessionData.sMem_id || null;
       console.log('📦 sessionStorage에서 읽은 회원 ID:', smember_id);
     }
   } catch (e) {
@@ -125,9 +125,9 @@ document.getElementById('ticketForm').addEventListener('submit', (e) => {
     window.MEMBER_SESSION &&
     window.MEMBER_SESSION.isLoggedIn
   ) {
-    // smem_id(소문자) 또는 smem_id(대문자) 모두 확인
+    // smem_id(소문자) 또는 sMem_id(대문자) 모두 확인
     smember_id =
-      window.MEMBER_SESSION.smem_id || window.MEMBER_SESSION.smem_id || null;
+      window.MEMBER_SESSION.smem_id || window.MEMBER_SESSION.sMem_id || null;
     console.log('📦 전역 변수에서 읽은 회원 ID:', smember_id);
   }
 
@@ -137,7 +137,7 @@ document.getElementById('ticketForm').addEventListener('submit', (e) => {
   console.log('🔍 로그인 여부:', window.MEMBER_SESSION?.isLoggedIn);
   console.log(
     '🔍 smem_id 값:',
-    window.MEMBER_SESSION?.smem_id || window.MEMBER_SESSION?.smem_id
+    window.MEMBER_SESSION?.smem_id || window.MEMBER_SESSION?.sMem_id
   );
   console.log('🔍 smember_id 최종 값:', data.smember_id);
 

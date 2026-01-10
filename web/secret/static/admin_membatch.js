@@ -182,7 +182,7 @@ let tickets = [
     choice11: 0,
     choice12: 0,
     agreement: 1,
-    sMember_id: 'user001',
+    smember_id: 'user001',
     post_pwd_hash: 'h',
     post_pwd_salt: null,
     has_admin_reply: true,
@@ -216,7 +216,7 @@ let tickets = [
     choice11: 0,
     choice12: 0,
     agreement: 1,
-    sMember_id: 'user002',
+    smember_id: 'user002',
     post_pwd_hash: 'h',
     post_pwd_salt: null,
     has_admin_reply: false,
@@ -402,7 +402,7 @@ let state = {
       label: `choice${i + 1}`,
     })),
     { k: 'agreement', type: 'number', label: 'agreement' },
-    { k: 'sMember_id', label: 'sMember_id' },
+    { k: 'smember_id', label: 'smember_id' },
     { k: 'post_pwd_hash', label: 'post_pwd_hash' },
     { k: 'post_pwd_salt', label: 'post_pwd_salt' },
     {
@@ -472,9 +472,9 @@ function renderMembers() {
 function renderTickets() {
   const kw = state.filters.tickets.trim();
   let rows = tickets.filter((r) => {
-    if (state.selMember && r.sMember_id !== state.selMember) return false;
+    if (state.selMember && r.smember_id !== state.selMember) return false;
     if (!kw) return true;
-    const hay = `${r.title_masked} ${r.author_nickname} ${r.status} ${r.sMember_id}`;
+    const hay = `${r.title_masked} ${r.author_nickname} ${r.status} ${r.smember_id}`;
     return contains(hay, kw);
   });
   rows = state.sort.tickets.sort(rows);
@@ -517,7 +517,7 @@ function renderMsgs() {
       return r.ticket_id === state.selTicket && filterKw(r, kw);
     if (state.selMember) {
       const ids = tickets
-        .filter((t) => t.sMember_id === state.selMember)
+        .filter((t) => t.smember_id === state.selMember)
         .map((t) => t.ticket_id);
       return ids.includes(r.ticket_id) && filterKw(r, kw);
     }
@@ -554,7 +554,7 @@ function renderMsgs() {
   qs('#filter-desc').textContent = state.selTicket
     ? `ticket_id=${state.selTicket}`
     : state.selMember
-    ? `sMember_id=${state.selMember}`
+    ? `smember_id=${state.selMember}`
     : '전체';
   function filterKw(r, kw) {
     if (!kw) return true;
@@ -964,7 +964,7 @@ async function loadDataFromServer() {
           choice11: 0,
           choice12: 0,
           agreement: t.agreement || 0,
-          sMember_id: t.sMember_id || '',
+          smember_id: t.smember_id || '',
           post_pwd_hash: t.post_pwd_hash || '',
           post_pwd_salt: null,
           has_admin_reply: t.has_admin_reply || false,

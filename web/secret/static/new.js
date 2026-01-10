@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('👤 회원 이름:', window.MEMBER_SESSION.smem_name);
     } else {
       console.log(
-        '❌ 회원 로그인되지 않음 - 게시글 작성 시 sMember_id는 null이 됩니다'
+        '❌ 회원 로그인되지 않음 - 게시글 작성 시 smember_id는 null이 됩니다'
       );
     }
 
@@ -103,17 +103,43 @@ document.getElementById('ticketForm').addEventListener('submit', (e) => {
   // snsgu 필드에 'A0001' 값 추가
   data.snsgu = 'A0001';
 
-  // sMember_id 필드에 전역변수 smem_id 값 할당 (안전하게 처리)
-  let sMember_id = null;
-  if (window.MEMBER_SESSION && window.MEMBER_SESSION.isLoggedIn) {
-    sMember_id = window.MEMBER_SESSION.smem_id || null;
+  // smember_id 필드에 전역변수 smem_id 값 할당 (안전하게 처리)
+  let smember_id = null;
+
+  // 1. sessionStorage에서 직접 읽기 (가장 확실한 방법)
+  try {
+    const savedSession = sessionStorage.getItem('member_session');
+    if (savedSession) {
+      const sessionData = JSON.parse(savedSession);
+      // smem_id(대문자) 또는 smem_id(소문자) 모두 확인하고 smem_id로 정규화
+      smember_id = sessionData.smem_id || sessionData.smem_id || null;
+      console.log('📦 sessionStorage에서 읽은 회원 ID:', smember_id);
+    }
+  } catch (e) {
+    console.warn('⚠️ sessionStorage 읽기 실패:', e);
   }
-  data.sMember_id = sMember_id;
+
+  // 2. 전역 변수에서도 확인 (백업)
+  if (
+    !smember_id &&
+    window.MEMBER_SESSION &&
+    window.MEMBER_SESSION.isLoggedIn
+  ) {
+    // smem_id(소문자) 또는 smem_id(대문자) 모두 확인
+    smember_id =
+      window.MEMBER_SESSION.smem_id || window.MEMBER_SESSION.smem_id || null;
+    console.log('📦 전역 변수에서 읽은 회원 ID:', smember_id);
+  }
+
+  data.smember_id = smember_id;
 
   console.log('🔍 전역 세션 확인:', window.MEMBER_SESSION);
   console.log('🔍 로그인 여부:', window.MEMBER_SESSION?.isLoggedIn);
-  console.log('🔍 smem_id 값:', window.MEMBER_SESSION?.smem_id);
-  console.log('🔍 sMember_id 최종 값:', data.sMember_id);
+  console.log(
+    '🔍 smem_id 값:',
+    window.MEMBER_SESSION?.smem_id || window.MEMBER_SESSION?.smem_id
+  );
+  console.log('🔍 smember_id 최종 값:', data.smember_id);
 
   // admin_id 필드에 전역변수 admin_id 값 할당 (안전하게 처리)
   let admin_id = null;
@@ -136,17 +162,22 @@ document.getElementById('ticketForm').addEventListener('submit', (e) => {
   console.log('📝 저장할 최종 데이터:', JSON.stringify(data, null, 2));
   console.log('✅ 개인정보 동의 여부:', data.agreement);
   console.log('🏢 snsgu 값:', data.snsgu);
-  console.log('👤 sMember_id 최종 값:', data.sMember_id);
+  console.log('👤 smember_id 최종 값:', data.smember_id);
   console.log('👨‍💼 admin_id 최종 값:', data.admin_id);
   console.log('👨‍💼 ti_role 최종 값:', data.ti_role);
 
+  // author_gender 필드 처리: 빈 문자열은 null로 변환 (CHECK 제약 조건 통과)
+  if (!data.author_gender || data.author_gender === '') {
+    data.author_gender = null;
+  }
+
   // null 값이 문자열 "null"로 변환되지 않도록 명시적으로 처리
   if (
-    data.sMember_id === null ||
-    data.sMember_id === 'null' ||
-    data.sMember_id === ''
+    data.smember_id === null ||
+    data.smember_id === 'null' ||
+    data.smember_id === ''
   ) {
-    data.sMember_id = null;
+    data.smember_id = null;
   }
   if (
     data.admin_id === null ||

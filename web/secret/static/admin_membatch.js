@@ -1,59 +1,1110 @@
-const THEME_KEY='admin_theme_v1';const THEME_NAMES={'theme-dim':'Dim','theme-midnight':'Midnight','theme-light':'Light','theme-sepia':'Sepia',};function applyTheme(theme){const body=document.body;body.classList.remove('theme-light','theme-dim','theme-sepia','theme-midnight');body.classList.add(theme);localStorage.setItem(THEME_KEY,theme);const label=document.getElementById('themeLabel');label.textContent=THEME_NAMES[theme]||'Dim';document.getElementById('themeBtn').setAttribute('aria-expanded','false');document.getElementById('themeMenu').classList.remove('open');}
-(function initTheme(){const prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;const saved=localStorage.getItem(THEME_KEY);const initial=saved||(prefersDark?'theme-dim':'theme-light');applyTheme(initial);})();document.getElementById('themeBtn').addEventListener('click',()=>{const m=document.getElementById('themeMenu');const open=m.classList.toggle('open');document.getElementById('themeBtn').setAttribute('aria-expanded',String(open));});document.addEventListener('click',(e)=>{const menu=document.getElementById('themeMenu');const btn=document.getElementById('themeBtn');if(!menu.contains(e.target)&&e.target!==btn){menu.classList.remove('open');btn.setAttribute('aria-expanded','false');}});document.querySelectorAll('#themeMenu [data-theme]').forEach((btn)=>{btn.addEventListener('click',()=>applyTheme(btn.dataset.theme));});let members=[{sM_id:1,sMem_id:'user001',sMem_pwdHash:'***',sMem_pwd_salt:null,sMem_name:'홍길동',sMem_nickname:'길동이',sMem_birthdt:'1990-01-01',sMem_birth_year:1990,sMem_calendar_type:'solar',sMem_gender:'M',sMem_buss_name:'길동상회',sMem_comp_name:'길동주식회사',sMem_phone:'02-111-2222',sMem_mobile:'010-1111-2222',sMem_email:'hong@example.com',zipcode:'12345',address1:'서울 강남구',address2:'테헤란로 1',zipcode_s:'',address1_s:'',address2_s:'',sMem_snsgu:'A',sMem_choice1:0,sMem_choice2:0,sMem_choice3:0,sMem_choice4:0,sMem_choice5:0,sMem_choice6:0,sMem_choice7:0,sMem_choice8:0,sMem_choice9:0,sMem_choice10:0,sMem_choice11:0,sMem_choice12:0,sMem_quest:'',sMem_content_enc:'',old_name:'',new_name:'',recommender:'',applicant:'',signature_file:'',reference:'',sMem_agreement:1,sMem_agree:1,sMem_admin_id:'admin01',sMem_grade:'A',sMem_status:'OPEN',createdAt:'2025-10-01 10:15:00',created_at:'2025-10-01 10:15:00',updated_at:'2025-10-01 10:15:00',},{sM_id:2,sMem_id:'user002',sMem_pwdHash:'***',sMem_pwd_salt:null,sMem_name:'김민지',sMem_nickname:'민지',sMem_birthdt:'1995-05-05',sMem_birth_year:1995,sMem_calendar_type:'lunar',sMem_gender:'F',sMem_buss_name:'',sMem_comp_name:'',sMem_phone:'',sMem_mobile:'010-2222-3333',sMem_email:'minji@example.com',zipcode:'',address1:'',address2:'',zipcode_s:'',address1_s:'',address2_s:'',sMem_snsgu:'B',sMem_choice1:0,sMem_choice2:0,sMem_choice3:0,sMem_choice4:0,sMem_choice5:0,sMem_choice6:0,sMem_choice7:0,sMem_choice8:0,sMem_choice9:0,sMem_choice10:0,sMem_choice11:0,sMem_choice12:0,sMem_quest:'',sMem_content_enc:'',old_name:'',new_name:'',recommender:'',applicant:'',signature_file:'',reference:'',sMem_agreement:1,sMem_agree:0,sMem_admin_id:'admin02',sMem_grade:'B',sMem_status:'OPEN',createdAt:'2025-10-05 09:02:10',created_at:'2025-10-05 09:02:10',updated_at:'2025-10-05 09:02:10',},];let tickets=[{ticket_id:'a111-111',title_masked:'[비밀] 진로 고민',content_enc:'...',author_name:'홍길동',author_nickname:'길동이',author_contact:'',author_phone:'',author_mobile:'',author_email:'',author_gender:'M',birth_year:1990,snsgu:'A',choice1:0,choice2:0,choice3:0,choice4:0,choice5:0,choice6:0,choice7:0,choice8:0,choice9:0,choice10:0,choice11:0,choice12:0,agreement:1,sMember_id:'user001',post_pwd_hash:'h',post_pwd_salt:null,has_admin_reply:true,status:'ANSWERED',created_at:'2025-10-06 11:20:00',updated_at:'2025-10-06 11:50:00',},{ticket_id:'a222-222',title_masked:'[비밀] 대인관계',content_enc:'...',author_name:'김민지',author_nickname:'민지',author_contact:'',author_phone:'',author_mobile:'',author_email:'',author_gender:'F',birth_year:1995,snsgu:'B',choice1:0,choice2:0,choice3:0,choice4:0,choice5:0,choice6:0,choice7:0,choice8:0,choice9:0,choice10:0,choice11:0,choice12:0,agreement:1,sMember_id:'user002',post_pwd_hash:'h',post_pwd_salt:null,has_admin_reply:false,status:'OPEN',created_at:'2025-10-10 09:00:00',updated_at:'2025-10-10 09:00:00',},];let msgs=[{msg_id:'m1',ticket_id:'a111-111',role:'admin',content_enc:'안녕하세요. 접수했습니다.',created_at:'2025-10-06 11:45:00',},{msg_id:'m2',ticket_id:'a111-111',role:'user',content_enc:'감사합니다.',created_at:'2025-10-06 12:00:00',},{msg_id:'m4',ticket_id:'a222-222',role:'user',content_enc:'추가 질문이 있어요.',created_at:'2025-10-11 10:00:00',},];const qs=(s)=>document.querySelector(s);const qsa=(s)=>Array.from(document.querySelectorAll(s));const escapeHtml=(s)=>(s??'').toString().replace(/[&<>"']/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;',}[m]));const contains=(hay,kw)=>hay.toLowerCase().includes(kw.toLowerCase());function fmtTag(v,map){if(!map)return`<span class="tag">${escapeHtml(v ?? '')}</span>`;const t=map[v]||{text:String(v??''),cls:''};return`<span class="tag ${t.cls}">${t.text}</span>`;}
-const statusColorMap={OPEN:{text:'OPEN',cls:'warn'},LOCKED:{text:'LOCKED',cls:'err'},DELETED:{text:'DELETED',cls:'err'},ANSWERED:{text:'ANSWERED',cls:'ok'},CLOSED:{text:'CLOSED',cls:'err'},};function makeSorter(){let sortKeys=[];return{toggle(k,multi){if(!multi)sortKeys=[];const f=sortKeys.find((x)=>x.k===k);if(!f)sortKeys.push({k,dir:1});else if(f.dir===1)f.dir=-1;else sortKeys=sortKeys.filter((x)=>x.k!==k);},sort(arr){if(sortKeys.length===0)return arr;return[...arr].sort((a,b)=>{for(const s of sortKeys){const av=(a[s.k]??'').toString(),bv=(b[s.k]??'').toString();if(av<bv)return-1*s.dir;if(av>bv)return 1*s.dir;}
-return 0;});},keys:()=>sortKeys,};}
-let state={selMember:null,selTicket:null,filters:{members:'',tickets:'',msgs:''},sort:{members:makeSorter(),tickets:makeSorter(),msgs:makeSorter(),},fmMembers:[{k:'sM_id',ro:true,label:'sM_id'},{k:'sMem_id',req:true,label:'sMem_id'},{k:'sMem_pwdHash',type:'password',label:'sMem_pwdHash'},{k:'sMem_pwd_salt',label:'sMem_pwd_salt'},{k:'sMem_name',label:'sMem_name'},{k:'sMem_nickname',label:'sMem_nickname'},{k:'sMem_birthdt',type:'date',label:'sMem_birthdt'},{k:'sMem_birth_year',type:'number',label:'sMem_birth_year'},{k:'sMem_calendar_type',type:'select',options:['solar','lunar','leap'],label:'sMem_calendar_type',},{k:'sMem_gender',type:'select',options:['','M','F'],label:'sMem_gender',},{k:'sMem_buss_name',label:'sMem_buss_name'},{k:'sMem_comp_name',label:'sMem_comp_name'},{k:'sMem_phone',label:'sMem_phone'},{k:'sMem_mobile',label:'sMem_mobile'},{k:'sMem_email',type:'email',label:'sMem_email'},{k:'zipcode',label:'zipcode'},{k:'address1',label:'address1'},{k:'address2',label:'address2'},{k:'zipcode_s',label:'zipcode_s'},{k:'address1_s',label:'address1_s'},{k:'address2_s',label:'address2_s'},{k:'sMem_snsgu',label:'sMem_snsgu'},...Array.from({length:12},(_,i)=>({k:`sMem_choice${i + 1}`,type:'number',label:`sMem_choice${i + 1}`,})),{k:'sMem_quest',type:'textarea',label:'sMem_quest'},{k:'sMem_content_enc',type:'textarea',label:'sMem_content_enc',},{k:'old_name',label:'old_name'},{k:'new_name',label:'new_name'},{k:'recommender',label:'recommender'},{k:'applicant',label:'applicant'},{k:'signature_file',label:'signature_file'},{k:'reference',type:'textarea',label:'reference'},{k:'sMem_agreement',type:'number',label:'sMem_agreement'},{k:'sMem_agree',type:'number',label:'sMem_agree'},{k:'sMem_admin_id',label:'sMem_admin_id'},{k:'sMem_grade',label:'sMem_grade'},{k:'sMem_status',type:'select',options:['OPEN','LOCKED','DELETED'],label:'sMem_status',},{k:'createdAt',ro:true,label:'createdAt'},{k:'created_at',ro:true,label:'created_at'},{k:'updated_at',ro:true,label:'updated_at'},],fmTickets:[{k:'ticket_id',ro:true,label:'ticket_id'},{k:'title_masked',label:'title_masked'},{k:'content_enc',type:'textarea',label:'content_enc'},{k:'author_name',label:'author_name'},{k:'author_nickname',label:'author_nickname'},{k:'author_contact',label:'author_contact'},{k:'author_phone',label:'author_phone'},{k:'author_mobile',label:'author_mobile'},{k:'author_email',type:'email',label:'author_email'},{k:'author_gender',type:'select',options:['','M','F'],label:'author_gender',},{k:'birth_year',type:'number',label:'birth_year'},{k:'snsgu',label:'snsgu'},...Array.from({length:12},(_,i)=>({k:`choice${i + 1}`,type:'number',label:`choice${i + 1}`,})),{k:'agreement',type:'number',label:'agreement'},{k:'sMember_id',label:'sMember_id'},{k:'post_pwd_hash',label:'post_pwd_hash'},{k:'post_pwd_salt',label:'post_pwd_salt'},{k:'has_admin_reply',type:'select',options:['false','true'],label:'has_admin_reply',},{k:'status',type:'select',options:['OPEN','ANSWERED','CLOSED'],label:'status',},{k:'created_at',ro:true,label:'created_at'},{k:'updated_at',ro:true,label:'updated_at'},],fmMsgs:[{k:'msg_id',ro:true,label:'msg_id'},{k:'ticket_id',label:'ticket_id'},{k:'role',label:'role'},{k:'content_enc',type:'textarea',label:'content_enc'},{k:'created_at',ro:true,label:'created_at'},],};const elMembersBody=()=>qs('#tbl-members tbody');const elTicketsBody=()=>qs('#tbl-tickets tbody');const elMsgsBody=()=>qs('#tbl-msgs tbody');function renderMembers(){const kw=state.filters.members.trim();let rows=members.filter((r)=>{if(!kw)return true;const hay=`${r.sMem_id} ${r.sMem_name} ${r.sMem_nickname} ${r.sMem_email} ${r.sMem_status}`;return contains(hay,kw);});rows=state.sort.members.sort(rows);const tb=elMembersBody();tb.innerHTML='';rows.forEach((r)=>{const tr=document.createElement('tr');if(state.selMember===r.sMem_id)tr.classList.add('selected');tr.innerHTML=`
-<td><span class="tag">${escapeHtml(r.sMem_id)}</span></td>
-<td>${escapeHtml(r.sMem_name ?? '')}</td>
-<td class="muted">${escapeHtml(r.sMem_nickname ?? '')}</td>
-<td class="ellipsis">${escapeHtml(r.sMem_email ?? '')}</td>
-<td>${escapeHtml(r.sMem_gender ?? '')}</td>
-<td>${fmtTag(r.sMem_status, statusColorMap)}</td>
+/* ========= 테마 제어 ========= */
+const THEME_KEY = 'admin_theme_v1';
+const THEME_NAMES = {
+  'theme-dim': 'Dim',
+  'theme-midnight': 'Midnight',
+  'theme-light': 'Light',
+  'theme-sepia': 'Sepia',
+};
+function applyTheme(theme) {
+  const body = document.body;
+  body.classList.remove(
+    'theme-light',
+    'theme-dim',
+    'theme-sepia',
+    'theme-midnight'
+  );
+  body.classList.add(theme);
+  localStorage.setItem(THEME_KEY, theme);
+  const label = document.getElementById('themeLabel');
+  label.textContent = THEME_NAMES[theme] || 'Dim';
+  document.getElementById('themeBtn').setAttribute('aria-expanded', 'false');
+  document.getElementById('themeMenu').classList.remove('open');
+}
+(function initTheme() {
+  const prefersDark =
+    window.matchMedia &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const saved = localStorage.getItem(THEME_KEY);
+  const initial = saved || (prefersDark ? 'theme-dim' : 'theme-light');
+  applyTheme(initial);
+})();
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const m = document.getElementById('themeMenu');
+  const open = m.classList.toggle('open');
+  document
+    .getElementById('themeBtn')
+    .setAttribute('aria-expanded', String(open));
+});
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('themeMenu');
+  const btn = document.getElementById('themeBtn');
+  if (!menu.contains(e.target) && e.target !== btn) {
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+});
+document.querySelectorAll('#themeMenu [data-theme]').forEach((btn) => {
+  btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
+});
+
+/* ========= 데모 데이터 (스키마 키 그대로) ========= */
+let members = [
+  {
+    sm_id: 1,
+    smem_id: 'user001',
+    smem_pwdHash: '***',
+    smem_pwd_salt: null,
+    smem_name: '홍길동',
+    smem_nickname: '길동이',
+    smem_birthdt: '1990-01-01',
+    smem_birth_year: 1990,
+    smem_calendar_type: 'solar',
+    smem_gender: 'M',
+    smem_buss_name: '길동상회',
+    smem_comp_name: '길동주식회사',
+    smem_phone: '02-111-2222',
+    smem_mobile: '010-1111-2222',
+    smem_email: 'hong@example.com',
+    zipcode: '12345',
+    address1: '서울 강남구',
+    address2: '테헤란로 1',
+    zipcode_s: '',
+    address1_s: '',
+    address2_s: '',
+    smem_snsgu: 'A',
+    smem_choice1: 0,
+    smem_choice2: 0,
+    smem_choice3: 0,
+    smem_choice4: 0,
+    smem_choice5: 0,
+    smem_choice6: 0,
+    smem_choice7: 0,
+    smem_choice8: 0,
+    smem_choice9: 0,
+    smem_choice10: 0,
+    smem_choice11: 0,
+    smem_choice12: 0,
+    smem_quest: '',
+    smem_content_enc: '',
+    old_name: '',
+    new_name: '',
+    recommender: '',
+    applicant: '',
+    signature_file: '',
+    reference: '',
+    smem_agreement: 1,
+    smem_agree: 1,
+    smem_admin_id: 'admin01',
+    smem_grade: 'A',
+    smem_status: 'OPEN',
+    createdAt: '2025-10-01 10:15:00',
+    created_at: '2025-10-01 10:15:00',
+    updated_at: '2025-10-01 10:15:00',
+  },
+  {
+    sm_id: 2,
+    smem_id: 'user002',
+    smem_pwdHash: '***',
+    smem_pwd_salt: null,
+    smem_name: '김민지',
+    smem_nickname: '민지',
+    smem_birthdt: '1995-05-05',
+    smem_birth_year: 1995,
+    smem_calendar_type: 'lunar',
+    smem_gender: 'F',
+    smem_buss_name: '',
+    smem_comp_name: '',
+    smem_phone: '',
+    smem_mobile: '010-2222-3333',
+    smem_email: 'minji@example.com',
+    zipcode: '',
+    address1: '',
+    address2: '',
+    zipcode_s: '',
+    address1_s: '',
+    address2_s: '',
+    smem_snsgu: 'B',
+    smem_choice1: 0,
+    smem_choice2: 0,
+    smem_choice3: 0,
+    smem_choice4: 0,
+    smem_choice5: 0,
+    smem_choice6: 0,
+    smem_choice7: 0,
+    smem_choice8: 0,
+    smem_choice9: 0,
+    smem_choice10: 0,
+    smem_choice11: 0,
+    smem_choice12: 0,
+    smem_quest: '',
+    smem_content_enc: '',
+    old_name: '',
+    new_name: '',
+    recommender: '',
+    applicant: '',
+    signature_file: '',
+    reference: '',
+    smem_agreement: 1,
+    smem_agree: 0,
+    smem_admin_id: 'admin02',
+    smem_grade: 'B',
+    smem_status: 'OPEN',
+    createdAt: '2025-10-05 09:02:10',
+    created_at: '2025-10-05 09:02:10',
+    updated_at: '2025-10-05 09:02:10',
+  },
+];
+let tickets = [
+  {
+    ticket_id: 'a111-111',
+    title_masked: '[비밀] 진로 고민',
+    content_enc: '...',
+    author_name: '홍길동',
+    author_nickname: '길동이',
+    author_contact: '',
+    author_phone: '',
+    author_mobile: '',
+    author_email: '',
+    author_gender: 'M',
+    birth_year: 1990,
+    snsgu: 'A',
+    choice1: 0,
+    choice2: 0,
+    choice3: 0,
+    choice4: 0,
+    choice5: 0,
+    choice6: 0,
+    choice7: 0,
+    choice8: 0,
+    choice9: 0,
+    choice10: 0,
+    choice11: 0,
+    choice12: 0,
+    agreement: 1,
+    sMember_id: 'user001',
+    post_pwd_hash: 'h',
+    post_pwd_salt: null,
+    has_admin_reply: true,
+    status: 'ANSWERED',
+    created_at: '2025-10-06 11:20:00',
+    updated_at: '2025-10-06 11:50:00',
+  },
+  {
+    ticket_id: 'a222-222',
+    title_masked: '[비밀] 대인관계',
+    content_enc: '...',
+    author_name: '김민지',
+    author_nickname: '민지',
+    author_contact: '',
+    author_phone: '',
+    author_mobile: '',
+    author_email: '',
+    author_gender: 'F',
+    birth_year: 1995,
+    snsgu: 'B',
+    choice1: 0,
+    choice2: 0,
+    choice3: 0,
+    choice4: 0,
+    choice5: 0,
+    choice6: 0,
+    choice7: 0,
+    choice8: 0,
+    choice9: 0,
+    choice10: 0,
+    choice11: 0,
+    choice12: 0,
+    agreement: 1,
+    sMember_id: 'user002',
+    post_pwd_hash: 'h',
+    post_pwd_salt: null,
+    has_admin_reply: false,
+    status: 'OPEN',
+    created_at: '2025-10-10 09:00:00',
+    updated_at: '2025-10-10 09:00:00',
+  },
+];
+let msgs = [
+  {
+    msg_id: 'm1',
+    ticket_id: 'a111-111',
+    role: 'admin',
+    content_enc: '안녕하세요. 접수했습니다.',
+    created_at: '2025-10-06 11:45:00',
+  },
+  {
+    msg_id: 'm2',
+    ticket_id: 'a111-111',
+    role: 'user',
+    content_enc: '감사합니다.',
+    created_at: '2025-10-06 12:00:00',
+  },
+  {
+    msg_id: 'm4',
+    ticket_id: 'a222-222',
+    role: 'user',
+    content_enc: '추가 질문이 있어요.',
+    created_at: '2025-10-11 10:00:00',
+  },
+];
+
+/* ========= 상태/도구 ========= */
+const qs = (s) => document.querySelector(s);
+const qsa = (s) => Array.from(document.querySelectorAll(s));
+const escapeHtml = (s) =>
+  (s ?? '').toString().replace(
+    /[&<>"']/g,
+    (m) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      }[m])
+  );
+const contains = (hay, kw) => hay.toLowerCase().includes(kw.toLowerCase());
+
+function fmtTag(v, map) {
+  if (!map) return `<span class="tag">${escapeHtml(v ?? '')}</span>`;
+  const t = map[v] || { text: String(v ?? ''), cls: '' };
+  return `<span class="tag ${t.cls}">${t.text}</span>`;
+}
+const statusColorMap = {
+  OPEN: { text: 'OPEN', cls: 'warn' },
+  LOCKED: { text: 'LOCKED', cls: 'err' },
+  DELETED: { text: 'DELETED', cls: 'err' },
+  ANSWERED: { text: 'ANSWERED', cls: 'ok' },
+  CLOSED: { text: 'CLOSED', cls: 'err' },
+};
+
+function makeSorter() {
+  let sortKeys = [];
+  return {
+    toggle(k, multi) {
+      if (!multi) sortKeys = [];
+      const f = sortKeys.find((x) => x.k === k);
+      if (!f) sortKeys.push({ k, dir: 1 });
+      else if (f.dir === 1) f.dir = -1;
+      else sortKeys = sortKeys.filter((x) => x.k !== k);
+    },
+    sort(arr) {
+      if (sortKeys.length === 0) return arr;
+      return [...arr].sort((a, b) => {
+        for (const s of sortKeys) {
+          const av = (a[s.k] ?? '').toString(),
+            bv = (b[s.k] ?? '').toString();
+          if (av < bv) return -1 * s.dir;
+          if (av > bv) return 1 * s.dir;
+        }
+        return 0;
+      });
+    },
+    keys: () => sortKeys,
+  };
+}
+
+let state = {
+  selMember: null, // smem_id
+  selTicket: null, // ticket_id
+  filters: { members: '', tickets: '', msgs: '' },
+  sort: {
+    members: makeSorter(),
+    tickets: makeSorter(),
+    msgs: makeSorter(),
+  },
+  fmMembers: [
+    { k: 'sm_id', ro: true, label: 'sm_id' },
+    { k: 'smem_id', req: true, label: 'smem_id' },
+    { k: 'smem_pwdHash', type: 'password', label: 'smem_pwdHash' },
+    { k: 'smem_pwd_salt', label: 'smem_pwd_salt' },
+    { k: 'smem_name', label: 'smem_name' },
+    { k: 'smem_nickname', label: 'smem_nickname' },
+    { k: 'smem_birthdt', type: 'date', label: 'smem_birthdt' },
+    { k: 'smem_birth_year', type: 'number', label: 'smem_birth_year' },
+    {
+      k: 'smem_calendar_type',
+      type: 'select',
+      options: ['solar', 'lunar', 'leap'],
+      label: 'smem_calendar_type',
+    },
+    {
+      k: 'smem_gender',
+      type: 'select',
+      options: ['', 'M', 'F'],
+      label: 'smem_gender',
+    },
+    { k: 'smem_buss_name', label: 'smem_buss_name' },
+    { k: 'smem_comp_name', label: 'smem_comp_name' },
+    { k: 'smem_phone', label: 'smem_phone' },
+    { k: 'smem_mobile', label: 'smem_mobile' },
+    { k: 'smem_email', type: 'email', label: 'smem_email' },
+    { k: 'zipcode', label: 'zipcode' },
+    { k: 'address1', label: 'address1' },
+    { k: 'address2', label: 'address2' },
+    { k: 'zipcode_s', label: 'zipcode_s' },
+    { k: 'address1_s', label: 'address1_s' },
+    { k: 'address2_s', label: 'address2_s' },
+    { k: 'smem_snsgu', label: 'smem_snsgu' },
+    ...Array.from({ length: 12 }, (_, i) => ({
+      k: `smem_choice${i + 1}`,
+      type: 'number',
+      label: `smem_choice${i + 1}`,
+    })),
+    { k: 'smem_quest', type: 'textarea', label: 'smem_quest' },
+    {
+      k: 'smem_content_enc',
+      type: 'textarea',
+      label: 'smem_content_enc',
+    },
+    { k: 'old_name', label: 'old_name' },
+    { k: 'new_name', label: 'new_name' },
+    { k: 'recommender', label: 'recommender' },
+    { k: 'applicant', label: 'applicant' },
+    { k: 'signature_file', label: 'signature_file' },
+    { k: 'reference', type: 'textarea', label: 'reference' },
+    { k: 'smem_agreement', type: 'number', label: 'smem_agreement' },
+    { k: 'smem_agree', type: 'number', label: 'smem_agree' },
+    { k: 'smem_admin_id', label: 'smem_admin_id' },
+    { k: 'smem_grade', label: 'smem_grade' },
+    {
+      k: 'smem_status',
+      type: 'select',
+      options: ['OPEN', 'LOCKED', 'DELETED'],
+      label: 'smem_status',
+    },
+    { k: 'createdAt', ro: true, label: 'createdAt' },
+    { k: 'created_at', ro: true, label: 'created_at' },
+    { k: 'updated_at', ro: true, label: 'updated_at' },
+  ],
+  fmTickets: [
+    { k: 'ticket_id', ro: true, label: 'ticket_id' },
+    { k: 'title_masked', label: 'title_masked' },
+    { k: 'content_enc', type: 'textarea', label: 'content_enc' },
+    { k: 'author_name', label: 'author_name' },
+    { k: 'author_nickname', label: 'author_nickname' },
+    { k: 'author_contact', label: 'author_contact' },
+    { k: 'author_phone', label: 'author_phone' },
+    { k: 'author_mobile', label: 'author_mobile' },
+    { k: 'author_email', type: 'email', label: 'author_email' },
+    {
+      k: 'author_gender',
+      type: 'select',
+      options: ['', 'M', 'F'],
+      label: 'author_gender',
+    },
+    { k: 'birth_year', type: 'number', label: 'birth_year' },
+    { k: 'snsgu', label: 'snsgu' },
+    ...Array.from({ length: 12 }, (_, i) => ({
+      k: `choice${i + 1}`,
+      type: 'number',
+      label: `choice${i + 1}`,
+    })),
+    { k: 'agreement', type: 'number', label: 'agreement' },
+    { k: 'sMember_id', label: 'sMember_id' },
+    { k: 'post_pwd_hash', label: 'post_pwd_hash' },
+    { k: 'post_pwd_salt', label: 'post_pwd_salt' },
+    {
+      k: 'has_admin_reply',
+      type: 'select',
+      options: ['false', 'true'],
+      label: 'has_admin_reply',
+    },
+    {
+      k: 'status',
+      type: 'select',
+      options: ['OPEN', 'ANSWERED', 'CLOSED'],
+      label: 'status',
+    },
+    { k: 'created_at', ro: true, label: 'created_at' },
+    { k: 'updated_at', ro: true, label: 'updated_at' },
+  ],
+  fmMsgs: [
+    { k: 'msg_id', ro: true, label: 'msg_id' },
+    { k: 'ticket_id', label: 'ticket_id' },
+    { k: 'role', label: 'role' },
+    { k: 'content_enc', type: 'textarea', label: 'content_enc' },
+    { k: 'created_at', ro: true, label: 'created_at' },
+  ],
+};
+
+/* ========= 렌더링: 테이블 ========= */
+const elMembersBody = () => qs('#tbl-members tbody');
+const elTicketsBody = () => qs('#tbl-tickets tbody');
+const elMsgsBody = () => qs('#tbl-msgs tbody');
+
+function renderMembers() {
+  const kw = state.filters.members.trim();
+  let rows = members.filter((r) => {
+    if (!kw) return true;
+    const hay = `${r.smem_id} ${r.smem_name} ${r.smem_nickname} ${r.smem_email} ${r.smem_status}`;
+    return contains(hay, kw);
+  });
+  rows = state.sort.members.sort(rows);
+  const tb = elMembersBody();
+  tb.innerHTML = '';
+  rows.forEach((r) => {
+    const tr = document.createElement('tr');
+    if (state.selMember === r.smem_id) tr.classList.add('selected');
+    tr.innerHTML = `
+<td><span class="tag">${escapeHtml(r.smem_id)}</span></td>
+<td>${escapeHtml(r.smem_name ?? '')}</td>
+<td class="muted">${escapeHtml(r.smem_nickname ?? '')}</td>
+<td>${escapeHtml(r.smem_mobile ?? '')}</td>
+<td>${fmtTag(r.smem_status, statusColorMap)}</td>
 <td class="muted">${escapeHtml(r.created_at ?? '')}</td>
-`;tr.onclick=()=>{state.selMember=state.selMember===r.sMem_id?null:r.sMem_id;state.selTicket=null;renderMembers();renderTickets();renderMsgs();updateFooters();renderMemberForm();};tb.appendChild(tr);});qs('#count-members').textContent=`${rows.length} rows`;}
-function renderTickets(){const kw=state.filters.tickets.trim();let rows=tickets.filter((r)=>{if(state.selMember&&r.sMember_id!==state.selMember)return false;if(!kw)return true;const hay=`${r.title_masked} ${r.author_nickname} ${r.status} ${r.sMember_id}`;return contains(hay,kw);});rows=state.sort.tickets.sort(rows);const tb=elTicketsBody();tb.innerHTML='';rows.forEach((r)=>{const tr=document.createElement('tr');if(state.selTicket===r.ticket_id)tr.classList.add('selected');tr.innerHTML=`
+`;
+    tr.onclick = () => {
+      state.selMember = state.selMember === r.smem_id ? null : r.smem_id;
+      state.selTicket = null;
+      renderMembers();
+      renderTickets();
+      renderMsgs();
+      updateFooters();
+      renderMemberForm();
+    };
+    tb.appendChild(tr);
+  });
+  qs('#count-members').textContent = `${rows.length} rows`;
+}
+
+function renderTickets() {
+  const kw = state.filters.tickets.trim();
+  let rows = tickets.filter((r) => {
+    if (state.selMember && r.sMember_id !== state.selMember) return false;
+    if (!kw) return true;
+    const hay = `${r.title_masked} ${r.author_nickname} ${r.status} ${r.sMember_id}`;
+    return contains(hay, kw);
+  });
+  rows = state.sort.tickets.sort(rows);
+  const tb = elTicketsBody();
+  tb.innerHTML = '';
+  rows.forEach((r) => {
+    const tr = document.createElement('tr');
+    if (state.selTicket === r.ticket_id) tr.classList.add('selected');
+    tr.innerHTML = `
+<td><span class="tag">${escapeHtml(r.ticket_id ?? '').substring(
+      0,
+      8
+    )}...</span></td>
 <td class="ellipsis">${escapeHtml(r.title_masked)}</td>
 <td class="muted">${escapeHtml(r.author_nickname ?? '')}</td>
 <td>${fmtTag(r.status, statusColorMap)}</td>
 <td>${
-  r.has_admin_reply
-    ? '<span class="tag ok">true</span>'
-    : '<span class="tag warn">false</span>'
-}</td>
-<td><span class="tag">${escapeHtml(r.sMember_id)}</span></td>
+      r.has_admin_reply
+        ? '<span class="tag ok">Y</span>'
+        : '<span class="tag warn">N</span>'
+    }</td>
 <td class="muted">${escapeHtml(r.created_at ?? '')}</td>
-`;tr.onclick=()=>{state.selTicket=state.selTicket===r.ticket_id?null:r.ticket_id;renderTickets();renderMsgs();updateFooters();renderTicketForm();};tb.appendChild(tr);});qs('#count-tickets').textContent=`${rows.length} rows`;}
-function renderMsgs(){const kw=state.filters.msgs.trim();let rows=msgs.filter((r)=>{if(state.selTicket)
-return r.ticket_id===state.selTicket&&filterKw(r,kw);if(state.selMember){const ids=tickets.filter((t)=>t.sMember_id===state.selMember).map((t)=>t.ticket_id);return ids.includes(r.ticket_id)&&filterKw(r,kw);}
-return filterKw(r,kw);});rows=state.sort.msgs.sort(rows);const tb=elMsgsBody();tb.innerHTML='';rows.forEach((r)=>{const tr=document.createElement('tr');tr.innerHTML=`
-<td class="muted">${escapeHtml(r.created_at ?? '')}</td>
+`;
+    tr.onclick = () => {
+      state.selTicket = state.selTicket === r.ticket_id ? null : r.ticket_id;
+      renderTickets();
+      renderMsgs();
+      updateFooters();
+      renderTicketForm();
+    };
+    tb.appendChild(tr);
+  });
+  qs('#count-tickets').textContent = `${rows.length} rows`;
+}
+
+function renderMsgs() {
+  const kw = state.filters.msgs.trim();
+  let rows = msgs.filter((r) => {
+    if (state.selTicket)
+      return r.ticket_id === state.selTicket && filterKw(r, kw);
+    if (state.selMember) {
+      const ids = tickets
+        .filter((t) => t.sMember_id === state.selMember)
+        .map((t) => t.ticket_id);
+      return ids.includes(r.ticket_id) && filterKw(r, kw);
+    }
+    return filterKw(r, kw);
+  });
+  rows = state.sort.msgs.sort(rows);
+  const tb = elMsgsBody();
+  tb.innerHTML = '';
+  rows.forEach((r) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+<td><span class="tag">${escapeHtml(r.msg_id ?? '').substring(
+      0,
+      8
+    )}...</span></td>
 <td>${escapeHtml(r.role ?? '')}</td>
-<td><span class="tag">${escapeHtml(r.ticket_id)}</span></td>
-<td class="ellipsis">${escapeHtml(r.content_enc ?? '')}</td>
-`;tr.onclick=()=>{qs('#form-msgs').hidden=false;buildForm('#msgs-fields',state.fmMsgs,r);bindMsgSaveDelete(r);};tb.appendChild(tr);});qs('#count-msgs').textContent=`${rows.length} rows`;qs('#filter-desc').textContent=state.selTicket?`ticket_id=${state.selTicket}`:state.selMember?`sMember_id=${state.selMember}`:'전체';function filterKw(r,kw){if(!kw)return true;const hay=`${r.role} ${r.content_enc} ${r.ticket_id}`;return contains(hay,kw);}}
-function buildForm(containerSel,meta,row){const wrap=qs(containerSel);wrap.innerHTML='';meta.forEach((m)=>{const div=document.createElement('div');div.className='fi';const id=`${containerSel.slice(1)}_${m.k}`;const val=row[m.k]??'';const label=document.createElement('label');label.htmlFor=id;label.textContent=m.label||m.k;let input;if(m.type==='textarea'){input=document.createElement('textarea');input.value=val;}else if(m.type==='select'){input=document.createElement('select');(m.options||[]).forEach((opt)=>{const o=document.createElement('option');o.value=opt;o.textContent=opt;if(String(val)===String(opt))o.selected=true;input.appendChild(o);});}else{input=document.createElement('input');input.type=m.type||'text';input.value=val;}
-input.id=id;input.name=m.k;if(m.ro){input.readOnly=true;input.tabIndex=-1;}
-if(m.req)input.required=true;div.appendChild(label);div.appendChild(input);wrap.appendChild(div);});}
-function readForm(containerSel,meta,base={}){const data={...base};meta.forEach((m)=>{const el=qs(`${containerSel} [name="${m.k}"]`);if(!el)return;let v=m.type==='number'?Number(el.value||0):el.value;if(m.type==='select'&&(m.options||[]).includes('true')&&(m.options||[]).includes('false')){v=el.value==='true';}
-data[m.k]=m.type==='number'&&isNaN(v)?null:v;});return data;}
-function renderMemberForm(){const r=members.find((x)=>x.sMem_id===state.selMember);const form=qs('#form-members');if(!r){form.hidden=true;qs('#sel-member').textContent='없음';return;}
-form.hidden=false;buildForm('#members-fields',state.fmMembers,r);bindMemberSaveDelete(r);qs('#sel-member').textContent=state.selMember;}
-function bindMemberSaveDelete(rowRef){qs('#save-member').onclick=(e)=>{e.preventDefault();const updated=readForm('#members-fields',state.fmMembers,rowRef);if(!updated.sMem_id){alert('sMem_id는 필수입니다.');return;}
-Object.assign(rowRef,updated,{updated_at:nowStr()});renderMembers();renderTickets();renderMsgs();alert('sMembers: 저장 완료 (데모 메모리 반영)');};qs('#delete-member').onclick=(e)=>{e.preventDefault();if(!confirm('정말 삭제하시겠습니까? 관련 tickets/msg는 남아있습니다(데모).'))
-return;members=members.filter((x)=>x!==rowRef);state.selMember=null;state.selTicket=null;renderMembers();renderTickets();renderMsgs();qs('#form-members').hidden=true;};}
-function renderTicketForm(){const r=tickets.find((x)=>x.ticket_id===state.selTicket);const form=qs('#form-tickets');if(!r){form.hidden=true;qs('#sel-ticket').textContent='없음';return;}
-form.hidden=false;buildForm('#tickets-fields',state.fmTickets,r);bindTicketSaveDelete(r);qs('#sel-ticket').textContent=state.selTicket;}
-function bindTicketSaveDelete(rowRef){qs('#save-ticket').onclick=(e)=>{e.preventDefault();const updated=readForm('#tickets-fields',state.fmTickets,rowRef);if(!updated.ticket_id){alert('ticket_id가 비었습니다.');return;}
-Object.assign(rowRef,updated,{updated_at:nowStr()});renderTickets();renderMsgs();alert('tickets: 저장 완료 (데모 메모리 반영)');};qs('#delete-ticket').onclick=(e)=>{e.preventDefault();if(!confirm('정말 삭제하시겠습니까? 관련 thread_messages는 남아있습니다(데모).'))
-return;tickets=tickets.filter((x)=>x!==rowRef);state.selTicket=null;renderTickets();renderMsgs();qs('#form-tickets').hidden=true;};}
-function bindMsgSaveDelete(rowRef){qs('#save-msg').onclick=(e)=>{e.preventDefault();const updated=readForm('#msgs-fields',state.fmMsgs,rowRef);if(!updated.msg_id){alert('msg_id가 비었습니다.');return;}
-Object.assign(rowRef,updated);renderMsgs();alert('thread_messages: 저장 완료 (데모 메모리 반영)');};qs('#delete-msg').onclick=(e)=>{e.preventDefault();if(!confirm('이 메시지를 삭제하시겠습니까?'))return;msgs=msgs.filter((x)=>x!==rowRef);renderMsgs();qs('#form-msgs').hidden=true;};}
-function bindSortHead(tableSel,sorter,rerender){qsa(`${tableSel} thead th`).forEach((th)=>{th.addEventListener('click',(ev)=>{sorter.toggle(th.dataset.k,ev.shiftKey);qsa(`${tableSel} thead th`).forEach((x)=>(x.innerText=x.innerText.replace(/ ▲| ▼/g,'')));const f=sorter.keys().find((x)=>x.k===th.dataset.k);if(f)th.innerText=th.innerText+(f.dir===1?' ▲':' ▼');rerender();});});}
-function updateFooters(){qs('#sel-member').textContent=state.selMember||'없음';qs('#sel-ticket').textContent=state.selTicket||'없음';}
-function nowStr(){const d=new Date();const p=(n)=>String(n).padStart(2,'0');return`${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(
+<td><span class="tag">${escapeHtml(r.ticket_id ?? '').substring(
+      0,
+      8
+    )}...</span></td>
+<td class="ellipsis">${escapeHtml((r.content_enc ?? '').substring(0, 50))}${
+      (r.content_enc ?? '').length > 50 ? '...' : ''
+    }</td>
+<td class="muted">${escapeHtml(r.created_at ?? '')}</td>
+`;
+    tr.onclick = () => {
+      qs('#form-msgs').hidden = false;
+      buildForm('#msgs-fields', state.fmMsgs, r);
+      bindMsgSaveDelete(r);
+    };
+    tb.appendChild(tr);
+  });
+  qs('#count-msgs').textContent = `${rows.length} rows`;
+  qs('#filter-desc').textContent = state.selTicket
+    ? `ticket_id=${state.selTicket}`
+    : state.selMember
+    ? `sMember_id=${state.selMember}`
+    : '전체';
+  function filterKw(r, kw) {
+    if (!kw) return true;
+    const hay = `${r.role} ${r.content_enc} ${r.ticket_id}`;
+    return contains(hay, kw);
+  }
+}
+
+/* ========= 폼 생성/바인딩 ========= */
+function buildForm(containerSel, meta, row) {
+  const wrap = qs(containerSel);
+  wrap.innerHTML = '';
+  meta.forEach((m) => {
+    const div = document.createElement('div');
+    div.className = 'fi';
+    const id = `${containerSel.slice(1)}_${m.k}`;
+    const val = row[m.k] ?? '';
+    const label = document.createElement('label');
+    label.htmlFor = id;
+    label.textContent = m.label || m.k;
+    let input;
+    if (m.type === 'textarea') {
+      input = document.createElement('textarea');
+      input.value = val;
+    } else if (m.type === 'select') {
+      input = document.createElement('select');
+      (m.options || []).forEach((opt) => {
+        const o = document.createElement('option');
+        o.value = opt;
+        o.textContent = opt;
+        if (String(val) === String(opt)) o.selected = true;
+        input.appendChild(o);
+      });
+    } else {
+      input = document.createElement('input');
+      input.type = m.type || 'text';
+      input.value = val;
+    }
+    input.id = id;
+    input.name = m.k;
+    if (m.ro) {
+      input.readOnly = true;
+      input.tabIndex = -1;
+    }
+    if (m.req) input.required = true;
+    div.appendChild(label);
+    div.appendChild(input);
+    wrap.appendChild(div);
+  });
+}
+function readForm(containerSel, meta, base = {}) {
+  const data = { ...base };
+  meta.forEach((m) => {
+    const el = qs(`${containerSel} [name="${m.k}"]`);
+    if (!el) return;
+    let v = m.type === 'number' ? Number(el.value || 0) : el.value;
+    if (
+      m.type === 'select' &&
+      (m.options || []).includes('true') &&
+      (m.options || []).includes('false')
+    ) {
+      v = el.value === 'true';
+    }
+    data[m.k] = m.type === 'number' && isNaN(v) ? null : v;
+  });
+  return data;
+}
+
+/* = sMembers 폼 렌더/저장/삭제 = */
+function renderMemberForm() {
+  const r = members.find((x) => x.smem_id === state.selMember);
+  const form = qs('#form-members');
+  if (!r) {
+    form.hidden = true;
+    qs('#sel-member').textContent = '없음';
+    return;
+  }
+  form.hidden = false;
+  buildForm('#members-fields', state.fmMembers, r);
+  bindMemberSaveDelete(r);
+  qs('#sel-member').textContent = state.selMember;
+}
+function bindMemberSaveDelete(rowRef) {
+  qs('#save-member').onclick = async (e) => {
+    e.preventDefault();
+    const updated = readForm('#members-fields', state.fmMembers, rowRef);
+    if (!updated.smem_id) {
+      alert('smem_id는 필수입니다.');
+      return;
+    }
+
+    try {
+      console.log('🔄 회원 정보 수정 API 호출:', rowRef.sm_id);
+      const response = await fetch(`/secret/api/v1/smembers/${rowRef.sm_id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || '회원 수정 실패');
+      }
+
+      const result = await response.json();
+      console.log('✅ 회원 수정 완료:', result);
+
+      // 로컬 데이터 업데이트
+      Object.assign(rowRef, updated, { updated_at: nowStr() });
+      renderMembers();
+      renderTickets();
+      renderMsgs();
+      alert('회원 정보가 저장되었습니다.');
+    } catch (error) {
+      console.error('❌ 회원 수정 오류:', error);
+      alert('저장 중 오류가 발생했습니다: ' + error.message);
+    }
+  };
+
+  qs('#delete-member').onclick = async (e) => {
+    e.preventDefault();
+    if (
+      !confirm('정말 삭제하시겠습니까? 관련 tickets/messages는 남아있습니다.')
+    )
+      return;
+
+    try {
+      console.log('🔄 회원 삭제 API 호출:', rowRef.sm_id);
+      const response = await fetch(`/secret/api/v1/smembers/${rowRef.sm_id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || '회원 삭제 실패');
+      }
+
+      console.log('✅ 회원 삭제 완료');
+
+      // 로컬 데이터에서 제거
+      members = members.filter((x) => x !== rowRef);
+      state.selMember = null;
+      state.selTicket = null;
+      renderMembers();
+      renderTickets();
+      renderMsgs();
+      qs('#form-members').hidden = true;
+      alert('회원이 삭제되었습니다.');
+    } catch (error) {
+      console.error('❌ 회원 삭제 오류:', error);
+      alert('삭제 중 오류가 발생했습니다: ' + error.message);
+    }
+  };
+}
+
+/* = tickets 폼 렌더/저장/삭제 = */
+function renderTicketForm() {
+  const r = tickets.find((x) => x.ticket_id === state.selTicket);
+  const form = qs('#form-tickets');
+  if (!r) {
+    form.hidden = true;
+    qs('#sel-ticket').textContent = '없음';
+    return;
+  }
+  form.hidden = false;
+  buildForm('#tickets-fields', state.fmTickets, r);
+  bindTicketSaveDelete(r);
+  qs('#sel-ticket').textContent = state.selTicket;
+}
+function bindTicketSaveDelete(rowRef) {
+  qs('#save-ticket').onclick = async (e) => {
+    e.preventDefault();
+    const updated = readForm('#tickets-fields', state.fmTickets, rowRef);
+    if (!updated.ticket_id) {
+      alert('ticket_id가 비었습니다.');
+      return;
+    }
+
+    try {
+      console.log('🔄 티켓 수정 API 호출:', rowRef.ticket_id);
+      const response = await fetch(
+        `/secret/api/v1/tickets/${rowRef.ticket_id}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: updated.title_masked,
+            content: updated.content_enc,
+            author_name: updated.author_name,
+            author_contact: updated.author_contact || '',
+            status: updated.status,
+            author_nickname: updated.author_nickname,
+            author_phone: updated.author_phone,
+            author_mobile: updated.author_mobile,
+            author_email: updated.author_email,
+            author_gender: updated.author_gender,
+            birth_year: updated.birth_year,
+            snsgu: updated.snsgu,
+            agreement: updated.agreement,
+            post_pwd_hash: updated.post_pwd_hash,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || '티켓 수정 실패');
+      }
+
+      console.log('✅ 티켓 수정 완료');
+
+      // 로컬 데이터 업데이트
+      Object.assign(rowRef, updated, { updated_at: nowStr() });
+      renderTickets();
+      renderMsgs();
+      alert('티켓이 저장되었습니다.');
+    } catch (error) {
+      console.error('❌ 티켓 수정 오류:', error);
+      alert('저장 중 오류가 발생했습니다: ' + error.message);
+    }
+  };
+
+  qs('#delete-ticket').onclick = async (e) => {
+    e.preventDefault();
+    if (!confirm('정말 삭제하시겠습니까? 관련 thread_messages는 남아있습니다.'))
+      return;
+
+    try {
+      console.log('🔄 티켓 삭제 API 호출:', rowRef.ticket_id);
+      const response = await fetch(
+        `/secret/api/v1/tickets/${rowRef.ticket_id}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || '티켓 삭제 실패');
+      }
+
+      console.log('✅ 티켓 삭제 완료');
+
+      // 로컬 데이터에서 제거
+      tickets = tickets.filter((x) => x !== rowRef);
+      state.selTicket = null;
+      renderTickets();
+      renderMsgs();
+      qs('#form-tickets').hidden = true;
+      alert('티켓이 삭제되었습니다.');
+    } catch (error) {
+      console.error('❌ 티켓 삭제 오류:', error);
+      alert('삭제 중 오류가 발생했습니다: ' + error.message);
+    }
+  };
+}
+
+/* = msgs 폼 저장/삭제 = */
+function bindMsgSaveDelete(rowRef) {
+  qs('#save-msg').onclick = async (e) => {
+    e.preventDefault();
+    const updated = readForm('#msgs-fields', state.fmMsgs, rowRef);
+    if (!updated.msg_id) {
+      alert('msg_id가 비었습니다.');
+      return;
+    }
+
+    try {
+      console.log('🔄 메시지 수정 API 호출:', rowRef.msg_id);
+      const response = await fetch(
+        `/secret/api/v1/admin/messages/${rowRef.msg_id}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            content: updated.content_enc,
+            role: updated.role,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || '메시지 수정 실패');
+      }
+
+      console.log('✅ 메시지 수정 완료');
+
+      // 로컬 데이터 업데이트
+      Object.assign(rowRef, updated);
+      renderMsgs();
+      alert('메시지가 저장되었습니다.');
+    } catch (error) {
+      console.error('❌ 메시지 수정 오류:', error);
+      alert('저장 중 오류가 발생했습니다: ' + error.message);
+    }
+  };
+
+  qs('#delete-msg').onclick = async (e) => {
+    e.preventDefault();
+    if (!confirm('이 메시지를 삭제하시겠습니까?')) return;
+
+    try {
+      console.log('🔄 메시지 삭제 API 호출:', rowRef.msg_id);
+      const response = await fetch(
+        `/secret/api/v1/admin/messages/${rowRef.msg_id}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || '메시지 삭제 실패');
+      }
+
+      console.log('✅ 메시지 삭제 완료');
+
+      // 로컬 데이터에서 제거
+      msgs = msgs.filter((x) => x !== rowRef);
+      renderMsgs();
+      qs('#form-msgs').hidden = true;
+      alert('메시지가 삭제되었습니다.');
+    } catch (error) {
+      console.error('❌ 메시지 삭제 오류:', error);
+      alert('삭제 중 오류가 발생했습니다: ' + error.message);
+    }
+  };
+}
+
+/* ========= 테이블 정렬 헤더 바인딩 ========= */
+function bindSortHead(tableSel, sorter, rerender) {
+  qsa(`${tableSel} thead th`).forEach((th) => {
+    th.addEventListener('click', (ev) => {
+      sorter.toggle(th.dataset.k, ev.shiftKey);
+      qsa(`${tableSel} thead th`).forEach(
+        (x) => (x.innerText = x.innerText.replace(/ ▲| ▼/g, ''))
+      );
+      const f = sorter.keys().find((x) => x.k === th.dataset.k);
+      if (f) th.innerText = th.innerText + (f.dir === 1 ? ' ▲' : ' ▼');
+      rerender();
+    });
+  });
+}
+
+/* ========= 공통 ========= */
+function updateFooters() {
+  qs('#sel-member').textContent = state.selMember || '없음';
+  qs('#sel-ticket').textContent = state.selTicket || '없음';
+}
+function nowStr() {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(
     d.getHours()
-  )}:${p(d.getMinutes())}:${p(d.getSeconds())}`;}
-function init(){qs('#closeBtn').onclick=()=>{if(window.history.length>1){window.history.back();}else{window.location.href='/main_adminMenu.html';}};qs('#search-members').oninput=(e)=>{state.filters.members=e.target.value;renderMembers();};qs('#search-tickets').oninput=(e)=>{state.filters.tickets=e.target.value;renderTickets();};qs('#search-msgs').oninput=(e)=>{state.filters.msgs=e.target.value;renderMsgs();};qs('#reset-members').onclick=()=>{state.selMember=null;state.selTicket=null;renderMembers();renderTickets();renderMsgs();updateFooters();qs('#form-members').hidden=true;qs('#form-tickets').hidden=true;};qs('#reset-tickets').onclick=()=>{state.selTicket=null;renderTickets();renderMsgs();updateFooters();qs('#form-tickets').hidden=true;};renderMembers();renderTickets();renderMsgs();updateFooters();bindSortHead('#tbl-members',state.sort.members,renderMembers);bindSortHead('#tbl-tickets',state.sort.tickets,renderTickets);bindSortHead('#tbl-msgs',state.sort.msgs,renderMsgs);}
-document.addEventListener('DOMContentLoaded',init);<!--관리자 로그인 체크-->(function checkAdminLogin(){let attempts=0;const maxAttempts=10;function tryCheckAdmin(){attempts++;if(typeof window.getAdminSession==='function'){const adminSession=window.getAdminSession();if(!adminSession||!adminSession.isLoggedIn||!adminSession.admin_id){console.warn('⚠️ 관리자 로그인 정보가 없습니다.');alert('관리자 로그인이 필요합니다.');window.location.href='/secret/admin_login';return;}
-console.log('✅ 관리자 인증 완료:',adminSession.username);}else{if(attempts<maxAttempts){setTimeout(tryCheckAdmin,100);}else{console.error('❌ admin_session.js가 로드되지 않았습니다.');console.error('   스크립트 로드 순서를 확인하세요.');alert('관리자 세션 관리 스크립트를 로드할 수 없습니다.\n\n페이지를 새로고침해주세요.');window.location.href='/secret/admin_login';}}}
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',tryCheckAdmin);}else{tryCheckAdmin();}})();
+  )}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+
+/* ========= 초기화 ========= */
+async function loadDataFromServer() {
+  try {
+    console.log('🔄 서버에서 데이터 로드 시작...');
+
+    // 1. 정회원(smembers) 테이블에서 회원 데이터 가져오기 (기준)
+    const membersRes = await fetch('/secret/api/v1/smembers/');
+    if (membersRes.ok) {
+      const membersData = await membersRes.json();
+      if (membersData.ok && Array.isArray(membersData.data)) {
+        members = membersData.data;
+        console.log(
+          '✅ 정회원(smembers) 데이터 로드 완료:',
+          members.length,
+          '건'
+        );
+      }
+    }
+
+    // 2. 티켓(tickets) 데이터 가져오기
+    // smembers.smem_id = tickets.smember_id 관계
+    const ticketsRes = await fetch('/secret/api/v1/tickets/');
+    if (ticketsRes.ok) {
+      const ticketsData = await ticketsRes.json();
+      if (Array.isArray(ticketsData)) {
+        tickets = ticketsData.map((t) => ({
+          ticket_id: t.ticket_id,
+          title_masked: t.title_masked || t.title || '',
+          content_enc: t.content_enc || '',
+          author_name: t.author_name || '',
+          author_nickname: t.author_nickname || '',
+          author_contact: t.author_contact || '',
+          author_phone: t.author_phone || '',
+          author_mobile: t.author_mobile || '',
+          author_email: t.author_email || '',
+          author_gender: t.author_gender || '',
+          birth_year: t.birth_year || null,
+          snsgu: t.snsgu || '',
+          choice1: 0,
+          choice2: 0,
+          choice3: 0,
+          choice4: 0,
+          choice5: 0,
+          choice6: 0,
+          choice7: 0,
+          choice8: 0,
+          choice9: 0,
+          choice10: 0,
+          choice11: 0,
+          choice12: 0,
+          agreement: t.agreement || 0,
+          sMember_id: t.sMember_id || '',
+          post_pwd_hash: t.post_pwd_hash || '',
+          post_pwd_salt: null,
+          has_admin_reply: t.has_admin_reply || false,
+          status: t.status || 'OPEN',
+          created_at: t.created_at || '',
+          updated_at: t.updated_at || '',
+        }));
+        console.log('✅ 티켓(tickets) 데이터 로드 완료:', tickets.length, '건');
+        console.log('📊 smembers.smem_id = tickets.smember_id 관계로 연결됨');
+      }
+    }
+
+    // 3. 메시지(thread_messages) 데이터 가져오기
+    // tickets.ticket_id = thread_messages.ticket_id 관계
+    const msgsRes = await fetch('/secret/api/v1/messages/');
+    if (msgsRes.ok) {
+      const msgsData = await msgsRes.json();
+      if (Array.isArray(msgsData)) {
+        msgs = msgsData.map((m) => ({
+          msg_id: m.message_id || m.msg_id,
+          ticket_id: m.ticket_id,
+          role: m.role || 'admin',
+          content_enc: m.content_enc || m.body || '',
+          created_at: m.created_at || '',
+        }));
+        console.log(
+          '✅ 메시지(thread_messages) 데이터 로드 완료:',
+          msgs.length,
+          '건'
+        );
+        console.log(
+          '📊 tickets.ticket_id = thread_messages.ticket_id 관계로 연결됨'
+        );
+      }
+    }
+
+    // 데이터 로드 후 렌더링
+    renderMembers();
+    renderTickets();
+    renderMsgs();
+    updateFooters();
+  } catch (error) {
+    console.error('❌ 데이터 로드 오류:', error);
+    alert('데이터를 불러오는 중 오류가 발생했습니다: ' + error.message);
+  }
+}
+
+function init() {
+  // 닫기 버튼
+  qs('#closeBtn').onclick = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/main_adminMenu.html';
+    }
+  };
+  // 검색
+  qs('#search-members').oninput = (e) => {
+    state.filters.members = e.target.value;
+    renderMembers();
+  };
+  qs('#search-tickets').oninput = (e) => {
+    state.filters.tickets = e.target.value;
+    renderTickets();
+  };
+  qs('#search-msgs').oninput = (e) => {
+    state.filters.msgs = e.target.value;
+    renderMsgs();
+  };
+  // 선택 해제
+  qs('#reset-members').onclick = () => {
+    state.selMember = null;
+    state.selTicket = null;
+    renderMembers();
+    renderTickets();
+    renderMsgs();
+    updateFooters();
+    qs('#form-members').hidden = true;
+    qs('#form-tickets').hidden = true;
+  };
+  qs('#reset-tickets').onclick = () => {
+    state.selTicket = null;
+    renderTickets();
+    renderMsgs();
+    updateFooters();
+    qs('#form-tickets').hidden = true;
+  };
+
+  // 서버에서 데이터 로드
+  loadDataFromServer();
+
+  // 정렬헤더
+  bindSortHead('#tbl-members', state.sort.members, renderMembers);
+  bindSortHead('#tbl-tickets', state.sort.tickets, renderTickets);
+  bindSortHead('#tbl-msgs', state.sort.msgs, renderMsgs);
+}
+document.addEventListener('DOMContentLoaded', init);
+
+// 관리자 로그인 체크
+(function checkAdminLogin() {
+  // admin_session.js가 로드될 때까지 최대 1초 대기 (재시도 로직)
+  let attempts = 0;
+  const maxAttempts = 10; // 10번 시도 (약 1초)
+
+  function tryCheckAdmin() {
+    attempts++;
+
+    // admin_session.js가 로드되었는지 확인
+    if (typeof window.getAdminSession === 'function') {
+      const adminSession = window.getAdminSession();
+
+      // 관리자 세션이 없거나 로그인 상태가 아니면 로그인 페이지로 리다이렉트
+      if (!adminSession || !adminSession.isLoggedIn || !adminSession.admin_id) {
+        console.warn('⚠️ 관리자 로그인 정보가 없습니다.');
+        alert('관리자 로그인이 필요합니다.');
+        window.location.href = '/secret/admin_login';
+        return;
+      }
+
+      console.log('✅ 관리자 인증 완료:', adminSession.username);
+    } else {
+      // 아직 로드되지 않았으면 재시도
+      if (attempts < maxAttempts) {
+        setTimeout(tryCheckAdmin, 100); // 100ms 후 재시도
+      } else {
+        // 최대 시도 횟수 초과
+        console.error('❌ admin_session.js가 로드되지 않았습니다.');
+        console.error('   스크립트 로드 순서를 확인하세요.');
+        alert(
+          '관리자 세션 관리 스크립트를 로드할 수 없습니다.\n\n페이지를 새로고침해주세요.'
+        );
+        window.location.href = '/secret/admin_login';
+      }
+    }
+  }
+
+  // 즉시 실행 또는 DOMContentLoaded 후 실행
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryCheckAdmin);
+  } else {
+    tryCheckAdmin();
+  }
+})();

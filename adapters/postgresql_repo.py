@@ -252,7 +252,7 @@ class PostgreSQLRepo:
             'hour_ji': ticket_data.get('hour_ji'),  # 시주 추가
             'content_enc': ticket_data.get('content_enc'),  # 암호화된 내용 추가
             'snsgu': ticket_data.get('snsgu', 'A0001'),  # 기본값 추가
-            'smember_id': ticket_data.get('smember_id') or ticket_data.get('sMember_id'),  # 회원 ID 추가 (대소문자 모두 지원)
+            'smember_id': ticket_data.get('smember_id') or ticket_data.get('smember_id'),  # 회원 ID 추가 (대소문자 모두 지원)
             'admin_id': ticket_data.get('admin_id'),  # 관리자 ID 추가
             'ti_role': ticket_data.get('ti_role'),  # 관리자 role 추가
             'choice1': ticket_data.get('choice1', 0),
@@ -404,7 +404,7 @@ class PostgreSQLRepo:
                         'yundal': kwargs.get('yundal'),  # 윤달 추가
                         'hour_ji': kwargs.get('hour_ji'),  # 시주 추가
                         'snsgu': kwargs.get('snsgu', 'A0001'),  # 기본값 추가
-                        'smember_id': kwargs.get('smember_id') or kwargs.get('sMember_id'),  # 회원 ID 추가 (대소문자 모두 지원)
+                        'smember_id': kwargs.get('smember_id') or kwargs.get('smember_id'),  # 회원 ID 추가 (대소문자 모두 지원)
                         'admin_id': kwargs.get('admin_id'),  # 관리자 ID 추가
                         'ti_role': kwargs.get('ti_role'),  # 관리자 role 추가
                         'choice1': kwargs.get('choice1', 0),

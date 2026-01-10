@@ -225,6 +225,10 @@ def login():
         members = get_repo().get_smembers()
         print(f"📊 DB에서 {len(members)}명의 회원 조회")
         
+        # 첫 번째 회원의 키 확인 (디버깅용)
+        if members:
+            print(f"🔍 첫 번째 회원의 키 목록: {list(members[0].keys())}")
+        
         # 입력한 ID와 일치하는 회원 찾기 (대소문자 구분 없이 비교, 하지만 입력 그대로 유지)
         member = None
         for i, m in enumerate(members):
@@ -281,9 +285,17 @@ def login():
                 # 입력한 ID 그대로 smem_id에 저장 (대소문자 그대로)
                 safe_member['smem_id'] = login_id
                 
-                print(f"✅ 로그인 성공: 입력 ID={login_id}, DB ID={member.get('smem_id') or member.get('smem_id')}")
-                print(f"   반환 데이터: smem_id={safe_member.get('smem_id')}, smem_name={safe_member.get('smem_name') or safe_member.get('smem_name')}")
-                return jsonify({'ok': True, 'data': safe_member})
+                # 🔧 필드명을 소문자로 정규화 (sMem_id → smem_id)
+                normalized_member = {}
+                for key, value in safe_member.items():
+                    # 키를 소문자로 변환
+                    normalized_key = key.lower()
+                    normalized_member[normalized_key] = value
+                
+                print(f"✅ 로그인 성공: 입력 ID={login_id}, DB ID={member.get('smem_id') or member.get('sMem_id')}")
+                print(f"   반환 데이터: smem_id={normalized_member.get('smem_id')}, smem_name={normalized_member.get('smem_name')}")
+                print(f"   정규화된 키 목록: {list(normalized_member.keys())[:10]}")  # 처음 10개만 출력
+                return jsonify({'ok': True, 'data': normalized_member})
             else:
                 print("❌ 비밀번호 불일치")
                 return jsonify({'ok': False, 'error': '아이디 또는 비밀번호가 올바르지 않습니다.'}), 401

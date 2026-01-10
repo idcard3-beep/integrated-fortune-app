@@ -111,7 +111,7 @@ document.getElementById('ticketForm').addEventListener('submit', (e) => {
     const savedSession = sessionStorage.getItem('member_session');
     if (savedSession) {
       const sessionData = JSON.parse(savedSession);
-      // smem_id(대문자) 또는 smem_id(소문자) 모두 확인하고 smem_id로 정규화
+      // sMem_id(대문자) 또는 smem_id(소문자) 모두 확인하고 smem_id로 정규화
       smember_id = sessionData.smem_id || sessionData.smem_id || null;
       console.log('📦 sessionStorage에서 읽은 회원 ID:', smember_id);
     }

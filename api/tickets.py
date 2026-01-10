@@ -159,7 +159,7 @@ def create_ticket():
             sMember_id = None
         # 클라이언트에서 전달되지 않은 경우 서버 세션에서 확인
         if not sMember_id and session.get('member_logged_in', False):
-            sMember_id = session.get('sMem_id')
+            sMember_id = session.get('smem_id')
         print(f"👤 sMember_id 값: {sMember_id} (타입: {type(sMember_id)})")
         
         # admin_id 값 처리 (전역변수에서 받은 관리자 ID 또는 서버 세션에서)

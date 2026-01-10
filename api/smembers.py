@@ -20,10 +20,10 @@ def clean_member_data(data):
     
     # 정수형 필드 목록
     integer_fields = [
-        'sMem_birth_year', 'sMem_choice1', 'sMem_choice2', 'sMem_choice3', 
-        'sMem_choice4', 'sMem_choice5', 'sMem_choice6', 'sMem_choice7', 
-        'sMem_choice8', 'sMem_choice9', 'sMem_choice10', 'sMem_choice11', 
-        'sMem_choice12', 'sMem_agreement', 'sMem_agree'
+        'smem_birth_year', 'smem_choice1', 'smem_choice2', 'smem_choice3', 
+        'smem_choice4', 'smem_choice5', 'smem_choice6', 'smem_choice7', 
+        'smem_choice8', 'smem_choice9', 'smem_choice10', 'smem_choice11', 
+        'smem_choice12', 'smem_agreement', 'smem_agree'
     ]
     
     print(f"🔍 clean_member_data - 입력 데이터 키: {list(data.keys())}")
@@ -88,7 +88,7 @@ def check_member_id(smem_id):
         
         # 입력한 ID와 정확히 일치하는 회원이 있는지 확인 (대소문자 구분 없이)
         exists = any(
-            (member.get('sMem_id') or member.get('smem_id') or '').strip().lower() == smem_id.strip().lower()
+            (member.get('smem_id') or member.get('smem_id') or '').strip().lower() == smem_id.strip().lower()
             for member in members
         )
         
@@ -120,25 +120,25 @@ def create_member():
         data = request.get_json() or {}
         
         # 필수 필드 검증
-        if not data.get('sMem_id'):
+        if not data.get('smem_id'):
             return jsonify({'ok': False, 'error': '회원 ID는 필수입니다.'}), 400
         
-        if not data.get('sMem_pwdHash'):
+        if not data.get('smem_pwdHash'):
             return jsonify({'ok': False, 'error': '비밀번호는 필수입니다.'}), 400
         
         # 데이터 정리
         data = clean_member_data(data)
         
         # 비밀번호 해시 처리 (이미 해시된 경우가 아니라면)
-        if data.get('sMem_pwdHash') and not data['sMem_pwdHash'].startswith('$2'):
+        if data.get('smem_pwdHash') and not data['smem_pwdHash'].startswith('$2'):
             # bcrypt 해시 생성 (salt는 해시에 포함됨)
             salt = bcrypt.gensalt()
-            pwd_hash = bcrypt.hashpw(data['sMem_pwdHash'].encode(), salt)
-            data['sMem_pwdHash'] = pwd_hash.decode()
+            pwd_hash = bcrypt.hashpw(data['smem_pwdHash'].encode(), salt)
+            data['smem_pwdHash'] = pwd_hash.decode()
             # salt를 별도로 저장 (선택사항, bcrypt는 salt를 해시에 포함하지만 별도 저장도 가능)
-            if not data.get('sMem_pwd_salt'):
+            if not data.get('smem_pwd_salt'):
                 import base64
-                data['sMem_pwd_salt'] = base64.b64encode(salt).decode('utf-8')
+                data['smem_pwd_salt'] = base64.b64encode(salt).decode('utf-8')
         
         # 회원 생성
         new_member = get_repo().create_smember(data)
@@ -160,15 +160,15 @@ def update_member(sm_id):
         data = clean_member_data(data)
         
         # 비밀번호가 있고 해시되지 않은 경우 해시 처리
-        if data.get('sMem_pwdHash') and not data['sMem_pwdHash'].startswith('$2'):
+        if data.get('smem_pwdHash') and not data['smem_pwdHash'].startswith('$2'):
             # bcrypt 해시 생성 (salt는 해시에 포함됨)
             salt = bcrypt.gensalt()
-            pwd_hash = bcrypt.hashpw(data['sMem_pwdHash'].encode(), salt)
-            data['sMem_pwdHash'] = pwd_hash.decode()
+            pwd_hash = bcrypt.hashpw(data['smem_pwdHash'].encode(), salt)
+            data['smem_pwdHash'] = pwd_hash.decode()
             # salt를 별도로 저장 (선택사항, bcrypt는 salt를 해시에 포함하지만 별도 저장도 가능)
-            if not data.get('sMem_pwd_salt'):
+            if not data.get('smem_pwd_salt'):
                 import base64
-                data['sMem_pwd_salt'] = base64.b64encode(salt).decode('utf-8')
+                data['smem_pwd_salt'] = base64.b64encode(salt).decode('utf-8')
         
         # 회원 수정
         updated_member = get_repo().update_smember(sm_id, data)
@@ -208,7 +208,7 @@ def login():
         data = request.get_json() or {}
         
         # 필수 필드 검증
-        login_id = data.get('sMem_id', '').strip()
+        login_id = data.get('smem_id', '').strip()
         password = data.get('password', '')
         
         print(f"🔐 로그인 시도: ID={login_id}, 비밀번호 길이={len(password)}")
@@ -229,7 +229,7 @@ def login():
         member = None
         for i, m in enumerate(members):
             # PostgreSQL은 컬럼명을 소문자로 저장할 수 있음
-            db_id = m.get('sMem_id') or m.get('smem_id', '')
+            db_id = m.get('smem_id') or m.get('smem_id', '')
             
             # 대소문자 구분 없이 비교 (입력값 그대로 사용, 비교만 lower()로)
             if str(db_id).strip().lower() == str(login_id).strip().lower():
@@ -247,7 +247,7 @@ def login():
             return jsonify({'ok': False, 'error': '아이디 또는 비밀번호가 올바르지 않습니다.'}), 401
         
         # 회원 상태 확인 (OPEN만 로그인 가능)
-        member_status = member.get('sMem_status') or member.get('smem_status', '')
+        member_status = member.get('smem_status') or member.get('smem_status', '')
         print(f"📋 회원 상태: {member_status}")
         
         if str(member_status).upper() != 'OPEN':
@@ -260,7 +260,7 @@ def login():
             return jsonify({'ok': False, 'error': error_msg}), 403
         
         # 비밀번호 검증
-        stored_hash = member.get('sMem_pwdHash') or member.get('smem_pwdhash', '')
+        stored_hash = member.get('smem_pwdHash') or member.get('smem_pwdhash', '')
         
         print(f"🔑 저장된 해시: {stored_hash[:30] if stored_hash else 'None'}...")
         print(f"🔑 해시 형식: bcrypt={stored_hash.startswith('$2') if stored_hash else False}")
@@ -276,13 +276,13 @@ def login():
             
             if is_valid:
                 # 로그인 성공 - 사용자가 입력한 ID 그대로 반환 (대소문자 유지)
-                safe_member = {k: v for k, v in member.items() if k not in ['sMem_pwdHash', 'smem_pwdhash', 'sMem_pwd_salt', 'smem_pwd_salt']}
+                safe_member = {k: v for k, v in member.items() if k not in ['smem_pwdHash', 'smem_pwdhash', 'smem_pwd_salt', 'smem_pwd_salt']}
                 
-                # 입력한 ID 그대로 sMem_id에 저장 (대소문자 그대로)
-                safe_member['sMem_id'] = login_id
+                # 입력한 ID 그대로 smem_id에 저장 (대소문자 그대로)
+                safe_member['smem_id'] = login_id
                 
-                print(f"✅ 로그인 성공: 입력 ID={login_id}, DB ID={member.get('sMem_id') or member.get('smem_id')}")
-                print(f"   반환 데이터: sMem_id={safe_member.get('sMem_id')}, sMem_name={safe_member.get('sMem_name') or safe_member.get('smem_name')}")
+                print(f"✅ 로그인 성공: 입력 ID={login_id}, DB ID={member.get('smem_id') or member.get('smem_id')}")
+                print(f"   반환 데이터: smem_id={safe_member.get('smem_id')}, smem_name={safe_member.get('smem_name') or safe_member.get('smem_name')}")
                 return jsonify({'ok': True, 'data': safe_member})
             else:
                 print("❌ 비밀번호 불일치")
@@ -304,8 +304,8 @@ def reset_password():
     """비밀번호 재설정 (임시 비밀번호 발급)"""
     try:
         data = request.get_json()
-        login_id = data.get('sMem_id', '').strip()
-        email = data.get('sMem_email', '').strip()
+        login_id = data.get('smem_id', '').strip()
+        email = data.get('smem_email', '').strip()
         
         print(f"🔄 비밀번호 재설정 요청: ID={login_id}, Email={email}")
         
@@ -318,8 +318,8 @@ def reset_password():
         # 대소문자 구분 없이 ID와 이메일 확인
         member = None
         for m in members:
-            db_id = str(m.get('sMem_id') or m.get('smem_id', '')).strip()
-            db_email = str(m.get('sMem_email') or m.get('smem_email', '')).strip()
+            db_id = str(m.get('smem_id') or m.get('smem_id', '')).strip()
+            db_email = str(m.get('smem_email') or m.get('smem_email', '')).strip()
             
             if (db_id.lower() == login_id.lower() and 
                 db_email.lower() == email.lower()):
@@ -342,8 +342,8 @@ def reset_password():
         sm_id = member.get('sM_id') or member.get('sm_id')
         
         update_data = {
-            'sMem_pwdHash': hashed.decode('utf-8'),
-            'sMem_lastPwdChange': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            'smem_pwdHash': hashed.decode('utf-8'),
+            'smem_lastPwdChange': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
         
         success = get_repo().update_smember(sm_id, update_data)

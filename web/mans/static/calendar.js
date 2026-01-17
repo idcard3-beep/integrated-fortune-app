@@ -76,12 +76,7 @@ function formatDateWithTime(dateStr){if(!dateStr)return'';var parts=dateStr.spli
         datePart[2]
       )}일 ${timePart}`;}}
 return dateStr;}
-function showPopupWithSmartPosition(popup,cell,event){const popup_width=220;const popup_height=300;let left,top;if(event&&(event.clientX||event.touches)){const clientX=event.clientX||(event.touches&&event.touches[0].clientX);const clientY=event.clientY||(event.touches&&event.touches[0].clientY);left=clientX+10;top=clientY+window.scrollY+10;}else{const rect=cell.getBoundingClientRect();left=rect.right+10;top=rect.top+window.scrollY;}
-if(left+popup_width>window.innerWidth){left=left-popup_width-20;}
-if(top+popup_height>window.innerHeight+window.scrollY){top=window.innerHeight+window.scrollY-popup_height-20;}
-if(left<10){left=10;}
-if(top<10){top=10;}
-popup.style.left=left+'px';popup.style.top=top+'px';popup.style.right='auto';popup.style.display='block';popup.style.opacity='0';popup.style.transform='translateY(10px) scale(0.95)';requestAnimationFrame(()=>{popup.style.transition='all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';popup.style.opacity='1';popup.style.transform='translateY(0) scale(1)';});}
+function showPopupWithSmartPosition(popup,cell,event){popup.style.top='';popup.style.left='';popup.style.right='';popup.style.transform='';popup.style.right='auto';popup.style.display='block';popup.style.opacity='0';popup.style.transform='translateY(10px) scale(0.95)';requestAnimationFrame(()=>{popup.style.transition='all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';popup.style.opacity='1';popup.style.transform='translateY(0) scale(1)';});}
 document.getElementById('ganzi-close').onclick=function(){const popup=document.getElementById('ganzi-popup');popup.style.transition='all 0.2s ease';popup.style.opacity='0';popup.style.transform='translateY(-10px) scale(0.95)';setTimeout(()=>{popup.style.display='none';},200);};document.addEventListener('keydown',function(e){if(e.key==='Escape'){const popup=document.getElementById('ganzi-popup');if(popup.style.display==='block'){document.getElementById('ganzi-close').click();}}});document.addEventListener('click',function(e){const popup=document.getElementById('ganzi-popup');if(popup.style.display==='block'&&!popup.contains(e.target)&&!e.target.closest('.day-cell')){document.getElementById('ganzi-close').click();}});(function(){'use strict';function getTodayDate(){var now=new Date();return{year:now.getFullYear(),month:now.getMonth()+1,day:now.getDate(),};}
 function getDisplayYearMonth(){var headerText=document.querySelector('h1');if(headerText){var match=headerText.textContent.match(/(\d+)년\s*(\d+)월/);if(match){return{year:parseInt(match[1]),month:parseInt(match[2]),};}}
 return null;}

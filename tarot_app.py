@@ -303,6 +303,11 @@ def generate_tarot_reading(preset_name):
 def index():
     return render_template('tarot_exec.html')
 
+@app.route('/tarot_tickboard')
+def tarot_tickboard():
+    """타로 DB보기 페이지 (목록조회)"""
+    return render_template('tarot_tickboard.html')
+
 @app.route('/api/tarot/presets', methods=['GET'])
 def list_presets():
     """사용 가능한 프리셋 목록을 반환합니다."""

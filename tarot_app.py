@@ -6,10 +6,15 @@ from flask import Flask, jsonify, request, abort, render_template, session
 from werkzeug.exceptions import HTTPException
 from flask_cors import CORS 
 
+# tickets API Blueprint 임포트
+from api.tickets import bp as tickets_bp
 
 #app = Flask(__name__)
 # 클라이언트와의 통신을 위해 CORS를 허용합니다.
 app = Flask(__name__, template_folder='web/tarot/templates', static_folder='web/tarot/static')
+
+# SECRET_KEY 설정
+app.secret_key = os.getenv("SECRET_KEY", "dev-secret-change-in-production")
 
 # 공통 static 파일 서빙 라우트 추가
 @app.route('/common/static/<path:filename>')
@@ -52,6 +57,10 @@ def inject_session_data():
     }
 
 CORS(app)
+
+# tickets API Blueprint 등록 (타로 전용 경로)
+app.register_blueprint(tickets_bp, url_prefix="/api/v1/tarot_tickets")
+print("✅ tarot_tickets API Blueprint 등록 완료")
 
 # 78장 전체 카드 정보 반환 API
 @app.route('/api/tarot/all-cards', methods=['GET'])

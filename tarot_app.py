@@ -3,6 +3,7 @@ import json
 import os
 #from flask import Flask, jsonify, request, abort, send_from_directory, render_template
 from flask import Flask, jsonify, request, abort, render_template, session
+from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
 from flask_cors import CORS 
 
@@ -15,6 +16,16 @@ app = Flask(__name__, template_folder='web/tarot/templates', static_folder='web/
 
 # SECRET_KEY 설정
 app.secret_key = os.getenv("SECRET_KEY", "dev-secret-change-in-production")
+
+# cloudtype.io 프록시 환경에서 HTTPS 감지를 위한 ProxyFix 미들웨어
+# X-Forwarded-Proto 헤더를 확인하여 실제 프로토콜 감지
+app.wsgi_app = ProxyFix(
+    app.wsgi_app,
+    x_for=1,  # X-Forwarded-For 헤더 신뢰
+    x_proto=1,  # X-Forwarded-Proto 헤더 신뢰 (HTTPS 감지)
+    x_host=1,  # X-Forwarded-Host 헤더 신뢰
+    x_port=1,  # X-Forwarded-Port 헤더 신뢰
+)
 
 # 공통 static 파일 서빙 라우트 추가
 @app.route('/common/static/<path:filename>')
